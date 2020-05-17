@@ -11,4 +11,5 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="action_start_collab">Start collab</string>
     <string name="action_add_artist">Add artist</string>
+    <string name="open_profile_card">Open profile card</string>
 </resources>

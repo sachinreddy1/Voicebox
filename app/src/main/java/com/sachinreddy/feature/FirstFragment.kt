@@ -22,15 +22,15 @@ class FirstFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_first, container, false)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun onStart() {
+        setHasOptionsMenu(true)
         (requireActivity() as AppCompatActivity).apply {
             setSupportActionBar(toolbar)
-            supportActionBar?.apply { setHomeAsUpIndicator(R.drawable.ic_launcher_foreground) }
+            supportActionBar?.apply {
+                setDisplayHomeAsUpEnabled(true)
+                setHomeAsUpIndicator(R.drawable.ic_team_member)
+                setHomeActionContentDescription(getString(R.string.open_profile_card))
+            }
         }
         super.onStart()
     }
@@ -48,10 +48,10 @@ class FirstFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
+            android.R.id.home ->
+                Snackbar.make(view!!, "Going to profile...", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
             R.id.action_start_collab ->
                 Snackbar.make(view!!, "Starting a collab...", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
