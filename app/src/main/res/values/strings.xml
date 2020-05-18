@@ -12,4 +12,7 @@
     <string name="action_start_collab">Start collab</string>
     <string name="action_add_artist">Add artist</string>
     <string name="open_profile_card">Open profile card</string>
+    <string name="back_to_home">Back to home</string>
+    <string name="profile">Profile</string>
+    <string name="settings_button">Settings button</string>
 </resources>
