@@ -1,5 +1,7 @@
 package com.sachinreddy.feature
 
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
@@ -25,7 +27,7 @@ class HomeFragment : Fragment() {
             supportActionBar?.apply {
                 title = getString(R.string.app_name)
                 setDisplayHomeAsUpEnabled(true)
-                setHomeAsUpIndicator(R.drawable.ic_team_member)
+                setHomeAsUpIndicator(resizeDrawable(R.drawable.default_picture, 75, 75))
                 setHomeActionContentDescription(getString(R.string.open_profile_card))
             }
         }
@@ -49,4 +51,14 @@ class HomeFragment : Fragment() {
         }
         return true
     }
+
+    private fun resizeDrawable(id: Int, width: Int, height: Int) = BitmapDrawable(
+        resources,
+        Bitmap.createScaledBitmap(
+            (resources.getDrawable(id) as BitmapDrawable).bitmap,
+            width,
+            height,
+            false
+        )
+    )
 }

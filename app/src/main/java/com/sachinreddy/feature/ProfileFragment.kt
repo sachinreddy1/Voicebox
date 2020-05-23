@@ -1,18 +1,32 @@
 package com.sachinreddy.feature
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.android.volley.Response
+import com.android.volley.toolbox.Volley.newRequestQueue
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_profile.*
+import java.io.IOException
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class ProfileFragment : Fragment() {
+    private var imageData: ByteArray? = null
+    private val postURL: String = "https://ptsv2.com/t/54odo-1576291398/post"
+
+    companion object {
+        private const val IMAGE_PICK_CODE = 999
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         (requireActivity() as AppCompatActivity).apply {
             supportActionBar?.apply {
@@ -22,8 +36,16 @@ class ProfileFragment : Fragment() {
                 setHomeActionContentDescription(getString(R.string.back_to_home))
             }
         }
+    }
 
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        uploadButton.setOnClickListener {
+            launchGallery()
+        }
+        sendButton.setOnClickListener {
+            uploadImage()
+        }
     }
 
     override fun onCreateView(
@@ -33,14 +55,6 @@ class ProfileFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        view.findViewById<Button>(R.id.button_second).setOnClickListener {
-            findNavController().navigate(R.id.action_profileFragment_to_homeFragment)
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_profile, menu)
     }
@@ -48,11 +62,57 @@ class ProfileFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home ->
-                findNavController().navigate(R.id.action_profileFragment_to_homeFragment)
+                findNavController().popBackStack()
             R.id.button_settings ->
                 Snackbar.make(view!!, "Opening settings...", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
         return true
+    }
+
+    private fun launchGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
+    }
+
+    private fun uploadImage() {
+        imageData ?: return
+        val request = object : VolleyFileUploadRequest(
+            Method.POST,
+            postURL,
+            Response.Listener {
+                println("response is: $it")
+            },
+            Response.ErrorListener {
+                println("error is: $it")
+            }
+        ) {
+            override fun getByteData(): MutableMap<String, FileDataPart> {
+                val params = HashMap<String, FileDataPart>()
+                params["imageFile"] = FileDataPart("image", imageData!!, "jpeg")
+                return params
+            }
+        }
+        newRequestQueue(requireContext()).add(request)
+    }
+
+    @Throws(IOException::class)
+    private fun createImageData(uri: Uri) {
+        val inputStream = activity!!.contentResolver.openInputStream(uri)
+        inputStream?.buffered()?.use {
+            imageData = it.readBytes()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+            val uri = data?.data
+            if (uri != null) {
+                profilePicture.setImageURI(uri)
+                createImageData(uri)
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }
