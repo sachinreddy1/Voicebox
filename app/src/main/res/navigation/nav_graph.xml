@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/HomeFragment"
-        android:name="com.sachinreddy.feature.HomeFragment"
+        android:name="com.sachinreddy.feature.fragment.HomeFragment"
         android:label="@string/home_fragment_label"
         tools:layout="@layout/fragment_home">
         <action
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/ProfileFragment"
-        android:name="com.sachinreddy.feature.ProfileFragment"
+        android:name="com.sachinreddy.feature.fragment.ProfileFragment"
         android:label="@string/profile_fragment_label"
         tools:layout="@layout/fragment_profile">
     </fragment>

@@ -1,4 +1,4 @@
-package com.sachinreddy.feature
+package com.sachinreddy.feature.fragment
 
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -6,13 +6,19 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.sachinreddy.feature.R
+import com.sachinreddy.feature.database.MyAppDatabase
+import com.sachinreddy.feature.database.MyDao
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class HomeFragment : Fragment() {
+    lateinit var database: MyDao
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,7 +37,19 @@ class HomeFragment : Fragment() {
                 setHomeActionContentDescription(getString(R.string.open_profile_card))
             }
         }
+
         super.onStart()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        database = MyAppDatabase.getInstance(requireContext()).MyDao()
+        database.getUserInfo().observe(viewLifecycleOwner, Observer {
+            if (it.isEmpty()) {
+                UserInfoDialogFragment().show(fragmentManager!!, null)
+            }
+        })
+
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

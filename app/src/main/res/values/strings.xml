@@ -15,4 +15,6 @@
     <string name="back_to_home">Back to home</string>
     <string name="profile">Profile</string>
     <string name="settings_button">Settings button</string>
+
+    <string name="type_a_section">Type a section.</string>
 </resources>

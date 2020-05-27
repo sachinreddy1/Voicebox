@@ -19,4 +19,8 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="TitleBar">
+        <item name="android:background">@drawable/background_title_bar</item>
+    </style>
+
 </resources>

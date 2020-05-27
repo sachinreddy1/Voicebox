@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="250dp"
+    style="@style/TitleBar">
+
+    <TextView
+        android:id="@+id/add_item_title"
+        style="@style/TitleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="User Information"
+
+        android:textAlignment="center"
+
+        android:textColor="@color/whitesmoke"
+
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/add_item_heading"
+        style="@style/TitleBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Artist Name:"
+
+        android:textAlignment="center"
+
+        android:textColor="@color/whitesmoke"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toBottomOf="@+id/artistName_textEdit"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/artistName_textEdit" />
+
+    <EditText
+        android:id="@+id/email_textEdit"
+        style="@style/TitleBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_margin="16dp"
+        android:background="@drawable/background_edit_text"
+
+        android:padding="8dp"
+        android:textAlignment="center"
+
+        android:textColor="@color/whitesmoke"
+        android:textSize="20sp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/artistName_textEdit"
+        tools:text="something" />
+
+    <TextView
+        android:id="@+id/add_item_description"
+        style="@style/TitleBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Email:"
+
+        android:textAlignment="center"
+
+        android:textColor="@color/whitesmoke"
+
+        android:textSize="25dp"
+        app:layout_constraintBottom_toBottomOf="@+id/email_textEdit"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/email_textEdit" />
+
+    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+        android:id="@+id/artistName_textEdit"
+        style="@style/TitleBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_margin="16dp"
+        android:background="@drawable/background_edit_text"
+
+        android:padding="8dp"
+        android:textAlignment="center"
+
+        android:textColor="@color/whitesmoke"
+        android:textColorHint="@color/whitesmoke"
+        android:textSize="20sp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/add_item_title"
+        tools:text="something"
+        android:hint="@string/type_a_section" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_item_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/ic_add"
+        android:text="+"
+        app:backgroundTint="@color/whitesmoke"
+        app:elevation="6dp"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email_textEdit" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/cancel_item_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_remove"
+        android:text="-"
+        app:backgroundTint="@color/whitesmoke"
+        app:elevation="6dp"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="@+id/add_item_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/add_item_button" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.35" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.sachinreddy.feature
+package com.sachinreddy.feature.fragment
 
 import android.app.Activity
 import android.content.Intent
@@ -7,10 +7,16 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.android.volley.Response
 import com.android.volley.toolbox.Volley.newRequestQueue
 import com.google.android.material.snackbar.Snackbar
+import com.sachinreddy.feature.FileDataPart
+import com.sachinreddy.feature.R
+import com.sachinreddy.feature.VolleyFileUploadRequest
+import com.sachinreddy.feature.database.MyAppDatabase
+import com.sachinreddy.feature.database.MyDao
 import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.IOException
 
@@ -18,6 +24,7 @@ import java.io.IOException
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class ProfileFragment : Fragment() {
+    lateinit var database: MyDao
     private var imageData: ByteArray? = null
     private val postURL: String = "https://ptsv2.com/t/54odo-1576291398/post"
 
@@ -40,6 +47,15 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        database = MyAppDatabase.getInstance(requireContext()).MyDao()
+
+        database.getUserInfo().observe(viewLifecycleOwner, Observer {
+            artistName.text = it[0].artistName
+        })
+        database.getUserInfo().observe(viewLifecycleOwner, Observer {
+            contactInfo.text = it[0].email
+        })
+
         uploadButton.setOnClickListener {
             launchGallery()
         }
@@ -73,7 +89,10 @@ class ProfileFragment : Fragment() {
     private fun launchGallery() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_CODE)
+        startActivityForResult(
+            intent,
+            IMAGE_PICK_CODE
+        )
     }
 
     private fun uploadImage() {
@@ -82,7 +101,7 @@ class ProfileFragment : Fragment() {
             Method.POST,
             postURL,
             Response.Listener {
-                println("response is: $it")
+                println("response is: ${it.data}")
             },
             Response.ErrorListener {
                 println("error is: $it")
@@ -90,7 +109,11 @@ class ProfileFragment : Fragment() {
         ) {
             override fun getByteData(): MutableMap<String, FileDataPart> {
                 val params = HashMap<String, FileDataPart>()
-                params["imageFile"] = FileDataPart("image", imageData!!, "jpeg")
+                params["imageFile"] = FileDataPart(
+                    "image",
+                    imageData!!,
+                    "jpeg"
+                )
                 return params
             }
         }
