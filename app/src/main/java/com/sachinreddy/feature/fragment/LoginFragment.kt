@@ -9,14 +9,14 @@ import androidx.navigation.fragment.findNavController
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.User
 import com.sachinreddy.feature.database.MyAppDatabase
-import kotlinx.android.synthetic.main.dialog_user_info.*
+import kotlinx.android.synthetic.main.fragment_login.*
 
-class UserInfoFragment : Fragment() {
+class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.dialog_user_info, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_login, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

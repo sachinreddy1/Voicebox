@@ -19,6 +19,7 @@
         android:textColor="@color/whitesmoke"
 
         android:textSize="30dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,11 +35,11 @@
 
         android:textColor="@color/whitesmoke"
         android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="@+id/artistName_textEdit"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintHorizontal_bias="1.0"
+
+        app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline1"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/artistName_textEdit" />
+        app:layout_constraintTop_toTopOf="@+id/horizontalGuideline0" />
 
     <EditText
         android:id="@+id/email_textEdit"
@@ -54,9 +55,10 @@
         android:textColor="@color/whitesmoke"
         android:textSize="20sp"
 
+        app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/artistName_textEdit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/horizontalGuideline3"
         tools:text="something" />
 
     <TextView
@@ -71,11 +73,10 @@
         android:textColor="@color/whitesmoke"
 
         android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="@+id/email_textEdit"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline3"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/email_textEdit" />
+        app:layout_constraintTop_toTopOf="@+id/horizontalGuideline2" />
 
     <androidx.appcompat.widget.AppCompatAutoCompleteTextView
         android:id="@+id/artistName_textEdit"
@@ -85,18 +86,19 @@
         android:layout_margin="16dp"
         android:background="@drawable/background_edit_text"
 
+        android:hint="@string/type_a_section"
         android:padding="8dp"
-        android:textAlignment="center"
 
+        android:textAlignment="center"
         android:textColor="@color/whitesmoke"
         android:textColorHint="@color/whitesmoke"
-        android:textSize="20sp"
 
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/add_item_title"
-        tools:text="something"
-        android:hint="@string/type_a_section" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/horizontalGuideline1"
+        tools:text="something" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_item_button"
@@ -121,12 +123,42 @@
         app:layout_constraintTop_toBottomOf="@+id/email_textEdit"
         app:layout_constraintVertical_bias="1.0" />
 
+    <!--  Guidelines  -->
+
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
+        android:id="@+id/horizontalGuideline0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.35" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontalGuideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontalGuideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontalGuideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontalGuideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
