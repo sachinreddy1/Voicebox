@@ -24,7 +24,7 @@ import java.io.IOException
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class ProfileFragment : Fragment() {
-    lateinit var database: MyDao
+    private lateinit var database: MyDao
     private var imageData: ByteArray? = null
     private val postURL: String = "https://ptsv2.com/t/54odo-1576291398/post"
 

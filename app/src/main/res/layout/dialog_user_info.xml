@@ -3,13 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:minWidth="250dp"
-    style="@style/TitleBar">
+    style="@style/Login">
 
     <TextView
         android:id="@+id/add_item_title"
-        style="@style/TitleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -26,7 +25,6 @@
 
     <TextView
         android:id="@+id/add_item_heading"
-        style="@style/TitleBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -44,7 +42,6 @@
 
     <EditText
         android:id="@+id/email_textEdit"
-        style="@style/TitleBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
@@ -64,7 +61,6 @@
 
     <TextView
         android:id="@+id/add_item_description"
-        style="@style/TitleBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -83,7 +79,6 @@
 
     <androidx.appcompat.widget.AppCompatAutoCompleteTextView
         android:id="@+id/artistName_textEdit"
-        style="@style/TitleBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
@@ -107,34 +102,24 @@
         android:id="@+id/add_item_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_margin="16dp"
         android:layout_marginTop="15dp"
-        android:src="@drawable/ic_add"
-        android:text="+"
+
+        android:src="@drawable/ic_send_black"
+
+        android:text="@string/submit"
+
         app:backgroundTint="@color/whitesmoke"
         app:elevation="6dp"
         app:fabSize="mini"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_textEdit" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/cancel_item_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_remove"
-        android:text="-"
-        app:backgroundTint="@color/whitesmoke"
-        app:elevation="6dp"
-        app:fabSize="mini"
-        app:layout_constraintBottom_toBottomOf="@+id/add_item_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/add_item_button" />
+        app:layout_constraintTop_toBottomOf="@+id/email_textEdit"
+        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

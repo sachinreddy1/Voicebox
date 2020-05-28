@@ -17,4 +17,5 @@
     <string name="settings_button">Settings button</string>
 
     <string name="type_a_section">Type a section.</string>
+    <string name="submit">Submit</string>
 </resources>

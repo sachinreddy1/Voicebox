@@ -21,16 +21,6 @@ class UserInfoDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         val database = MyAppDatabase.getInstance(requireContext()).MyDao()
 
-        // TODO("Is there a better way to do this?")
-//        database.getItems().observe(viewLifecycleOwner, Observer {
-//            val sections = it.map { it.section }.distinct()
-//            val autoAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, sections)
-//            artistName_textEdit.setAdapter(autoAdapter)
-//            artistName_textEdit.threshold = 1
-//        })
-
-        println("View created.")
-
         add_item_button.setOnClickListener {
             database.addUserInfo(
                 User(

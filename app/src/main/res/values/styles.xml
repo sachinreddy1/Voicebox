@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:background">@color/colorBackground</item>
     </style>
 
     <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
@@ -21,6 +21,10 @@
 
     <style name="TitleBar">
         <item name="android:background">@drawable/background_title_bar</item>
+    </style>
+
+    <style name="Login">
+        <item name="android:background">@color/colorBackground</item>
     </style>
 
 </resources>

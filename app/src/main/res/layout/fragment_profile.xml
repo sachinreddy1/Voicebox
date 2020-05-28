@@ -52,7 +52,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/horizontalGuideline1"
         android:text="Artist Name"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/contactInfo"
@@ -63,7 +63,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:text="Contact information"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/white" />
 
     <!--  GUIDELINES  -->
 
