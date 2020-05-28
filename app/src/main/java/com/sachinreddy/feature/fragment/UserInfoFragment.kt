@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.User
 import com.sachinreddy.feature.database.MyAppDatabase
 import kotlinx.android.synthetic.main.dialog_user_info.*
 
-class UserInfoDialogFragment : DialogFragment() {
+class UserInfoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,11 +29,7 @@ class UserInfoDialogFragment : DialogFragment() {
                     email = "${email_textEdit.text}"
                 )
             )
-            dismiss()
-        }
-
-        cancel_item_button.setOnClickListener {
-            dismiss()
+            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
         }
     }
 }

@@ -45,7 +45,7 @@ class HomeFragment : Fragment() {
         database = MyAppDatabase.getInstance(requireContext()).MyDao()
         database.getUserInfo().observe(viewLifecycleOwner, Observer {
             if (it.isEmpty()) {
-                UserInfoDialogFragment().show(fragmentManager!!, null)
+                findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
             }
         })
 
