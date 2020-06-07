@@ -20,4 +20,17 @@
     <string name="type_a_section">Type a section.</string>
     <string name="submit">Submit</string>
     <string name="collab_logo">Collab logo</string>
+    <string name="new_user_register_now">New User? Register now.</string>
+    <string name="or">OR</string>
+    <string name="forgot_password">FORGOT PASSWORD?</string>
+    <string name="login">LOGIN</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="artist_name">Artist Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register">REGISTER</string>
+    <string name="already_have_an_account_login">Already have an account? Login.</string>
 </resources>
