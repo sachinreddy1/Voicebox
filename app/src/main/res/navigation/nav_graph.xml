@@ -20,12 +20,12 @@
             app:popUpTo="@id/ProfileFragment" />
         <action
             android:id="@+id/action_homeFragment_to_loginFragment"
-            app:destination="@id/UserInfoFragment"
+            app:destination="@id/LoginFragment"
             app:enterAnim="@anim/fragment_close_enter"
             app:exitAnim="@anim/fragment_close_exit"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@id/UserInfoFragment" />
+            app:popUpTo="@id/LoginFragment" />
     </fragment>
     <fragment
         android:id="@+id/ProfileFragment"
@@ -34,17 +34,22 @@
         tools:layout="@layout/fragment_profile">
     </fragment>
     <fragment
-        android:id="@+id/UserInfoFragment"
+        android:id="@+id/LoginFragment"
         android:name="com.sachinreddy.feature.fragment.LoginFragment"
         android:label="@string/login_fragment_label"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/action_loginFragment_to_homeFragment"
-            app:destination="@id/HomeFragment"
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/RegisterFragment"
             app:enterAnim="@anim/fragment_close_enter"
             app:exitAnim="@anim/fragment_close_exit"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@id/HomeFragment" />
+            app:popUpTo="@id/RegisterFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/RegisterFragment"
+        android:name="com.sachinreddy.feature.fragment.RegisterFragment"
+        android:label="@string/register_fragment_label"
+        tools:layout="@layout/fragment_register"></fragment>
 </navigation>

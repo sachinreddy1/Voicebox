@@ -7,9 +7,22 @@
     style="@style/Login">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/backgroundAvatar"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="#00000000"
+        android:padding="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/forgroundLogo"
+        app:layout_constraintEnd_toEndOf="@+id/forgroundLogo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/round_background_circle" />
+
+    <ImageView
+        android:id="@+id/forgroundLogo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/collab_logo"
         android:padding="45dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -34,10 +47,11 @@
         android:hint="@string/email"
         android:inputType="text"
         android:padding="16dp"
+        android:textColor="@color/colorAccent"
         android:textColorHint="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/forgroundLogo" />
 
     <EditText
         android:id="@+id/inputPassword"
@@ -53,6 +67,7 @@
         android:hint="@string/password"
         android:inputType="textPassword"
         android:padding="16dp"
+        android:textColor="@color/colorAccent"
         android:textColorHint="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

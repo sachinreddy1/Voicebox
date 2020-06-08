@@ -8,9 +8,22 @@
     android:minWidth="250dp">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/backgroundAvatar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#00000000"
+        android:padding="30dp"
+        app:layout_constraintBottom_toBottomOf="@id/horizontalGuideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/round_background_circle" />
+
+    <ImageView
+        android:id="@+id/forgroundAvatar"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:background="#00000000"
         android:padding="35dp"
         app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,6 +52,7 @@
         android:hint="@string/artist_name"
         android:inputType="text"
         android:padding="16dp"
+        android:textColor="@color/colorAccent"
         android:textColorHint="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,6 +72,7 @@
         android:hint="@string/phone_number"
         android:inputType="text"
         android:padding="16dp"
+        android:textColor="@color/colorAccent"
         android:textColorHint="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -78,6 +93,7 @@
         android:hint="@string/email"
         android:inputType="text"
         android:padding="16dp"
+        android:textColor="@color/colorAccent"
         android:textColorHint="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -98,6 +114,7 @@
         android:hint="@string/password"
         android:inputType="textPassword"
         android:padding="16dp"
+        android:textColor="@color/colorAccent"
         android:textColorHint="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -118,6 +135,7 @@
         android:hint="@string/confirm_password"
         android:inputType="textPassword"
         android:padding="16dp"
+        android:textColor="@color/colorAccent"
         android:textColorHint="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
