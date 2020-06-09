@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.User
 import com.sachinreddy.feature.database.MyAppDatabase
@@ -28,11 +29,10 @@ class RegisterFragment : Fragment() {
                     email = "${inputPassword.text}"
                 )
             )
-//            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
         }
 
-//        buttonRegister.setOnClickListener {
-//            findNavController().popBackStack()
-//        }
+        haveAccount.setOnClickListener {
+            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+        }
     }
 }
