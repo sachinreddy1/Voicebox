@@ -6,19 +6,15 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.database.MyAppDatabase
-import com.sachinreddy.feature.database.MyDao
+import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class HomeFragment : Fragment() {
-    lateinit var database: MyDao
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,6 +26,7 @@ class HomeFragment : Fragment() {
     override fun onStart() {
         setHasOptionsMenu(true)
         (requireActivity() as AppCompatActivity).apply {
+            setSupportActionBar(my_toolbar)
             supportActionBar?.apply {
                 title = getString(R.string.app_name)
                 setDisplayHomeAsUpEnabled(true)
@@ -40,16 +37,6 @@ class HomeFragment : Fragment() {
 
         super.onStart()
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        database = MyAppDatabase.getInstance(requireContext()).MyDao()
-        database.getUserInfo().observe(viewLifecycleOwner, Observer {
-            if (it.isEmpty()) {
-                findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
-            }
-        })
-    }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main, menu)

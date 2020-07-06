@@ -32,7 +32,7 @@ class RegisterFragment : Fragment() {
         }
 
         haveAccount.setOnClickListener {
-            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+            findNavController().popBackStack()
         }
     }
 }

@@ -32,10 +32,10 @@ class ProfileFragment : Fragment() {
         private const val IMAGE_PICK_CODE = 999
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onStart() {
         setHasOptionsMenu(true)
         (requireActivity() as AppCompatActivity).apply {
+            setSupportActionBar(profileToolbar)
             supportActionBar?.apply {
                 title = getString(R.string.profile)
                 setDisplayHomeAsUpEnabled(true)
@@ -43,6 +43,7 @@ class ProfileFragment : Fragment() {
                 setHomeActionContentDescription(getString(R.string.back_to_home))
             }
         }
+        super.onStart()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

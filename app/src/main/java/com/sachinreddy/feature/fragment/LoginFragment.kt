@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.User
@@ -20,7 +21,13 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val database = MyAppDatabase.getInstance(requireContext()).MyDao()
+        database.getUserInfo().observe(viewLifecycleOwner, Observer {
+            if (it.isNotEmpty()) {
+                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+            }
+        })
 
         buttonLogin.setOnClickListener {
             database.addUserInfo(
@@ -29,7 +36,7 @@ class LoginFragment : Fragment() {
                     email = "${inputPassword.text}"
                 )
             )
-            findNavController().popBackStack()
+            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
         }
 
         buttonRegister.setOnClickListener {

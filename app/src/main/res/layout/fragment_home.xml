@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:title="Sachin"
+        style="@style/ActionBar" />
+
     <TextView
         android:id="@+id/textview_first"
         android:layout_width="wrap_content"

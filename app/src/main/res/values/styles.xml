@@ -5,7 +5,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:background">@color/colorBackground</item>
+        <!--        <item name="android:background">@color/colorBackground</item>-->
+        <item name="android:background">@color/whitesmoke</item>
     </style>
 
     <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
@@ -25,6 +26,10 @@
 
     <style name="Login">
         <item name="android:background">@color/colorBackground</item>
+    </style>
+
+    <style name="ActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:background">@drawable/background_title_bar</item>
     </style>
 
 </resources>
