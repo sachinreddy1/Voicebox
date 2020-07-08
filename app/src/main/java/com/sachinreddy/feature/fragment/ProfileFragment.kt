@@ -38,7 +38,7 @@ class ProfileFragment : Fragment() {
             supportActionBar?.apply {
                 title = getString(R.string.profile)
                 setDisplayHomeAsUpEnabled(true)
-                setHomeAsUpIndicator(R.drawable.ic_arrow_back_black)
+                setHomeAsUpIndicator(R.drawable.ic_arrow_back)
                 setHomeActionContentDescription(getString(R.string.back_to_home))
             }
         }

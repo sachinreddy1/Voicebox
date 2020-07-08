@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#5C5C5B</color>
+    <color name="colorPrimary">#FFF282</color>
     <color name="colorPrimaryDark">#131313</color>
-    <color name="colorAccent">#D87CA3</color>
-    <color name="colorBackground">#FFFFFF</color>
+    <color name="colorAccent">#F5F5F5</color>
+    <color name="colorBackground">#1E1E1E</color>
 
     <color name="whitesmoke">#f5f5f5</color>
     <color name="sectionBar">#2b2b2b</color>
