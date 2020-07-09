@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FFF282</color>
+    <color name="colorPrimary">#FCF4A3</color>
     <color name="colorPrimaryDark">#131313</color>
     <color name="colorAccent">#F5F5F5</color>
     <color name="colorBackground">#1E1E1E</color>
 
     <color name="whitesmoke">#f5f5f5</color>
-    <color name="sectionBar">#2b2b2b</color>
-    <color name="editTextColor">#2b2b2b</color>
 </resources>
