@@ -6,10 +6,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="titleTextColor">@color/colorBackground</item>
-        <item name="actionOverflowButtonStyle">@style/MyOverflowButtonStyle</item>
+        <item name="actionOverflowButtonStyle">@style/actionOverflowStyle</item>
     </style>
 
-    <style name="MyOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
+    <style name="actionOverflowStyle" parent="Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">@color/colorBackground</item>
     </style>
 
