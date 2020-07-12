@@ -48,10 +48,12 @@ class LoginFragment : Fragment() {
     }
 
     private fun authenticate(email: String, password: String) {
+        loginProgressBar.visibility = View.VISIBLE
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(context, "Sign in problem", Toast.LENGTH_LONG).show()
         } else {
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+                loginProgressBar.visibility = View.GONE
                 if (!it.isSuccessful) {
                     Toast.makeText(context, "Sign in problem", Toast.LENGTH_LONG).show()
                 } else {

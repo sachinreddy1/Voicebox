@@ -81,10 +81,14 @@ class RegisterFragment : Fragment() {
 
         if (password_ != confirmPassword_) {
             inputPassword.error = "Passwords do not match."
+            inputPassword.requestFocus()
+            return
         }
 
+        registerProgressBar.visibility = View.VISIBLE
         mAuth.createUserWithEmailAndPassword(email_, password_).addOnCompleteListener {
             if (it.isSuccessful) {
+                registerProgressBar.visibility = View.GONE
                 Toast.makeText(context, "User Registered is Successful", Toast.LENGTH_LONG).show()
             }
         }
