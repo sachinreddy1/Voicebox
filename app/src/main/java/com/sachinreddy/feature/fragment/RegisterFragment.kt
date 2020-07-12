@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -26,7 +27,7 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         mAuth = Firebase.auth
 
-        buttonLogin.setOnClickListener {
+        buttonRegister.setOnClickListener {
             registerAccount()
         }
 
@@ -54,6 +55,12 @@ class RegisterFragment : Fragment() {
             return
         }
 
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email_).matches()) {
+            inputEmail.error = "Please enter a valid email address.."
+            inputEmail.requestFocus()
+            return
+        }
+
         if (phoneNumber_.isEmpty()) {
             phoneNumber.error = "Phone number is required."
             phoneNumber.requestFocus()
@@ -74,6 +81,12 @@ class RegisterFragment : Fragment() {
 
         if (password_ != confirmPassword_) {
             inputPassword.error = "Passwords do not match."
+        }
+
+        mAuth.createUserWithEmailAndPassword(email_, password_).addOnCompleteListener {
+            if (it.isSuccessful) {
+                Toast.makeText(context, "User Registered is Successful", Toast.LENGTH_LONG).show()
+            }
         }
     }
 }

@@ -6,13 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.database.MyAppDatabase
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment() {
@@ -33,27 +31,14 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val database = MyAppDatabase.getInstance(requireContext()).MyDao()
-        database.getUserInfo().observe(viewLifecycleOwner, Observer {
-            if (it.isNotEmpty()) {
-                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-            }
-        })
-
         mAuth = Firebase.auth
         mAuthListener = FirebaseAuth.AuthStateListener {
-            if (it.currentUser != null) {
-                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-            }
+//            if (it.currentUser != null) {
+//                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+//            }
         }
 
         buttonLogin.setOnClickListener {
-//            database.addUserInfo(
-//                User(
-//                    artistName = "${inputEmail.text}",
-//                    email = "${inputPassword.text}"
-//                )
-//            )
             authenticate(inputEmail.text.toString(), inputPassword.text.toString())
         }
 
@@ -69,6 +54,8 @@ class LoginFragment : Fragment() {
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                 if (!it.isSuccessful) {
                     Toast.makeText(context, "Sign in problem", Toast.LENGTH_LONG).show()
+                } else {
+                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 }
             }
         }
