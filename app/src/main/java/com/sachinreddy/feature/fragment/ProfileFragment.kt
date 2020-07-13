@@ -7,16 +7,16 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.android.volley.Response
 import com.android.volley.toolbox.Volley.newRequestQueue
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.sachinreddy.feature.FileDataPart
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.VolleyFileUploadRequest
-import com.sachinreddy.feature.database.MyAppDatabase
-import com.sachinreddy.feature.database.MyDao
 import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.IOException
 
@@ -24,7 +24,7 @@ import java.io.IOException
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class ProfileFragment : Fragment() {
-    private lateinit var database: MyDao
+    private lateinit var mAuth: FirebaseAuth
     private var imageData: ByteArray? = null
     private val postURL: String = "https://ptsv2.com/t/54odo-1576291398/post"
 
@@ -47,14 +47,11 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        database = MyAppDatabase.getInstance(requireContext()).MyDao()
 
-        database.getUserInfo().observe(viewLifecycleOwner, Observer {
-            artistName.text = it[0].artistName
-        })
-        database.getUserInfo().observe(viewLifecycleOwner, Observer {
-            contactInfo.text = it[0].email
-        })
+        mAuth = Firebase.auth
+
+        artistName.text = mAuth.currentUser?.email
+        contactInfo.text = mAuth.currentUser?.phoneNumber
 
         uploadButton.setOnClickListener {
             launchGallery()
@@ -79,9 +76,11 @@ class ProfileFragment : Fragment() {
         when (item.itemId) {
             android.R.id.home ->
                 findNavController().popBackStack()
-            R.id.button_settings ->
+            R.id.action_about ->
                 Snackbar.make(view!!, "Opening settings...", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
+            R.id.action_logout ->
+                mAuth.signOut()
         }
         return true
     }

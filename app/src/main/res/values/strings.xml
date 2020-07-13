@@ -32,4 +32,6 @@
     <string name="register">REGISTER</string>
     <string name="already_have_an_account_login">Already have an account? Login.</string>
     <string name="register_fragment_label">Register Fragment</string>
+    <string name="logout">Logout</string>
+    <string name="about">About</string>
 </resources>
