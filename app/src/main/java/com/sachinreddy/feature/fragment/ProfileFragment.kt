@@ -51,13 +51,12 @@ class ProfileFragment : Fragment() {
         super.onStart()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         mAuth = Firebase.auth
         mDatabase = Firebase.database
         mReference = mDatabase.getReference("artists").child(mAuth.currentUser?.uid!!)
-
         mReference.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
@@ -68,6 +67,10 @@ class ProfileFragment : Fragment() {
                 contactInfo.text = snapshot.child("email").value.toString()
             }
         })
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         uploadButton.setOnClickListener {
             launchGallery()
