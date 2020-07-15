@@ -13,6 +13,8 @@ import com.android.volley.toolbox.Volley.newRequestQueue
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.sachinreddy.feature.FileDataPart
 import com.sachinreddy.feature.R
@@ -24,7 +26,11 @@ import java.io.IOException
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class ProfileFragment : Fragment() {
+
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var mDatabase: FirebaseDatabase
+    private lateinit var mReference: DatabaseReference
+
     private var imageData: ByteArray? = null
     private val postURL: String = "https://ptsv2.com/t/54odo-1576291398/post"
 
@@ -49,9 +55,19 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mAuth = Firebase.auth
+        mDatabase = Firebase.database
+        mReference = mDatabase.getReference("artists").child(mAuth.currentUser?.uid!!)
 
-        artistName.text = mAuth.currentUser?.email
-        contactInfo.text = mAuth.currentUser?.phoneNumber
+        mReference.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                artistName.text = snapshot.child("artistName").value.toString()
+                contactInfo.text = snapshot.child("email").value.toString()
+            }
+        })
 
         uploadButton.setOnClickListener {
             launchGallery()

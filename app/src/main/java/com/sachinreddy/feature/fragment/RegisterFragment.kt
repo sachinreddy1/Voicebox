@@ -106,6 +106,6 @@ class RegisterFragment : Fragment() {
     private fun registerArtist(artistName: String, email: String, phoneNumber: String) {
         val id = mReference.push().key
         val artist = Artist(id!!, artistName, email, phoneNumber)
-        mReference.setValue(artist)
+        mReference.child(mAuth.uid!!).setValue(artist)
     }
 }
