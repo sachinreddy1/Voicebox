@@ -9,13 +9,19 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.sachinreddy.feature.R
+import com.sachinreddy.feature.data.Artist
 import kotlinx.android.synthetic.main.fragment_register.*
 
 class RegisterFragment : Fragment() {
 
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var mDatabase: FirebaseDatabase
+    private lateinit var mReference: DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,6 +32,8 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mAuth = Firebase.auth
+        mDatabase = Firebase.database
+        mReference = mDatabase.getReference("artists")
 
         buttonRegister.setOnClickListener {
             registerAccount()
@@ -88,9 +96,16 @@ class RegisterFragment : Fragment() {
         registerProgressBar.visibility = View.VISIBLE
         mAuth.createUserWithEmailAndPassword(email_, password_).addOnCompleteListener {
             if (it.isSuccessful) {
+                registerArtist(artistName_, email_, phoneNumber_)
                 registerProgressBar.visibility = View.GONE
                 Toast.makeText(context, "User Registered is Successful", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun registerArtist(artistName: String, email: String, phoneNumber: String) {
+        val id = mReference.push().key
+        val artist = Artist(id!!, artistName, email, phoneNumber)
+        mReference.setValue(artist)
     }
 }
