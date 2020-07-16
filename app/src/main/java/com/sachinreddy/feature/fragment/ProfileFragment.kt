@@ -41,6 +41,7 @@ class ProfileFragment : Fragment() {
     override fun onStart() {
         setHasOptionsMenu(true)
         (requireActivity() as AppCompatActivity).apply {
+            setSupportActionBar(profile_action_bar)
             supportActionBar?.apply {
                 title = getString(R.string.profile)
                 setDisplayHomeAsUpEnabled(true)
