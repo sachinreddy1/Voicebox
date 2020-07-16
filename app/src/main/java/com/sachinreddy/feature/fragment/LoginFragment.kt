@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -18,8 +19,15 @@ class LoginFragment : Fragment() {
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
 
     override fun onStart() {
-        super.onStart()
+        setHasOptionsMenu(false)
+        (requireActivity() as AppCompatActivity).apply {
+            supportActionBar?.apply {
+                title = getString(R.string.app_name)
+                setDisplayHomeAsUpEnabled(false)
+            }
+        }
         mAuth.addAuthStateListener(mAuthListener)
+        super.onStart()
     }
 
     override fun onCreateView(
