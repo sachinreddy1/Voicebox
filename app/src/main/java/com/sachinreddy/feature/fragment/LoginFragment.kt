@@ -1,5 +1,6 @@
 package com.sachinreddy.feature.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.sachinreddy.feature.R
+import com.sachinreddy.feature.activity.AppActivity
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment() {
@@ -64,7 +66,9 @@ class LoginFragment : Fragment() {
                 if (!it.isSuccessful) {
                     Toast.makeText(context, "Sign in problem", Toast.LENGTH_LONG).show()
                 } else {
-                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+//                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                    val intent = Intent(context, AppActivity::class.java)
+                    startActivity(intent)
                 }
             }
         }

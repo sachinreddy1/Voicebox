@@ -1,5 +1,6 @@
 package com.sachinreddy.feature.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.sachinreddy.feature.R
+import com.sachinreddy.feature.activity.AppActivity
 import com.sachinreddy.feature.data.Artist
 import kotlinx.android.synthetic.main.fragment_register.*
 
@@ -99,7 +101,9 @@ class RegisterFragment : Fragment() {
                 registerArtist(artistName_, email_, phoneNumber_)
                 registerProgressBar.visibility = View.GONE
                 Toast.makeText(context, "User Registered is Successful", Toast.LENGTH_LONG).show()
-                findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
+//                findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
+                val intent = Intent(context, AppActivity::class.java)
+                startActivity(intent)
             }
         }
     }

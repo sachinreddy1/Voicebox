@@ -19,6 +19,8 @@ import com.google.firebase.ktx.Firebase
 import com.sachinreddy.feature.FileDataPart
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.VolleyFileUploadRequest
+import com.sachinreddy.feature.activity.AuthActivity
+import kotlinx.android.synthetic.main.activity_app.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.IOException
 
@@ -41,7 +43,7 @@ class ProfileFragment : Fragment() {
     override fun onStart() {
         setHasOptionsMenu(true)
         (requireActivity() as AppCompatActivity).apply {
-            setSupportActionBar(profile_action_bar)
+            setSupportActionBar(app_action_bar)
             supportActionBar?.apply {
                 title = getString(R.string.profile)
                 setDisplayHomeAsUpEnabled(true)
@@ -101,7 +103,9 @@ class ProfileFragment : Fragment() {
                     .setAction("Action", null).show()
             R.id.action_logout -> {
                 mAuth.signOut()
-                findNavController().navigate(R.id.action_ProfileFragment_to_LoginFragment)
+//                findNavController().navigate(R.id.action_ProfileFragment_to_LoginFragment)
+                val intent = Intent(context, AuthActivity::class.java)
+                startActivity(intent)
             }
         }
         return true
