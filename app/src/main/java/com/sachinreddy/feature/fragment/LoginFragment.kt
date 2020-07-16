@@ -20,13 +20,6 @@ class LoginFragment : Fragment() {
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
 
     override fun onStart() {
-//        setHasOptionsMenu(false)
-//        (requireActivity() as AppCompatActivity).apply {
-//            supportActionBar?.apply {
-//                title = getString(R.string.app_name)
-//                setDisplayHomeAsUpEnabled(false)
-//            }
-//        }
         mAuth.addAuthStateListener(mAuthListener)
         super.onStart()
     }
@@ -66,7 +59,6 @@ class LoginFragment : Fragment() {
                 if (!it.isSuccessful) {
                     Toast.makeText(context, "Sign in problem", Toast.LENGTH_LONG).show()
                 } else {
-//                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                     val intent = Intent(context, AppActivity::class.java)
                     startActivity(intent)
                 }

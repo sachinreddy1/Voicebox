@@ -101,7 +101,6 @@ class RegisterFragment : Fragment() {
                 registerArtist(artistName_, email_, phoneNumber_)
                 registerProgressBar.visibility = View.GONE
                 Toast.makeText(context, "User Registered is Successful", Toast.LENGTH_LONG).show()
-//                findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
                 val intent = Intent(context, AppActivity::class.java)
                 startActivity(intent)
             }

@@ -103,7 +103,6 @@ class ProfileFragment : Fragment() {
                     .setAction("Action", null).show()
             R.id.action_logout -> {
                 mAuth.signOut()
-//                findNavController().navigate(R.id.action_ProfileFragment_to_LoginFragment)
                 val intent = Intent(context, AuthActivity::class.java)
                 startActivity(intent)
             }
