@@ -94,12 +94,14 @@ class ProfileFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home ->
-                findNavController().popBackStack()
+                findNavController().navigate(R.id.action_ProfileFragment_to_HomeFragment)
             R.id.action_about ->
                 Snackbar.make(view!!, "Opening settings...", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
-            R.id.action_logout ->
+            R.id.action_logout -> {
                 mAuth.signOut()
+                findNavController().navigate(R.id.action_ProfileFragment_to_LoginFragment)
+            }
         }
         return true
     }
