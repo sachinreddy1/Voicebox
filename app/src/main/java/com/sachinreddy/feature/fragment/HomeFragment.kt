@@ -30,7 +30,7 @@ class HomeFragment : Fragment() {
             supportActionBar?.apply {
                 title = getString(R.string.app_name)
                 setDisplayHomeAsUpEnabled(true)
-                setHomeAsUpIndicator(R.drawable.ic_account_circle)
+                setHomeAsUpIndicator(R.drawable.ic_account_circle_dark)
                 setHomeActionContentDescription(getString(R.string.open_profile_card))
             }
         }

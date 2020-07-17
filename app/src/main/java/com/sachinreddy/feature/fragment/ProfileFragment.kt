@@ -4,25 +4,26 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.android.volley.Response
-import com.android.volley.toolbox.Volley.newRequestQueue
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.sachinreddy.feature.FileDataPart
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.VolleyFileUploadRequest
 import com.sachinreddy.feature.activity.AuthActivity
 import kotlinx.android.synthetic.main.activity_app.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.IOException
+
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -31,13 +32,22 @@ class ProfileFragment : Fragment() {
 
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDatabase: FirebaseDatabase
-    private lateinit var mReference: DatabaseReference
+    private lateinit var mDatabaseReference: DatabaseReference
+    private lateinit var mStorage: FirebaseStorage
+    private lateinit var mStorageReference: StorageReference
 
-    private var imageData: ByteArray? = null
-    private val postURL: String = "https://ptsv2.com/t/54odo-1576291398/post"
+    private lateinit var filePath: Uri
+    private val PICK_IMAGE_REQUEST = 71
 
-    companion object {
-        private const val IMAGE_PICK_CODE = 999
+    private val mValueEventListener = object : ValueEventListener {
+        override fun onCancelled(error: DatabaseError) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onDataChange(snapshot: DataSnapshot) {
+            artistName.text = snapshot.child("artistName").value.toString()
+            contactInfo.text = snapshot.child("email").value.toString()
+        }
     }
 
     override fun onStart() {
@@ -56,27 +66,19 @@ class ProfileFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         mAuth = Firebase.auth
         mDatabase = Firebase.database
-        mReference = mDatabase.getReference("artists").child(mAuth.currentUser?.uid!!)
-        mReference.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-                artistName.text = snapshot.child("artistName").value.toString()
-                contactInfo.text = snapshot.child("email").value.toString()
-            }
-        })
+        mDatabaseReference = mDatabase.getReference("artists").child(mAuth.currentUser?.uid!!)
+        mDatabaseReference.addValueEventListener(mValueEventListener)
+        mStorage = Firebase.storage
+        mStorageReference = mStorage.reference
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         uploadButton.setOnClickListener {
-            launchGallery()
+            chooseImage()
         }
         sendButton.setOnClickListener {
             uploadImage()
@@ -110,56 +112,40 @@ class ProfileFragment : Fragment() {
         return true
     }
 
-    private fun launchGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
+    private fun chooseImage() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"
         startActivityForResult(
-            intent,
-            IMAGE_PICK_CODE
+            Intent.createChooser(intent, "Select Picture"),
+            PICK_IMAGE_REQUEST
         )
     }
 
     private fun uploadImage() {
-        imageData ?: return
-        val request = object : VolleyFileUploadRequest(
-            Method.POST,
-            postURL,
-            Response.Listener {
-                println("response is: ${it.data}")
-            },
-            Response.ErrorListener {
-                println("error is: $it")
-            }
-        ) {
-            override fun getByteData(): MutableMap<String, FileDataPart> {
-                val params = HashMap<String, FileDataPart>()
-                params["imageFile"] = FileDataPart(
-                    "image",
-                    imageData!!,
-                    "jpeg"
-                )
-                return params
-            }
-        }
-        newRequestQueue(requireContext()).add(request)
-    }
-
-    @Throws(IOException::class)
-    private fun createImageData(uri: Uri) {
-        val inputStream = activity!!.contentResolver.openInputStream(uri)
-        inputStream?.buffered()?.use {
-            imageData = it.readBytes()
+        if (filePath != null) {
+            val ref = mStorageReference.child("artists/" + mAuth.currentUser?.uid.toString())
+            ref.putFile(filePath)
+                .addOnSuccessListener {
+                    Snackbar.make(view!!, "Successfully uploaded image.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()
+                }
+                .addOnFailureListener {
+                    Snackbar.make(view!!, "Failed to upload image.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()
+                }
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            val uri = data?.data
-            if (uri != null) {
-                profilePicture.setImageURI(uri)
-                createImageData(uri)
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE_REQUEST && data != null && data.data != null) {
+            filePath = data.data!!
+            try {
+                val bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, filePath)
+                profilePicture.setImageBitmap(bitmap)
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
         }
-        super.onActivityResult(requestCode, resultCode, data)
     }
 }

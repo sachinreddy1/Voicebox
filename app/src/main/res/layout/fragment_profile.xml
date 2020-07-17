@@ -14,9 +14,8 @@
         app:layout_constraintBottom_toTopOf="@id/horizontalGuideline0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:tint="@color/whitesmoke"
         android:id="@+id/profilePicture"
-        android:src="@drawable/ic_account_circle"
+        android:src="@drawable/ic_account_circle_light"
         android:padding="55dp" />
 
     <Button
