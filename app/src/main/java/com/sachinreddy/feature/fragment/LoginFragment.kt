@@ -1,6 +1,7 @@
 package com.sachinreddy.feature.fragment
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.storage.StorageReference
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.activity.AppActivity
 import com.sachinreddy.feature.auth.Authenticator
@@ -29,11 +29,14 @@ class LoginFragment : Fragment() {
             val artistName = snapshot.child("artistName").value.toString()
             val email = snapshot.child("email").value.toString()
             val phoneNumber = snapshot.child("phoneNumber").value.toString()
-            val profilePicture = snapshot.child("profilePicture").value
-            Authenticator.currentUser = Artist(
-                artistId, artistName, email, phoneNumber,
-                profilePicture as StorageReference?
-            )
+            var profilePicture: Uri? = null
+            Authenticator.mStorageReference.child(artistId).downloadUrl.apply {
+                if (isSuccessful) {
+                    profilePicture = result
+                }
+            }
+            Authenticator.currentUser =
+                Artist(artistId, artistName, email, phoneNumber, profilePicture)
         }
     }
 

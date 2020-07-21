@@ -32,8 +32,10 @@ class ProfileFragment : Fragment() {
 
         artistName.text = Authenticator.currentUser?.artistName
         contactInfo.text = Authenticator.currentUser?.email
-        if (Authenticator.currentUser?.profilePicture != null)
-            Picasso.get().load(Authenticator.currentUser?.profilePicture?.path).into(profilePicture)
+        if (Authenticator.currentUser?.profilePicture != null) {
+            println(Authenticator.currentUser?.profilePicture)
+            Picasso.get().load(Authenticator.currentUser?.profilePicture).into(profilePicture)
+        }
 
         uploadButton.setOnClickListener {
             chooseImage()

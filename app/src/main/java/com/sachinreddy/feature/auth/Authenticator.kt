@@ -25,7 +25,7 @@ object Authenticator {
         artistName: String,
         email: String,
         phoneNumber: String,
-        profilePicture: StorageReference?
+        profilePicture: Uri?
     ) {
         val id = mAuth.uid!!
         currentUser = Artist(id!!, artistName, email, phoneNumber, profilePicture)
@@ -40,7 +40,11 @@ object Authenticator {
             val ref = mStorageReference.child("artists/$id")
             ref.putFile(filePath)
                 .addOnSuccessListener {
-                    currentUser?.profilePicture = mStorageReference.child(id)
+                    mStorageReference.child(id).downloadUrl.apply {
+                        if (isSuccessful) {
+                            currentUser?.profilePicture = result
+                        }
+                    }
                     mDatabaseReference.child(id).setValue(currentUser)
                     ret = true
                 }
