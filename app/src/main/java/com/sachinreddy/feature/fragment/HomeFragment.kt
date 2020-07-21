@@ -3,7 +3,10 @@ package com.sachinreddy.feature.fragment
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -36,10 +39,6 @@ class HomeFragment : Fragment() {
         }
 
         super.onStart()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_main, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -8,20 +8,33 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.StorageReference
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.activity.AppActivity
+import com.sachinreddy.feature.auth.Authenticator
+import com.sachinreddy.feature.data.Artist
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment() {
-    lateinit var mAuth: FirebaseAuth
-    lateinit var mAuthListener: FirebaseAuth.AuthStateListener
+    private val mValueEventListener = object : ValueEventListener {
+        override fun onCancelled(error: DatabaseError) {
+            TODO("Not yet implemented")
+        }
 
-    override fun onStart() {
-        mAuth.addAuthStateListener(mAuthListener)
-        super.onStart()
+        override fun onDataChange(snapshot: DataSnapshot) {
+            val artistId = snapshot.child("artistId").value.toString()
+            val artistName = snapshot.child("artistName").value.toString()
+            val email = snapshot.child("email").value.toString()
+            val phoneNumber = snapshot.child("phoneNumber").value.toString()
+            val profilePicture = snapshot.child("profilePicture").value
+            Authenticator.currentUser = Artist(
+                artistId, artistName, email, phoneNumber,
+                profilePicture as StorageReference?
+            )
+        }
     }
 
     override fun onCreateView(
@@ -32,13 +45,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        mAuth = Firebase.auth
-        mAuthListener = FirebaseAuth.AuthStateListener {
-//            if (it.currentUser != null) {
-//                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-//            }
-        }
 
         buttonLogin.setOnClickListener {
             authenticate(inputEmail.text.toString(), inputPassword.text.toString())
@@ -54,13 +60,14 @@ class LoginFragment : Fragment() {
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(context, "Sign in problem", Toast.LENGTH_LONG).show()
         } else {
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+            Authenticator.mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                 loginProgressBar.visibility = View.GONE
-                if (!it.isSuccessful) {
-                    Toast.makeText(context, "Sign in problem", Toast.LENGTH_LONG).show()
-                } else {
+                if (it.isSuccessful) {
+                    Authenticator.mArtistReference.addValueEventListener(mValueEventListener)
                     val intent = Intent(context, AppActivity::class.java)
                     startActivity(intent)
+                } else {
+                    Toast.makeText(context, "Sign in problem", Toast.LENGTH_LONG).show()
                 }
             }
         }
