@@ -44,16 +44,6 @@ class HomeFragment : Fragment() {
         return true
     }
 
-//    private fun resizeDrawable(id: Int, width: Int, height: Int) = BitmapDrawable(
-//        resources,
-//        Bitmap.createScaledBitmap(
-//            (resources.getDrawable(id) as BitmapDrawable).bitmap,
-//            width,
-//            height,
-//            false
-//        )
-//    )
-
     private fun setupActionBar() {
         setHasOptionsMenu(true)
         (requireActivity() as AppCompatActivity).apply {
