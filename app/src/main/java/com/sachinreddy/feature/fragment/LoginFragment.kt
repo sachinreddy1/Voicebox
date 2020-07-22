@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -45,7 +45,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         buttonLogin.setOnClickListener {
-            authenticate(inputEmail.text.toString(), inputPassword.text.toString())
+            login(inputEmail.text.toString(), inputPassword.text.toString())
         }
 
         buttonRegister.setOnClickListener {
@@ -53,14 +53,15 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun authenticate(email: String, password: String) {
-        loginProgressBar.visibility = View.VISIBLE
+    private fun login(email: String, password: String) {
         if (email.isEmpty() || password.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(
                 email
             ).matches()
         ) {
-            Toast.makeText(context, "Sign in problem", Toast.LENGTH_LONG).show()
+            Snackbar.make(view!!, "Sign in problem.", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
         } else {
+            loginProgressBar.visibility = View.VISIBLE
             Authenticator.mAuth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener {
                     Authenticator.mDatabaseReference.child(Authenticator.mAuth.currentUser?.uid!!)
@@ -69,7 +70,8 @@ class LoginFragment : Fragment() {
                     startActivity(intent)
                 }
                 .addOnFailureListener {
-                    Toast.makeText(context, "Sign in problem", Toast.LENGTH_LONG).show()
+                    Snackbar.make(view!!, "Sign in problem.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()
                 }
             loginProgressBar.visibility = View.GONE
         }

@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.activity.AppActivity
 import com.sachinreddy.feature.auth.Authenticator
@@ -81,19 +81,21 @@ class RegisterFragment : Fragment() {
             return
         }
 
+        login(artistName_, email_, phoneNumber_, password_)
+    }
+
+    private fun login(artistName: String, email: String, phoneNumber: String, password: String) {
         registerProgressBar.visibility = View.VISIBLE
-        Authenticator.mAuth.createUserWithEmailAndPassword(email_, password_)
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    Authenticator.registerArtist(artistName_, email_, phoneNumber_, null)
-                    Toast.makeText(context, "User Registered is Successful", Toast.LENGTH_LONG)
-                        .show()
-                    val intent = Intent(context, AppActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(context, "User Registration Failed", Toast.LENGTH_LONG).show()
-                }
-                registerProgressBar.visibility = View.GONE
+        Authenticator.mAuth.createUserWithEmailAndPassword(email, password)
+            .addOnSuccessListener {
+                Authenticator.registerArtist(artistName, email, phoneNumber, null)
+                val intent = Intent(context, AppActivity::class.java)
+                startActivity(intent)
             }
+            .addOnFailureListener {
+                Snackbar.make(view!!, "Failed to register user.", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+            }
+        registerProgressBar.visibility = View.GONE
     }
 }

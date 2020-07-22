@@ -27,17 +27,7 @@ class HomeFragment : Fragment() {
     }
 
     override fun onStart() {
-        setHasOptionsMenu(true)
-        (requireActivity() as AppCompatActivity).apply {
-            setSupportActionBar(app_action_bar)
-            supportActionBar?.apply {
-                title = getString(R.string.app_name)
-                setDisplayHomeAsUpEnabled(true)
-                setHomeAsUpIndicator(R.drawable.ic_account_circle_dark)
-                setHomeActionContentDescription(getString(R.string.open_profile_card))
-            }
-        }
-
+        setupActionBar()
         super.onStart()
     }
 
@@ -64,4 +54,17 @@ class HomeFragment : Fragment() {
             false
         )
     )
+
+    private fun setupActionBar() {
+        setHasOptionsMenu(true)
+        (requireActivity() as AppCompatActivity).apply {
+            setSupportActionBar(app_action_bar)
+            supportActionBar?.apply {
+                title = getString(R.string.app_name)
+                setDisplayHomeAsUpEnabled(true)
+                setHomeAsUpIndicator(R.drawable.ic_account_circle_dark)
+                setHomeActionContentDescription(getString(R.string.open_profile_card))
+            }
+        }
+    }
 }
