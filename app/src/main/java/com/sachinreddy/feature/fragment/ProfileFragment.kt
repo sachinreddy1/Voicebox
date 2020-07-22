@@ -33,7 +33,6 @@ class ProfileFragment : Fragment() {
         artistName.text = Authenticator.currentUser?.artistName
         contactInfo.text = Authenticator.currentUser?.email
         if (Authenticator.currentUser?.profilePicture != null) {
-            println(Authenticator.currentUser?.profilePicture)
             Picasso.get().load(Authenticator.currentUser?.profilePicture).into(profilePicture)
         }
 
@@ -41,7 +40,7 @@ class ProfileFragment : Fragment() {
             chooseImage()
         }
         sendButton.setOnClickListener {
-            Authenticator.uploadProfilePicture(filePath)
+            Authenticator.uploadProfilePicture(filePath, view)
         }
     }
 

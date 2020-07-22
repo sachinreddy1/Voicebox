@@ -1,6 +1,8 @@
 package com.sachinreddy.feature.auth
 
 import android.net.Uri
+import android.view.View
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
@@ -19,42 +21,43 @@ object Authenticator {
     var mDatabaseReference: DatabaseReference = mDatabase.getReference("artists")
     var mArtistReference = mDatabaseReference.child(mAuth.currentUser?.uid!!)
     var mStorage: FirebaseStorage = Firebase.storage
-    var mStorageReference: StorageReference = mStorage.reference
+    var mStorageReference: StorageReference = mStorage.reference.child("artists")
 
     fun registerArtist(
         artistName: String,
         email: String,
         phoneNumber: String,
-        profilePicture: Uri?
+        profilePicture: String?
     ) {
         val id = mAuth.uid!!
         currentUser = Artist(id!!, artistName, email, phoneNumber, profilePicture)
         mDatabaseReference.child(id).setValue(currentUser)
     }
 
-    fun uploadProfilePicture(filePath: Uri): Boolean {
-        var ret = false
-        val id = mAuth.uid!!
-
-        if (filePath != null) {
-            val ref = mStorageReference.child("artists/$id")
-            ref.putFile(filePath)
-                .addOnSuccessListener {
-                    mStorageReference.child(id).downloadUrl.apply {
-                        if (isSuccessful) {
-                            currentUser?.profilePicture = result
-                        }
+    fun uploadProfilePicture(filePath: Uri, view: View) {
+        val id = currentUser?.artistId?.let { id ->
+            if (filePath != null) {
+                mStorageReference.child(id).putFile(filePath)
+                    .addOnSuccessListener {
+                        mStorageReference.child(id).downloadUrl
+                            .addOnSuccessListener {
+                                currentUser?.profilePicture = it.toString()
+                                mDatabaseReference.child(id).setValue(currentUser)
+                            }
+                            .addOnFailureListener {
+                                println(it)
+                            }
+                        Snackbar.make(view, "File upload successful!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show()
                     }
-                    mDatabaseReference.child(id).setValue(currentUser)
-                    ret = true
-                }
+                    .addOnFailureListener {
+                        Snackbar.make(view, "File upload failed.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show()
+                    }
+            }
 
-                .addOnFailureListener {
-                    ret = false
-                }
         }
 
-        return ret
     }
 
     fun logout() {

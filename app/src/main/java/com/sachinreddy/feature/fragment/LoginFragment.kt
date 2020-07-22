@@ -1,7 +1,6 @@
 package com.sachinreddy.feature.fragment
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,12 +28,8 @@ class LoginFragment : Fragment() {
             val artistName = snapshot.child("artistName").value.toString()
             val email = snapshot.child("email").value.toString()
             val phoneNumber = snapshot.child("phoneNumber").value.toString()
-            var profilePicture: Uri? = null
-            Authenticator.mStorageReference.child(artistId).downloadUrl.apply {
-                if (isSuccessful) {
-                    profilePicture = result
-                }
-            }
+            var profilePicture: String? = snapshot.child("profilePicture").value.toString()
+            println(profilePicture)
             Authenticator.currentUser =
                 Artist(artistId, artistName, email, phoneNumber, profilePicture)
         }
@@ -67,6 +62,7 @@ class LoginFragment : Fragment() {
                 loginProgressBar.visibility = View.GONE
                 if (it.isSuccessful) {
                     Authenticator.mArtistReference.addValueEventListener(mValueEventListener)
+
                     val intent = Intent(context, AppActivity::class.java)
                     startActivity(intent)
                 } else {
