@@ -1,12 +1,7 @@
 package com.sachinreddy.feature.fragment
 
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -31,6 +26,10 @@ class HomeFragment : Fragment() {
         super.onStart()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_main, menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home ->
@@ -45,15 +44,15 @@ class HomeFragment : Fragment() {
         return true
     }
 
-    private fun resizeDrawable(id: Int, width: Int, height: Int) = BitmapDrawable(
-        resources,
-        Bitmap.createScaledBitmap(
-            (resources.getDrawable(id) as BitmapDrawable).bitmap,
-            width,
-            height,
-            false
-        )
-    )
+//    private fun resizeDrawable(id: Int, width: Int, height: Int) = BitmapDrawable(
+//        resources,
+//        Bitmap.createScaledBitmap(
+//            (resources.getDrawable(id) as BitmapDrawable).bitmap,
+//            width,
+//            height,
+//            false
+//        )
+//    )
 
     private fun setupActionBar() {
         setHasOptionsMenu(true)

@@ -11,7 +11,12 @@ import com.google.android.material.snackbar.Snackbar
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.activity.AppActivity
 import com.sachinreddy.feature.auth.Authenticator
+import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_register.*
+import kotlinx.android.synthetic.main.fragment_register.buttonRegister
+import kotlinx.android.synthetic.main.fragment_register.haveAccount
+import kotlinx.android.synthetic.main.fragment_register.inputEmail
+import kotlinx.android.synthetic.main.fragment_register.inputPassword
 
 class RegisterFragment : Fragment() {
     override fun onCreateView(
@@ -89,13 +94,14 @@ class RegisterFragment : Fragment() {
         Authenticator.mAuth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener {
                 Authenticator.registerArtist(artistName, email, phoneNumber, null)
+                loginProgressBar.visibility = View.GONE
                 val intent = Intent(context, AppActivity::class.java)
                 startActivity(intent)
             }
             .addOnFailureListener {
+                loginProgressBar.visibility = View.GONE
                 Snackbar.make(view!!, "Failed to register user.", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }
-        registerProgressBar.visibility = View.GONE
     }
 }

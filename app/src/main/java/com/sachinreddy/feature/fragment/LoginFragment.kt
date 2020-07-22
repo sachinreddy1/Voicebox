@@ -66,14 +66,15 @@ class LoginFragment : Fragment() {
                 .addOnSuccessListener {
                     Authenticator.mDatabaseReference.child(Authenticator.mAuth.currentUser?.uid!!)
                         .addValueEventListener(mValueEventListener)
+                    loginProgressBar.visibility = View.GONE
                     val intent = Intent(context, AppActivity::class.java)
                     startActivity(intent)
                 }
                 .addOnFailureListener {
+                    loginProgressBar.visibility = View.GONE
                     Snackbar.make(view!!, "Sign in problem.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show()
                 }
-            loginProgressBar.visibility = View.GONE
         }
     }
 }
