@@ -28,8 +28,8 @@ class LoginFragment : Fragment() {
             val artistName = snapshot.child("artistName").value.toString()
             val email = snapshot.child("email").value.toString()
             val phoneNumber = snapshot.child("phoneNumber").value.toString()
-            var profilePicture: String? = snapshot.child("profilePicture").value.toString()
-            println(profilePicture)
+            val profilePicture: String? = snapshot.child("profilePicture").value.toString()
+
             Authenticator.currentUser =
                 Artist(artistId, artistName, email, phoneNumber, profilePicture)
         }
@@ -63,7 +63,8 @@ class LoginFragment : Fragment() {
         } else {
             Authenticator.mAuth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener {
-                    Authenticator.mArtistReference.addValueEventListener(mValueEventListener)
+                    Authenticator.mDatabaseReference.child(Authenticator.mAuth.currentUser?.uid!!)
+                        .addValueEventListener(mValueEventListener)
                     val intent = Intent(context, AppActivity::class.java)
                     startActivity(intent)
                 }

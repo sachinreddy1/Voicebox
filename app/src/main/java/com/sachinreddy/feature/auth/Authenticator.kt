@@ -19,7 +19,6 @@ object Authenticator {
     var mAuth: FirebaseAuth = Firebase.auth
     var mDatabase: FirebaseDatabase = Firebase.database
     var mDatabaseReference: DatabaseReference = mDatabase.getReference("artists")
-    var mArtistReference = mDatabaseReference.child(mAuth.currentUser?.uid!!)
     var mStorage: FirebaseStorage = Firebase.storage
     var mStorageReference: StorageReference = mStorage.reference.child("artists")
 
