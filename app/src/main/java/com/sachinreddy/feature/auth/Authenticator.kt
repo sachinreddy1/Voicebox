@@ -35,7 +35,7 @@ object Authenticator {
     }
 
     fun uploadProfilePicture(filePath: Uri, view: View) {
-        val id = currentUser?.artistId?.let { id ->
+        currentUser?.artistId?.let { id ->
             if (filePath != null) {
                 mStorageReference.child(id).putFile(filePath)
                     .addOnSuccessListener {

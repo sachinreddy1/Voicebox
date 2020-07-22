@@ -55,20 +55,22 @@ class LoginFragment : Fragment() {
 
     private fun authenticate(email: String, password: String) {
         loginProgressBar.visibility = View.VISIBLE
-        if (email.isEmpty() || password.isEmpty()) {
+        if (email.isEmpty() || password.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(
+                email
+            ).matches()
+        ) {
             Toast.makeText(context, "Sign in problem", Toast.LENGTH_LONG).show()
         } else {
-            Authenticator.mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-                loginProgressBar.visibility = View.GONE
-                if (it.isSuccessful) {
+            Authenticator.mAuth.signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener {
                     Authenticator.mArtistReference.addValueEventListener(mValueEventListener)
-
                     val intent = Intent(context, AppActivity::class.java)
                     startActivity(intent)
-                } else {
+                }
+                .addOnFailureListener {
                     Toast.makeText(context, "Sign in problem", Toast.LENGTH_LONG).show()
                 }
-            }
+            loginProgressBar.visibility = View.GONE
         }
     }
 }
