@@ -25,6 +25,7 @@ import java.io.IOException
 class ProfileFragment : Fragment() {
     private lateinit var filePath: Uri
     private val PICK_IMAGE_REQUEST = 71
+    private var uploadImage = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,11 +37,15 @@ class ProfileFragment : Fragment() {
             Picasso.get().load(Authenticator.currentUser?.profilePicture).into(profilePicture)
         }
 
-        uploadButton.setOnClickListener {
-            chooseImage()
-        }
-        sendButton.setOnClickListener {
-            Authenticator.uploadProfilePicture(filePath, view)
+        editButton.setOnClickListener {
+            if (!uploadImage) {
+                chooseImage()
+                uploadImage = true
+            } else {
+                Authenticator.uploadProfilePicture(filePath, view)
+                editButton.setImageResource(R.drawable.ic_edit)
+                uploadImage = false
+            }
         }
     }
 
@@ -88,6 +93,7 @@ class ProfileFragment : Fragment() {
                 val bitmap =
                     MediaStore.Images.Media.getBitmap(activity!!.contentResolver, filePath)
                 profilePicture.setImageBitmap(bitmap)
+                editButton.setImageResource(R.drawable.ic_send)
             } catch (e: IOException) {
                 e.printStackTrace()
             }

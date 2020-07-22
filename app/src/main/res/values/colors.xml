@@ -6,4 +6,5 @@
     <color name="colorBackground">#1E1E1E</color>
 
     <color name="whitesmoke">#f5f5f5</color>
+    <color name="floatingActionButton">#7F5CBD</color>
 </resources>

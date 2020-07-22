@@ -12,8 +12,8 @@
         android:layout_height="210dp"
 
         android:layout_gravity="center"
-        app:cardCornerRadius="105dp"
         app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="105dp"
 
         app:layout_constraintBottom_toTopOf="@id/horizontalGuideline0"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,37 +37,23 @@
 
     </androidx.cardview.widget.CardView>
 
-    <Button
-        android:id="@+id/uploadButton"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/editButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_margin="10dp"
-        android:text="Upload"
+        android:src="@drawable/ic_edit"
+        app:backgroundTint="@color/floatingActionButton"
+        app:fabSize="normal"
+        app:elevation="6dp"
 
         app:layout_constraintBottom_toTopOf="@id/horizontalGuideline0"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
 
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9" />
-
-    <Button
-        android:id="@+id/sendButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_margin="10dp"
-        android:text="Send"
-
-        app:layout_constraintBottom_toTopOf="@id/horizontalGuideline0"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.7"
-        app:layout_constraintStart_toStartOf="parent"
-
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9" />
+        app:layout_constraintVertical_bias="0.8" />
 
     <TextView
         android:id="@+id/artistName"
