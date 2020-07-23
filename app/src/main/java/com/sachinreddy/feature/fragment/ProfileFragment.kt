@@ -9,11 +9,11 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.activity.AuthActivity
 import com.sachinreddy.feature.auth.Authenticator
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_app.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.IOException
@@ -27,13 +27,30 @@ class ProfileFragment : Fragment() {
     private val PICK_IMAGE_REQUEST = 71
     private var uploadImage = false
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        Authenticator.currentUser?.profilePicture?.let {
+            Glide
+                .with(this)
+                .load(it)
+                .placeholder(R.drawable.ic_account_circle_light)
+                .dontAnimate()
+                .preload()
+        }
+        super.onActivityCreated(savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupActionBar()
 
         artistName.text = Authenticator.currentUser?.artistName
         contactInfo.text = Authenticator.currentUser?.email
         Authenticator.currentUser?.profilePicture?.let {
-            Picasso.get().load(it).noFade().into(profilePicture)
+            Glide
+                .with(this)
+                .load(it)
+                .placeholder(R.drawable.ic_account_circle_light)
+                .dontAnimate()
+                .into(profilePicture)
         }
 
         editButton.setOnClickListener {
@@ -112,6 +129,7 @@ class ProfileFragment : Fragment() {
                             .addOnFailureListener {
                                 println(it)
                             }
+
                         editButton.setImageResource(R.drawable.ic_edit)
                         profileProgressBar.visibility = View.GONE
                         uploadImage = false
@@ -122,6 +140,7 @@ class ProfileFragment : Fragment() {
                         editButton.setImageResource(R.drawable.ic_edit)
                         profileProgressBar.visibility = View.GONE
                         uploadImage = false
+
                         Snackbar.make(view!!, "File upload failed.", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show()
                     }
