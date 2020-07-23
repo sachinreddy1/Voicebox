@@ -15,7 +15,7 @@
         android:layout_margin="35dp"
         app:cardBackgroundColor="@color/cardBackground"
         app:cardCornerRadius="50dp"
-        app:cardElevation="10dp"
+        app:cardElevation="5dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +24,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_pattern_background">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="170dp"
@@ -81,10 +82,11 @@
                 android:layout_height="wrap_content"
 
                 android:text="Artist Name"
-                android:textColor="@android:color/white"
-                android:textSize="20dp"
-                app:layout_constraintVertical_bias="0.1"
+                android:textColor="@color/whitesmoke"
+                android:textSize="30dp"
+                android:fontFamily="@font/staatliches"
 
+                app:layout_constraintVertical_bias="0.1"
                 app:layout_constraintBottom_toTopOf="@id/horizontalGuideline1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -96,8 +98,9 @@
                 android:layout_height="wrap_content"
 
                 android:text="Contact information"
-                android:textColor="@android:color/white"
-                android:textSize="20dp"
+                android:textColor="@color/whitesmoke"
+                android:textSize="25dp"
+                android:fontFamily="@font/staatliches"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
