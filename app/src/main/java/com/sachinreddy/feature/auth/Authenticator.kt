@@ -1,8 +1,5 @@
 package com.sachinreddy.feature.auth
 
-import android.net.Uri
-import android.view.View
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
@@ -31,32 +28,6 @@ object Authenticator {
         val id = mAuth.uid!!
         currentUser = Artist(id!!, artistName, email, phoneNumber, profilePicture)
         mDatabaseReference.child(id).setValue(currentUser)
-    }
-
-    fun uploadProfilePicture(filePath: Uri, view: View) {
-        currentUser?.artistId?.let { id ->
-            if (filePath != null) {
-                mStorageReference.child(id).putFile(filePath)
-                    .addOnSuccessListener {
-                        mStorageReference.child(id).downloadUrl
-                            .addOnSuccessListener {
-                                currentUser?.profilePicture = it.toString()
-                                mDatabaseReference.child(id).setValue(currentUser)
-                            }
-                            .addOnFailureListener {
-                                println(it)
-                            }
-                        Snackbar.make(view, "File upload successful!", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show()
-                    }
-                    .addOnFailureListener {
-                        Snackbar.make(view, "File upload failed.", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show()
-                    }
-            }
-
-        }
-
     }
 
     fun logout() {

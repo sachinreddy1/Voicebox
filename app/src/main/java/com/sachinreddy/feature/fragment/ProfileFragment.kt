@@ -41,11 +41,8 @@ class ProfileFragment : Fragment() {
         editButton.setOnClickListener {
             if (!uploadImage) {
                 chooseImage()
-                uploadImage = true
             } else {
-                Authenticator.uploadProfilePicture(filePath, view)
-                editButton.setImageResource(R.drawable.ic_edit)
-                uploadImage = false
+                uploadProfilePicture(filePath)
             }
         }
     }
@@ -95,8 +92,43 @@ class ProfileFragment : Fragment() {
                     MediaStore.Images.Media.getBitmap(activity!!.contentResolver, filePath)
                 profilePicture.setImageBitmap(bitmap)
                 editButton.setImageResource(R.drawable.ic_send)
+                uploadImage = true
             } catch (e: IOException) {
                 e.printStackTrace()
+            }
+        }
+    }
+
+    private fun uploadProfilePicture(filePath: Uri) {
+        Authenticator.currentUser?.artistId?.let { id ->
+            if (filePath != null) {
+                Authenticator.mStorageReference.child(id).putFile(filePath)
+                    .addOnSuccessListener {
+                        Authenticator.mStorageReference.child(id).downloadUrl
+                            .addOnSuccessListener {
+                                Authenticator.currentUser?.profilePicture = it.toString()
+                                Authenticator.mDatabaseReference.child(id)
+                                    .setValue(Authenticator.currentUser)
+                            }
+                            .addOnFailureListener {
+                                println(it)
+                            }
+                        editButton.setImageResource(R.drawable.ic_edit)
+                        profileProgressBar.visibility = View.GONE
+                        uploadImage = false
+                        Snackbar.make(view!!, "File upload successful!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show()
+                    }
+                    .addOnFailureListener {
+                        editButton.setImageResource(R.drawable.ic_edit)
+                        profileProgressBar.visibility = View.GONE
+                        uploadImage = false
+                        Snackbar.make(view!!, "File upload failed.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show()
+                    }
+                    .addOnProgressListener {
+                        profileProgressBar.visibility = View.VISIBLE
+                    }
             }
         }
     }
