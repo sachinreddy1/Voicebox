@@ -14,7 +14,7 @@
         android:layout_gravity="center"
         android:layout_margin="50dp"
         app:cardBackgroundColor="@color/cardBackground"
-        app:cardCornerRadius="50dp"
+        app:cardCornerRadius="25dp"
         app:cardElevation="5dp"
 
         app:layout_constraintBottom_toBottomOf="parent"

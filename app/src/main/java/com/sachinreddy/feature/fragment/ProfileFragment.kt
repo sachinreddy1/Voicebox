@@ -28,14 +28,12 @@ class ProfileFragment : Fragment() {
     private var uploadImage = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         setupActionBar()
 
         artistName.text = Authenticator.currentUser?.artistName
         contactInfo.text = Authenticator.currentUser?.email
-        if (Authenticator.currentUser?.profilePicture != null) {
-            Picasso.get().load(Authenticator.currentUser?.profilePicture).noFade()
-                .into(profilePicture)
+        Authenticator.currentUser?.profilePicture?.let {
+            Picasso.get().load(it).noFade().into(profilePicture)
         }
 
         editButton.setOnClickListener {
@@ -45,11 +43,12 @@ class ProfileFragment : Fragment() {
                 uploadProfilePicture(filePath)
             }
         }
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
