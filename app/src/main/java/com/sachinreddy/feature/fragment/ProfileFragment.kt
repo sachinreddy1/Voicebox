@@ -34,7 +34,8 @@ class ProfileFragment : Fragment() {
         artistName.text = Authenticator.currentUser?.artistName
         contactInfo.text = Authenticator.currentUser?.email
         if (Authenticator.currentUser?.profilePicture != null) {
-            Picasso.get().load(Authenticator.currentUser?.profilePicture).into(profilePicture)
+            Picasso.get().load(Authenticator.currentUser?.profilePicture).noFade()
+                .into(profilePicture)
         }
 
         editButton.setOnClickListener {

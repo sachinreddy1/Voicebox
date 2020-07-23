@@ -27,27 +27,17 @@
             android:layout_height="match_parent"
             android:background="@color/cardBackground">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView"
-                android:layout_width="160dp"
-                android:layout_height="160dp"
-
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profilePicture"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_gravity="center"
+                android:src="@drawable/doggi_target"
 
-                app:cardCornerRadius="80dp"
-                app:layout_constraintBottom_toTopOf="@id/horizontalGuideline0"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/profilePicture"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:src="@drawable/doggi_target" />
-
-            </androidx.cardview.widget.CardView>
+                app:layout_constraintBottom_toTopOf="@id/horizontalGuideline3"
+                app:layout_constraintEnd_toEndOf="@id/verticalGuideline1"
+                app:layout_constraintStart_toStartOf="@id/verticalGuideline0"
+                app:layout_constraintTop_toTopOf="@id/horizontalGuideline2" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/editButton"
@@ -57,11 +47,9 @@
                 android:src="@drawable/ic_edit"
                 app:backgroundTint="@color/colorPrimary"
                 app:elevation="6dp"
-                app:fabSize="normal"
 
-
-                app:layout_constraintBottom_toBottomOf="@+id/cardView"
-                app:layout_constraintEnd_toEndOf="@+id/cardView" />
+                app:layout_constraintBottom_toBottomOf="@+id/profilePicture"
+                app:layout_constraintEnd_toEndOf="@+id/profilePicture" />
 
             <TextView
                 android:id="@+id/artistName"
@@ -110,6 +98,34 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent=".85" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/horizontalGuideline2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".075" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/horizontalGuideline3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".375" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/verticalGuideline0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".2" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/verticalGuideline1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".8" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
