@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
 
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="5"
+        tools:itemCount="3"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp"
         tools:listitem="@layout/item_song" />

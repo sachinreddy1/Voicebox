@@ -7,7 +7,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.sachinreddy.feature.R
+import com.sachinreddy.feature.adapter.SongAdapter
+import com.sachinreddy.feature.data.Artist
+import com.sachinreddy.feature.data.Song
 import kotlinx.android.synthetic.main.activity_app.*
+import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -42,6 +46,53 @@ class HomeFragment : Fragment() {
                     .setAction("Action", null).show()
         }
         return true
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val adapter = SongAdapter(context!!)
+        recycler_view.adapter = adapter
+
+        // Songs go here
+        val artist1 = Artist(
+            "",
+            "test1",
+            "test1@test1.com",
+            "",
+            "https://firebasestorage.googleapis.com/v0/b/collab-c4a6e.appspot.com/o/artists%2FcQcGlyqMi5SszPN4dBKhjR3WgG63?alt=media&token=99c3c99b-7485-43df-a0ec-4974cae1a227"
+        )
+        val artist2 = Artist(
+            "",
+            "test2",
+            "test2@test2.com",
+            "",
+            "https://lh3.googleusercontent.com/IeNJWoKYx1waOhfWF6TiuSiWBLfqLb18lmZYXSgsH1fvb8v1IYiZr5aYWe0Gxu-pVZX3"
+        )
+
+        val songs_: List<Song> = listOf(
+            Song(
+                listOf(
+                    artist1,
+                    artist2
+                ),
+                artist2,
+                "FUCK EM UP",
+                false
+            ),
+            Song(
+                listOf(
+                    artist1,
+                    artist2
+                ),
+                artist1,
+                "Miss u bitch",
+                false
+            )
+        )
+
+        adapter.songs = songs_
+        adapter.notifyDataSetChanged()
+
+        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun setupActionBar() {
