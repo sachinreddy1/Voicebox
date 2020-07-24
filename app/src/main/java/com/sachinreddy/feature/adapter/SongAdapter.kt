@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sachinreddy.feature.R
@@ -33,7 +32,6 @@ class SongAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.View
         private val favoriteButton: ImageView = songView.findViewById(R.id.favoriteButton)
         private val playButton: ImageView = songView.findViewById(R.id.playButton)
         private val circleImageView: CircleImageView = songView.findViewById(R.id.circleImageView)
-        private val songOptions: TextView = songView.findViewById(R.id.songOptions)
 
         fun setSongDetails(song: Song) {
             song.apply {
@@ -45,24 +43,6 @@ class SongAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.View
                     .placeholder(R.drawable.ic_account_circle_light)
                     .dontAnimate()
                     .into(circleImageView)
-            }
-
-            songOptions.setOnClickListener { //creating a popup menu
-                val popup = PopupMenu(context, songOptions)
-                //inflating menu from xml resource
-                popup.inflate(R.menu.menu_song)
-                //adding click listener
-                popup.setOnMenuItemClickListener { item ->
-                    when (item.getItemId()) {
-                        R.id.action_edit ->                         //handle menu1 click
-                            true
-                        R.id.action_delete ->                         //handle menu2 click
-                            true
-                        else -> false
-                    }
-                }
-                //displaying the popup
-                popup.show()
             }
 
             favoriteButton.setOnClickListener {

@@ -36,4 +36,7 @@
     <string name="about">About</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
+    <string name="artists">Artists</string>
+    <string name="friends_fragment_label">FriendsFragment</string>
+    <string name="search">Search</string>
 </resources>

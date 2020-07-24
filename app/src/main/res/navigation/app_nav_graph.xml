@@ -15,6 +15,11 @@
             app:destination="@id/ProfileFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_friendsFragment"
+            app:destination="@id/FriendsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
 
     <fragment
@@ -27,5 +32,17 @@
             app:destination="@id/HomeFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FriendsFragment"
+        android:name="com.sachinreddy.feature.fragment.FriendsFragment"
+        android:label="@string/friends_fragment_label"
+        tools:layout="@layout/fragment_friends">
+        <action
+            android:id="@+id/action_FriendsFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right" />
     </fragment>
 </navigation>

@@ -10,10 +10,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        app:cardCornerRadius="12.5dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        app:cardCornerRadius="8dp"
         app:cardElevation="5dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
@@ -84,20 +84,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/songOptions"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:text="&#8942;"
-                    android:textSize="28dp"
-                    android:textColor="@color/whitesmoke"
-
-                    app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/verticalGuideline2"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
                     android:id="@+id/artists"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -121,13 +107,13 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
 
-                    android:layout_margin="10dp"
+                    android:layout_margin="8dp"
                     android:src="@drawable/ic_star_border"
 
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/verticalGuideline2"
-                    app:layout_constraintTop_toTopOf="@+id/horizontalGuideline1" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/horizontalGuideline1"
