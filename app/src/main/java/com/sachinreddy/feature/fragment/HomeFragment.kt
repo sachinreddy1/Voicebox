@@ -65,7 +65,7 @@ class HomeFragment : Fragment() {
             "test2",
             "test2@test2.com",
             "",
-            "https://lh3.googleusercontent.com/IeNJWoKYx1waOhfWF6TiuSiWBLfqLb18lmZYXSgsH1fvb8v1IYiZr5aYWe0Gxu-pVZX3"
+            "https://i1.sndcdn.com/avatars-000701366305-hu9f0i-t500x500.jpg"
         )
 
         val songs_: List<Song> = listOf(

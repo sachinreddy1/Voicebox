@@ -8,7 +8,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
-        android:layout_height="175dp"
+        android:layout_height="wrap_content"
 
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
@@ -31,44 +31,33 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
 
-                android:layout_margin="16dp"
+                android:minHeight="100dp"
+
+                android:layout_margin="12dp"
                 android:src="@drawable/doggi_target"
 
-                app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline0"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/verticalGuideline0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/playButton"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-                android:layout_margin="10dp"
                 android:src="@drawable/ic_play"
+                app:backgroundTint="@color/colorPrimary"
+                app:elevation="6dp"
+                app:fabSize="mini"
 
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/verticalGuideline1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/horizontalGuideline0" />
-
-            <ImageView
-                android:id="@+id/favoriteButton"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-
-                android:layout_margin="10dp"
-                android:src="@drawable/ic_star_border"
-
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/verticalGuideline0"
-                app:layout_constraintStart_toStartOf="@id/verticalGuideline1"
-                app:layout_constraintTop_toTopOf="@+id/horizontalGuideline0" />
+                app:layout_constraintBottom_toBottomOf="@+id/circleImageView"
+                app:layout_constraintEnd_toEndOf="@+id/circleImageView" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/artistFlare"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
 
                 android:orientation="vertical"
                 android:background="@drawable/pattern_background"
@@ -86,7 +75,8 @@
                     android:fontFamily="@font/staatliches"
                     android:text="Untitled"
                     android:textColor="@color/whitesmoke"
-                    android:textSize="32dp"
+                    android:textSize="28dp"
+                    android:layout_marginTop="20dp"
 
                     app:layout_constraintBottom_toBottomOf="@id/horizontalGuideline1"
                     app:layout_constraintEnd_toStartOf="@+id/verticalGuideline2"
@@ -99,7 +89,7 @@
                     android:layout_height="wrap_content"
 
                     android:text="&#8942;"
-                    android:textSize="35dp"
+                    android:textSize="28dp"
                     android:textColor="@color/whitesmoke"
 
                     app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline1"
@@ -118,11 +108,25 @@
                     android:maxWidth="180dp"
                     android:text="Artist Name &amp; Artist Name"
                     android:textColor="@color/whitesmoke"
-                    android:textSize="24dp"
+                    android:textSize="20dp"
+                    android:layout_marginBottom="20dp"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/verticalGuideline2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/horizontalGuideline1" />
+
+                <ImageView
+                    android:id="@+id/favoriteButton"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+
+                    android:layout_margin="10dp"
+                    android:src="@drawable/ic_star_border"
 
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/verticalGuideline2"
                     app:layout_constraintTop_toTopOf="@+id/horizontalGuideline1" />
 
                 <androidx.constraintlayout.widget.Guideline
@@ -157,12 +161,6 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.175" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/horizontalGuideline0"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.7" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
