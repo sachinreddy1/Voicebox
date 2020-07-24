@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.Song
 import de.hdodenhof.circleimageview.CircleImageView
+
 
 class SongAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var songs: List<Song> = listOf()
@@ -43,6 +45,28 @@ class SongAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.View
                     .placeholder(R.drawable.ic_account_circle_light)
                     .dontAnimate()
                     .into(circleImageView)
+            }
+
+            songOptions.setOnClickListener { //creating a popup menu
+                val popup = PopupMenu(context, songOptions)
+                //inflating menu from xml resource
+                popup.inflate(R.menu.menu_song)
+                //adding click listener
+                popup.setOnMenuItemClickListener { item ->
+                    when (item.getItemId()) {
+                        R.id.action_edit ->                         //handle menu1 click
+                            true
+                        R.id.action_delete ->                         //handle menu2 click
+                            true
+                        else -> false
+                    }
+                }
+                //displaying the popup
+                popup.show()
+            }
+
+            favoriteButton.setOnClickListener {
+                favoriteButton.setImageResource(R.drawable.ic_star_filled)
             }
         }
     }
