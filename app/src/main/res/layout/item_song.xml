@@ -149,13 +149,6 @@
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/horizontalGuideline1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.5" />
-
-                <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/verticalGuideline2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
