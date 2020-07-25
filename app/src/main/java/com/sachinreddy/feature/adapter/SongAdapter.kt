@@ -36,7 +36,7 @@ class SongAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.View
         fun setSongDetails(song: Song) {
             song.apply {
                 songTitle.text = songName
-                artists_.text = from.artistName
+                artists_.text = "Artist Name & Artist Name"
                 Glide
                     .with(context)
                     .load(from.profilePicture)

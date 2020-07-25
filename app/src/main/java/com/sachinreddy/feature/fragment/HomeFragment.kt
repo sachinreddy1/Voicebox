@@ -54,7 +54,7 @@ class HomeFragment : Fragment() {
         // Songs go here
         val artist1 = Artist(
             "",
-            "test1",
+            "Artist Name",
             "test1@test1.com",
             "",
             "https://firebasestorage.googleapis.com/v0/b/collab-c4a6e.appspot.com/o/artists%2FcQcGlyqMi5SszPN4dBKhjR3WgG63?alt=media&token=99c3c99b-7485-43df-a0ec-4974cae1a227"
@@ -74,7 +74,7 @@ class HomeFragment : Fragment() {
                     artist2
                 ),
                 artist2,
-                "FUCK EM UP",
+                "Untitled",
                 false
             ),
             Song(
