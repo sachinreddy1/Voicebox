@@ -8,6 +8,7 @@ import android.provider.MediaStore
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
@@ -77,7 +78,7 @@ class ProfileFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home ->
-                findNavController().navigate(R.id.action_ProfileFragment_to_HomeFragment)
+                validNavController?.navigate(R.id.action_ProfileFragment_to_HomeFragment)
             R.id.action_about ->
                 Snackbar.make(view!!, "Opening settings...", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
@@ -163,4 +164,7 @@ class ProfileFragment : Fragment() {
             }
         }
     }
+
+    private val validNavController get() = findNavController().takeIf { it.valid }
+    private val NavController.valid get() = currentDestination?.id == R.id.ProfileFragment
 }

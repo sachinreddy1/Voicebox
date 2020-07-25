@@ -39,19 +39,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/playButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:src="@drawable/ic_play"
-                app:backgroundTint="@color/colorPrimary"
-                app:elevation="6dp"
-                app:fabSize="mini"
-
-                app:layout_constraintBottom_toBottomOf="@+id/circleImageView"
-                app:layout_constraintEnd_toEndOf="@+id/circleImageView" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/artistFlare"
                 android:layout_width="0dp"
@@ -77,69 +64,43 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
-                        android:id="@+id/songTitle"
+                        android:id="@+id/artistName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
                         android:fontFamily="@font/roboto_medium"
-                        android:text="Untitled"
+                        android:text="Artist Name"
                         android:textColor="@color/whitesmoke"
                         android:textSize="20dp"
 
                         />
 
                     <TextView
-                        android:id="@+id/artists"
+                        android:id="@+id/artistEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
                         android:fontFamily="@font/roboto_regular"
-                        android:text="Artist Name &amp; Artist Name"
-                        android:textColor="@color/whitesmoke"
-                        android:textSize="16dp" />
-
-                    <TextView
-                        android:id="@+id/songProgress"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:fontFamily="@font/roboto_light"
-                        android:text="Producing..."
+                        android:text="travisscott@gmail.com"
                         android:textColor="@color/whitesmoke"
                         android:textSize="16dp" />
 
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/favoriteButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:layout_margin="12dp"
-                    android:minWidth="24dp"
-                    android:minHeight="24dp"
-                    android:src="@drawable/ic_star_border"
-
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_margin="12dp"
-                    android:drawableEnd="@drawable/ic_navigate_next"
+                    android:layout_marginEnd="12dp"
                     android:fontFamily="@font/roboto_italic"
-                    android:minWidth="24dp"
-                    android:minHeight="24dp"
+                    android:minWidth="28dp"
+                    android:minHeight="28dp"
 
                     android:src="@drawable/ic_navigate_next"
-                    android:text="Yesterday"
-                    android:textColor="@color/whitesmoke"
-                    android:textSize="16dp"
 
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/verticalGuideline2"

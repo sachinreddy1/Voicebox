@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.sachinreddy.feature.R
@@ -37,9 +38,9 @@ class HomeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home ->
-                findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
+                validNavController?.navigate(R.id.action_homeFragment_to_profileFragment)
             R.id.action_start_collab ->
-                findNavController().navigate(R.id.action_homeFragment_to_friendsFragment)
+                validNavController?.navigate(R.id.action_homeFragment_to_friendsFragment)
             R.id.action_add_artist ->
                 Snackbar.make(view!!, "Adding a friend...", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
@@ -106,4 +107,7 @@ class HomeFragment : Fragment() {
             }
         }
     }
+
+    private val validNavController get() = findNavController().takeIf { it.valid }
+    private val NavController.valid get() = currentDestination?.id == R.id.HomeFragment
 }
