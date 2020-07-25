@@ -9,8 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.adapter.SongAdapter
-import com.sachinreddy.feature.data.Artist
-import com.sachinreddy.feature.data.Song
+import com.sachinreddy.feature.data.TestData
 import kotlinx.android.synthetic.main.activity_app.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -53,43 +52,7 @@ class HomeFragment : Fragment() {
         songs_recycler_view.adapter = adapter
 
         // Songs go here
-        val artist1 = Artist(
-            "",
-            "Artist Name",
-            "test1@test1.com",
-            "",
-            "https://firebasestorage.googleapis.com/v0/b/collab-c4a6e.appspot.com/o/artists%2FcQcGlyqMi5SszPN4dBKhjR3WgG63?alt=media&token=99c3c99b-7485-43df-a0ec-4974cae1a227"
-        )
-        val artist2 = Artist(
-            "",
-            "test2",
-            "test2@test2.com",
-            "",
-            "https://i1.sndcdn.com/avatars-000701366305-hu9f0i-t500x500.jpg"
-        )
-
-        val songs_: List<Song> = listOf(
-            Song(
-                listOf(
-                    artist1,
-                    artist2
-                ),
-                artist2,
-                "Untitled",
-                false
-            ),
-            Song(
-                listOf(
-                    artist1,
-                    artist2
-                ),
-                artist1,
-                "Miss u bitch",
-                false
-            )
-        )
-
-        adapter.songs = songs_
+        adapter.songs = TestData.songs_
         adapter.notifyDataSetChanged()
 
         super.onViewCreated(view, savedInstanceState)
