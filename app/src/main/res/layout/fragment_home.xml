@@ -8,7 +8,7 @@
     tools:context=".HomeFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/songs_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 

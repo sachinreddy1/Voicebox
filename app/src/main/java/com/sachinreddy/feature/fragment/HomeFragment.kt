@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = SongAdapter(context!!)
-        recycler_view.adapter = adapter
+        songs_recycler_view.adapter = adapter
 
         // Songs go here
         val artist1 = Artist(
