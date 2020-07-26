@@ -39,4 +39,7 @@
     <string name="artists">Artists</string>
     <string name="friends_fragment_label">FriendsFragment</string>
     <string name="search">Search</string>
+    <string name="add_friend">Add Friend</string>
+    <string name="search_friends">Search Friends</string>
+    <string name="start_solo_session">Start solo session</string>
 </resources>

@@ -9,6 +9,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.adapter.ArtistAdapter
 import com.sachinreddy.feature.data.Artist
@@ -52,6 +53,7 @@ class FriendsFragment : Fragment() {
         val searchView = searchItem?.actionView as SearchView
 
         searchView.setSearchableInfo(manager.getSearchableInfo(activity?.componentName))
+        searchView.queryHint = "Search Artists"
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
@@ -72,6 +74,9 @@ class FriendsFragment : Fragment() {
         when (item.itemId) {
             android.R.id.home ->
                 validNavController?.navigate(R.id.action_FriendsFragment_to_HomeFragment)
+            R.id.add_friends ->
+                Snackbar.make(view!!, "Adding friend...", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
         }
         return true
     }
