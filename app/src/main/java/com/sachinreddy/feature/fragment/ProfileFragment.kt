@@ -2,7 +2,10 @@ package com.sachinreddy.feature.fragment
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
@@ -12,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
 import com.google.android.material.snackbar.Snackbar
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.activity.AuthActivity
@@ -28,13 +32,16 @@ class ProfileFragment : Fragment() {
     private lateinit var filePath: Uri
     private val PICK_IMAGE_REQUEST = 71
     private var uploadImage = false
+    private var uploadingTexture = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // Setup actionBar
         setupActionBar()
-
+        // Setup artist information
         artistName.text = Authenticator.currentUser?.artistName
         username.text = Authenticator.currentUser?.username
         artistScore.text = Authenticator.currentUser?.score.toString()
+        // Setup profile picture and texture background
         Authenticator.currentUser?.profilePicture?.let {
             Glide
                 .with(this)
@@ -42,6 +49,23 @@ class ProfileFragment : Fragment() {
                 .placeholder(R.drawable.doggi_target)
                 .dontAnimate()
                 .into(profilePicture)
+        }
+        Authenticator.currentUser?.textureBackground?.let {
+            Glide
+                .with(this)
+                .load(it)
+                .placeholder(R.drawable.ic_pattern_background)
+                .dontAnimate()
+                .into(object : SimpleTarget<Drawable?>() {
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        transition: com.bumptech.glide.request.transition.Transition<in Drawable?>?
+                    ) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            constraintLayout0.background = resource
+                        }
+                    }
+                })
         }
 
         editButton.setOnClickListener {
@@ -51,10 +75,12 @@ class ProfileFragment : Fragment() {
                 popup.setOnMenuItemClickListener {
                     when (it.itemId) {
                         R.id.action_edit_profile_picture -> {
+                            uploadingTexture = false
                             chooseImage()
                             true
                         }
                         R.id.action_edit_background -> {
+                            uploadingTexture = true
                             chooseImage()
                             true
                         }
@@ -62,7 +88,6 @@ class ProfileFragment : Fragment() {
                     }
                 }
                 popup.show()
-
             } else {
                 uploadProfilePicture(filePath)
             }
@@ -109,16 +134,28 @@ class ProfileFragment : Fragment() {
     private fun uploadProfilePicture(filePath: Uri) {
         Authenticator.currentUser?.artistId?.let { id ->
             if (filePath != null) {
+                // Getting the storage reference
+                val currentImage = if (!uploadingTexture) "profilePicture" else "textureBackground"
+                val storageReference = Authenticator.mStorageReference
+                    .child(id)
+                    .child(currentImage)
+
                 // Add photo to storage
-                Authenticator.mStorageReference.child(id).putFile(filePath)
+                storageReference.putFile(filePath)
                     .addOnSuccessListener {
                         // Get the download URL
-                        Authenticator.mStorageReference.child(id).downloadUrl
+                        storageReference.downloadUrl
                             .addOnSuccessListener {
                                 // Add URL to current user
-                                Authenticator.currentUser?.profilePicture = it.toString()
+                                if (!uploadingTexture) {
+                                    Authenticator.currentUser?.profilePicture = it.toString()
+                                } else {
+                                    Authenticator.currentUser?.textureBackground = it.toString()
+                                }
+
                                 // Update the database
-                                Authenticator.mDatabaseReference.child(id)
+                                Authenticator.mDatabaseReference
+                                    .child(id)
                                     .setValue(Authenticator.currentUser)
                             }
                             .addOnFailureListener {
@@ -165,13 +202,17 @@ class ProfileFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        println(data.toString())
         if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE_REQUEST && data != null && data.data != null) {
             filePath = data.data!!
             try {
-                val bitmap =
-                    MediaStore.Images.Media.getBitmap(activity!!.contentResolver, filePath)
-                profilePicture.setImageBitmap(bitmap)
+                val bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, filePath)
+                // Set the bitmap to either profile picture or the background
+                if (!uploadingTexture)
+                    profilePicture.setImageBitmap(bitmap)
+                else
+                    constraintLayout0.background = BitmapDrawable(resources, bitmap)
+
+                // Set button to send
                 editButton.setImageResource(R.drawable.ic_send)
                 uploadImage = true
             } catch (e: IOException) {
