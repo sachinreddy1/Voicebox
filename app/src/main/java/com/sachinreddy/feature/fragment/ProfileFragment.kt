@@ -2,11 +2,11 @@ package com.sachinreddy.feature.fragment
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
+import android.widget.ImageView
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -54,6 +54,7 @@ class ProfileFragment : Fragment() {
                 .load(it)
                 .placeholder(R.drawable.ic_pattern_background)
                 .dontAnimate()
+                .centerCrop()
                 .into(textureBackground)
         }
 
@@ -197,10 +198,13 @@ class ProfileFragment : Fragment() {
             try {
                 val bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, filePath)
                 // Set the bitmap to either profile picture or the background
-                if (!uploadingTexture)
+                if (!uploadingTexture) {
+                    profilePicture.scaleType = ImageView.ScaleType.CENTER_CROP
                     profilePicture.setImageBitmap(bitmap)
-                else
-                    constraintLayout0.background = BitmapDrawable(resources, bitmap)
+                } else {
+                    textureBackground.scaleType = ImageView.ScaleType.CENTER_CROP
+                    textureBackground.setImageBitmap(bitmap)
+                }
 
                 // Set button to send
                 editButton.setImageResource(R.drawable.ic_send)
