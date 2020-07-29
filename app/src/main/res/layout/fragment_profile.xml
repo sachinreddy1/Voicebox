@@ -13,68 +13,86 @@
         android:layout_height="wrap_content"
 
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         app:cardBackgroundColor="@color/cardBackground"
         app:cardCornerRadius="8dp"
         app:cardElevation="5dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout0"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            android:layout_height="wrap_content"
-            android:background="@drawable/pattern_background"
+            <ImageView
+                android:id="@+id/textureBackground"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
 
-            android:padding="16dp"
-            app:layout_constraintBottom_toTopOf="@id/constraintLayout1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profilePicture"
-                android:layout_width="116dp"
-                android:layout_height="116dp"
-                android:layout_gravity="center"
-
-                android:src="@drawable/doggi_target"
-                app:civ_border_color="@color/colorBackground"
-                app:civ_border_width="8dp"
+                android:src="@drawable/ic_pattern_background"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/editButton"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout0"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:src="@drawable/ic_edit"
-                app:backgroundTint="@color/colorPrimary"
-                app:elevation="6dp"
-                app:fabSize="mini"
-
+                android:padding="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <ProgressBar
-                android:id="@+id/profileProgressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:elevation="60dp"
-                android:indeterminate="true"
-                android:indeterminateTint="@color/colorBackground"
-                android:indeterminateTintMode="src_atop"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@id/editButton"
-                app:layout_constraintEnd_toEndOf="@id/editButton"
-                app:layout_constraintStart_toStartOf="@id/editButton"
-                app:layout_constraintTop_toTopOf="@id/editButton" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profilePicture"
+                    android:layout_width="116dp"
+                    android:layout_height="116dp"
+                    android:layout_gravity="center"
+
+                    android:src="@drawable/doggi_target"
+                    app:civ_border_color="@color/colorBackground"
+                    app:civ_border_width="8dp"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/editButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:src="@drawable/ic_edit"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:elevation="6dp"
+                    app:fabSize="mini"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ProgressBar
+                    android:id="@+id/profileProgressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="60dp"
+                    android:indeterminate="true"
+                    android:indeterminateTint="@color/colorBackground"
+                    android:indeterminateTintMode="src_atop"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@id/editButton"
+                    app:layout_constraintEnd_toEndOf="@id/editButton"
+                    app:layout_constraintStart_toStartOf="@id/editButton"
+                    app:layout_constraintTop_toTopOf="@id/editButton" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -83,8 +101,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="20dp"
         app:cardBackgroundColor="@color/cardBackground"
         app:cardCornerRadius="8dp"

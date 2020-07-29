@@ -3,9 +3,7 @@ package com.sachinreddy.feature.fragment
 import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
@@ -15,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
 import com.google.android.material.snackbar.Snackbar
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.activity.AuthActivity
@@ -41,7 +38,7 @@ class ProfileFragment : Fragment() {
         artistName.text = Authenticator.currentUser?.artistName
         username.text = Authenticator.currentUser?.username
         artistScore.text = Authenticator.currentUser?.score.toString()
-        // Setup profile picture and texture background
+        // Setup profile picture
         Authenticator.currentUser?.profilePicture?.let {
             Glide
                 .with(this)
@@ -50,22 +47,14 @@ class ProfileFragment : Fragment() {
                 .dontAnimate()
                 .into(profilePicture)
         }
+        // Setup texture background
         Authenticator.currentUser?.textureBackground?.let {
             Glide
                 .with(this)
                 .load(it)
                 .placeholder(R.drawable.ic_pattern_background)
                 .dontAnimate()
-                .into(object : SimpleTarget<Drawable?>() {
-                    override fun onResourceReady(
-                        resource: Drawable,
-                        transition: com.bumptech.glide.request.transition.Transition<in Drawable?>?
-                    ) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            constraintLayout0.background = resource
-                        }
-                    }
-                })
+                .into(textureBackground)
         }
 
         editButton.setOnClickListener {
