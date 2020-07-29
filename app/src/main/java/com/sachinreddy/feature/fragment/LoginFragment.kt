@@ -54,10 +54,10 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val username = inputUsername.text.toString()
-        val password = inputPassword.text.toString()
         buttonLogin.setOnClickListener {
-            login(username, password)
+            val email = inputEmail.text.toString()
+            val password = inputPassword.text.toString()
+            login(email, password)
         }
 
         buttonRegister.setOnClickListener {
@@ -82,10 +82,8 @@ class LoginFragment : Fragment() {
                 mAuth.signInWithEmailAndPassword(email, password)
                     .addOnSuccessListener {
                         // Get artist data
-                        currentUser?.let {
-                            mDatabaseReference.child(it.artistId)
-                                .addValueEventListener(mValueEventListener)
-                        }
+                        mDatabaseReference.child(mAuth.uid!!)
+                            .addValueEventListener(mValueEventListener)
                         // Turn off progress bar
                         loginProgressBar.visibility = View.GONE
                         // Open the app
