@@ -44,7 +44,8 @@ class ProfileFragment : Fragment() {
         setupActionBar()
 
         artistName.text = Authenticator.currentUser?.artistName
-        contactInfo.text = Authenticator.currentUser?.email
+        username.text = Authenticator.currentUser?.username
+        artistScore.text = Authenticator.currentUser?.score.toString()
         Authenticator.currentUser?.profilePicture?.let {
             Glide
                 .with(this)
@@ -119,25 +120,31 @@ class ProfileFragment : Fragment() {
     private fun uploadProfilePicture(filePath: Uri) {
         Authenticator.currentUser?.artistId?.let { id ->
             if (filePath != null) {
+                // Add photo to storage
                 Authenticator.mStorageReference.child(id).putFile(filePath)
                     .addOnSuccessListener {
+                        // Get the download URL
                         Authenticator.mStorageReference.child(id).downloadUrl
                             .addOnSuccessListener {
+                                // Add URL to current user
                                 Authenticator.currentUser?.profilePicture = it.toString()
+                                // Update the database
                                 Authenticator.mDatabaseReference.child(id)
                                     .setValue(Authenticator.currentUser)
                             }
                             .addOnFailureListener {
                                 println(it)
                             }
-
+                        // Set button back to edit and remove progress bar
                         editButton.setImageResource(R.drawable.ic_edit)
                         profileProgressBar.visibility = View.GONE
                         uploadImage = false
+
                         Snackbar.make(view!!, "File upload successful!", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show()
                     }
                     .addOnFailureListener {
+                        // Set button back to edit and remove progress bar
                         editButton.setImageResource(R.drawable.ic_edit)
                         profileProgressBar.visibility = View.GONE
                         uploadImage = false
@@ -146,6 +153,7 @@ class ProfileFragment : Fragment() {
                             .setAction("Action", null).show()
                     }
                     .addOnProgressListener {
+                        // Progress bar for image upload
                         profileProgressBar.visibility = View.VISIBLE
                     }
             }

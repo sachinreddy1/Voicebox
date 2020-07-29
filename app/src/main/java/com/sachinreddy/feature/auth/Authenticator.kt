@@ -21,12 +21,14 @@ object Authenticator {
 
     fun registerArtist(
         artistName: String,
+        username: String,
         email: String,
-        phoneNumber: String,
-        profilePicture: String?
+        profilePicture: String?,
+        textureBackground: String?
     ) {
         val id = mAuth.uid!!
-        currentUser = Artist(id!!, artistName, email, phoneNumber, profilePicture)
+        currentUser =
+            Artist(id!!, artistName, username, email, "0", profilePicture, textureBackground)
         mDatabaseReference.child(id).setValue(currentUser)
     }
 

@@ -11,12 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.activity.AppActivity
 import com.sachinreddy.feature.auth.Authenticator
-import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_register.*
-import kotlinx.android.synthetic.main.fragment_register.buttonRegister
-import kotlinx.android.synthetic.main.fragment_register.haveAccount
-import kotlinx.android.synthetic.main.fragment_register.inputEmail
-import kotlinx.android.synthetic.main.fragment_register.inputPassword
 
 class RegisterFragment : Fragment() {
     override fun onCreateView(
@@ -39,14 +34,20 @@ class RegisterFragment : Fragment() {
 
     private fun registerAccount() {
         val artistName_ = artistName.text.toString().trim()
+        val username_ = username.text.toString().trim()
         val email_ = inputEmail.text.toString().trim()
-        val phoneNumber_ = phoneNumber.text.toString().trim()
         val password_ = inputPassword.text.toString().trim()
         val confirmPassword_ = confirmPassword.text.toString().trim()
 
         if (artistName_.isEmpty()) {
             artistName.error = "Artist name is required."
             artistName.requestFocus()
+            return
+        }
+
+        if (username_.isEmpty()) {
+            username.error = "Username is required."
+            username.requestFocus()
             return
         }
 
@@ -59,12 +60,6 @@ class RegisterFragment : Fragment() {
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email_).matches()) {
             inputEmail.error = "Please enter a valid email address.."
             inputEmail.requestFocus()
-            return
-        }
-
-        if (phoneNumber_.isEmpty()) {
-            phoneNumber.error = "Phone number is required."
-            phoneNumber.requestFocus()
             return
         }
 
@@ -86,20 +81,26 @@ class RegisterFragment : Fragment() {
             return
         }
 
-        login(artistName_, email_, phoneNumber_, password_)
+        login(artistName_, username_, email_, password_)
     }
 
-    private fun login(artistName: String, email: String, phoneNumber: String, password: String) {
+    private fun login(artistName: String, username: String, email: String, password: String) {
+        // Turn on progress bar
         registerProgressBar.visibility = View.VISIBLE
         Authenticator.mAuth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener {
-                Authenticator.registerArtist(artistName, email, phoneNumber, null)
-                loginProgressBar.visibility = View.GONE
+                // Register the new artist
+                Authenticator.registerArtist(artistName, username, email, null, null)
+                // Turn off progress bar
+                registerProgressBar.visibility = View.GONE
+                // Open the app
                 val intent = Intent(context, AppActivity::class.java)
                 startActivity(intent)
             }
             .addOnFailureListener {
-                loginProgressBar.visibility = View.GONE
+                // Turn off progress bar
+                registerProgressBar.visibility = View.GONE
+
                 Snackbar.make(view!!, "Failed to register user.", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }

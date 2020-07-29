@@ -26,12 +26,22 @@ class LoginFragment : Fragment() {
         override fun onDataChange(snapshot: DataSnapshot) {
             val artistId = snapshot.child("artistId").value.toString()
             val artistName = snapshot.child("artistName").value.toString()
+            val username = snapshot.child("username").value.toString()
             val email = snapshot.child("email").value.toString()
-            val phoneNumber = snapshot.child("phoneNumber").value.toString()
+            val score = snapshot.child("score").value.toString()
             val profilePicture: String? = snapshot.child("profilePicture").value.toString()
+            val textureBackground: String? = snapshot.child("textureBackground").value.toString()
 
             Authenticator.currentUser =
-                Artist(artistId, artistName, email, phoneNumber, profilePicture)
+                Artist(
+                    artistId,
+                    artistName,
+                    username,
+                    email,
+                    score,
+                    profilePicture,
+                    textureBackground
+                )
         }
     }
 
@@ -44,8 +54,10 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val username = inputUsername.text.toString()
+        val password = inputPassword.text.toString()
         buttonLogin.setOnClickListener {
-            login(inputEmail.text.toString(), inputPassword.text.toString())
+            login(username, password)
         }
 
         buttonRegister.setOnClickListener {
@@ -54,6 +66,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun login(email: String, password: String) {
+        // Check if that fields are not empty
         if (email.isEmpty() || password.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(
                 email
             ).matches()
@@ -61,20 +74,32 @@ class LoginFragment : Fragment() {
             Snackbar.make(view!!, "Sign in problem.", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         } else {
+            // Turn on progress bar
             loginProgressBar.visibility = View.VISIBLE
-            Authenticator.mAuth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener {
-                    Authenticator.mDatabaseReference.child(Authenticator.mAuth.currentUser?.uid!!)
-                        .addValueEventListener(mValueEventListener)
-                    loginProgressBar.visibility = View.GONE
-                    val intent = Intent(context, AppActivity::class.java)
-                    startActivity(intent)
-                }
-                .addOnFailureListener {
-                    loginProgressBar.visibility = View.GONE
-                    Snackbar.make(view!!, "Sign in problem.", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show()
-                }
+
+            Authenticator.apply {
+                // Login
+                mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnSuccessListener {
+                        // Get artist data
+                        currentUser?.let {
+                            mDatabaseReference.child(it.artistId)
+                                .addValueEventListener(mValueEventListener)
+                        }
+                        // Turn off progress bar
+                        loginProgressBar.visibility = View.GONE
+                        // Open the app
+                        val intent = Intent(context, AppActivity::class.java)
+                        startActivity(intent)
+                    }
+                    .addOnFailureListener {
+                        // Turn off progress bar
+                        loginProgressBar.visibility = View.GONE
+
+                        Snackbar.make(view!!, "Sign in problem.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show()
+                    }
+            }
         }
     }
 }

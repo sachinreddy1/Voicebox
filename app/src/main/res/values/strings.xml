@@ -42,4 +42,5 @@
     <string name="add_friend">Add Friend</string>
     <string name="search_friends">Search Friends</string>
     <string name="start_solo_session">Start solo session</string>
+    <string name="username">Username</string>
 </resources>
