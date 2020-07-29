@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -28,18 +29,6 @@ class ProfileFragment : Fragment() {
     private val PICK_IMAGE_REQUEST = 71
     private var uploadImage = false
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Authenticator.currentUser?.profilePicture?.let {
-            Glide
-                .with(this)
-                .load(it)
-                .placeholder(R.drawable.ic_account_circle_light)
-                .dontAnimate()
-                .preload()
-        }
-        super.onActivityCreated(savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupActionBar()
 
@@ -50,14 +39,30 @@ class ProfileFragment : Fragment() {
             Glide
                 .with(this)
                 .load(it)
-                .placeholder(R.drawable.ic_account_circle_light)
+                .placeholder(R.drawable.doggi_target)
                 .dontAnimate()
                 .into(profilePicture)
         }
 
         editButton.setOnClickListener {
             if (!uploadImage) {
-                chooseImage()
+                val popup = PopupMenu(context, editButton)
+                popup.inflate(R.menu.menu_picture)
+                popup.setOnMenuItemClickListener {
+                    when (it.itemId) {
+                        R.id.action_edit_profile_picture -> {
+                            chooseImage()
+                            true
+                        }
+                        R.id.action_edit_background -> {
+                            chooseImage()
+                            true
+                        }
+                        else -> true
+                    }
+                }
+                popup.show()
+
             } else {
                 uploadProfilePicture(filePath)
             }
@@ -101,22 +106,6 @@ class ProfileFragment : Fragment() {
         )
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE_REQUEST && data != null && data.data != null) {
-            filePath = data.data!!
-            try {
-                val bitmap =
-                    MediaStore.Images.Media.getBitmap(activity!!.contentResolver, filePath)
-                profilePicture.setImageBitmap(bitmap)
-                editButton.setImageResource(R.drawable.ic_send)
-                uploadImage = true
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
-    }
-
     private fun uploadProfilePicture(filePath: Uri) {
         Authenticator.currentUser?.artistId?.let { id ->
             if (filePath != null) {
@@ -135,6 +124,7 @@ class ProfileFragment : Fragment() {
                             .addOnFailureListener {
                                 println(it)
                             }
+
                         // Set button back to edit and remove progress bar
                         editButton.setImageResource(R.drawable.ic_edit)
                         profileProgressBar.visibility = View.GONE
@@ -169,6 +159,23 @@ class ProfileFragment : Fragment() {
                 setDisplayHomeAsUpEnabled(true)
                 setHomeAsUpIndicator(R.drawable.ic_arrow_back)
                 setHomeActionContentDescription(getString(R.string.back_to_home))
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        println(data.toString())
+        if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE_REQUEST && data != null && data.data != null) {
+            filePath = data.data!!
+            try {
+                val bitmap =
+                    MediaStore.Images.Media.getBitmap(activity!!.contentResolver, filePath)
+                profilePicture.setImageBitmap(bitmap)
+                editButton.setImageResource(R.drawable.ic_send)
+                uploadImage = true
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
         }
     }

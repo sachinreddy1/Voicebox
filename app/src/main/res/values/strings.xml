@@ -43,4 +43,6 @@
     <string name="search_friends">Search Friends</string>
     <string name="start_solo_session">Start solo session</string>
     <string name="username">Username</string>
+    <string name="edit_profile_picture">Edit profile picture</string>
+    <string name="edit_background">Edit background</string>
 </resources>
