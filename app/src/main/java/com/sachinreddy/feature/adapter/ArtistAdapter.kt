@@ -59,12 +59,14 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
 
     internal inner class ArtistViewHolder(artistView: View) : RecyclerView.ViewHolder(artistView) {
         private val artistName: TextView = artistView.findViewById(R.id.artistName)
-        private val artistEmail: TextView = artistView.findViewById(R.id.artistEmail)
+        private val username: TextView = artistView.findViewById(R.id.username)
+        private val score: TextView = artistView.findViewById(R.id.score)
         private val circleImageView: CircleImageView = artistView.findViewById(R.id.circleImageView)
 
         fun setArtistDetails(artist: Artist) {
             artistName.text = artist.artistName
-            artistEmail.text = artist.email
+            username.text = artist.username
+            score.text = artist.score
             Glide
                 .with(context)
                 .load(artist.profilePicture)

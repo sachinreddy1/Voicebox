@@ -81,6 +81,7 @@ class ProfileFragment : Fragment() {
                 uploadProfilePicture(filePath)
             }
         }
+
         super.onViewCreated(view, savedInstanceState)
     }
 

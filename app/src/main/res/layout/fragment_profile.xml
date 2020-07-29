@@ -44,6 +44,7 @@
                 android:layout_height="wrap_content"
 
                 android:padding="16dp"
+
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,9 +54,9 @@
                     android:id="@+id/profilePicture"
                     android:layout_width="116dp"
                     android:layout_height="116dp"
-                    android:layout_gravity="center"
 
                     android:src="@drawable/doggi_target"
+                    android:layout_gravity="center"
                     app:civ_border_color="@color/colorBackground"
                     app:civ_border_width="8dp"
 
@@ -74,19 +75,20 @@
                     app:elevation="6dp"
                     app:fabSize="mini"
 
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <ProgressBar
                     android:id="@+id/profileProgressBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+
                     android:elevation="60dp"
                     android:indeterminate="true"
                     android:indeterminateTint="@color/colorBackground"
                     android:indeterminateTintMode="src_atop"
                     android:visibility="gone"
+
                     app:layout_constraintBottom_toBottomOf="@id/editButton"
                     app:layout_constraintEnd_toEndOf="@id/editButton"
                     app:layout_constraintStart_toStartOf="@id/editButton"
@@ -150,8 +152,17 @@
                         android:layout_height="wrap_content"
 
                         android:fontFamily="@font/roboto_light"
-                        android:paddingEnd="12dp"
                         android:text="username"
+                        android:textColor="@color/whitesmoke"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:paddingHorizontal="8dp"
+                        android:fontFamily="@font/roboto_light"
+                        android:text="•"
                         android:textColor="@color/whitesmoke"
                         android:textSize="16dp" />
 
