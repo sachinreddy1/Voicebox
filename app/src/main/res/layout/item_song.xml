@@ -53,100 +53,122 @@
                 app:layout_constraintEnd_toEndOf="@+id/circleImageView" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/artistFlare"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-
-                android:background="@drawable/pattern_background"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/verticalGuideline0"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/textureBackground"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_height="0dp"
 
-                    android:orientation="vertical"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_pattern_background"
 
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/verticalGuideline2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/songTitle"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+
+                        android:orientation="vertical"
+
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/verticalGuideline2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/songTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Untitled"
+                            android:textColor="@color/whitesmoke"
+                            android:textSize="20dp"
+
+                            />
+
+                        <TextView
+                            android:id="@+id/artists"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:fontFamily="@font/roboto_regular"
+                            android:text="Artist Name &amp; Artist Name"
+                            android:textColor="@color/whitesmoke"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/songProgress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:fontFamily="@font/roboto_light"
+                            android:text="Producing..."
+                            android:textColor="@color/whitesmoke"
+                            android:textSize="16dp" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/favoriteButton"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
-                        android:fontFamily="@font/roboto_medium"
-                        android:text="Untitled"
-                        android:textColor="@color/whitesmoke"
-                        android:textSize="20dp"
+                        android:layout_margin="12dp"
+                        android:minWidth="24dp"
+                        android:minHeight="24dp"
+                        android:src="@drawable/ic_star_border"
 
-                        />
-
-                    <TextView
-                        android:id="@+id/artists"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:fontFamily="@font/roboto_regular"
-                        android:text="Artist Name &amp; Artist Name"
-                        android:textColor="@color/whitesmoke"
-                        android:textSize="16dp" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/songProgress"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
-                        android:fontFamily="@font/roboto_light"
-                        android:text="Producing..."
+                        android:layout_margin="12dp"
+                        android:drawableEnd="@drawable/ic_navigate_next"
+                        android:fontFamily="@font/roboto_italic"
+                        android:minWidth="24dp"
+                        android:minHeight="24dp"
+
+                        android:src="@drawable/ic_navigate_next"
+                        android:text="Yesterday"
                         android:textColor="@color/whitesmoke"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
 
-                </LinearLayout>
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
-                <ImageView
-                    android:id="@+id/favoriteButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/verticalGuideline2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.8" />
 
-                    android:layout_margin="12dp"
-                    android:minWidth="24dp"
-                    android:minHeight="24dp"
-                    android:src="@drawable/ic_star_border"
-
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_margin="12dp"
-                    android:drawableEnd="@drawable/ic_navigate_next"
-                    android:fontFamily="@font/roboto_italic"
-                    android:minWidth="24dp"
-                    android:minHeight="24dp"
-
-                    android:src="@drawable/ic_navigate_next"
-                    android:text="Yesterday"
-                    android:textColor="@color/whitesmoke"
-                    android:textSize="16dp"
-
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/verticalGuideline2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.8" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
