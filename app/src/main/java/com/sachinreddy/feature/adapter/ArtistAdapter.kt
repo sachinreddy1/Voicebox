@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -61,18 +62,27 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
         private val artistName: TextView = artistView.findViewById(R.id.artistName)
         private val username: TextView = artistView.findViewById(R.id.username)
         private val score: TextView = artistView.findViewById(R.id.score)
-        private val circleImageView: CircleImageView = artistView.findViewById(R.id.circleImageView)
+        private val profilePicture: CircleImageView = artistView.findViewById(R.id.profilePicture)
+        private val textureBackground: ImageView = artistView.findViewById(R.id.textureBackground)
 
         fun setArtistDetails(artist: Artist) {
             artistName.text = artist.artistName
             username.text = artist.username
             score.text = artist.score
+
             Glide
                 .with(context)
                 .load(artist.profilePicture)
                 .placeholder(R.drawable.ic_account_circle_light)
                 .dontAnimate()
-                .into(circleImageView)
+                .into(profilePicture)
+
+            Glide
+                .with(context)
+                .load(artist.textureBackground)
+                .placeholder(R.drawable.ic_pattern_background)
+                .dontAnimate()
+                .into(textureBackground)
         }
     }
 }

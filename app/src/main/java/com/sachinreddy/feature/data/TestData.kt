@@ -2,7 +2,7 @@ package com.sachinreddy.feature.data
 
 object TestData {
     val artist1 = Artist(
-        "",
+        "1",
         "Artist Name",
         "test",
         "test1@test1.com",
@@ -11,40 +11,32 @@ object TestData {
         null
     )
     val artist2 = Artist(
-        "",
+        "2",
         "Travis Scott",
         "laflame",
         "travisscott@gmail.com",
         "120",
         "https://i1.sndcdn.com/avatars-000701366305-hu9f0i-t500x500.jpg",
-        null
+        "https://static.vecteezy.com/system/resources/previews/000/100/314/original/trendy-abstract-geometric-pattern-background-vector.jpg"
     )
     val artist3 = Artist(
-        "",
+        "3",
         "Future",
         "future",
         "future@gmail.com",
         "120",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQup0zJL8qAuVwcDDwk_k_qerMYxldb7cUeWw&usqp=CAU",
-        null
+        "https://www.designyourway.net/blog/wp-content/uploads/2018/06/Seamless-Space-Pattern-by-J.jpg"
     )
 
     val songs_: List<Song> = listOf(
         Song(
-            listOf(
-                artist1,
-                artist2
-            ),
             artist2,
             "Untitled",
             false
         ),
         Song(
-            listOf(
-                artist1,
-                artist2
-            ),
-            artist1,
+            artist3,
             "Miss u bitch",
             false
         )

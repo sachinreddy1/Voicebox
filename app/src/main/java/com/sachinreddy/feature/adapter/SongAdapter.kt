@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sachinreddy.feature.R
+import com.sachinreddy.feature.auth.Authenticator
 import com.sachinreddy.feature.data.Song
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -31,18 +32,26 @@ class SongAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.View
         private val artists_: TextView = songView.findViewById(R.id.artists)
         private val favoriteButton: ImageView = songView.findViewById(R.id.favoriteButton)
         private val playButton: ImageView = songView.findViewById(R.id.playButton)
-        private val circleImageView: CircleImageView = songView.findViewById(R.id.circleImageView)
+        private val profilePicture: CircleImageView = songView.findViewById(R.id.profilePicture)
+        private val textureBackground: ImageView = songView.findViewById(R.id.textureBackground)
 
         fun setSongDetails(song: Song) {
             song.apply {
                 songTitle.text = songName
-                artists_.text = "Artist Name & Artist Name"
+                artists_.text = "${from.artistName} & ${Authenticator.currentUser?.artistName}"
                 Glide
                     .with(context)
                     .load(from.profilePicture)
                     .placeholder(R.drawable.ic_account_circle_light)
                     .dontAnimate()
-                    .into(circleImageView)
+                    .into(profilePicture)
+
+                Glide
+                    .with(context)
+                    .load(from.textureBackground)
+                    .placeholder(R.drawable.ic_pattern_background)
+                    .dontAnimate()
+                    .into(textureBackground)
             }
 
             favoriteButton.setOnClickListener {
