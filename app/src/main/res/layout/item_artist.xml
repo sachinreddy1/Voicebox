@@ -98,20 +98,24 @@
 
                         <TextView
                             android:id="@+id/artistName"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+
+                            android:background="@drawable/round_border_dark"
+                            android:paddingHorizontal="6dp"
+                            android:layout_marginBottom="4dp"
 
                             android:fontFamily="@font/roboto_medium"
                             android:text="Artist Name"
                             android:textColor="@color/whitesmoke"
-                            android:textSize="20dp"
-
-                            />
+                            android:textSize="20dp" />
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:background="@drawable/round_border_dark"
+                            android:paddingHorizontal="6dp">
 
                             <TextView
                                 android:id="@+id/username"
@@ -157,6 +161,8 @@
                         android:fontFamily="@font/roboto_italic"
                         android:minWidth="28dp"
                         android:minHeight="28dp"
+
+                        android:background="@drawable/round_border_dark"
 
                         android:src="@drawable/ic_navigate_next"
 
