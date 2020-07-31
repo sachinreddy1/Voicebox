@@ -19,6 +19,7 @@ import com.sachinreddy.feature.data.Artist
 import kotlinx.android.synthetic.main.activity_app.*
 import kotlinx.android.synthetic.main.fragment_friends.*
 
+
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
@@ -40,7 +41,6 @@ class FriendsFragment : Fragment() {
             }
 
             adapter.artistsFull = artists
-            adapter.notifyDataSetChanged()
         }
     }
 
@@ -74,9 +74,9 @@ class FriendsFragment : Fragment() {
             // Search was closed
             override fun onViewDetachedFromWindow(v: View?) {
                 // Display current friends
-                adapter.artists = Authenticator.currentFriends.toMutableList()
-                adapter.artistsFull = Authenticator.currentFriends.toMutableList()
-                adapter.notifyDataSetChanged()
+//                adapter.artists = Authenticator.currentFriends.toMutableList()
+//                adapter.artistsFull.clear()
+//                adapter.notifyDataSetChanged()
             }
 
             // Search was opened
@@ -86,16 +86,18 @@ class FriendsFragment : Fragment() {
                     mTotalValueEventListener
                 )
                 // Clear the list of items
-                adapter.artists.clear()
+//                adapter.artists.clear()
                 adapter.notifyDataSetChanged()
             }
         })
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            // Enter button is pressed
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false
             }
 
+            // Filter artists based on query
             override fun onQueryTextChange(newText: String): Boolean {
                 adapter.artistFilter.filter(newText)
                 return false

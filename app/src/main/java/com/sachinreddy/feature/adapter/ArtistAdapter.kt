@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sachinreddy.feature.R
+import com.sachinreddy.feature.auth.Authenticator
 import com.sachinreddy.feature.data.Artist
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -25,8 +26,9 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
 
     val artistFilter: Filter = object : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
-            var filteredList: MutableList<Artist> = ArrayList()
+            var filteredList: MutableList<Artist> = Authenticator.currentFriends.toMutableList()
             if (constraint != null && constraint.isNotEmpty()) {
+                filteredList.clear()
                 val filterPattern = constraint.toString().toLowerCase().trim()
                 for (item in artistsFull) {
                     item.artistName?.let {

@@ -10,7 +10,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import com.sachinreddy.feature.data.Artist
-import com.sachinreddy.feature.data.TestData
 
 object Authenticator {
     var currentUser: Artist? = null
@@ -39,7 +38,7 @@ object Authenticator {
                 "0",
                 profilePicture,
                 textureBackground,
-                TestData.friends
+                mutableListOf()
             )
         mDatabaseReference.child(id).setValue(currentUser)
     }
