@@ -93,10 +93,7 @@ class FriendsFragment : Fragment() {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                searchView.clearFocus()
-                searchView.setQuery("", false)
-                searchArtist.collapseActionView()
-                return true
+                return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
