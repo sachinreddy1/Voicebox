@@ -83,7 +83,6 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
                 .with(context)
                 .load(artist.textureBackground)
                 .placeholder(R.drawable.ic_pattern_background)
-                .dontAnimate()
                 .into(textureBackground)
         }
     }

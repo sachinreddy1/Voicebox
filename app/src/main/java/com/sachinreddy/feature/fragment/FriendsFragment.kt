@@ -26,7 +26,7 @@ class FriendsFragment : Fragment() {
     lateinit var adapter: ArtistAdapter
     var artists: MutableList<Artist> = mutableListOf()
 
-    private val mValueEventListener = object : ValueEventListener {
+    private val mTotalValueEventListener = object : ValueEventListener {
         override fun onCancelled(error: DatabaseError) {
             TODO("Not yet implemented")
         }
@@ -40,7 +40,28 @@ class FriendsFragment : Fragment() {
                 }
             }
 
-            adapter = ArtistAdapter(context!!, artists)
+            adapter.artists = artists
+            friends_recycler_view.adapter = adapter
+            adapter.notifyDataSetChanged()
+        }
+    }
+
+    private val mFriendsValueEventListener = object : ValueEventListener {
+        override fun onCancelled(error: DatabaseError) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onDataChange(snapshot: DataSnapshot) {
+            artists.clear()
+            Authenticator.currentUser?.friends?.let {
+                for (i in it) {
+                    snapshot.child(i).getValue(Artist::class.java)?.let {
+                        artists.add(it)
+                    }
+                }
+            }
+
+            adapter.artists = artists
             friends_recycler_view.adapter = adapter
             adapter.notifyDataSetChanged()
         }
@@ -54,10 +75,13 @@ class FriendsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_friends, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onStart() {
         setupActionBar()
-        Authenticator.mDatabaseReference.addListenerForSingleValueEvent(mValueEventListener)
-        super.onViewCreated(view, savedInstanceState)
+        Authenticator.mDatabaseReference.addListenerForSingleValueEvent(mFriendsValueEventListener)
+        adapter = ArtistAdapter(context!!, artists)
+        friends_recycler_view.adapter = adapter
+        adapter.notifyDataSetChanged()
+        super.onStart()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -75,6 +99,9 @@ class FriendsFragment : Fragment() {
                 searchView.clearFocus()
                 searchView.setQuery("", false)
                 searchArtist.collapseActionView()
+                Authenticator.mDatabaseReference.addListenerForSingleValueEvent(
+                    mFriendsValueEventListener
+                )
                 return true
             }
 
@@ -89,6 +116,10 @@ class FriendsFragment : Fragment() {
         when (item.itemId) {
             android.R.id.home ->
                 validNavController?.navigate(R.id.action_FriendsFragment_to_HomeFragment)
+            R.id.search_friends ->
+                Authenticator.mDatabaseReference.addListenerForSingleValueEvent(
+                    mTotalValueEventListener
+                )
         }
         return true
     }

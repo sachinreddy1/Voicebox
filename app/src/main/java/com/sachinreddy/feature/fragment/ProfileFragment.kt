@@ -53,7 +53,6 @@ class ProfileFragment : Fragment() {
                 .with(this)
                 .load(it)
                 .placeholder(R.drawable.ic_pattern_background)
-                .dontAnimate()
                 .centerCrop()
                 .into(textureBackground)
         }

@@ -11,6 +11,7 @@ class Artist {
     var score: String? = null
     var profilePicture: String? = null
     var textureBackground: String? = null
+    var friends: MutableList<String>? = null
 
     constructor() {
         //this constructor is required
@@ -23,7 +24,8 @@ class Artist {
         email: String?,
         score: String?,
         profilePicture: String?,
-        textureBackground: String?
+        textureBackground: String?,
+        friends: MutableList<String>?
     ) {
         this.artistId = artistId
         this.artistName = artistName
@@ -33,5 +35,6 @@ class Artist {
         this.score = score
         this.profilePicture = profilePicture
         this.textureBackground = textureBackground
+        this.friends = friends
     }
 }

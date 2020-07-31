@@ -60,7 +60,6 @@ class SongAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.View
                     .with(context)
                     .load(fromArtist?.textureBackground)
                     .placeholder(R.drawable.ic_pattern_background)
-                    .dontAnimate()
                     .into(textureBackground)
             }
         }

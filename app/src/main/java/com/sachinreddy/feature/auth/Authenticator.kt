@@ -10,6 +10,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import com.sachinreddy.feature.data.Artist
+import com.sachinreddy.feature.data.TestData
 
 object Authenticator {
     var currentUser: Artist? = null
@@ -28,7 +29,16 @@ object Authenticator {
     ) {
         val id = mAuth.uid!!
         currentUser =
-            Artist(id!!, artistName, username, email, "0", profilePicture, textureBackground)
+            Artist(
+                id!!,
+                artistName,
+                username,
+                email,
+                "0",
+                profilePicture,
+                textureBackground,
+                TestData.friends
+            )
         mDatabaseReference.child(id).setValue(currentUser)
     }
 
