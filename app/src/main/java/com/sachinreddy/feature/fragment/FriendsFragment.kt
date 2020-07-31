@@ -54,10 +54,10 @@ class FriendsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_friends, container, false)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupActionBar()
-        Authenticator.mDatabaseReference.addValueEventListener(mValueEventListener)
-        super.onCreate(savedInstanceState)
+        Authenticator.mDatabaseReference.addListenerForSingleValueEvent(mValueEventListener)
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
