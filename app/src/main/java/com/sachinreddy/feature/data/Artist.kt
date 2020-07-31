@@ -34,5 +34,4 @@ class Artist {
         this.profilePicture = profilePicture
         this.textureBackground = textureBackground
     }
-
 }

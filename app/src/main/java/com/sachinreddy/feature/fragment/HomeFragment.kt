@@ -25,11 +25,6 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-    override fun onStart() {
-        setupActionBar()
-        super.onStart()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main, menu)
     }
@@ -48,13 +43,14 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupActionBar()
+
         val adapter = SongAdapter(requireContext())
         songs_recycler_view.adapter = adapter
 
         // Songs go here
         adapter.songs = TestData.songs_
         adapter.notifyDataSetChanged()
-
         super.onViewCreated(view, savedInstanceState)
     }
 

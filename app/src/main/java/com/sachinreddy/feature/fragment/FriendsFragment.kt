@@ -9,11 +9,13 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.adapter.ArtistAdapter
+import com.sachinreddy.feature.auth.Authenticator
 import com.sachinreddy.feature.data.Artist
-import com.sachinreddy.feature.data.TestData
 import kotlinx.android.synthetic.main.activity_app.*
 import kotlinx.android.synthetic.main.fragment_friends.*
 
@@ -22,35 +24,48 @@ import kotlinx.android.synthetic.main.fragment_friends.*
  */
 class FriendsFragment : Fragment() {
     lateinit var adapter: ArtistAdapter
+    var artists: MutableList<Artist> = mutableListOf()
+
+    private val mValueEventListener = object : ValueEventListener {
+        override fun onCancelled(error: DatabaseError) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onDataChange(snapshot: DataSnapshot) {
+            artists.clear()
+            for (i in snapshot.children) {
+                i.getValue(Artist::class.java)?.let {
+                    if (it.artistId != Authenticator.currentUser?.artistId)
+                        artists.add(it)
+                }
+            }
+
+            adapter = ArtistAdapter(context!!, artists)
+            friends_recycler_view.adapter = adapter
+            adapter.notifyDataSetChanged()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val artists_: MutableList<Artist> =
-            mutableListOf(TestData.artist1, TestData.artist2, TestData.artist3)
-        adapter = ArtistAdapter(context!!, artists_)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_friends, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        friends_recycler_view.adapter = adapter
-        adapter.notifyDataSetChanged()
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun onStart() {
+    override fun onCreate(savedInstanceState: Bundle?) {
         setupActionBar()
-        super.onStart()
+        Authenticator.mDatabaseReference.addValueEventListener(mValueEventListener)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_friends, menu)
 
         val manager = requireContext().getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val searchItem = menu?.findItem(R.id.search_friends)
-        val searchView = searchItem?.actionView as SearchView
+        val searchArtist = menu?.findItem(R.id.search_friends)
+        val searchView = searchArtist?.actionView as SearchView
 
         searchView.setSearchableInfo(manager.getSearchableInfo(activity?.componentName))
         searchView.queryHint = "Search Artists"
@@ -59,7 +74,7 @@ class FriendsFragment : Fragment() {
             override fun onQueryTextSubmit(query: String): Boolean {
                 searchView.clearFocus()
                 searchView.setQuery("", false)
-                searchItem.collapseActionView()
+                searchArtist.collapseActionView()
                 return true
             }
 
@@ -74,9 +89,6 @@ class FriendsFragment : Fragment() {
         when (item.itemId) {
             android.R.id.home ->
                 validNavController?.navigate(R.id.action_FriendsFragment_to_HomeFragment)
-            R.id.add_friends ->
-                Snackbar.make(view!!, "Adding friend...", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
         }
         return true
     }

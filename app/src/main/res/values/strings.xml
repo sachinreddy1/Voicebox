@@ -45,4 +45,5 @@
     <string name="username">Username</string>
     <string name="edit_profile_picture">Edit profile picture</string>
     <string name="edit_background">Edit background</string>
+    <string name="add_artist">Add artist</string>
 </resources>
