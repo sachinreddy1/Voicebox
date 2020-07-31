@@ -17,6 +17,7 @@ import com.sachinreddy.feature.auth.Authenticator
 import com.sachinreddy.feature.data.Artist
 import kotlinx.android.synthetic.main.fragment_login.*
 
+
 class LoginFragment : Fragment() {
     private val mValueEventListener = object : ValueEventListener {
         override fun onCancelled(error: DatabaseError) {
@@ -24,24 +25,7 @@ class LoginFragment : Fragment() {
         }
 
         override fun onDataChange(snapshot: DataSnapshot) {
-            val artistId = snapshot.child("artistId").value.toString()
-            val artistName = snapshot.child("artistName").value.toString()
-            val username = snapshot.child("username").value.toString()
-            val email = snapshot.child("email").value.toString()
-            val score = snapshot.child("score").value.toString()
-            val profilePicture: String? = snapshot.child("profilePicture").value.toString()
-            val textureBackground: String? = snapshot.child("textureBackground").value.toString()
-
-            Authenticator.currentUser =
-                Artist(
-                    artistId,
-                    artistName,
-                    username,
-                    email,
-                    score,
-                    profilePicture,
-                    textureBackground
-                )
+            Authenticator.currentUser = snapshot.getValue(Artist::class.java)
         }
     }
 

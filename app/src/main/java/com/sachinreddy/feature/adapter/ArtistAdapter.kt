@@ -31,8 +31,10 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
             } else {
                 val filterPattern = constraint.toString().toLowerCase().trim()
                 for (item in artistsFull) {
-                    if (item.artistName.toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item)
+                    item.artistName?.let {
+                        if (it.toLowerCase().contains(filterPattern)) {
+                            filteredList.add(item)
+                        }
                     }
                 }
             }

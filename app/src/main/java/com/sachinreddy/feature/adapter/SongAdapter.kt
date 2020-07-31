@@ -8,8 +8,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.auth.Authenticator
+import com.sachinreddy.feature.data.Artist
 import com.sachinreddy.feature.data.Song
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -35,24 +39,37 @@ class SongAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.View
         private val profilePicture: CircleImageView = songView.findViewById(R.id.profilePicture)
         private val textureBackground: ImageView = songView.findViewById(R.id.textureBackground)
 
-        fun setSongDetails(song: Song) {
-            song.apply {
-                songTitle.text = songName
-                artists_.text = "${from.artistName} & ${Authenticator.currentUser?.artistName}"
+        var fromArtist: Artist? = null
+        private val mValueEventListener = object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                fromArtist = snapshot.getValue(Artist::class.java)
+                artists_.text =
+                    "${fromArtist?.artistName} & ${Authenticator.currentUser?.artistName}"
                 Glide
                     .with(context)
-                    .load(from.profilePicture)
+                    .load(fromArtist?.profilePicture)
                     .placeholder(R.drawable.ic_account_circle_light)
                     .dontAnimate()
                     .into(profilePicture)
 
                 Glide
                     .with(context)
-                    .load(from.textureBackground)
+                    .load(fromArtist?.textureBackground)
                     .placeholder(R.drawable.ic_pattern_background)
                     .dontAnimate()
                     .into(textureBackground)
             }
+        }
+
+        fun setSongDetails(song: Song) {
+            Authenticator.mDatabaseReference.child(song.from)
+                .addValueEventListener(mValueEventListener)
+
+            songTitle.text = song.songName
 
             favoriteButton.setOnClickListener {
                 favoriteButton.setImageResource(R.drawable.ic_star_filled)

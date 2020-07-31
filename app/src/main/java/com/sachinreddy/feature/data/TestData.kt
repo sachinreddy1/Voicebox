@@ -31,12 +31,12 @@ object TestData {
 
     val songs_: List<Song> = listOf(
         Song(
-            artist2,
+            "3jEGJpbdXmVLqJ2nwlDDvGgO4Q32",
             "Untitled",
             false
         ),
         Song(
-            artist3,
+            "0P1exfUcj0NiQYuEq2sdiru1ibn1",
             "Miss u bitch",
             false
         )
