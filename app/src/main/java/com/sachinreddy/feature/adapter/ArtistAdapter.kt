@@ -19,16 +19,14 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
     var artistsFull: MutableList<Artist> = ArrayList()
 
     init {
-        this.artists = artists_
-        this.artistsFull = ArrayList(artists_)
+        this.artists = artists_.toMutableList()
+        this.artistsFull = this.artists.toMutableList()
     }
 
     val artistFilter: Filter = object : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             var filteredList: MutableList<Artist> = ArrayList()
-            if (constraint == null || constraint.isEmpty()) {
-                filteredList.addAll(artistsFull)
-            } else {
+            if (constraint != null && constraint.isNotEmpty()) {
                 val filterPattern = constraint.toString().toLowerCase().trim()
                 for (item in artistsFull) {
                     item.artistName?.let {
@@ -38,6 +36,7 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
                     }
                 }
             }
+
             var results = FilterResults()
             results.values = filteredList
             return results

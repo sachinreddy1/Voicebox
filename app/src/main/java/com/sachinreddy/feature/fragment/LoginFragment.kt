@@ -29,6 +29,25 @@ class LoginFragment : Fragment() {
         }
     }
 
+    private val mFriendsValueEventListener = object : ValueEventListener {
+        override fun onCancelled(error: DatabaseError) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onDataChange(snapshot: DataSnapshot) {
+            Authenticator.apply {
+                currentFriends.clear()
+                currentUser?.friends?.let { artists ->
+                    for (i in artists) {
+                        snapshot.child(i).getValue(Artist::class.java)?.let { artist ->
+                            currentFriends.add(artist)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -68,6 +87,8 @@ class LoginFragment : Fragment() {
                         // Get artist data
                         mDatabaseReference.child(mAuth.uid!!)
                             .addValueEventListener(mValueEventListener)
+                        mDatabaseReference
+                            .addValueEventListener(mFriendsValueEventListener)
                         // Turn off progress bar
                         loginProgressBar.visibility = View.GONE
                         // Open the app

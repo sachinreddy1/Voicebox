@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.fragment_friends.*
  */
 class FriendsFragment : Fragment() {
     lateinit var adapter: ArtistAdapter
-    var artists: MutableList<Artist> = mutableListOf()
 
     private val mTotalValueEventListener = object : ValueEventListener {
         override fun onCancelled(error: DatabaseError) {
@@ -32,7 +31,7 @@ class FriendsFragment : Fragment() {
         }
 
         override fun onDataChange(snapshot: DataSnapshot) {
-            artists.clear()
+            var artists: MutableList<Artist> = mutableListOf()
             for (i in snapshot.children) {
                 i.getValue(Artist::class.java)?.let {
                     if (it.artistId != Authenticator.currentUser?.artistId)
@@ -40,29 +39,7 @@ class FriendsFragment : Fragment() {
                 }
             }
 
-            adapter.artists = artists
-            friends_recycler_view.adapter = adapter
-            adapter.notifyDataSetChanged()
-        }
-    }
-
-    private val mFriendsValueEventListener = object : ValueEventListener {
-        override fun onCancelled(error: DatabaseError) {
-            TODO("Not yet implemented")
-        }
-
-        override fun onDataChange(snapshot: DataSnapshot) {
-            artists.clear()
-            Authenticator.currentUser?.friends?.let {
-                for (i in it) {
-                    snapshot.child(i).getValue(Artist::class.java)?.let {
-                        artists.add(it)
-                    }
-                }
-            }
-
-            adapter.artists = artists
-            friends_recycler_view.adapter = adapter
+            adapter.artistsFull = artists
             adapter.notifyDataSetChanged()
         }
     }
@@ -77,8 +54,7 @@ class FriendsFragment : Fragment() {
 
     override fun onStart() {
         setupActionBar()
-        Authenticator.mDatabaseReference.addListenerForSingleValueEvent(mFriendsValueEventListener)
-        adapter = ArtistAdapter(context!!, artists)
+        adapter = ArtistAdapter(context!!, Authenticator.currentFriends)
         friends_recycler_view.adapter = adapter
         adapter.notifyDataSetChanged()
         super.onStart()
@@ -94,14 +70,32 @@ class FriendsFragment : Fragment() {
         searchView.setSearchableInfo(manager.getSearchableInfo(activity?.componentName))
         searchView.queryHint = "Search Artists"
 
+        searchView.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+            // Search was closed
+            override fun onViewDetachedFromWindow(v: View?) {
+                // Display current friends
+                adapter.artists = Authenticator.currentFriends.toMutableList()
+                adapter.artistsFull = Authenticator.currentFriends.toMutableList()
+                adapter.notifyDataSetChanged()
+            }
+
+            // Search was opened
+            override fun onViewAttachedToWindow(v: View?) {
+                // Get entire list of artist
+                Authenticator.mDatabaseReference.addListenerForSingleValueEvent(
+                    mTotalValueEventListener
+                )
+                // Clear the list of items
+                adapter.artists.clear()
+                adapter.notifyDataSetChanged()
+            }
+        })
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 searchView.clearFocus()
                 searchView.setQuery("", false)
                 searchArtist.collapseActionView()
-                Authenticator.mDatabaseReference.addListenerForSingleValueEvent(
-                    mFriendsValueEventListener
-                )
                 return true
             }
 
@@ -116,10 +110,6 @@ class FriendsFragment : Fragment() {
         when (item.itemId) {
             android.R.id.home ->
                 validNavController?.navigate(R.id.action_FriendsFragment_to_HomeFragment)
-            R.id.search_friends ->
-                Authenticator.mDatabaseReference.addListenerForSingleValueEvent(
-                    mTotalValueEventListener
-                )
         }
         return true
     }

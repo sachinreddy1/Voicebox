@@ -14,6 +14,8 @@ import com.sachinreddy.feature.data.TestData
 
 object Authenticator {
     var currentUser: Artist? = null
+    var currentFriends: MutableList<Artist> = mutableListOf()
+
     var mAuth: FirebaseAuth = Firebase.auth
     var mDatabase: FirebaseDatabase = Firebase.database
     var mDatabaseReference: DatabaseReference = mDatabase.getReference("artists")
