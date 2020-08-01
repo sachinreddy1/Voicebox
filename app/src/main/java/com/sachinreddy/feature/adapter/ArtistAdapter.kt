@@ -89,17 +89,34 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
                     action_button.apply {
                         setImageResource(R.drawable.ic_add)
                         setOnClickListener {
-                            Toast.makeText(context, "Adding a friend!", Toast.LENGTH_LONG).show()
+                            artist.artistId?.let { id ->
+                                Authenticator.currentUser?.let { artist ->
+                                    artist.friends?.add(id)
+                                }
+                            }
+                            Authenticator.apply {
+                                currentUser?.let { artist ->
+                                    mDatabaseReference.child(artist.artistId!!)
+                                        .setValue(currentUser)
+                                        .addOnSuccessListener {
+                                            Toast.makeText(
+                                                context,
+                                                "Added a friend!",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                            setImageResource(R.drawable.ic_navigate_next_dark)
+                                        }
+                                }
+                            }
                         }
                     }
                 }
             }
 
-
             Glide
                 .with(context)
                 .load(artist.profilePicture)
-                .placeholder(R.drawable.ic_account_circle_light)
+                .placeholder(R.drawable.doggi_target)
                 .dontAnimate()
                 .into(profilePicture)
 
