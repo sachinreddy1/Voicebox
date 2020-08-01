@@ -85,14 +85,13 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
 
                         android:orientation="vertical"
 
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/verticalGuideline2"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -125,6 +124,7 @@
                                 android:fontFamily="@font/roboto_light"
                                 android:text="username"
                                 android:textColor="@color/whitesmoke"
+                                android:maxWidth="80dp"
                                 android:textSize="16dp" />
 
                             <TextView
@@ -153,29 +153,25 @@
 
                     </LinearLayout>
 
-                    <ImageView
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/action_button"
 
-                        android:layout_marginEnd="12dp"
                         android:fontFamily="@font/roboto_italic"
-                        android:minWidth="28dp"
-                        android:minHeight="28dp"
+                        app:fabSize="mini"
 
-                        android:background="@drawable/round_border_dark"
+                        android:src="@drawable/ic_add"
+                        android:layout_marginEnd="16dp"
 
-                        android:src="@drawable/ic_navigate_next"
+                        android:visibility="visible"
+                        android:backgroundTint="@color/colorPrimary"
 
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/verticalGuideline2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.8" />
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -188,7 +184,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.3" />
+                app:layout_constraintGuide_begin="114dp" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

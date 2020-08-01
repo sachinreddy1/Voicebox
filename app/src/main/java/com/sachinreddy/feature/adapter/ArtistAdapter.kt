@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.auth.Authenticator
 import com.sachinreddy.feature.data.Artist
@@ -67,11 +69,32 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
         private val score: TextView = artistView.findViewById(R.id.score)
         private val profilePicture: CircleImageView = artistView.findViewById(R.id.profilePicture)
         private val textureBackground: ImageView = artistView.findViewById(R.id.textureBackground)
+        private val action_button: FloatingActionButton =
+            artistView.findViewById(R.id.action_button)
 
         fun setArtistDetails(artist: Artist) {
             artistName.text = artist.artistName
             username.text = artist.username
             score.text = artist.score
+
+            Authenticator.currentUser?.friends?.let {
+                if (it.contains(artist.artistId)) {
+                    action_button.apply {
+                        setImageResource(R.drawable.ic_navigate_next_dark)
+                        setOnClickListener {
+                            Toast.makeText(context, "Making a song!", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                } else {
+                    action_button.apply {
+                        setImageResource(R.drawable.ic_add)
+                        setOnClickListener {
+                            Toast.makeText(context, "Adding a friend!", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+            }
+
 
             Glide
                 .with(context)
