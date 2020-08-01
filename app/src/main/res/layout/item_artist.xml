@@ -50,6 +50,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <ImageButton
+                    android:id="@+id/close_button"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+
+                    android:background="@drawable/round_button"
+                    android:src="@drawable/ic_close"
+                    android:visibility="visible"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -171,6 +183,20 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <ImageView
+                        android:id="@+id/navigate_next"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:src="@drawable/ic_navigate_next"
+                        android:layout_marginEnd="16dp"
+
+                        android:visibility="visible"
+                        android:background="@drawable/round_border_dark"
+
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

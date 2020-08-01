@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -69,8 +69,11 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
         private val score: TextView = artistView.findViewById(R.id.score)
         private val profilePicture: CircleImageView = artistView.findViewById(R.id.profilePicture)
         private val textureBackground: ImageView = artistView.findViewById(R.id.textureBackground)
+
         private val action_button: FloatingActionButton =
             artistView.findViewById(R.id.action_button)
+        private val close_button: ImageButton = artistView.findViewById(R.id.close_button)
+        private val navigate_next: ImageView = artistView.findViewById(R.id.navigate_next)
 
         fun setArtistDetails(artist: Artist) {
             artistName.text = artist.artistName
@@ -79,8 +82,10 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
 
             Authenticator.currentUser?.friends?.let {
                 if (it.contains(artist.artistId)) {
-                    action_button.apply {
-                        setImageResource(R.drawable.ic_close)
+                    action_button.visibility = View.GONE
+                    navigate_next.visibility = View.VISIBLE
+                    close_button.apply {
+                        visibility = View.VISIBLE
                         setOnClickListener {
                             artist.artistId?.let { id ->
                                 Authenticator.currentUser?.let { artist ->
@@ -92,12 +97,6 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
                                     mDatabaseReference.child(artist.artistId!!)
                                         .setValue(currentUser)
                                         .addOnSuccessListener {
-                                            Toast.makeText(
-                                                context,
-                                                "Removed a friend!",
-                                                Toast.LENGTH_LONG
-                                            ).show()
-                                            setImageResource(R.drawable.ic_add)
                                             notifyDataSetChanged()
                                         }
                                 }
@@ -105,8 +104,10 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
                         }
                     }
                 } else {
+                    close_button.visibility = View.GONE
+                    navigate_next.visibility = View.GONE
                     action_button.apply {
-                        setImageResource(R.drawable.ic_add)
+                        visibility = View.VISIBLE
                         setOnClickListener {
                             artist.artistId?.let { id ->
                                 Authenticator.currentUser?.let { artist ->
@@ -118,12 +119,6 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
                                     mDatabaseReference.child(artist.artistId!!)
                                         .setValue(currentUser)
                                         .addOnSuccessListener {
-                                            Toast.makeText(
-                                                context,
-                                                "Added a friend!",
-                                                Toast.LENGTH_LONG
-                                            ).show()
-                                            setImageResource(R.drawable.ic_close)
                                             notifyDataSetChanged()
                                         }
                                 }
