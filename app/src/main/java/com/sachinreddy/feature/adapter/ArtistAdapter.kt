@@ -80,9 +80,28 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
             Authenticator.currentUser?.friends?.let {
                 if (it.contains(artist.artistId)) {
                     action_button.apply {
-                        setImageResource(R.drawable.ic_navigate_next_dark)
+                        setImageResource(R.drawable.ic_close)
                         setOnClickListener {
-                            Toast.makeText(context, "Making a song!", Toast.LENGTH_LONG).show()
+                            artist.artistId?.let { id ->
+                                Authenticator.currentUser?.let { artist ->
+                                    artist.friends?.remove(id)
+                                }
+                            }
+                            Authenticator.apply {
+                                currentUser?.let { artist ->
+                                    mDatabaseReference.child(artist.artistId!!)
+                                        .setValue(currentUser)
+                                        .addOnSuccessListener {
+                                            Toast.makeText(
+                                                context,
+                                                "Removed a friend!",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                            setImageResource(R.drawable.ic_add)
+                                            notifyDataSetChanged()
+                                        }
+                                }
+                            }
                         }
                     }
                 } else {
@@ -104,7 +123,8 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
                                                 "Added a friend!",
                                                 Toast.LENGTH_LONG
                                             ).show()
-                                            setImageResource(R.drawable.ic_navigate_next_dark)
+                                            setImageResource(R.drawable.ic_close)
+                                            notifyDataSetChanged()
                                         }
                                 }
                             }
