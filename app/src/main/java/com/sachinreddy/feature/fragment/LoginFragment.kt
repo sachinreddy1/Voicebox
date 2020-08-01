@@ -44,6 +44,7 @@ class LoginFragment : Fragment() {
                         }
                     }
                 }
+                currentFriends.sortWith(compareBy<Artist> { it.artistName }.thenBy { it.username })
             }
         }
     }
