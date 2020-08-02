@@ -57,6 +57,14 @@ class FriendsFragment : Fragment() {
         adapter = ArtistAdapter(context!!, Authenticator.currentFriends)
         friends_recycler_view.adapter = adapter
         adapter.notifyDataSetChanged()
+
+        swipe_refresh.setOnRefreshListener {
+            adapter.artists = Authenticator.currentFriends.toMutableList()
+            adapter.artistsFull = Authenticator.currentFriends.toMutableList()
+            adapter.notifyDataSetChanged()
+            swipe_refresh.isRefreshing = false
+        }
+
         super.onStart()
     }
 
@@ -74,9 +82,6 @@ class FriendsFragment : Fragment() {
             // Search was closed
             override fun onViewDetachedFromWindow(v: View?) {
                 // Display current friends
-//                adapter.artists = Authenticator.currentFriends.toMutableList()
-//                adapter.artistsFull.clear()
-//                adapter.notifyDataSetChanged()
             }
 
             // Search was opened
@@ -86,7 +91,6 @@ class FriendsFragment : Fragment() {
                     mTotalValueEventListener
                 )
                 // Clear the list of items
-//                adapter.artists.clear()
                 adapter.notifyDataSetChanged()
             }
         })

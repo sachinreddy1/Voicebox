@@ -61,9 +61,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx:19.3.1'
     implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'
 
-    //Picasso
+    //Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
+    // Circular ImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    // Refresh Layout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 }

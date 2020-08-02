@@ -4,10 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -61,7 +59,7 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
     override fun getItemCount(): Int = artists.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-        (holder as ArtistViewHolder).setArtistDetails(artists[position])
+        (holder as ArtistViewHolder).setArtistDetails(artists[position], position)
 
     internal inner class ArtistViewHolder(artistView: View) : RecyclerView.ViewHolder(artistView) {
         private val artistName: TextView = artistView.findViewById(R.id.artistName)
@@ -74,11 +72,16 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
             artistView.findViewById(R.id.action_button)
         private val close_button: ImageButton = artistView.findViewById(R.id.close_button)
         private val navigate_next: ImageView = artistView.findViewById(R.id.navigate_next)
+        private val artist_card: CardView = artistView.findViewById(R.id.artist_card)
 
-        fun setArtistDetails(artist: Artist) {
+        fun setArtistDetails(artist: Artist, position: Int) {
             artistName.text = artist.artistName
             username.text = artist.username
             score.text = artist.score
+
+            artist_card.setOnClickListener {
+                Toast.makeText(context, "Making a song!", Toast.LENGTH_LONG).show()
+            }
 
             Authenticator.currentUser?.friends?.let {
                 if (it.contains(artist.artistId)) {
@@ -97,7 +100,7 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
                                     mDatabaseReference.child(artist.artistId!!)
                                         .setValue(currentUser)
                                         .addOnSuccessListener {
-                                            notifyDataSetChanged()
+                                            notifyItemChanged(position)
                                         }
                                 }
                             }
@@ -119,7 +122,7 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
                                     mDatabaseReference.child(artist.artistId!!)
                                         .setValue(currentUser)
                                         .addOnSuccessListener {
-                                            notifyDataSetChanged()
+                                            notifyItemChanged(position)
                                         }
                                 }
                             }
