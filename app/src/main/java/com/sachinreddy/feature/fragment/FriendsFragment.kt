@@ -52,11 +52,10 @@ class FriendsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_friends, container, false)
     }
 
-    override fun onStart() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupActionBar()
         adapter = ArtistAdapter(context!!, Authenticator.currentFriends)
         friends_recycler_view.adapter = adapter
-        adapter.notifyDataSetChanged()
 
         swipe_refresh.setOnRefreshListener {
             adapter.artists = Authenticator.currentFriends.toMutableList()
@@ -64,8 +63,7 @@ class FriendsFragment : Fragment() {
             adapter.notifyDataSetChanged()
             swipe_refresh.isRefreshing = false
         }
-
-        super.onStart()
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

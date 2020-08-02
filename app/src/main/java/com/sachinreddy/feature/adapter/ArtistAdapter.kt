@@ -80,7 +80,7 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
             score.text = artist.score
 
             artist_card.setOnClickListener {
-                Toast.makeText(context, "Making a song!", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Making a song!", Toast.LENGTH_SHORT).show()
             }
 
             Authenticator.currentUser?.friends?.let {
