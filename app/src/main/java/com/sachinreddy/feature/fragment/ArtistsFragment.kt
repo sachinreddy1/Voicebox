@@ -17,14 +17,14 @@ import com.sachinreddy.feature.adapter.ArtistAdapter
 import com.sachinreddy.feature.auth.Authenticator
 import com.sachinreddy.feature.data.Artist
 import kotlinx.android.synthetic.main.activity_app.*
-import kotlinx.android.synthetic.main.fragment_friends.*
+import kotlinx.android.synthetic.main.fragment_artists.*
 
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FriendsFragment : Fragment() {
-    lateinit var adapter: ArtistAdapter
+class ArtistsFragment : Fragment() {
+    lateinit var artistsAdapter: ArtistAdapter
 
     private val mTotalValueEventListener = object : ValueEventListener {
         override fun onCancelled(error: DatabaseError) {
@@ -40,7 +40,7 @@ class FriendsFragment : Fragment() {
                 }
             }
 
-            adapter.artistsFull = artists
+            artistsAdapter.artistsFull = artists
         }
     }
 
@@ -49,18 +49,18 @@ class FriendsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_friends, container, false)
+        return inflater.inflate(R.layout.fragment_artists, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupActionBar()
-        adapter = ArtistAdapter(context!!, Authenticator.currentFriends)
-        friends_recycler_view.adapter = adapter
+        artistsAdapter = ArtistAdapter(context!!, Authenticator.currentFriends)
+        friends_recycler_view.adapter = artistsAdapter
 
         swipe_refresh.setOnRefreshListener {
-            adapter.artists = Authenticator.currentFriends.toMutableList()
-            adapter.artistsFull = Authenticator.currentFriends.toMutableList()
-            adapter.notifyDataSetChanged()
+            artistsAdapter.artists = Authenticator.currentFriends.toMutableList()
+            artistsAdapter.artistsFull = Authenticator.currentFriends.toMutableList()
+            artistsAdapter.notifyDataSetChanged()
             swipe_refresh.isRefreshing = false
         }
         super.onViewCreated(view, savedInstanceState)
@@ -89,7 +89,7 @@ class FriendsFragment : Fragment() {
                     mTotalValueEventListener
                 )
                 // Clear the list of items
-                adapter.notifyDataSetChanged()
+                artistsAdapter.notifyDataSetChanged()
             }
         })
 
@@ -101,7 +101,7 @@ class FriendsFragment : Fragment() {
 
             // Filter artists based on query
             override fun onQueryTextChange(newText: String): Boolean {
-                adapter.artistFilter.filter(newText)
+                artistsAdapter.artistFilter.filter(newText)
                 return false
             }
         })

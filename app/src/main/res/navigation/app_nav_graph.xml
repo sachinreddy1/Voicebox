@@ -36,9 +36,9 @@
 
     <fragment
         android:id="@+id/FriendsFragment"
-        android:name="com.sachinreddy.feature.fragment.FriendsFragment"
+        android:name="com.sachinreddy.feature.fragment.ArtistsFragment"
         android:label="@string/friends_fragment_label"
-        tools:layout="@layout/fragment_friends">
+        tools:layout="@layout/fragment_artists">
         <action
             android:id="@+id/action_FriendsFragment_to_HomeFragment"
             app:destination="@id/HomeFragment"
