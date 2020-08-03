@@ -26,7 +26,7 @@
             android:layout_height="match_parent"
             android:background="@color/cardBackground">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/profilePicture"
                 android:layout_width="84dp"
                 android:layout_height="84dp"

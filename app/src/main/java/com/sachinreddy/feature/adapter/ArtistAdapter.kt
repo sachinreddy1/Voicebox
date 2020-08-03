@@ -9,10 +9,10 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.mikhaellopez.circularimageview.CircularImageView
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.auth.Authenticator
 import com.sachinreddy.feature.data.Artist
-import de.hdodenhof.circleimageview.CircleImageView
 
 class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -65,7 +65,7 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
         private val artistName: TextView = artistView.findViewById(R.id.artistName)
         private val username: TextView = artistView.findViewById(R.id.username)
         private val score: TextView = artistView.findViewById(R.id.score)
-        private val profilePicture: CircleImageView = artistView.findViewById(R.id.profilePicture)
+        private val profilePicture: CircularImageView = artistView.findViewById(R.id.profilePicture)
         private val textureBackground: ImageView = artistView.findViewById(R.id.textureBackground)
 
         private val action_button: FloatingActionButton =
@@ -135,7 +135,6 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
                 .with(context)
                 .load(artist.profilePicture)
                 .placeholder(R.drawable.doggi_target)
-                .dontAnimate()
                 .into(profilePicture)
 
             Glide

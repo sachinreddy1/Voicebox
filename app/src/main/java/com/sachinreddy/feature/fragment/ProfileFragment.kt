@@ -44,7 +44,6 @@ class ProfileFragment : Fragment() {
                 .with(this)
                 .load(it)
                 .placeholder(R.drawable.doggi_target)
-                .dontAnimate()
                 .into(profilePicture)
         }
         // Setup texture background

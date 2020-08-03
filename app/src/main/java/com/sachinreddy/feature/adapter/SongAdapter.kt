@@ -11,12 +11,11 @@ import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.mikhaellopez.circularimageview.CircularImageView
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.auth.Authenticator
 import com.sachinreddy.feature.data.Artist
 import com.sachinreddy.feature.data.Song
-import de.hdodenhof.circleimageview.CircleImageView
-
 
 class SongAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var songs: List<Song> = listOf()
@@ -36,7 +35,7 @@ class SongAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.View
         private val artists_: TextView = songView.findViewById(R.id.artists)
         private val favoriteButton: ImageView = songView.findViewById(R.id.favoriteButton)
         private val playButton: ImageView = songView.findViewById(R.id.playButton)
-        private val profilePicture: CircleImageView = songView.findViewById(R.id.profilePicture)
+        private val profilePicture: CircularImageView = songView.findViewById(R.id.profilePicture)
         private val textureBackground: ImageView = songView.findViewById(R.id.textureBackground)
 
         var fromArtist: Artist? = null
@@ -53,7 +52,6 @@ class SongAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.View
                     .with(context)
                     .load(fromArtist?.profilePicture)
                     .placeholder(R.drawable.ic_account_circle_light)
-                    .dontAnimate()
                     .into(profilePicture)
 
                 Glide

@@ -50,15 +50,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <com.mikhaellopez.circularimageview.CircularImageView
                     android:id="@+id/profilePicture"
                     android:layout_width="116dp"
                     android:layout_height="116dp"
 
                     android:src="@drawable/doggi_target"
                     android:layout_gravity="center"
-                    app:civ_border_color="@color/colorBackground"
-                    app:civ_border_width="8dp"
 
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
