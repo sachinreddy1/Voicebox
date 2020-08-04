@@ -26,6 +26,11 @@ class LoginFragment : Fragment() {
 
         override fun onDataChange(snapshot: DataSnapshot) {
             Authenticator.currentUser = snapshot.getValue(Artist::class.java)
+            // Turn off progress bar
+            loginProgressBar.visibility = View.GONE
+            // Open the app
+            val intent = Intent(context, AppActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -87,14 +92,9 @@ class LoginFragment : Fragment() {
                     .addOnSuccessListener {
                         // Get artist data
                         mDatabaseReference.child(mAuth.uid!!)
-                            .addValueEventListener(mValueEventListener)
+                            .addListenerForSingleValueEvent(mValueEventListener)
                         mDatabaseReference
                             .addValueEventListener(mFriendsValueEventListener)
-                        // Turn off progress bar
-                        loginProgressBar.visibility = View.GONE
-                        // Open the app
-                        val intent = Intent(context, AppActivity::class.java)
-                        startActivity(intent)
                     }
                     .addOnFailureListener {
                         // Turn off progress bar
