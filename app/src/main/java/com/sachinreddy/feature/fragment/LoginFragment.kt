@@ -10,13 +10,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.activity.AppActivity
 import com.sachinreddy.feature.auth.Authenticator
-import com.sachinreddy.feature.data.Artist
 import com.sachinreddy.feature.injection.ApplicationComponent
 import com.sachinreddy.feature.injection.DaggerApplicationComponent
 import com.sachinreddy.feature.modules.ApplicationModule
@@ -29,21 +25,6 @@ class LoginFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val authViewModel by activityViewModels<AuthViewModel> { viewModelFactory }
-
-    private val mValueEventListener = object : ValueEventListener {
-        override fun onCancelled(error: DatabaseError) {
-            TODO("Not yet implemented")
-        }
-
-        override fun onDataChange(snapshot: DataSnapshot) {
-            Authenticator.currentUser = snapshot.getValue(Artist::class.java)
-            // Turn off progress bar
-            loginProgressBar.visibility = View.GONE
-            // Open the app
-            val intent = Intent(context, AppActivity::class.java)
-            startActivity(intent)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -93,7 +74,14 @@ class LoginFragment : Fragment() {
                     .addOnSuccessListener {
                         // Get artist data
                         mDatabaseReference.child(mAuth.uid!!)
-                            .addListenerForSingleValueEvent(mValueEventListener)
+                            .addListenerForSingleValueEvent(authViewModel.mValueEventListener)
+                            .also {
+                                // Turn off progress bar
+                                loginProgressBar.visibility = View.GONE
+                                // Open the app
+                                val intent = Intent(context, AppActivity::class.java)
+                                startActivity(intent)
+                            }
                         mDatabaseReference
                             .addValueEventListener(authViewModel.mFriendsValueEventListener)
                     }

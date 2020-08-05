@@ -11,7 +11,6 @@ import javax.inject.Singleton
 
 @Singleton
 class AuthViewModel @Inject constructor() : ViewModel() {
-
     val mFriendsValueEventListener = object : ValueEventListener {
         override fun onCancelled(error: DatabaseError) {
             TODO("Not yet implemented")
@@ -29,6 +28,16 @@ class AuthViewModel @Inject constructor() : ViewModel() {
                 }
                 currentFriends.sortWith(compareBy<Artist> { it.artistName }.thenBy { it.username })
             }
+        }
+    }
+
+    val mValueEventListener = object : ValueEventListener {
+        override fun onCancelled(error: DatabaseError) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onDataChange(snapshot: DataSnapshot) {
+            Authenticator.currentUser = snapshot.getValue(Artist::class.java)
         }
     }
 }

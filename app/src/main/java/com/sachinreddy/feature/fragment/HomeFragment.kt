@@ -4,25 +4,43 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.adapter.SongAdapter
 import com.sachinreddy.feature.data.TestData
+import com.sachinreddy.feature.injection.ApplicationComponent
+import com.sachinreddy.feature.injection.DaggerApplicationComponent
+import com.sachinreddy.feature.modules.ApplicationModule
+import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class HomeFragment : Fragment() {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val appViewModel by activityViewModels<AppViewModel> { viewModelFactory }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_home, container, false)
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        val component: ApplicationComponent by lazy {
+            DaggerApplicationComponent.builder()
+                .applicationModule(ApplicationModule(activity?.application!!))
+                .build()
+        }
+        component.inject(this)
+        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

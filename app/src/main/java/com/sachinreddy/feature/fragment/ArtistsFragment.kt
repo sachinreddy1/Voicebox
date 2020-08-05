@@ -7,6 +7,8 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.database.DataSnapshot
@@ -16,14 +18,23 @@ import com.sachinreddy.feature.R
 import com.sachinreddy.feature.adapter.ArtistAdapter
 import com.sachinreddy.feature.auth.Authenticator
 import com.sachinreddy.feature.data.Artist
+import com.sachinreddy.feature.injection.ApplicationComponent
+import com.sachinreddy.feature.injection.DaggerApplicationComponent
+import com.sachinreddy.feature.modules.ApplicationModule
+import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
 import kotlinx.android.synthetic.main.fragment_artists.*
+import javax.inject.Inject
 
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class ArtistsFragment : Fragment() {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val appViewModel by activityViewModels<AppViewModel> { viewModelFactory }
+
     lateinit var artistsAdapter: ArtistAdapter
 
     private val mTotalValueEventListener = object : ValueEventListener {
@@ -52,9 +63,19 @@ class ArtistsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_artists, container, false)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        val component: ApplicationComponent by lazy {
+            DaggerApplicationComponent.builder()
+                .applicationModule(ApplicationModule(activity?.application!!))
+                .build()
+        }
+        component.inject(this)
+        super.onActivityCreated(savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupActionBar()
-        artistsAdapter = ArtistAdapter(context!!, Authenticator.currentFriends)
+        artistsAdapter = ArtistAdapter(requireContext(), Authenticator.currentFriends)
         friends_recycler_view.adapter = artistsAdapter
 
         swipe_refresh.setOnRefreshListener {
