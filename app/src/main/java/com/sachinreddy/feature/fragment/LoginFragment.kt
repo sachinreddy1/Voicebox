@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.DataSnapshot
@@ -15,10 +17,19 @@ import com.sachinreddy.feature.R
 import com.sachinreddy.feature.activity.AppActivity
 import com.sachinreddy.feature.auth.Authenticator
 import com.sachinreddy.feature.data.Artist
+import com.sachinreddy.feature.injection.ApplicationComponent
+import com.sachinreddy.feature.injection.DaggerApplicationComponent
+import com.sachinreddy.feature.modules.ApplicationModule
+import com.sachinreddy.feature.viewModel.AuthViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
+import javax.inject.Inject
 
 
 class LoginFragment : Fragment() {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val authViewModel by activityViewModels<AuthViewModel> { viewModelFactory }
+
     private val mValueEventListener = object : ValueEventListener {
         override fun onCancelled(error: DatabaseError) {
             TODO("Not yet implemented")
@@ -34,31 +45,21 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private val mFriendsValueEventListener = object : ValueEventListener {
-        override fun onCancelled(error: DatabaseError) {
-            TODO("Not yet implemented")
-        }
-
-        override fun onDataChange(snapshot: DataSnapshot) {
-            Authenticator.apply {
-                currentFriends.clear()
-                currentUser?.friends?.let { artists ->
-                    for (i in artists) {
-                        snapshot.child(i).getValue(Artist::class.java)?.let { artist ->
-                            currentFriends.add(artist)
-                        }
-                    }
-                }
-                currentFriends.sortWith(compareBy<Artist> { it.artistName }.thenBy { it.username })
-            }
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_login, container, false)
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        val component: ApplicationComponent by lazy {
+            DaggerApplicationComponent.builder()
+                .applicationModule(ApplicationModule(activity?.application!!))
+                .build()
+        }
+        component.inject(this)
+        super.onActivityCreated(savedInstanceState)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -80,7 +81,7 @@ class LoginFragment : Fragment() {
                 email
             ).matches()
         ) {
-            Snackbar.make(view!!, "Sign in problem.", Snackbar.LENGTH_LONG)
+            Snackbar.make(requireView(), "Sign in problem.", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         } else {
             // Turn on progress bar
@@ -94,13 +95,13 @@ class LoginFragment : Fragment() {
                         mDatabaseReference.child(mAuth.uid!!)
                             .addListenerForSingleValueEvent(mValueEventListener)
                         mDatabaseReference
-                            .addValueEventListener(mFriendsValueEventListener)
+                            .addValueEventListener(authViewModel.mFriendsValueEventListener)
                     }
                     .addOnFailureListener {
                         // Turn off progress bar
                         loginProgressBar.visibility = View.GONE
 
-                        Snackbar.make(view!!, "Sign in problem.", Snackbar.LENGTH_LONG)
+                        Snackbar.make(requireView(), "Sign in problem.", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show()
                     }
             }

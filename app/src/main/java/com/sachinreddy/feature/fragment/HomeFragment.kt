@@ -36,7 +36,7 @@ class HomeFragment : Fragment() {
             R.id.action_start_collab ->
                 validNavController?.navigate(R.id.action_homeFragment_to_friendsFragment)
             R.id.action_solo_session ->
-                Snackbar.make(view!!, "Starting solo session...", Snackbar.LENGTH_LONG)
+                Snackbar.make(requireView(), "Starting solo session...", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
         return true

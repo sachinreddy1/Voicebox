@@ -101,7 +101,7 @@ class RegisterFragment : Fragment() {
                 // Turn off progress bar
                 registerProgressBar.visibility = View.GONE
 
-                Snackbar.make(view!!, "Failed to register user.", Snackbar.LENGTH_LONG)
+                Snackbar.make(requireView(), "Failed to register user.", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }
     }

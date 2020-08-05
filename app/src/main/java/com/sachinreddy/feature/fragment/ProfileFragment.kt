@@ -100,7 +100,7 @@ class ProfileFragment : Fragment() {
             android.R.id.home ->
                 validNavController?.navigate(R.id.action_ProfileFragment_to_HomeFragment)
             R.id.action_about ->
-                Snackbar.make(view!!, "Opening settings...", Snackbar.LENGTH_LONG)
+                Snackbar.make(requireView(), "Opening settings...", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             R.id.action_logout -> {
                 Authenticator.logout()
@@ -156,7 +156,11 @@ class ProfileFragment : Fragment() {
                         profileProgressBar.visibility = View.GONE
                         uploadImage = false
 
-                        Snackbar.make(view!!, "File upload successful!", Snackbar.LENGTH_LONG)
+                        Snackbar.make(
+                            requireView(),
+                            "File upload successful!",
+                            Snackbar.LENGTH_LONG
+                        )
                             .setAction("Action", null).show()
                     }
                     .addOnFailureListener {
@@ -165,7 +169,7 @@ class ProfileFragment : Fragment() {
                         profileProgressBar.visibility = View.GONE
                         uploadImage = false
 
-                        Snackbar.make(view!!, "File upload failed.", Snackbar.LENGTH_LONG)
+                        Snackbar.make(requireView(), "File upload failed.", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show()
                     }
                     .addOnProgressListener {
@@ -194,7 +198,8 @@ class ProfileFragment : Fragment() {
         if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE_REQUEST && data != null && data.data != null) {
             filePath = data.data!!
             try {
-                val bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, filePath)
+                val bitmap =
+                    MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, filePath)
                 // Set the bitmap to either profile picture or the background
                 if (!uploadingTexture) {
                     profilePicture.scaleType = ImageView.ScaleType.CENTER_CROP

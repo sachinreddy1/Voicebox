@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "59578594379",
+    "firebase_url": "https://collab-c4a6e.firebaseio.com",
+    "project_id": "collab-c4a6e",
+    "storage_bucket": "collab-c4a6e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:59578594379:android:d9a8cd99e057cca70cc9ce",
+        "android_client_info": {
+          "package_name": "com.sachinreddy.feature"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "59578594379-7klb0opmovquteos5pt23j57mthf9dtr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sachinreddy.feature",
+            "certificate_hash": "853d22e25dae4fcd43b0820b7221f7b905fb7ffb"
+          }
+        },
+        {
+          "client_id": "59578594379-i4ijjpqj8nb9vj4oasb36su6hkkek788.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwrvltbLsxepCkxTxtZI5b_vAHpbGb1P8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "59578594379-i4ijjpqj8nb9vj4oasb36su6hkkek788.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
