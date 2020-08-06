@@ -18,9 +18,7 @@ import com.sachinreddy.feature.R
 import com.sachinreddy.feature.adapter.ArtistAdapter
 import com.sachinreddy.feature.auth.Authenticator
 import com.sachinreddy.feature.data.Artist
-import com.sachinreddy.feature.injection.ApplicationComponent
-import com.sachinreddy.feature.injection.DaggerApplicationComponent
-import com.sachinreddy.feature.modules.ApplicationModule
+import com.sachinreddy.feature.injection.appComponent
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
 import kotlinx.android.synthetic.main.fragment_artists.*
@@ -64,12 +62,7 @@ class ArtistsFragment : Fragment() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        val component: ApplicationComponent by lazy {
-            DaggerApplicationComponent.builder()
-                .applicationModule(ApplicationModule(activity?.application!!))
-                .build()
-        }
-        component.inject(this)
+        appComponent!!.inject(this)
         super.onActivityCreated(savedInstanceState)
     }
 

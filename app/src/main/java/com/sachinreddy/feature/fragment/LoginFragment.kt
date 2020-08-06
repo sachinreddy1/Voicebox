@@ -13,9 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.activity.AppActivity
 import com.sachinreddy.feature.auth.Authenticator
-import com.sachinreddy.feature.injection.ApplicationComponent
-import com.sachinreddy.feature.injection.DaggerApplicationComponent
-import com.sachinreddy.feature.modules.ApplicationModule
+import com.sachinreddy.feature.injection.appComponent
 import com.sachinreddy.feature.viewModel.AuthViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
@@ -33,12 +31,7 @@ class LoginFragment : Fragment() {
     ): View? = inflater.inflate(R.layout.fragment_login, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        val component: ApplicationComponent by lazy {
-            DaggerApplicationComponent.builder()
-                .applicationModule(ApplicationModule(activity?.application!!))
-                .build()
-        }
-        component.inject(this)
+        appComponent!!.inject(this)
         super.onActivityCreated(savedInstanceState)
     }
 

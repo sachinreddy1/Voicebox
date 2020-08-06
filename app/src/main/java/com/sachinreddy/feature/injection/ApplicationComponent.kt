@@ -18,6 +18,7 @@ import javax.inject.Singleton
     ]
 )
 interface ApplicationComponent {
+    fun inject(target: DependencyApp)
     fun inject(target: AuthActivity)
     fun inject(target: AppActivity)
     fun inject(target: LoginFragment)

@@ -26,7 +26,6 @@ class ApplicationModule(private val application: Application) {
     @Singleton
     fun connectivityManager() =
         application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
     @Provides
     @Singleton
     fun vibrator() = application.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
