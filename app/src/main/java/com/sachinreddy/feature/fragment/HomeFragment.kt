@@ -55,7 +55,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupActionBar()
-        println(appViewModel.test)
 
         val adapter = SongAdapter(requireContext())
         songs_recycler_view.adapter = adapter

@@ -11,13 +11,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.adapter.ArtistAdapter
 import com.sachinreddy.feature.auth.Authenticator
-import com.sachinreddy.feature.data.Artist
 import com.sachinreddy.feature.injection.appComponent
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
@@ -34,24 +30,6 @@ class ArtistsFragment : Fragment() {
     private val appViewModel by activityViewModels<AppViewModel> { viewModelFactory }
 
     lateinit var artistsAdapter: ArtistAdapter
-
-    private val mTotalValueEventListener = object : ValueEventListener {
-        override fun onCancelled(error: DatabaseError) {
-            TODO("Not yet implemented")
-        }
-
-        override fun onDataChange(snapshot: DataSnapshot) {
-            var artists: MutableList<Artist> = mutableListOf()
-            for (i in snapshot.children) {
-                i.getValue(Artist::class.java)?.let {
-                    if (it.artistId != Authenticator.currentUser?.artistId)
-                        artists.add(it)
-                }
-            }
-
-            artistsAdapter.artistsFull = artists
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -99,9 +77,7 @@ class ArtistsFragment : Fragment() {
             // Search was opened
             override fun onViewAttachedToWindow(v: View?) {
                 // Get entire list of artist
-                Authenticator.mDatabaseReference.addListenerForSingleValueEvent(
-                    mTotalValueEventListener
-                )
+                artistsAdapter.artistsFull = Authenticator.totalFriends
                 // Clear the list of items
                 artistsAdapter.notifyDataSetChanged()
             }
