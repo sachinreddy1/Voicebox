@@ -81,13 +81,17 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
             score.text = artist.score
 
             artist_card.setOnClickListener {
-                Toast.makeText(context, "Making a song!", Toast.LENGTH_SHORT).show()
                 artist.artistId?.let { id ->
                     Authenticator.currentUser?.let {
                         val song = Song(it.artistId!!, "Untitled", false)
                         val artist_ = artist
                         artist_.songs.add(song)
-                        Authenticator.mDatabaseReference.child(id).setValue(artist_)
+                        Authenticator.mDatabaseReference
+                            .child(id)
+                            .setValue(artist_)
+                            .addOnSuccessListener {
+                                Toast.makeText(context, "Making a song!", Toast.LENGTH_SHORT).show()
+                            }
                     }
                 }
             }

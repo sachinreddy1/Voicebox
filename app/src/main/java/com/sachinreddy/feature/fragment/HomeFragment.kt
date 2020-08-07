@@ -12,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.adapter.SongAdapter
 import com.sachinreddy.feature.auth.Authenticator
+import com.sachinreddy.feature.data.Song
 import com.sachinreddy.feature.injection.appComponent
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
@@ -48,9 +49,25 @@ class HomeFragment : Fragment() {
                 validNavController?.navigate(R.id.action_homeFragment_to_profileFragment)
             R.id.action_start_collab ->
                 validNavController?.navigate(R.id.action_homeFragment_to_friendsFragment)
-            R.id.action_solo_session ->
-                Snackbar.make(requireView(), "Starting solo session...", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            R.id.action_solo_session -> {
+                Authenticator.apply {
+                    val song = Song(currentUser?.artistId!!, "Untitled", false)
+                    currentUser?.songs?.add(song)
+                    mDatabaseReference
+                        .child(currentUser?.artistId!!)
+                        .setValue(currentUser)
+                        .addOnSuccessListener {
+                            songAdapter.songs = currentUser?.songs!!
+                            songAdapter.notifyDataSetChanged()
+                            Snackbar.make(
+                                requireView(),
+                                "Starting solo session...",
+                                Snackbar.LENGTH_LONG
+                            )
+                                .setAction("Action", null).show()
+                        }
+                }
+            }
         }
         return true
     }
