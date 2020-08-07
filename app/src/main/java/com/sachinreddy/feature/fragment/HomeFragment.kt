@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.adapter.SongAdapter
-import com.sachinreddy.feature.data.TestData
+import com.sachinreddy.feature.auth.Authenticator
 import com.sachinreddy.feature.injection.appComponent
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
@@ -60,8 +60,10 @@ class HomeFragment : Fragment() {
         songs_recycler_view.adapter = adapter
 
         // Songs go here
-        adapter.songs = TestData.songs_
-        adapter.notifyDataSetChanged()
+        Authenticator.currentUser?.let {
+            adapter.songs = it.songs
+            adapter.notifyDataSetChanged()
+        }
         super.onViewCreated(view, savedInstanceState)
     }
 

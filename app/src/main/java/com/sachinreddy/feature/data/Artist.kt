@@ -11,7 +11,8 @@ class Artist {
     var score: String? = null
     var profilePicture: String? = null
     var textureBackground: String? = null
-    var friends: MutableList<String>? = null
+    var friends: MutableList<String> = mutableListOf()
+    var songs: MutableList<Song> = mutableListOf()
 
     constructor() {
         //this constructor is required
@@ -25,7 +26,8 @@ class Artist {
         score: String?,
         profilePicture: String?,
         textureBackground: String?,
-        friends: MutableList<String>?
+        friends: MutableList<String>,
+        songs: MutableList<Song>
     ) {
         this.artistId = artistId
         this.artistName = artistName
@@ -36,5 +38,6 @@ class Artist {
         this.profilePicture = profilePicture
         this.textureBackground = textureBackground
         this.friends = friends
+        this.songs = songs
     }
 }

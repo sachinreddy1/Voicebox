@@ -63,7 +63,7 @@ class SongAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.View
         }
 
         fun setSongDetails(song: Song) {
-            Authenticator.mDatabaseReference.child(song.from)
+            Authenticator.mDatabaseReference.child(song.from!!)
                 .addValueEventListener(mValueEventListener)
 
             songTitle.text = song.songName

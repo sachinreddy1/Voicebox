@@ -13,6 +13,7 @@ import com.mikhaellopez.circularimageview.CircularImageView
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.auth.Authenticator
 import com.sachinreddy.feature.data.Artist
+import com.sachinreddy.feature.data.Song
 
 class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -81,6 +82,14 @@ class ArtistAdapter(val context: Context, artists_: MutableList<Artist>) :
 
             artist_card.setOnClickListener {
                 Toast.makeText(context, "Making a song!", Toast.LENGTH_SHORT).show()
+                artist.artistId?.let { id ->
+                    Authenticator.currentUser?.let {
+                        val song = Song(it.artistId!!, "Untitled", false)
+                        val artist_ = artist
+                        artist_.songs.add(song)
+                        Authenticator.mDatabaseReference.child(id).setValue(artist_)
+                    }
+                }
             }
 
             Authenticator.currentUser?.friends?.let {

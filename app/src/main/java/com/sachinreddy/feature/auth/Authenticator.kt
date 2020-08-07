@@ -57,6 +57,7 @@ object Authenticator {
                 "0",
                 profilePicture,
                 textureBackground,
+                mutableListOf(),
                 mutableListOf()
             )
         mDatabaseReference.child(id).setValue(currentUser)
