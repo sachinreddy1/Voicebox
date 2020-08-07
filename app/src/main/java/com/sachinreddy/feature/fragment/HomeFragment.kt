@@ -8,7 +8,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.adapter.SongAdapter
 import com.sachinreddy.feature.auth.Authenticator
@@ -59,12 +58,6 @@ class HomeFragment : Fragment() {
                         .addOnSuccessListener {
                             songAdapter.songs = currentUser?.songs!!
                             songAdapter.notifyDataSetChanged()
-                            Snackbar.make(
-                                requireView(),
-                                "Starting solo session...",
-                                Snackbar.LENGTH_LONG
-                            )
-                                .setAction("Action", null).show()
                         }
                 }
             }

@@ -30,14 +30,4 @@ class AuthViewModel @Inject constructor() : ViewModel() {
             }
         }
     }
-
-    val mValueEventListener = object : ValueEventListener {
-        override fun onCancelled(error: DatabaseError) {
-            TODO("Not yet implemented")
-        }
-
-        override fun onDataChange(snapshot: DataSnapshot) {
-            Authenticator.currentUser = snapshot.getValue(Artist::class.java)
-        }
-    }
 }

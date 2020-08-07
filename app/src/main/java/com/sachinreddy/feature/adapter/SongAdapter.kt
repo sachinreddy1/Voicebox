@@ -33,6 +33,8 @@ class SongAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.View
     internal inner class SongViewHolder(songView: View) : RecyclerView.ViewHolder(songView) {
         private val songTitle: TextView = songView.findViewById(R.id.songTitle)
         private val artists_: TextView = songView.findViewById(R.id.artists)
+        private val songProgress_: TextView = songView.findViewById(R.id.songProgress)
+        private val timestamp_: TextView = songView.findViewById(R.id.timestamp)
         private val favoriteButton: ImageView = songView.findViewById(R.id.favoriteButton)
         private val playButton: ImageView = songView.findViewById(R.id.playButton)
         private val profilePicture: CircularImageView = songView.findViewById(R.id.profilePicture)
@@ -51,7 +53,7 @@ class SongAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.View
                 Glide
                     .with(context)
                     .load(fromArtist?.profilePicture)
-                    .placeholder(R.drawable.ic_account_circle_light)
+                    .placeholder(R.drawable.doggi_target)
                     .into(profilePicture)
 
                 Glide
@@ -71,6 +73,9 @@ class SongAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.View
             favoriteButton.setOnClickListener {
                 favoriteButton.setImageResource(R.drawable.ic_star_filled)
             }
+
+            songProgress_.text = "In progress..."
+            timestamp_.text = "4:53 PM"
         }
     }
 }
