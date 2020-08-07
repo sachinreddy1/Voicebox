@@ -26,6 +26,8 @@ class HomeFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val appViewModel by activityViewModels<AppViewModel> { viewModelFactory }
 
+    lateinit var songAdapter: SongAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,14 +58,23 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupActionBar()
 
-        val adapter = SongAdapter(requireContext())
-        songs_recycler_view.adapter = adapter
+        songAdapter = SongAdapter(requireContext())
+        songs_recycler_view.adapter = songAdapter
 
         // Songs go here
         Authenticator.currentUser?.let {
-            adapter.songs = it.songs
-            adapter.notifyDataSetChanged()
+            songAdapter.songs = it.songs
+            songAdapter.notifyDataSetChanged()
         }
+
+        swipe_refresh.setOnRefreshListener {
+            Authenticator.currentUser?.let {
+                songAdapter.songs = it.songs
+                songAdapter.notifyDataSetChanged()
+            }
+            swipe_refresh.isRefreshing = false
+        }
+
         super.onViewCreated(view, savedInstanceState)
     }
 
