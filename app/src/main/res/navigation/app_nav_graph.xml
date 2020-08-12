@@ -10,16 +10,26 @@
         android:name="com.sachinreddy.feature.fragment.HomeFragment"
         android:label="@string/home_fragment_label"
         tools:layout="@layout/fragment_home">
+
         <action
-            android:id="@+id/action_homeFragment_to_profileFragment"
-            app:destination="@id/ProfileFragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_right" />
+            android:id="@+id/action_HomeFragment_to_ProfileFragment"
+            app:destination="@id/ProfileFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_friendsFragment"
-            app:destination="@id/FriendsFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
+            android:id="@+id/action_HomeFragment_to_FriendsFragment"
+            app:destination="@id/FriendsFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_DraftsFragment"
+            app:destination="@id/DraftsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/DraftsFragment"
+        android:name="com.sachinreddy.feature.fragment.DraftsFragment"
+        android:label="DraftsFragment"
+        tools:layout="@layout/fragment_drafts">
+        <action
+            android:id="@+id/action_DraftsFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
     </fragment>
 
     <fragment
@@ -29,9 +39,7 @@
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_ProfileFragment_to_HomeFragment"
-            app:destination="@id/HomeFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
+            app:destination="@id/HomeFragment" />
     </fragment>
 
     <fragment
@@ -41,8 +49,6 @@
         tools:layout="@layout/fragment_artists">
         <action
             android:id="@+id/action_FriendsFragment_to_HomeFragment"
-            app:destination="@id/HomeFragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_right" />
+            app:destination="@id/HomeFragment" />
     </fragment>
 </navigation>
