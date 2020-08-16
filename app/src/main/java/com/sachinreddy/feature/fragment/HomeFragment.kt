@@ -11,11 +11,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.adapter.SongAdapter
+import com.sachinreddy.feature.adapter.TimelineAdapter
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -25,8 +28,6 @@ class HomeFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val appViewModel by activityViewModels<AppViewModel> { viewModelFactory }
 
-    lateinit var songAdapter: SongAdapter
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,6 +35,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupActionBar()
+        initRecyclerView()
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -56,6 +58,14 @@ class HomeFragment : Fragment() {
                 setHomeActionContentDescription(getString(R.string.open_profile_card))
             }
         }
+    }
+
+    private fun initRecyclerView() {
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        timeline.layoutManager = layoutManager
+        val adapter = TimelineAdapter(requireContext())
+        timeline.adapter = adapter
     }
 
     private val validNavController get() = findNavController().takeIf { it.valid }
