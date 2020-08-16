@@ -12,15 +12,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        android:orientation="horizontal"
         tools:listitem="@layout/item_timeline"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="@id/verticalGuideline0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-    </androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!--  GUIDELINES + PROGRESS BAR  -->
 
