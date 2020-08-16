@@ -20,6 +20,19 @@
         app:layout_constraintStart_toStartOf="@id/verticalGuideline0"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/editCells"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        tools:listitem="@layout/item_cell"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
+        app:layout_constraintTop_toBottomOf="@id/timeline"
+        app:layout_constraintStart_toStartOf="@id/verticalGuideline0"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <!--  GUIDELINES + PROGRESS BAR  -->
 
     <androidx.constraintlayout.widget.Guideline
