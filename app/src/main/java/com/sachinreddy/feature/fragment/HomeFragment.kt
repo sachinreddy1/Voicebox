@@ -11,7 +11,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.adapter.TimelineAdapter
 import com.sachinreddy.feature.viewModel.AppViewModel
@@ -35,7 +34,10 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupActionBar()
-        initRecyclerView()
+
+        val adapter = TimelineAdapter(requireContext())
+        timeline.adapter = adapter
+
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -58,14 +60,6 @@ class HomeFragment : Fragment() {
                 setHomeActionContentDescription(getString(R.string.open_profile_card))
             }
         }
-    }
-
-    private fun initRecyclerView() {
-        val layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        timeline.layoutManager = layoutManager
-        val adapter = TimelineAdapter(requireContext())
-        timeline.adapter = adapter
     }
 
     private val validNavController get() = findNavController().takeIf { it.valid }
