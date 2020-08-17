@@ -20,20 +20,21 @@
         app:layout_constraintStart_toStartOf="@id/verticalGuideline0"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!--  GUIDELINES + PROGRESS BAR  -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/editCells"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        tools:listitem="@layout/item_cell"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintTop_toBottomOf="@id/timeline"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/verticalGuideline0"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!--  GUIDELINES + PROGRESS BAR  -->
+        app:layout_constraintTop_toBottomOf="@id/timeline"
+        tools:listitem="@layout/item_cell" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/verticalGuideline0"
@@ -41,6 +42,5 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.2" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
