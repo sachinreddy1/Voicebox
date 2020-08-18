@@ -65,6 +65,9 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:1.2.5"
     debugImplementation "androidx.fragment:fragment-testing:1.2.5"
 
+    // TableView
+    implementation 'com.evrencoskun.library:tableview:0.8.9.2'
+
     // Firebase
     implementation 'com.google.firebase:firebase-auth-ktx:19.3.2'
     implementation 'com.google.firebase:firebase-database-ktx:19.3.1'
