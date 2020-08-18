@@ -11,9 +11,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.adapter.EditCellAdapter
+import com.sachinreddy.feature.adapter.LayerAdapter
 import com.sachinreddy.feature.adapter.TimelineAdapter
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
@@ -39,28 +38,28 @@ class HomeFragment : Fragment() {
 
         val timeAdapter = TimelineAdapter(requireContext())
         timeline.adapter = timeAdapter
-        val cellAdapter = EditCellAdapter(requireContext())
-        editCells.adapter = cellAdapter
+        val layerAdapter = LayerAdapter(requireContext())
+        editLayers.adapter = layerAdapter
 
-        val scrollListeners = arrayOfNulls<RecyclerView.OnScrollListener>(2)
-        scrollListeners[0] = object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                editCells.removeOnScrollListener(scrollListeners[1]!!)
-                editCells.scrollBy(dx, dy)
-                editCells.addOnScrollListener(scrollListeners[1]!!)
-            }
-        }
-        scrollListeners[1] = object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                timeline.removeOnScrollListener(scrollListeners[0]!!)
-                timeline.scrollBy(dx, dy)
-                timeline.addOnScrollListener(scrollListeners[0]!!)
-            }
-        }
-        timeline.addOnScrollListener(scrollListeners[0]!!)
-        editCells.addOnScrollListener(scrollListeners[1]!!)
+//        val scrollListeners = arrayOfNulls<RecyclerView.OnScrollListener>(2)
+//        scrollListeners[0] = object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                editLayers.removeOnScrollListener(scrollListeners[1]!!)
+//                editLayers.scrollBy(dx, dy)
+//                editLayers.addOnScrollListener(scrollListeners[1]!!)
+//            }
+//        }
+//        scrollListeners[1] = object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                timeline.removeOnScrollListener(scrollListeners[0]!!)
+//                timeline.scrollBy(dx, dy)
+//                timeline.addOnScrollListener(scrollListeners[0]!!)
+//            }
+//        }
+//        timeline.addOnScrollListener(scrollListeners[0]!!)
+//        editLayers.addOnScrollListener(scrollListeners[1]!!)
 
         super.onViewCreated(view, savedInstanceState)
     }
