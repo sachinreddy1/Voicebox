@@ -7,41 +7,14 @@
     tools:context=".activity.AppActivity"
     android:background="@color/colorBackground">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/timeline"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+    <com.evrencoskun.tableview.TableView
+        android:id="@+id/content_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
-        tools:listitem="@layout/item_timeline"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="@id/verticalGuideline0"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!--  GUIDELINES + PROGRESS BAR  -->
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/editLayers"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-
-        tools:listitem="@layout/item_layer"
-        tools:itemCount="3"
-
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/verticalGuideline0"
-        app:layout_constraintTop_toBottomOf="@id/timeline" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/verticalGuideline0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.2" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

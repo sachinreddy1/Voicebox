@@ -11,12 +11,17 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.evrencoskun.tableview.TableView
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.adapter.LayerAdapter
-import com.sachinreddy.feature.adapter.TimelineAdapter
+import com.sachinreddy.feature.adapter.MyTableViewAdapter
+import com.sachinreddy.feature.data.TestData.mCellList
+import com.sachinreddy.feature.data.TestData.mColumnHeaderList
+import com.sachinreddy.feature.data.TestData.mRowHeaderList
+import com.sachinreddy.feature.table.Cell
+import com.sachinreddy.feature.table.ColumnHeader
+import com.sachinreddy.feature.table.RowHeader
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
-import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 
@@ -36,30 +41,10 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupActionBar()
 
-        val timeAdapter = TimelineAdapter(requireContext())
-        timeline.adapter = timeAdapter
-        val layerAdapter = LayerAdapter(requireContext())
-        editLayers.adapter = layerAdapter
-
-//        val scrollListeners = arrayOfNulls<RecyclerView.OnScrollListener>(2)
-//        scrollListeners[0] = object : RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//                editLayers.removeOnScrollListener(scrollListeners[1]!!)
-//                editLayers.scrollBy(dx, dy)
-//                editLayers.addOnScrollListener(scrollListeners[1]!!)
-//            }
-//        }
-//        scrollListeners[1] = object : RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//                timeline.removeOnScrollListener(scrollListeners[0]!!)
-//                timeline.scrollBy(dx, dy)
-//                timeline.addOnScrollListener(scrollListeners[0]!!)
-//            }
-//        }
-//        timeline.addOnScrollListener(scrollListeners[0]!!)
-//        editLayers.addOnScrollListener(scrollListeners[1]!!)
+        val tableView = TableView(requireContext())
+        val adapter = MyTableViewAdapter()
+        tableView.setAdapter<ColumnHeader, RowHeader, Cell>(adapter)
+        adapter.setAllItems(mColumnHeaderList, mRowHeaderList, mCellList)
 
         super.onViewCreated(view, savedInstanceState)
     }
