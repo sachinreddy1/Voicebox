@@ -13,21 +13,11 @@ import com.sachinreddy.feature.table.ColumnHeader
 import com.sachinreddy.feature.table.RowHeader
 
 
-class MyTableViewAdapter :
-    AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?>() {
-    /**
-     * This is sample CellViewHolder class
-     * This viewHolder must be extended from AbstractViewHolder class instead of RecyclerView.ViewHolder.
-     */
-    internal inner class MyCellViewHolder(itemView: View) :
-        AbstractViewHolder(itemView) {
-        val cell_container: LinearLayout
-        val cell_textview: TextView
+class MyTableViewAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?>() {
 
-        init {
-            cell_container = itemView.findViewById(R.id.cell_container)
-            cell_textview = itemView.findViewById(R.id.cell_data)
-        }
+    internal inner class MyCellViewHolder(itemView: View) : AbstractViewHolder(itemView) {
+        val cell_container: LinearLayout = itemView.findViewById(R.id.cell_container)
+        val cell_textview: TextView = itemView.findViewById(R.id.cell_data)
     }
 
     /**
@@ -40,10 +30,7 @@ class MyTableViewAdapter :
      *
      * @see .getCellItemViewType
      */
-    override fun onCreateCellViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): AbstractViewHolder {
+    override fun onCreateCellViewHolder(parent: ViewGroup, viewType: Int): AbstractViewHolder {
         // Get cell xml layout
         val layout: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.table_view_cell_layout, parent, false)
@@ -72,37 +59,18 @@ class MyTableViewAdapter :
         columnPosition: Int,
         rowPosition: Int
     ) {
-        val cell =
-            cellItemModel as Cell
+        val cell = cellItemModel as Cell
 
         // Get the holder to update cell item text
-        val viewHolder =
-            holder as MyCellViewHolder
+        val viewHolder = holder as MyCellViewHolder
         viewHolder.cell_textview.text = cell.data.toString()
-
-        // If your TableView should have auto resize for cells & columns.
-        // Then you should consider the below lines. Otherwise, you can ignore them.
-
-        // It is necessary to remeasure itself.
-        viewHolder.cell_container.layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT
-        viewHolder.cell_textview.requestLayout()
     }
 
-    /**
-     * This is sample ColumnHeaderViewHolder class.
-     * This viewHolder must be extended from AbstractViewHolder class instead of RecyclerView.ViewHolder.
-     */
-    internal inner class MyColumnHeaderViewHolder(itemView: View) :
-        AbstractViewHolder(itemView) {
-        val column_header_container: LinearLayout
-        val cell_textview: TextView
-        val column_header_textview: TextView
-
-        init {
-            column_header_container = itemView.findViewById(R.id.column_header_container)
-            cell_textview = itemView.findViewById(R.id.column_header_textView)
-            column_header_textview = itemView.findViewById(R.id.column_header_textView)
-        }
+    internal inner class MyColumnHeaderViewHolder(itemView: View) : AbstractViewHolder(itemView) {
+        val column_header_container: LinearLayout =
+            itemView.findViewById(R.id.column_header_container)
+        val cell_textview: TextView = itemView.findViewById(R.id.column_header_textView)
+        val column_header_textview: TextView = itemView.findViewById(R.id.column_header_textView)
     }
 
     /**
@@ -154,29 +122,14 @@ class MyTableViewAdapter :
         val columnHeaderViewHolder =
             holder as MyColumnHeaderViewHolder
         columnHeaderViewHolder.column_header_textview.text = columnHeader.data.toString()
-
-        // If your TableView should have auto resize for cells & columns.
-        // Then you should consider the below lines. Otherwise, you can ignore them.
-
-        // It is necessary to remeasure itself.
-        columnHeaderViewHolder.column_header_container.layoutParams.width =
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        columnHeaderViewHolder.column_header_textview.requestLayout()
     }
 
     /**
      * This is sample RowHeaderViewHolder class.
      * This viewHolder must be extended from AbstractViewHolder class instead of RecyclerView.ViewHolder.
      */
-    internal inner class MyRowHeaderViewHolder(itemView: View) :
-        AbstractViewHolder(itemView) {
-        val cell_textview: TextView
-        val row_header_textview: TextView
-
-        init {
-            cell_textview = itemView.findViewById(R.id.cell_data)
-            row_header_textview = itemView.findViewById(R.id.row_header_textView)
-        }
+    internal inner class MyRowHeaderViewHolder(itemView: View) : AbstractViewHolder(itemView) {
+        val row_header_textview: TextView = itemView.findViewById(R.id.row_header_textView)
     }
 
     /**

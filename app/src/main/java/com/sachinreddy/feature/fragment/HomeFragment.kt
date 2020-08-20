@@ -22,6 +22,7 @@ import com.sachinreddy.feature.table.ColumnHeader
 import com.sachinreddy.feature.table.RowHeader
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 
@@ -45,6 +46,7 @@ class HomeFragment : Fragment() {
         val adapter = MyTableViewAdapter()
         tableView.setAdapter<ColumnHeader, RowHeader, Cell>(adapter)
         adapter.setAllItems(mColumnHeaderList, mRowHeaderList, mCellList)
+        content_container.setAdapter(adapter)
 
         super.onViewCreated(view, savedInstanceState)
     }
