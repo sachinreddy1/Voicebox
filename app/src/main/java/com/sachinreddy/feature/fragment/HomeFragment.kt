@@ -43,12 +43,7 @@ class HomeFragment : Fragment() {
         val adapter = MyTableViewAdapter()
         tableView.setAdapter(adapter)
         adapter.setAllItems(mColumnHeaderList, mRowHeaderList, mCellList)
-        content_container.apply {
-            isShowVerticalSeparators = false
-            setHasFixedWidth(true)
-
-            setAdapter(adapter)
-        }
+        content_container.setAdapter(adapter)
 
         super.onViewCreated(view, savedInstanceState)
     }

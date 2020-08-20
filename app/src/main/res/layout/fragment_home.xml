@@ -14,9 +14,9 @@
 
         app:column_header_height="32dp"
         app:row_header_width="80dp"
-        app:selected_color="@color/colorPrimary"
-        app:shadow_color="@color/colorPrimary"
-        app:unselected_color="@color/colorPrimary"
+        app:separator_color="@color/colorPrimary"
+        app:show_horizontal_separator="false"
+        app:show_vertical_separator="false"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
