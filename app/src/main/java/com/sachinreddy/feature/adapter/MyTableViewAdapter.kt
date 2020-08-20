@@ -67,10 +67,7 @@ class MyTableViewAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?
     }
 
     internal inner class MyColumnHeaderViewHolder(itemView: View) : AbstractViewHolder(itemView) {
-        val column_header_container: LinearLayout =
-            itemView.findViewById(R.id.column_header_container)
-        val cell_textview: TextView = itemView.findViewById(R.id.column_header_textView)
-        val column_header_textview: TextView = itemView.findViewById(R.id.column_header_textView)
+        val column_header_barNumber: TextView = itemView.findViewById(R.id.column_header_barNumber)
     }
 
     /**
@@ -121,7 +118,7 @@ class MyTableViewAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?
         // Get the holder to update cell item text
         val columnHeaderViewHolder =
             holder as MyColumnHeaderViewHolder
-        columnHeaderViewHolder.column_header_textview.text = columnHeader.data.toString()
+        columnHeaderViewHolder.column_header_barNumber.text = (columnPosition + 1).toString()
     }
 
     /**
