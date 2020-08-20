@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.sachinreddy.feature.R
@@ -16,7 +15,6 @@ import com.sachinreddy.feature.table.RowHeader
 class MyTableViewAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?>() {
 
     internal inner class MyCellViewHolder(itemView: View) : AbstractViewHolder(itemView) {
-        val cell_container: ConstraintLayout = itemView.findViewById(R.id.cell_container)
         val cell_textview: TextView = itemView.findViewById(R.id.cell_data)
     }
 
@@ -183,7 +181,7 @@ class MyTableViewAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?
     override fun onCreateCornerView(parent: ViewGroup): View {
         // Get Corner xml layout
         return LayoutInflater.from(parent.context)
-            .inflate(R.layout.table_view_corner_layout, parent, false)
+            .inflate(R.layout.table_view_cell_layout, parent, false)
     }
 
     override fun getColumnHeaderItemViewType(columnPosition: Int): Int {

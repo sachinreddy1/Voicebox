@@ -17,9 +17,6 @@ import com.sachinreddy.feature.adapter.MyTableViewAdapter
 import com.sachinreddy.feature.data.TestData.mCellList
 import com.sachinreddy.feature.data.TestData.mColumnHeaderList
 import com.sachinreddy.feature.data.TestData.mRowHeaderList
-import com.sachinreddy.feature.table.Cell
-import com.sachinreddy.feature.table.ColumnHeader
-import com.sachinreddy.feature.table.RowHeader
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -44,9 +41,14 @@ class HomeFragment : Fragment() {
 
         val tableView = TableView(requireContext())
         val adapter = MyTableViewAdapter()
-        tableView.setAdapter<ColumnHeader, RowHeader, Cell>(adapter)
+        tableView.setAdapter(adapter)
         adapter.setAllItems(mColumnHeaderList, mRowHeaderList, mCellList)
-        content_container.setAdapter(adapter)
+        content_container.apply {
+            isShowVerticalSeparators = false
+            setHasFixedWidth(true)
+
+            setAdapter(adapter)
+        }
 
         super.onViewCreated(view, savedInstanceState)
     }

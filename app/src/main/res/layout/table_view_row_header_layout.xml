@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:id="@+id/row_header_container"
-    android:layout_width="wrap_content"
 
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,11 +23,24 @@
             android:id="@+id/row_header_textView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             android:gravity="center"
-            android:textColor="@color/table_view_default_text_color"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size"
             android:textStyle="bold"
-            tools:text="Row Data" />
+            tools:text="Row Data"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/whitesmoke"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

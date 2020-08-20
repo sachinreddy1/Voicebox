@@ -12,6 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
+        app:column_header_height="32dp"
+        app:row_header_width="80dp"
+        app:selected_color="@color/colorPrimary"
+        app:shadow_color="@color/colorPrimary"
+        app:unselected_color="@color/colorPrimary"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
