@@ -116,7 +116,7 @@ class MyTableViewAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?
         // Get the holder to update cell item text
         val columnHeaderViewHolder =
             holder as MyColumnHeaderViewHolder
-        columnHeaderViewHolder.column_header_barNumber.text = (columnPosition + 1).toString()
+        columnHeaderViewHolder.column_header_barNumber.text = columnHeader.data.toString()
     }
 
     /**
@@ -181,7 +181,7 @@ class MyTableViewAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?
     override fun onCreateCornerView(parent: ViewGroup): View {
         // Get Corner xml layout
         return LayoutInflater.from(parent.context)
-            .inflate(R.layout.table_view_cell_layout, parent, false)
+            .inflate(R.layout.table_view_corner_layout, parent, false)
     }
 
     override fun getColumnHeaderItemViewType(columnPosition: Int): Int {
