@@ -5,8 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.table.Cell
 import com.sachinreddy.feature.table.ColumnHeader
@@ -126,6 +128,7 @@ class EditCellAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?>()
      */
     internal inner class MyRowHeaderViewHolder(itemView: View) : AbstractViewHolder(itemView) {
         val row_header_textview: ImageView = itemView.findViewById(R.id.row_header_textView)
+        val row_header_add_button: ConstraintLayout = itemView.findViewById(R.id.row_header_add_button)
     }
 
     /**
@@ -176,6 +179,9 @@ class EditCellAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?>()
         // Get the holder to update row header item text
         val rowHeaderViewHolder =
             holder as MyRowHeaderViewHolder
+
+        if (rowPosition == 2)
+            rowHeaderViewHolder.row_header_add_button.visibility = View.VISIBLE
 
 //        rowHeaderViewHolder.row_header_textview.text = rowHeader.data.toString()
     }

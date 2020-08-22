@@ -45,8 +45,6 @@ class HomeFragment : Fragment() {
         adapter.setAllItems(mColumnHeaderList, mRowHeaderList, mCellList)
         content_container.setAdapter(adapter)
 
-        println("something")
-
         super.onViewCreated(view, savedInstanceState)
     }
 
