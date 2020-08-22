@@ -7,8 +7,8 @@
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="@dimen/cell_length"
+        android:layout_height="@dimen/cell_length"
 
         android:background="@color/colorPrimary"
 
@@ -21,17 +21,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="1dp"
+
             android:background="@color/cardBackground">
 
             <TextView
                 android:id="@+id/cell_data"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:maxLines="1"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/text_size"
                 tools:text="Cell Data" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

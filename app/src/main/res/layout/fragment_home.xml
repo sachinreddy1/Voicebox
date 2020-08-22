@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        app:column_header_height="32dp"
-        app:row_header_width="80dp"
+        app:column_header_height="@dimen/column_header_height"
+        app:row_header_width="@dimen/row_header_width"
         app:separator_color="@color/colorPrimary"
         app:show_horizontal_separator="false"
         app:show_vertical_separator="false"
