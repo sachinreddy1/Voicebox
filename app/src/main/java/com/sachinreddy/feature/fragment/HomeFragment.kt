@@ -13,7 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.evrencoskun.tableview.TableView
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.adapter.MyTableViewAdapter
+import com.sachinreddy.feature.adapter.EditCellAdapter
 import com.sachinreddy.feature.data.TestData.mCellList
 import com.sachinreddy.feature.data.TestData.mColumnHeaderList
 import com.sachinreddy.feature.data.TestData.mRowHeaderList
@@ -40,7 +40,7 @@ class HomeFragment : Fragment() {
         setupActionBar()
 
         val tableView = TableView(requireContext())
-        val adapter = MyTableViewAdapter()
+        val adapter = EditCellAdapter()
         tableView.setAdapter(adapter)
         adapter.setAllItems(mColumnHeaderList, mRowHeaderList, mCellList)
         content_container.setAdapter(adapter)

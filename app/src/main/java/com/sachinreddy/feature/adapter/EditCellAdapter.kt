@@ -13,7 +13,7 @@ import com.sachinreddy.feature.table.ColumnHeader
 import com.sachinreddy.feature.table.RowHeader
 
 
-class MyTableViewAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?>() {
+class EditCellAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?>() {
 
     internal inner class MyCellViewHolder(itemView: View) : AbstractViewHolder(itemView) {
         val cell_textview: TextView = itemView.findViewById(R.id.cell_data)
