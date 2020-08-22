@@ -3,8 +3,10 @@ package com.sachinreddy.feature.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
@@ -127,8 +129,9 @@ class EditCellAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?>()
      * This viewHolder must be extended from AbstractViewHolder class instead of RecyclerView.ViewHolder.
      */
     internal inner class MyRowHeaderViewHolder(itemView: View) : AbstractViewHolder(itemView) {
-        val row_header_textview: ImageView = itemView.findViewById(R.id.row_header_textView)
-        val row_header_add_button: ConstraintLayout = itemView.findViewById(R.id.row_header_add_button)
+        val row_header_imageView: ImageView = itemView.findViewById(R.id.row_header_imageView)
+        val row_header_button_container: ConstraintLayout = itemView.findViewById(R.id.row_header_button_container)
+        val row_header_button: ImageButton = itemView.findViewById(R.id.row_header_button)
     }
 
     /**
@@ -173,17 +176,24 @@ class EditCellAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?>()
         rowHeaderItemModel: RowHeader?,
         rowPosition: Int
     ) {
-        val rowHeader =
-            rowHeaderItemModel as RowHeader
+        val rowHeader = rowHeaderItemModel as RowHeader
 
         // Get the holder to update row header item text
         val rowHeaderViewHolder =
             holder as MyRowHeaderViewHolder
 
-        if (rowPosition == 2)
-            rowHeaderViewHolder.row_header_add_button.visibility = View.VISIBLE
+        // Set the add button at the bottom of the rowHeaders
+        if (rowPosition == mRowHeaderItems.size - 1) {
+            rowHeaderViewHolder.row_header_button_container.visibility = View.VISIBLE
+            rowHeaderViewHolder.row_header_button.apply {
+                setOnClickListener {
+                    Toast.makeText(context, "Add button pressed.", Toast.LENGTH_SHORT).show()
+                }
+            }
 
-//        rowHeaderViewHolder.row_header_textview.text = rowHeader.data.toString()
+        }
+        else
+            rowHeaderViewHolder.row_header_button_container.visibility = View.GONE
     }
 
     override fun onCreateCornerView(parent: ViewGroup): View {

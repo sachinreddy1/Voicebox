@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/row_header_textView"
+            android:id="@+id/row_header_imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="20dp"
@@ -32,12 +32,12 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/row_header_add_button"
+        android:id="@+id/row_header_button_container"
         android:layout_width="@dimen/cell_length"
         android:layout_height="wrap_content"
 
         android:background="@color/colorBackground"
-        android:visibility="gone"
+        android:visibility="visible"
 
         app:layout_constraintEnd_toEndOf="@id/row_header_container"
         app:layout_constraintStart_toStartOf="@id/row_header_container"
@@ -45,12 +45,11 @@
         >
 
         <ImageButton
+            android:id="@+id/row_header_button"
             android:layout_width="match_parent"
             android:layout_height="40dp"
 
             android:background="@drawable/round_half_background"
-            android:layout_marginHorizontal="8dp"
-
             android:src="@drawable/ic_add"
 
             app:layout_constraintStart_toStartOf="parent"
