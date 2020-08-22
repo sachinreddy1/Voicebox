@@ -3,6 +3,7 @@ package com.sachinreddy.feature.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
@@ -124,7 +125,7 @@ class MyTableViewAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?
      * This viewHolder must be extended from AbstractViewHolder class instead of RecyclerView.ViewHolder.
      */
     internal inner class MyRowHeaderViewHolder(itemView: View) : AbstractViewHolder(itemView) {
-        val row_header_textview: TextView = itemView.findViewById(R.id.row_header_textView)
+        val row_header_textview: ImageView = itemView.findViewById(R.id.row_header_textView)
     }
 
     /**
@@ -175,7 +176,8 @@ class MyTableViewAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?
         // Get the holder to update row header item text
         val rowHeaderViewHolder =
             holder as MyRowHeaderViewHolder
-        rowHeaderViewHolder.row_header_textview.text = rowHeader.data.toString()
+
+//        rowHeaderViewHolder.row_header_textview.text = rowHeader.data.toString()
     }
 
     override fun onCreateCornerView(parent: ViewGroup): View {
