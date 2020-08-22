@@ -11,7 +11,7 @@
         android:layout_width="@dimen/cell_length"
         android:layout_height="@dimen/cell_length"
 
-        android:background="@color/colorPrimary"
+        android:background="@color/instrumentBackground"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
