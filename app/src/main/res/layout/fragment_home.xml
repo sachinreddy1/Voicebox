@@ -23,4 +23,24 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+    <com.emrekose.recordbutton.RecordButton
+        android:id="@+id/recordBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:buttonRadius="@dimen/record_button_radius"
+        app:buttonGap="10dp"
+        app:maxMilisecond="10000"
+        app:progressStroke="15"
+
+        app:buttonColor="@color/recordButtonColor"
+        app:progressEmptyColor="@color/instrumentBackground"
+        app:progressColor="@color/colorPrimary"
+
+        app:layout_constraintVertical_bias="0.925"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
