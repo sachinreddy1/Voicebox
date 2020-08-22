@@ -68,6 +68,9 @@ dependencies {
     // TableView
     implementation 'com.evrencoskun.library:tableview:0.8.9.2'
 
+    // Record Button
+    compile 'com.github.emrekose26:RecordButton:1.2.4'
+
     // Firebase
     implementation 'com.google.firebase:firebase-auth-ktx:19.3.2'
     implementation 'com.google.firebase:firebase-database-ktx:19.3.1'
