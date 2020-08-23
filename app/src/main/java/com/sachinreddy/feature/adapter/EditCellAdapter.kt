@@ -12,6 +12,7 @@ import com.evrencoskun.tableview.adapter.AbstractTableAdapter
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sachinreddy.feature.R
+import com.sachinreddy.feature.data.TestData.mSingleCellList
 import com.sachinreddy.feature.table.Cell
 import com.sachinreddy.feature.table.ColumnHeader
 import com.sachinreddy.feature.table.RowHeader
@@ -182,18 +183,19 @@ class EditCellAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?>()
         val rowHeaderViewHolder =
             holder as MyRowHeaderViewHolder
 
+        rowHeaderViewHolder.row_header_button.apply {
+            setOnClickListener {
+                Toast.makeText(context, "Add button pressed.", Toast.LENGTH_SHORT).show()
+                println("$rowPosition || ${mRowHeaderItems.size - 1}")
+            }
+        }
+
         // Set the add button at the bottom of the rowHeaders
         if (rowPosition == mRowHeaderItems.size - 1) {
             rowHeaderViewHolder.row_header_button_container.visibility = View.VISIBLE
-            rowHeaderViewHolder.row_header_button.apply {
-                setOnClickListener {
-                    Toast.makeText(context, "Add button pressed.", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-        }
-        else
+        } else {
             rowHeaderViewHolder.row_header_button_container.visibility = View.GONE
+        }
     }
 
     override fun onCreateCornerView(parent: ViewGroup): View {
