@@ -36,20 +36,17 @@ class HomeFragment : Fragment() {
     ): View? = inflater.inflate(R.layout.fragment_home, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        appComponent!!.inject(this)
+
         setupActionBar()
 
         val tableView = TableView(requireContext())
         val adapter = EditCellAdapter()
         tableView.setAdapter(adapter)
-        adapter.setTracks(mutableListOf(Track()))
+        adapter.setTracks(appViewModel.mTrackList)
         content_container.setAdapter(adapter)
 
         super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        appComponent!!.inject(this)
-        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -19,8 +19,8 @@ interface ApplicationComponent {
     fun inject(target: AuthActivity)
     fun inject(target: AppActivity)
     fun inject(target: LoginFragment)
+    fun inject(target: HomeFragment)
     fun inject(target: DraftsFragment)
     fun inject(target: ProfileFragment)
     fun inject(target: ArtistsFragment)
-    fun inject(target: HomeFragment)
 }

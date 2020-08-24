@@ -5,5 +5,9 @@ import com.sachinreddy.feature.data.Track
 import javax.inject.Inject
 
 class AppViewModel @Inject constructor() : ViewModel() {
-    var mTrackList: MutableList<Track>? = mutableListOf()
+    var mTrackList: MutableList<Track> = mutableListOf()
+
+    init {
+        mTrackList.add(Track())
+    }
 }
