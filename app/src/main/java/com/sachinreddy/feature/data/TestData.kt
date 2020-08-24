@@ -1,7 +1,7 @@
 package com.sachinreddy.feature.data
 
 import com.sachinreddy.feature.table.Cell
-import com.sachinreddy.feature.table.ColumnHeader
+import com.sachinreddy.feature.table.TimelineHeader
 import com.sachinreddy.feature.table.RowHeader
 
 object TestData {
@@ -30,15 +30,15 @@ object TestData {
         RowHeader("Drum Kit")
     )
 
-    val mColumnHeaderList: List<ColumnHeader>? = listOf(
-        ColumnHeader("1"),
-        ColumnHeader("2"),
-        ColumnHeader("3"),
-        ColumnHeader("4"),
-        ColumnHeader("5"),
-        ColumnHeader("6"),
-        ColumnHeader("7"),
-        ColumnHeader("8")
+    val M_TIMELINE_HEADER_LIST: List<TimelineHeader>? = listOf(
+        TimelineHeader("1"),
+        TimelineHeader("2"),
+        TimelineHeader("3"),
+        TimelineHeader("4"),
+        TimelineHeader("5"),
+        TimelineHeader("6"),
+        TimelineHeader("7"),
+        TimelineHeader("8")
     )
 
     val mCellList: List<List<Cell>>? = listOf(

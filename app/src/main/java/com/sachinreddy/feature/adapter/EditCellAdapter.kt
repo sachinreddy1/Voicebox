@@ -10,11 +10,12 @@ import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.Track
 import com.sachinreddy.feature.table.Cell
-import com.sachinreddy.feature.table.ColumnHeader
+import com.sachinreddy.feature.table.TimelineHeader
 import com.sachinreddy.feature.table.RowHeader
+import com.sachinreddy.feature.viewModel.AppViewModel
 
 
-class EditCellAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?>() {
+class EditCellAdapter(val tracks: MutableList<Track>) : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
 
     internal inner class MyCellViewHolder(itemView: View) : AbstractViewHolder(itemView) {
         val cell_textview: TextView = itemView.findViewById(R.id.cell_data)
@@ -110,10 +111,10 @@ class EditCellAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?>()
      */
     override fun onBindColumnHeaderViewHolder(
         holder: AbstractViewHolder,
-        columnHeaderItemModel: ColumnHeader?,
+        timelineHeaderItemModel: TimelineHeader?,
         columnPosition: Int
     ) {
-        val columnHeader = columnHeaderItemModel as ColumnHeader
+        val columnHeader = timelineHeaderItemModel as TimelineHeader
 
         // Get the holder to update cell item text
         val columnHeaderViewHolder =
@@ -182,7 +183,8 @@ class EditCellAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?>()
         rowHeaderViewHolder.row_header_button.apply {
             setOnClickListener {
                 Toast.makeText(context, "Add button pressed.", Toast.LENGTH_SHORT).show()
-                println("$rowPosition || ${mRowHeaderItems.size - 1}")
+                tracks.add(Track())
+                setTracks(tracks)
             }
         }
 
@@ -225,18 +227,15 @@ class EditCellAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?>()
     }
 
     fun setTracks(tracks: MutableList<Track>) {
-        val columnHeaderList_: MutableList<ColumnHeader> = mutableListOf()
+        var timelineHeaderList_: MutableList<TimelineHeader> = mutableListOf()
         val rowHeaderList_: MutableList<RowHeader> = mutableListOf()
         val cellList_: MutableList<MutableList<Cell>> = mutableListOf()
         tracks.map {
-            it.columnHeaderList?.map { columnHeader ->
-                columnHeaderList_.add(columnHeader)
-            }
-
+            timelineHeaderList_ = it.timelineHeaderList ?: mutableListOf()
             rowHeaderList_.add(it.rowHeader)
             cellList_.add(it.cellList ?: mutableListOf())
         }
 
-        setAllItems(columnHeaderList_.toList(), rowHeaderList_.toList(), cellList_.toList())
+        setAllItems(timelineHeaderList_.toList(), rowHeaderList_.toList(), cellList_.toList())
     }
 }
