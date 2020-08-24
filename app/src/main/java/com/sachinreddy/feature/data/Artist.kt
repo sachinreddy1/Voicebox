@@ -32,7 +32,6 @@ class Artist {
         this.artistId = artistId
         this.artistName = artistName
         this.username = username
-        this.artistId = artistId
         this.email = email
         this.score = score
         this.profilePicture = profilePicture

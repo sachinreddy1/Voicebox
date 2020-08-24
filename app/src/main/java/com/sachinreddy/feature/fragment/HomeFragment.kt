@@ -14,9 +14,8 @@ import androidx.navigation.fragment.findNavController
 import com.evrencoskun.tableview.TableView
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.adapter.EditCellAdapter
-import com.sachinreddy.feature.data.TestData.mCellList
-import com.sachinreddy.feature.data.TestData.mColumnHeaderList
-import com.sachinreddy.feature.data.TestData.mRowHeaderList
+import com.sachinreddy.feature.data.Track
+import com.sachinreddy.feature.injection.appComponent
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -42,10 +41,15 @@ class HomeFragment : Fragment() {
         val tableView = TableView(requireContext())
         val adapter = EditCellAdapter()
         tableView.setAdapter(adapter)
-        adapter.setAllItems(mColumnHeaderList, mRowHeaderList, mCellList)
+        adapter.setTracks(mutableListOf(Track()))
         content_container.setAdapter(adapter)
 
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        appComponent!!.inject(this)
+        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -3,16 +3,12 @@ package com.sachinreddy.feature.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.data.TestData.mSingleCellList
+import com.sachinreddy.feature.data.Track
 import com.sachinreddy.feature.table.Cell
 import com.sachinreddy.feature.table.ColumnHeader
 import com.sachinreddy.feature.table.RowHeader
@@ -226,5 +222,21 @@ class EditCellAdapter : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?>()
         // then you should fill this method to be able create different
         // type of CellViewHolder on "onCreateCellViewHolder"
         return 0
+    }
+
+    fun setTracks(tracks: MutableList<Track>) {
+        val columnHeaderList_: MutableList<ColumnHeader> = mutableListOf()
+        val rowHeaderList_: MutableList<RowHeader> = mutableListOf()
+        val cellList_: MutableList<MutableList<Cell>> = mutableListOf()
+        tracks.map {
+            it.columnHeaderList?.map { columnHeader ->
+                columnHeaderList_.add(columnHeader)
+            }
+
+            rowHeaderList_.add(it.rowHeader)
+            cellList_.add(it.cellList ?: mutableListOf())
+        }
+
+        setAllItems(columnHeaderList_.toList(), rowHeaderList_.toList(), cellList_.toList())
     }
 }

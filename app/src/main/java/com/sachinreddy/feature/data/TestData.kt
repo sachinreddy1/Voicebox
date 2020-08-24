@@ -24,17 +24,6 @@ object TestData {
         )
     )
 
-    val mSingleCellList = listOf(
-        Cell("Hello"),
-        Cell("Hello"),
-        Cell("Hello"),
-        Cell("Hello"),
-        Cell("Hello"),
-        Cell("Hello"),
-        Cell("Hello"),
-        Cell("Hello")
-    )
-
     val mRowHeaderList: List<RowHeader>? = listOf(
         RowHeader("Vocal"),
         RowHeader("Piano"),
