@@ -14,7 +14,7 @@ class Track {
     var numberBars: Int = 8
 
     constructor() {
-        for(i in 0..numberBars) {
+        for(i in 0 until numberBars) {
             timelineHeaderList?.add(TimelineHeader(i + 1))
             cellList?.add(Cell("test"))
         }
@@ -22,9 +22,15 @@ class Track {
 
     constructor(
         rowHeader: RowHeader,
-        numberBars: Int
+        numberBars: Int,
+        rowPosition: Int
     ) {
         this.rowHeader = rowHeader
         this.numberBars = numberBars
+
+        for(i in 0 until this.numberBars) {
+            timelineHeaderList?.add(TimelineHeader(i + 1))
+            cellList?.add(Cell(rowPosition.toString()))
+        }
     }
 }

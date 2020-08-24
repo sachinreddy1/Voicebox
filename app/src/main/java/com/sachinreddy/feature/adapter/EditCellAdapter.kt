@@ -183,7 +183,7 @@ class EditCellAdapter(val tracks: MutableList<Track>) : AbstractTableAdapter<Tim
         rowHeaderViewHolder.row_header_button.apply {
             setOnClickListener {
                 Toast.makeText(context, "Add button pressed.", Toast.LENGTH_SHORT).show()
-                tracks.add(Track())
+                tracks.add(Track(RowHeader(""), 8, rowPosition))
                 setTracks(tracks)
             }
         }
