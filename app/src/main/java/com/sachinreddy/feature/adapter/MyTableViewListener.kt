@@ -18,7 +18,7 @@ class MyTableViewListener : ITableViewListener {
         rowPosition: Int
     ) {
         // Do what you want.
-        println("SACHIN")
+        println(columnPosition)
     }
 
     /**
@@ -34,6 +34,7 @@ class MyTableViewListener : ITableViewListener {
         row: Int
     ) {
         // Do What you want
+        println(column)
     }
 
     /**
