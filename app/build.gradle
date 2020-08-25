@@ -66,7 +66,7 @@ dependencies {
     debugImplementation "androidx.fragment:fragment-testing:1.2.5"
 
     // TableView
-    implementation 'com.evrencoskun.library:tableview:0.8.9.2'
+    implementation 'com.evrencoskun.library:tableview:0.8.9'
 
     // Record Button
     compile 'com.github.emrekose26:RecordButton:1.2.4'

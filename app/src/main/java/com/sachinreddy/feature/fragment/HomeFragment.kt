@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.evrencoskun.tableview.TableView
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.adapter.EditCellAdapter
-import com.sachinreddy.feature.data.Track
+import com.sachinreddy.feature.adapter.MyTableViewListener
 import com.sachinreddy.feature.injection.appComponent
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
@@ -41,10 +41,13 @@ class HomeFragment : Fragment() {
         setupActionBar()
 
         val tableView = TableView(requireContext())
+        tableView.tableViewListener = MyTableViewListener()
+
         val adapter = EditCellAdapter(appViewModel.mTrackList)
         tableView.setAdapter(adapter)
         adapter.setTracks(appViewModel.mTrackList)
         content_container.setAdapter(adapter)
+        content_container.tableViewListener = MyTableViewListener()
 
         super.onViewCreated(view, savedInstanceState)
     }
