@@ -1,10 +1,12 @@
 package com.sachinreddy.feature.adapter
 
+import android.content.Context
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.evrencoskun.tableview.listener.ITableViewListener
 
 
-class MyTableViewListener : ITableViewListener {
+class EditCellListener(val context: Context) : ITableViewListener {
     /**
      * Called when user click any cell item.
      *
@@ -18,7 +20,7 @@ class MyTableViewListener : ITableViewListener {
         rowPosition: Int
     ) {
         // Do what you want.
-        println(columnPosition)
+        Toast.makeText(context, "$columnPosition || short", Toast.LENGTH_SHORT).show()
     }
 
     /**
@@ -34,7 +36,7 @@ class MyTableViewListener : ITableViewListener {
         row: Int
     ) {
         // Do What you want
-        println(column)
+        Toast.makeText(context, "$column || long", Toast.LENGTH_SHORT).show()
     }
 
     /**
