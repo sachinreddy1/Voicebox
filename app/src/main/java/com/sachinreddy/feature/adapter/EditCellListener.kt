@@ -1,9 +1,11 @@
 package com.sachinreddy.feature.adapter
 
 import android.content.Context
+import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.evrencoskun.tableview.listener.ITableViewListener
+import kotlinx.android.synthetic.main.table_view_cell_layout.view.*
 
 
 class EditCellListener(val context: Context) : ITableViewListener {
@@ -20,7 +22,8 @@ class EditCellListener(val context: Context) : ITableViewListener {
         rowPosition: Int
     ) {
         // Do what you want.
-        Toast.makeText(context, "$columnPosition || short", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "($columnPosition, $rowPosition)", Toast.LENGTH_SHORT).show()
+        selectCell(cellView.itemView)
     }
 
     /**
@@ -36,7 +39,7 @@ class EditCellListener(val context: Context) : ITableViewListener {
         row: Int
     ) {
         // Do What you want
-        Toast.makeText(context, "$column || long", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "($column, $row)", Toast.LENGTH_SHORT).show()
     }
 
     /**
@@ -91,5 +94,20 @@ class EditCellListener(val context: Context) : ITableViewListener {
         rowPosition: Int
     ) {
         // Do what you want.
+    }
+
+    private fun selectCell(
+        view: View,
+        top: Boolean = true,
+        end: Boolean = true,
+        bottom: Boolean = true,
+        start: Boolean = true
+    ) {
+        view.apply {
+            topSelection.visibility = if (top) View.VISIBLE else View.INVISIBLE
+            endSelection.visibility = if (end) View.VISIBLE else View.INVISIBLE
+            bottomSelection.visibility = if (bottom) View.VISIBLE else View.INVISIBLE
+            startSelection.visibility = if (start) View.VISIBLE else View.INVISIBLE
+        }
     }
 }
