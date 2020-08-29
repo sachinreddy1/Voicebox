@@ -1,6 +1,8 @@
 package com.sachinreddy.feature.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -13,24 +15,15 @@ import com.sachinreddy.feature.table.Cell
 import com.sachinreddy.feature.table.TimelineHeader
 import com.sachinreddy.feature.table.RowHeader
 import com.sachinreddy.feature.viewModel.AppViewModel
+import kotlinx.android.synthetic.main.table_view_cell_layout.view.*
 
 
-class EditCellAdapter(val tracks: MutableList<Track>) : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
+class EditCellAdapter(val context: Context, private val tracks: MutableList<Track>) : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
 
     internal inner class MyCellViewHolder(itemView: View) : AbstractViewHolder(itemView) {
         val cell_textview: TextView = itemView.findViewById(R.id.cell_data)
     }
 
-    /**
-     * This is where you create your custom Cell ViewHolder. This method is called when Cell
-     * RecyclerView of the TableView needs a new RecyclerView.ViewHolder of the given type to
-     * represent an item.
-     *
-     * @param viewType : This value comes from #getCellItemViewType method to support different type
-     * of viewHolder as a Cell item.
-     *
-     * @see .getCellItemViewType
-     */
     override fun onCreateCellViewHolder(parent: ViewGroup, viewType: Int): AbstractViewHolder {
         // Get cell xml layout
         val layout: View = LayoutInflater.from(parent.context)
@@ -39,21 +32,6 @@ class EditCellAdapter(val tracks: MutableList<Track>) : AbstractTableAdapter<Tim
         return MyCellViewHolder(layout)
     }
 
-    /**
-     * That is where you set Cell View Model data to your custom Cell ViewHolder. This method is
-     * Called by Cell RecyclerView of the TableView to display the data at the specified position.
-     * This method gives you everything you need about a cell item.
-     *
-     * @param holder       : This is one of your cell ViewHolders that was created on
-     * ```onCreateCellViewHolder``` method. In this example, we have created
-     * "MyCellViewHolder" holder.
-     * @param cellItemModel     : This is the cell view model located on this X and Y position. In this
-     * example, the model class is "Cell".
-     * @param columnPosition : This is the X (Column) position of the cell item.
-     * @param rowPosition : This is the Y (Row) position of the cell item.
-     *
-     * @see .onCreateCellViewHolder
-     */
     override fun onBindCellViewHolder(
         holder: AbstractViewHolder,
         cellItemModel: Cell?,
@@ -62,25 +40,35 @@ class EditCellAdapter(val tracks: MutableList<Track>) : AbstractTableAdapter<Tim
     ) {
         val cell = cellItemModel as Cell
 
-        // Get the holder to update cell item text
+        // Get the holder
         val viewHolder = holder as MyCellViewHolder
         viewHolder.cell_textview.text = cell.data.toString()
+
+        // Set long click listener and touch event listener
+        viewHolder.itemView.apply {
+            setOnTouchListener { v, event ->
+                when(event.action) {
+                    MotionEvent.ACTION_MOVE -> {
+                        println("${event.x}, ${event.y}")
+                    }
+
+                    MotionEvent.ACTION_DOWN -> {
+                        selectCell(viewHolder.itemView)
+                    }
+
+                    MotionEvent.ACTION_HOVER_EXIT -> {
+                        Toast.makeText(context, "OUTSIDE", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                true
+            }
+        }
     }
 
     internal inner class MyColumnHeaderViewHolder(itemView: View) : AbstractViewHolder(itemView) {
         val column_header_barNumber: TextView = itemView.findViewById(R.id.column_header_barNumber)
     }
 
-    /**
-     * This is where you create your custom Column Header ViewHolder. This method is called when
-     * Column Header RecyclerView of the TableView needs a new RecyclerView.ViewHolder of the given
-     * type to represent an item.
-     *
-     * @param viewType : This value comes from "getColumnHeaderItemViewType" method to support
-     * different type of viewHolder as a Column Header item.
-     *
-     * @see .getColumnHeaderItemViewType
-     */
     override fun onCreateColumnHeaderViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -94,21 +82,6 @@ class EditCellAdapter(val tracks: MutableList<Track>) : AbstractTableAdapter<Tim
         return MyColumnHeaderViewHolder(layout)
     }
 
-    /**
-     * That is where you set Column Header View Model data to your custom Column Header ViewHolder.
-     * This method is Called by ColumnHeader RecyclerView of the TableView to display the data at
-     * the specified position. This method gives you everything you need about a column header
-     * item.
-     *
-     * @param holder   : This is one of your column header ViewHolders that was created on
-     * ```onCreateColumnHeaderViewHolder``` method. In this example we have created
-     * "MyColumnHeaderViewHolder" holder.
-     * @param columnHeaderItemModel : This is the column header view model located on this X position. In this
-     * example, the model class is "ColumnHeader".
-     * @param position : This is the X (Column) position of the column header item.
-     *
-     * @see .onCreateColumnHeaderViewHolder
-     */
     override fun onBindColumnHeaderViewHolder(
         holder: AbstractViewHolder,
         timelineHeaderItemModel: TimelineHeader?,
@@ -122,26 +95,12 @@ class EditCellAdapter(val tracks: MutableList<Track>) : AbstractTableAdapter<Tim
         columnHeaderViewHolder.column_header_barNumber.text = columnHeader.data.toString()
     }
 
-    /**
-     * This is sample RowHeaderViewHolder class.
-     * This viewHolder must be extended from AbstractViewHolder class instead of RecyclerView.ViewHolder.
-     */
     internal inner class MyRowHeaderViewHolder(itemView: View) : AbstractViewHolder(itemView) {
         val row_header_imageView: ImageView = itemView.findViewById(R.id.row_header_imageView)
         val row_header_button_container: ConstraintLayout = itemView.findViewById(R.id.row_header_button_container)
         val row_header_button: ImageButton = itemView.findViewById(R.id.row_header_button)
     }
 
-    /**
-     * This is where you create your custom Row Header ViewHolder. This method is called when
-     * Row Header RecyclerView of the TableView needs a new RecyclerView.ViewHolder of the given
-     * type to represent an item.
-     *
-     * @param viewType : This value comes from "getRowHeaderItemViewType" method to support
-     * different type of viewHolder as a row Header item.
-     *
-     * @see .getRowHeaderItemViewType
-     */
     override fun onCreateRowHeaderViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -155,20 +114,6 @@ class EditCellAdapter(val tracks: MutableList<Track>) : AbstractTableAdapter<Tim
         return MyRowHeaderViewHolder(layout)
     }
 
-    /**
-     * That is where you set Row Header View Model data to your custom Row Header ViewHolder. This
-     * method is Called by RowHeader RecyclerView of the TableView to display the data at the
-     * specified position. This method gives you everything you need about a row header item.
-     *
-     * @param holder   : This is one of your row header ViewHolders that was created on
-     * ```onCreateRowHeaderViewHolder``` method. In this example, we have created
-     * "MyRowHeaderViewHolder" holder.
-     * @param rowHeaderItemModel : This is the row header view model located on this Y position. In this
-     * example, the model class is "RowHeader".
-     * @param position : This is the Y (row) position of the row header item.
-     *
-     * @see .onCreateRowHeaderViewHolder
-     */
     override fun onBindRowHeaderViewHolder(
         holder: AbstractViewHolder,
         rowHeaderItemModel: RowHeader?,
@@ -236,5 +181,20 @@ class EditCellAdapter(val tracks: MutableList<Track>) : AbstractTableAdapter<Tim
         }
 
         setAllItems(timelineHeaderList_.toList(), rowHeaderList_.toList(), cellList_.toList())
+    }
+
+    private fun selectCell(
+        view: View,
+        top: Boolean = true,
+        end: Boolean = true,
+        bottom: Boolean = true,
+        start: Boolean = true
+    ) {
+        view.apply {
+            topSelection.visibility = if (top) View.VISIBLE else View.INVISIBLE
+            endSelection.visibility = if (end) View.VISIBLE else View.INVISIBLE
+            bottomSelection.visibility = if (bottom) View.VISIBLE else View.INVISIBLE
+            startSelection.visibility = if (start) View.VISIBLE else View.INVISIBLE
+        }
     }
 }

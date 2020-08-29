@@ -41,7 +41,7 @@ class HomeFragment : Fragment() {
         setupActionBar()
 
         val tableView = TableView(requireContext())
-        val adapter = EditCellAdapter(appViewModel.mTrackList)
+        val adapter = EditCellAdapter(requireContext(), appViewModel.mTrackList)
         tableView.setAdapter(adapter)
         adapter.setTracks(appViewModel.mTrackList)
         content_container.setAdapter(adapter)
