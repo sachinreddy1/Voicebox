@@ -22,6 +22,7 @@ class EditCellAdapter(val context: Context, private val tracks: MutableList<Trac
 
     internal inner class MyCellViewHolder(itemView: View) : AbstractViewHolder(itemView) {
         val cell_textview: TextView = itemView.findViewById(R.id.cell_data)
+        val selection_container: ConstraintLayout = itemView.findViewById(R.id.selection_container)
     }
 
     override fun onCreateCellViewHolder(parent: ViewGroup, viewType: Int): AbstractViewHolder {
@@ -42,7 +43,10 @@ class EditCellAdapter(val context: Context, private val tracks: MutableList<Trac
 
         // Get the holder
         val viewHolder = holder as MyCellViewHolder
-        viewHolder.cell_textview.text = cell.data.toString()
+        viewHolder.apply {
+            cell_textview.text = cell.data.toString()
+            selection_container.visibility = View.GONE
+        }
     }
 
     internal inner class MyColumnHeaderViewHolder(itemView: View) : AbstractViewHolder(itemView) {

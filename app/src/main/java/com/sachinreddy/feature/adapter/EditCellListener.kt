@@ -95,17 +95,10 @@ class EditCellListener(val context: Context) : ITableViewListener {
     }
 
     private fun selectCell(
-        view: View,
-        top: Boolean = true,
-        end: Boolean = true,
-        bottom: Boolean = true,
-        start: Boolean = true
+        view: View
     ) {
         view.apply {
-            topSelection.visibility = if (top) View.VISIBLE else View.INVISIBLE
-            endSelection.visibility = if (end) View.VISIBLE else View.INVISIBLE
-            bottomSelection.visibility = if (bottom) View.VISIBLE else View.INVISIBLE
-            startSelection.visibility = if (start) View.VISIBLE else View.INVISIBLE
+            selection_container.visibility = View.VISIBLE
         }
     }
 }

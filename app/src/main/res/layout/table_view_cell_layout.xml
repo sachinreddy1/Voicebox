@@ -29,56 +29,67 @@
             tools:text="Cell Data" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/topSelection"
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-
-            android:visibility="gone"
-            android:background="@color/recordButtonColor"
-
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/endSelection"
-            android:layout_width="4dp"
+            android:id="@+id/selection_container"
             android:layout_height="match_parent"
-
-            android:visibility="gone"
-            android:background="@color/recordButtonColor"
-
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/bottomSelection"
             android:layout_width="match_parent"
-            android:layout_height="4dp"
 
-            android:visibility="gone"
-            android:background="@color/recordButtonColor"
+            android:visibility="visible"
+            android:layout_margin="2dp"
+            >
 
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/startSelection"
-            android:layout_width="4dp"
-            android:layout_height="match_parent"
+                android:visibility="visible"
+                android:background="@drawable/round_background"
+                android:backgroundTint="@color/recordButtonColor"
 
-            android:visibility="gone"
-            android:background="@color/recordButtonColor"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
 
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
+
+                android:visibility="visible"
+                android:background="@drawable/round_background"
+                android:backgroundTint="@color/recordButtonColor"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+
+                android:visibility="visible"
+                android:background="@drawable/round_background"
+                android:backgroundTint="@color/recordButtonColor"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
+
+                android:visibility="visible"
+                android:background="@drawable/round_background"
+                android:backgroundTint="@color/recordButtonColor"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
