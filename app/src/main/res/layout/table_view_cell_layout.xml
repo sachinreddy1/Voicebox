@@ -10,92 +10,75 @@
         android:layout_width="@dimen/cell_length"
         android:layout_height="@dimen/cell_length"
 
-        android:background="@color/colorPrimary"
+        android:background="@color/cardBackground"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <TextView
+            android:id="@+id/cell_data"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="1dp"
 
-            android:background="@color/cardBackground">
-
-            <TextView
-                android:id="@+id/cell_data"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:maxLines="1"
-                android:textColor="@color/colorPrimary"
-                tools:text="Cell Data" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@color/colorPrimary"
+            tools:text="Cell Data" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/selection_container"
+            android:id="@+id/topSelection"
             android:layout_width="match_parent"
+            android:layout_height="4dp"
+
+            android:visibility="gone"
+            android:background="@color/recordButtonColor"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/endSelection"
+            android:layout_width="4dp"
             android:layout_height="match_parent"
-            >
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/topSelection"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
+            android:visibility="gone"
+            android:background="@color/recordButtonColor"
 
-                android:visibility="visible"
-                android:background="@color/recordButtonColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottomSelection"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/endSelection"
-                android:layout_width="4dp"
-                android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@color/recordButtonColor"
 
-                android:visibility="visible"
-                android:background="@color/recordButtonColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/startSelection"
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/bottomSelection"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
+            android:visibility="gone"
+            android:background="@color/recordButtonColor"
 
-                android:visibility="visible"
-                android:background="@color/recordButtonColor"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/startSelection"
-                android:layout_width="4dp"
-                android:layout_height="match_parent"
-
-                android:visibility="visible"
-                android:background="@color/recordButtonColor"
-
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

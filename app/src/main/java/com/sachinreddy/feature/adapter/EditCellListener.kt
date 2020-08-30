@@ -37,14 +37,6 @@ class EditCellListener(val context: Context) : ITableViewListener {
         column: Int,
         row: Int
     ) {
-        // Vibrate the device.
-        val v = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
-        } else {
-            v.vibrate(500)
-        }
-
         selectCell(cellView.itemView)
     }
 
