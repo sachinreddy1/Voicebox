@@ -43,26 +43,6 @@ class EditCellAdapter(val context: Context, private val tracks: MutableList<Trac
         // Get the holder
         val viewHolder = holder as MyCellViewHolder
         viewHolder.cell_textview.text = cell.data.toString()
-
-        // Set long click listener and touch event listener
-        viewHolder.itemView.apply {
-            setOnTouchListener { v, event ->
-                when(event.action) {
-                    MotionEvent.ACTION_MOVE -> {
-                        println("${event.x}, ${event.y}")
-                    }
-
-                    MotionEvent.ACTION_DOWN -> {
-                        selectCell(viewHolder.itemView)
-                    }
-
-                    MotionEvent.ACTION_HOVER_EXIT -> {
-                        Toast.makeText(context, "OUTSIDE", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                true
-            }
-        }
     }
 
     internal inner class MyColumnHeaderViewHolder(itemView: View) : AbstractViewHolder(itemView) {
@@ -181,20 +161,5 @@ class EditCellAdapter(val context: Context, private val tracks: MutableList<Trac
         }
 
         setAllItems(timelineHeaderList_.toList(), rowHeaderList_.toList(), cellList_.toList())
-    }
-
-    private fun selectCell(
-        view: View,
-        top: Boolean = true,
-        end: Boolean = true,
-        bottom: Boolean = true,
-        start: Boolean = true
-    ) {
-        view.apply {
-            topSelection.visibility = if (top) View.VISIBLE else View.INVISIBLE
-            endSelection.visibility = if (end) View.VISIBLE else View.INVISIBLE
-            bottomSelection.visibility = if (bottom) View.VISIBLE else View.INVISIBLE
-            startSelection.visibility = if (start) View.VISIBLE else View.INVISIBLE
-        }
     }
 }
