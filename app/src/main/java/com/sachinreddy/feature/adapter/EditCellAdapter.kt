@@ -2,7 +2,6 @@ package com.sachinreddy.feature.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -11,11 +10,9 @@ import com.evrencoskun.tableview.adapter.AbstractTableAdapter
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.Track
-import com.sachinreddy.feature.table.Cell
-import com.sachinreddy.feature.table.TimelineHeader
-import com.sachinreddy.feature.table.RowHeader
-import com.sachinreddy.feature.viewModel.AppViewModel
-import kotlinx.android.synthetic.main.table_view_cell_layout.view.*
+import com.sachinreddy.feature.data.table.Cell
+import com.sachinreddy.feature.data.table.TimelineHeader
+import com.sachinreddy.feature.data.table.RowHeader
 
 
 class EditCellAdapter(val context: Context, private val tracks: MutableList<Track>) : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {

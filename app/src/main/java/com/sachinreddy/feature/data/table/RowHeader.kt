@@ -1,5 +1,5 @@
-package com.sachinreddy.feature.table
+package com.sachinreddy.feature.data.table
 
 import androidx.annotation.Nullable
 
-class RowHeader(@Nullable data: Any?) : Cell(data!!)
+class RowHeader(val data: Any?)

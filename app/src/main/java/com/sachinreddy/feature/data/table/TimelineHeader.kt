@@ -1,5 +1,5 @@
-package com.sachinreddy.feature.table
+package com.sachinreddy.feature.data.table
 
 import androidx.annotation.Nullable
 
-class TimelineHeader(@Nullable data: Any?) : Cell(data!!)
+class TimelineHeader(val data: Any?)

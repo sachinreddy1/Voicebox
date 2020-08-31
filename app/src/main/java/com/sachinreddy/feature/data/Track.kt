@@ -1,9 +1,9 @@
 package com.sachinreddy.feature.data
 
 import com.google.firebase.database.IgnoreExtraProperties
-import com.sachinreddy.feature.table.Cell
-import com.sachinreddy.feature.table.TimelineHeader
-import com.sachinreddy.feature.table.RowHeader
+import com.sachinreddy.feature.data.table.Cell
+import com.sachinreddy.feature.data.table.TimelineHeader
+import com.sachinreddy.feature.data.table.RowHeader
 
 @IgnoreExtraProperties
 class Track {

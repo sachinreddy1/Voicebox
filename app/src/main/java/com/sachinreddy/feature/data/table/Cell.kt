@@ -1,8 +1,6 @@
-package com.sachinreddy.feature.table
+package com.sachinreddy.feature.data.table
 
-import androidx.annotation.Nullable
-
-open class Cell(
-    @field:Nullable @get:Nullable
-    @param:Nullable val data: Any
+class Cell(
+    val data: Any,
+    var isSelected: Boolean = false
 )

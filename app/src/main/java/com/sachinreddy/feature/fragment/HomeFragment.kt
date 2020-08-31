@@ -42,10 +42,10 @@ class HomeFragment : Fragment() {
 
         val tableView = TableView(requireContext())
         val adapter = EditCellAdapter(requireContext(), appViewModel.mTrackList)
-        tableView.setAdapter(adapter)
+        tableView.adapter = adapter
         adapter.setTracks(appViewModel.mTrackList)
-        content_container.setAdapter(adapter)
-        content_container.tableViewListener = EditCellListener(requireContext())
+        content_container.adapter = adapter
+        content_container.tableViewListener = EditCellListener(requireContext(), tableView)
 
         super.onViewCreated(view, savedInstanceState)
     }
