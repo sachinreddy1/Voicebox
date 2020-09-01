@@ -1,14 +1,10 @@
 package com.sachinreddy.feature.adapter
 
 import android.content.Context
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.evrencoskun.tableview.TableView
 import com.evrencoskun.tableview.listener.ITableViewListener
-import com.sachinreddy.feature.data.table.Cell
-import kotlinx.android.synthetic.main.table_view_cell_layout.view.*
 
-class EditCellListener(val context: Context, val tableView: TableView) : ITableViewListener {
+class EditCellListener(val context: Context) : ITableViewListener {
     override fun onCellClicked(
         cellView: RecyclerView.ViewHolder,
         columnPosition: Int,
