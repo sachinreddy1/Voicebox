@@ -5,6 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.evrencoskun.tableview.TableView
 import com.evrencoskun.tableview.listener.ITableViewListener
+import com.sachinreddy.feature.data.table.Cell
 import kotlinx.android.synthetic.main.table_view_cell_layout.view.*
 
 class EditCellListener(val context: Context, val tableView: TableView) : ITableViewListener {
@@ -21,7 +22,7 @@ class EditCellListener(val context: Context, val tableView: TableView) : ITableV
         column: Int,
         row: Int
     ) {
-        selectCell(cellView.itemView)
+        cellView.itemView.selection_container.visibility = View.VISIBLE
     }
 
     override fun onColumnHeaderClicked(
@@ -50,13 +51,5 @@ class EditCellListener(val context: Context, val tableView: TableView) : ITableV
         rowPosition: Int
     ) {
         // Do what you want.
-    }
-
-    private fun selectCell(
-        view: View
-    ) {
-        view.apply {
-            selection_container.visibility = View.VISIBLE
-        }
     }
 }
