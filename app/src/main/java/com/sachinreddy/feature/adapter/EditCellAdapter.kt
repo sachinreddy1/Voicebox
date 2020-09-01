@@ -43,11 +43,8 @@ class EditCellAdapter(val context: Context, private val tracks: MutableList<Trac
         val viewHolder = holder as MyCellViewHolder
         viewHolder.apply {
             cell_textview.text = cell.data.toString()
-            if (cell.isSelected) {
-                selection_container.visibility = View.VISIBLE
-            } else {
-                selection_container.visibility = View.GONE
-            }
+            selection_container.visibility = if (cell.isSelected) View.VISIBLE else View.GONE
+
             itemView.setOnLongClickListener {
                 for (i in mCellItems) {
                     for (j in i) {
