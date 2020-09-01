@@ -11,7 +11,7 @@ class Track {
     var timelineHeaderList: MutableList<TimelineHeader>? = mutableListOf()
     var cellList: MutableList<Cell>? = mutableListOf()
 
-    var numberBars: Int = 8
+    private var numberBars: Int = 8
 
     constructor() {
         for(i in 0 until numberBars) {

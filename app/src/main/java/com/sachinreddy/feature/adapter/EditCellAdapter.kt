@@ -1,19 +1,24 @@
 package com.sachinreddy.feature.adapter
 
 import android.content.Context
-import android.opengl.Visibility
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat.getSystemService
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.Track
 import com.sachinreddy.feature.data.table.Cell
-import com.sachinreddy.feature.data.table.TimelineHeader
 import com.sachinreddy.feature.data.table.RowHeader
+import com.sachinreddy.feature.data.table.TimelineHeader
 
 
 class EditCellAdapter(val context: Context, private val tracks: MutableList<Track>) : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
@@ -45,13 +50,25 @@ class EditCellAdapter(val context: Context, private val tracks: MutableList<Trac
             cell_textview.text = cell.data.toString()
             selection_container.visibility = if (cell.isSelected) View.VISIBLE else View.GONE
 
+            // Long press for selection
             itemView.setOnLongClickListener {
+                // Add short vibration
+                val v = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    v.vibrate(
+                        VibrationEffect.createOneShot(
+                            100,
+                            VibrationEffect.DEFAULT_AMPLITUDE
+                        )
+                    )
+                }
+                // Un-selecting all the cells
                 for (i in mCellItems) {
                     for (j in i) {
                         j?.isSelected = false
                     }
                 }
-
+                // Select the new cell
                 cell.isSelected = true
                 notifyDataSetChanged()
                 true
