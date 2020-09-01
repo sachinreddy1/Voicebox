@@ -1,6 +1,7 @@
 package com.sachinreddy.feature.adapter
 
 import android.content.Context
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +43,22 @@ class EditCellAdapter(val context: Context, private val tracks: MutableList<Trac
         val viewHolder = holder as MyCellViewHolder
         viewHolder.apply {
             cell_textview.text = cell.data.toString()
-            selection_container.visibility = View.GONE
+            if (cell.isSelected) {
+                selection_container.visibility = View.VISIBLE
+            } else {
+                selection_container.visibility = View.GONE
+            }
+            itemView.setOnLongClickListener {
+                for (i in mCellItems) {
+                    for (j in i) {
+                        j?.isSelected = false
+                    }
+                }
+
+                cell.isSelected = true
+                notifyDataSetChanged()
+                true
+            }
         }
     }
 

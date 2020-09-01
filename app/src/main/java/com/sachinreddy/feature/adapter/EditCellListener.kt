@@ -22,7 +22,7 @@ class EditCellListener(val context: Context, val tableView: TableView) : ITableV
         column: Int,
         row: Int
     ) {
-        cellView.itemView.selection_container.visibility = View.VISIBLE
+        // Do what you want.
     }
 
     override fun onColumnHeaderClicked(
