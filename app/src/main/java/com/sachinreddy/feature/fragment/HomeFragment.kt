@@ -11,6 +11,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.emrekose.recordbutton.OnRecordListener
+import com.emrekose.recordbutton.RecordButton
 import com.evrencoskun.tableview.TableView
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.adapter.EditCellAdapter
@@ -46,6 +48,20 @@ class HomeFragment : Fragment() {
         adapter.setTracks(appViewModel.mTrackList)
         content_container.adapter = adapter
         content_container.tableViewListener = EditCellListener(requireContext())
+
+        recordBtn.setRecordListener(object : OnRecordListener {
+            override fun onRecord() {
+                println("onRecord")
+            }
+
+            override fun onRecordCancel() {
+                println("onRecordCancel")
+            }
+
+            override fun onRecordFinish() {
+                println("onRecordFinish")
+            }
+        })
 
         super.onViewCreated(view, savedInstanceState)
     }

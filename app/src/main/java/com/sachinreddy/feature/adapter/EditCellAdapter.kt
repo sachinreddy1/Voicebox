@@ -26,6 +26,7 @@ class EditCellAdapter(val context: Context, private val tracks: MutableList<Trac
     internal inner class MyCellViewHolder(itemView: View) : AbstractViewHolder(itemView) {
         val cell_textview: TextView = itemView.findViewById(R.id.cell_data)
         val selection_container: ConstraintLayout = itemView.findViewById(R.id.selection_container)
+        val edit_cell: ConstraintLayout = itemView.findViewById(R.id.edit_cell)
     }
 
     override fun onCreateCellViewHolder(parent: ViewGroup, viewType: Int): AbstractViewHolder {
@@ -49,6 +50,7 @@ class EditCellAdapter(val context: Context, private val tracks: MutableList<Trac
         viewHolder.apply {
             cell_textview.text = cell.data.toString()
             selection_container.visibility = if (cell.isSelected) View.VISIBLE else View.GONE
+            edit_cell.visibility = if (cell.isSelected) View.VISIBLE else View.GONE
 
             // Long press for selection
             itemView.setOnLongClickListener {
