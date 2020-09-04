@@ -41,8 +41,10 @@
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:maxLines="1"
+            android:textSize="12dp"
             android:textColor="@color/recordButtonColor"
-            tools:text="Cell Data" />
+            tools:text="Cell Data"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
