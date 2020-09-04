@@ -13,6 +13,6 @@
     <color name="header_line_color">#0a0a0a</color>
     <color name="table_view_default_text_color">#0a0a0a</color>
 
-    <color name="recordButtonColor">#ff4d4d</color>
-    <color name="editCellColor">#3C3C3C</color>
+    <color name="recordButtonColor">#FF6C6C</color>
+    <color name="editCellColor">#434F59</color>
 </resources>

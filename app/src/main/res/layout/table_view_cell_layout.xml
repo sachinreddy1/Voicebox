@@ -17,14 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!--    SELECTION CONTAINER    -->
-
-        <include
-            android:id="@+id/selection_container"
-            layout="@layout/cell_selector"
-            android:visibility="visible"
-            />
-
         <!--    EDIT CELL    -->
 
         <include
@@ -33,19 +25,12 @@
             android:visibility="visible"
             />
 
-        <!--    TEST    -->
+        <!--    SELECTION CONTAINER    -->
 
-        <TextView
-            android:id="@+id/cell_data"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textSize="12dp"
-            android:textColor="@color/recordButtonColor"
-            tools:text="Cell Data"
+        <include
+            android:id="@+id/selection_container"
+            layout="@layout/cell_selector"
+            android:visibility="visible"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

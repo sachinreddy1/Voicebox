@@ -18,7 +18,7 @@
 
             android:visibility="visible"
             android:background="@drawable/round_background"
-            android:backgroundTint="@color/recordButtonColor"
+            android:backgroundTint="@color/colorPrimary"
 
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,7 @@
 
             android:visibility="visible"
             android:background="@drawable/round_background"
-            android:backgroundTint="@color/recordButtonColor"
+            android:backgroundTint="@color/colorPrimary"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -44,7 +44,7 @@
 
             android:visibility="visible"
             android:background="@drawable/round_background"
-            android:backgroundTint="@color/recordButtonColor"
+            android:backgroundTint="@color/colorPrimary"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +57,7 @@
 
             android:visibility="visible"
             android:background="@drawable/round_background"
-            android:backgroundTint="@color/recordButtonColor"
+            android:backgroundTint="@color/colorPrimary"
 
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
