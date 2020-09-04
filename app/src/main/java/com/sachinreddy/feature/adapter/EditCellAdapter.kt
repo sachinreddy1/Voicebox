@@ -62,12 +62,14 @@ class EditCellAdapter(val context: Context, private val tracks: MutableList<Trac
                         )
                     )
                 }
+
                 // Un-selecting all the cells
                 for (i in mCellItems) {
                     for (j in i) {
                         j?.isSelected = false
                     }
                 }
+
                 // Select the new cell
                 cell.isSelected = true
                 notifyDataSetChanged()

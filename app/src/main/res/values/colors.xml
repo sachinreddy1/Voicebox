@@ -14,4 +14,5 @@
     <color name="table_view_default_text_color">#0a0a0a</color>
 
     <color name="recordButtonColor">#ff4d4d</color>
+    <color name="editCellColor">#e9f5f8</color>
 </resources>
