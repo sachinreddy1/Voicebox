@@ -52,8 +52,6 @@ class EditCellAdapter(val context: Context, val appViewModel: AppViewModel, priv
         // Get the holder
         val viewHolder = holder as MyCellViewHolder
         viewHolder.apply {
-            selectedCell = cell
-
             cell_textview.text = cell.data.toString()
             selection_container.visibility = if (cell.isSelected) View.VISIBLE else View.GONE
             edit_cell.visibility = if (cell.isSelected) View.VISIBLE else View.GONE
@@ -80,6 +78,7 @@ class EditCellAdapter(val context: Context, val appViewModel: AppViewModel, priv
 
                 // Select the new cell
                 cell.isSelected = true
+                selectedCell = cell
                 notifyDataSetChanged()
                 true
             }

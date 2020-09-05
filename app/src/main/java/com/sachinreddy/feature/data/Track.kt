@@ -24,7 +24,6 @@ class Track {
                 rowPosition = rowPosition
             )
             cellList?.add(cell)
-            println(cell.columnPosition)
         }
     }
 }
