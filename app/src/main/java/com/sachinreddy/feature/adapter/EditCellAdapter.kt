@@ -54,7 +54,7 @@ class EditCellAdapter(val context: Context, val appViewModel: AppViewModel, priv
         viewHolder.apply {
             cell_textview.text = cell.data.toString()
             selection_container.visibility = if (cell.isSelected) View.VISIBLE else View.GONE
-            edit_cell.visibility = if (cell.isSelected) View.VISIBLE else View.GONE
+            edit_cell.visibility = if (cell.hasData) View.VISIBLE else View.GONE
 
             // Long press for selection
             itemView.setOnLongClickListener {
