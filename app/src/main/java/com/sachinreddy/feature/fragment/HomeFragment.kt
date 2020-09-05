@@ -57,7 +57,6 @@ class HomeFragment : Fragment() {
                 val cell = adapter.selectedCell as Cell
                 cell.hasData = true
                 adapter.notifyDataSetChanged()
-                println("${cell.columnPosition} || ${cell.rowPosition}")
             }
 
             override fun onRecordCancel() {

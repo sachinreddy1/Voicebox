@@ -12,7 +12,13 @@ class AppViewModel @Inject constructor() : ViewModel() {
     var timelineHeaderList: MutableList<TimelineHeader>? = mutableListOf()
 
     init {
-        mTrackList.add(Track(RowHeader(""), numberBars, 0))
+        val track = Track(RowHeader(""), numberBars, 0)
+        // Setting the first cell to selected
+        track.cellList?.let {
+            it.first().isSelected = true
+        }
+        mTrackList.add(track)
+        
         for (i in 0 until numberBars) {
             timelineHeaderList?.add(TimelineHeader(i + 1))
         }

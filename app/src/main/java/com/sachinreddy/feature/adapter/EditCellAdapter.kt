@@ -23,7 +23,7 @@ import com.sachinreddy.feature.viewModel.AppViewModel
 
 
 class EditCellAdapter(val context: Context, val appViewModel: AppViewModel, private val tracks: MutableList<Track>) : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
-    var selectedCell: Cell? = null
+    var selectedCell: Cell? = tracks.first().cellList?.first()
 
     internal inner class MyCellViewHolder(itemView: View) : AbstractViewHolder(itemView) {
         val cell_textview: TextView = itemView.findViewById(R.id.cell_data)

@@ -19,9 +19,11 @@ class Track {
 
         for(i in 0 until numberBars) {
             val cell = Cell(
-                rowPosition.toString(),
+                data = rowPosition.toString(),
                 columnPosition = i,
-                rowPosition = rowPosition
+                rowPosition = rowPosition,
+                isSelected = false,
+                hasData = false
             )
             cellList?.add(cell)
         }
