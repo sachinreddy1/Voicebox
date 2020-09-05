@@ -8,17 +8,7 @@ import com.sachinreddy.feature.data.table.RowHeader
 @IgnoreExtraProperties
 class Track {
     var rowHeader: RowHeader = RowHeader("")
-    var timelineHeaderList: MutableList<TimelineHeader>? = mutableListOf()
     var cellList: MutableList<Cell>? = mutableListOf()
-
-    private var numberBars: Int = 8
-
-    constructor() {
-        for(i in 0 until numberBars) {
-            timelineHeaderList?.add(TimelineHeader(i + 1))
-            cellList?.add(Cell("test"))
-        }
-    }
 
     constructor(
         rowHeader: RowHeader,
@@ -26,11 +16,15 @@ class Track {
         rowPosition: Int
     ) {
         this.rowHeader = rowHeader
-        this.numberBars = numberBars
 
-        for(i in 0 until this.numberBars) {
-            timelineHeaderList?.add(TimelineHeader(i + 1))
-            cellList?.add(Cell(rowPosition.toString()))
+        for(i in 0 until numberBars) {
+            val cell = Cell(
+                rowPosition.toString(),
+                columnPosition = i,
+                rowPosition = rowPosition
+            )
+            cellList?.add(cell)
+            println(cell.columnPosition)
         }
     }
 }

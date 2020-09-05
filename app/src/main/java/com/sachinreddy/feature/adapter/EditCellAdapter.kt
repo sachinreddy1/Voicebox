@@ -19,9 +19,11 @@ import com.sachinreddy.feature.data.Track
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.RowHeader
 import com.sachinreddy.feature.data.table.TimelineHeader
+import com.sachinreddy.feature.viewModel.AppViewModel
 
 
-class EditCellAdapter(val context: Context, private val tracks: MutableList<Track>) : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
+class EditCellAdapter(val context: Context, val appViewModel: AppViewModel, private val tracks: MutableList<Track>) : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
+    var selectedCell: Cell? = null
 
     internal inner class MyCellViewHolder(itemView: View) : AbstractViewHolder(itemView) {
         val cell_textview: TextView = itemView.findViewById(R.id.cell_data)
@@ -45,9 +47,13 @@ class EditCellAdapter(val context: Context, private val tracks: MutableList<Trac
     ) {
         val cell = cellItemModel as Cell
 
+        cell.rowPosition = rowPosition
+
         // Get the holder
         val viewHolder = holder as MyCellViewHolder
         viewHolder.apply {
+            selectedCell = cell
+
             cell_textview.text = cell.data.toString()
             selection_container.visibility = if (cell.isSelected) View.VISIBLE else View.GONE
             edit_cell.visibility = if (cell.isSelected) View.VISIBLE else View.GONE
@@ -142,7 +148,7 @@ class EditCellAdapter(val context: Context, private val tracks: MutableList<Trac
 
         rowHeaderViewHolder.row_header_button.apply {
             setOnClickListener {
-                tracks.add(Track(RowHeader(""), 8, rowPosition))
+                tracks.add(Track(RowHeader(""), appViewModel.numberBars, rowPosition + 1))
                 setTracks(tracks)
             }
         }
@@ -190,7 +196,7 @@ class EditCellAdapter(val context: Context, private val tracks: MutableList<Trac
         val rowHeaderList_: MutableList<RowHeader> = mutableListOf()
         val cellList_: MutableList<MutableList<Cell>> = mutableListOf()
         tracks.map {
-            timelineHeaderList_ = it.timelineHeaderList ?: mutableListOf()
+            timelineHeaderList_ = appViewModel.timelineHeaderList ?: mutableListOf()
             rowHeaderList_.add(it.rowHeader)
             cellList_.add(it.cellList ?: mutableListOf())
         }

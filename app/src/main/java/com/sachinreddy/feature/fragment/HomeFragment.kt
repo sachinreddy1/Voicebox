@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,10 +18,12 @@ import com.evrencoskun.tableview.TableView
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.adapter.EditCellAdapter
 import com.sachinreddy.feature.adapter.EditCellListener
+import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.injection.appComponent
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.table_view_cell_layout.*
 import javax.inject.Inject
 
 
@@ -43,7 +46,7 @@ class HomeFragment : Fragment() {
         setupActionBar()
 
         val tableView = TableView(requireContext())
-        val adapter = EditCellAdapter(requireContext(), appViewModel.mTrackList)
+        val adapter = EditCellAdapter(requireContext(), appViewModel, appViewModel.mTrackList)
         tableView.adapter = adapter
         adapter.setTracks(appViewModel.mTrackList)
         content_container.adapter = adapter
@@ -51,7 +54,8 @@ class HomeFragment : Fragment() {
 
         recordBtn.setRecordListener(object : OnRecordListener {
             override fun onRecord() {
-                println("onRecord")
+                val cell = adapter.selectedCell as Cell
+                println("${cell.columnPosition} || ${cell.rowPosition}")
             }
 
             override fun onRecordCancel() {
