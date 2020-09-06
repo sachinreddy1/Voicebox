@@ -71,7 +71,10 @@ class HomeFragment : Fragment() {
 
         mediaRecorder = MediaRecorder()
         ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)
-        setupMediaRecorder()
+
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
 
         recordBtn.setRecordListener(object : OnRecordListener {
             override fun onRecord() {
@@ -114,13 +117,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setupMediaRecorder() {
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-        checkPermissionFromDevice()
-    }
-
     private fun startRecording() {
         if (isRecording) return
 
@@ -142,6 +138,7 @@ class HomeFragment : Fragment() {
         if (!isRecording) return
 
         mediaRecorder.stop()
+        mediaRecorder.reset()
         mediaRecorder.release()
         isRecording = false
     }
