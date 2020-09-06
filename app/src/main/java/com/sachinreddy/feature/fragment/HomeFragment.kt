@@ -1,12 +1,19 @@
 package com.sachinreddy.feature.fragment
 
+import android.content.pm.PackageManager
+import android.media.MediaPlayer
+import android.media.MediaRecorder
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -24,6 +31,9 @@ import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.table_view_cell_layout.*
+import java.io.IOException
+import java.util.*
+import java.util.jar.Manifest
 import javax.inject.Inject
 
 
@@ -35,6 +45,12 @@ class HomeFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val appViewModel by activityViewModels<AppViewModel> { viewModelFactory }
 
+    var pathSave: String = ""
+    lateinit var mediaRecorder: MediaRecorder
+    lateinit var mediaPlayer: MediaPlayer
+
+    val REQUEST_PERMISSION_CODE = 1000
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,9 +58,12 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         appComponent!!.inject(this)
-
         setupActionBar()
 
+        if(!checkPermissionFromDevice())
+            requestPermission()
+
+        // Setting up tableView and adapter
         val tableView = TableView(requireContext())
         val adapter = EditCellAdapter(requireContext(), appViewModel, appViewModel.mTrackList)
         tableView.adapter = adapter
@@ -52,21 +71,39 @@ class HomeFragment : Fragment() {
         content_container.adapter = adapter
         content_container.tableViewListener = EditCellListener(requireContext())
 
-        recordBtn.setRecordListener(object : OnRecordListener {
-            override fun onRecord() {
-                val cell = adapter.selectedCell as Cell
-                cell.hasData = true
-                adapter.notifyDataSetChanged()
-            }
+            // record button click listener
+            recordBtn.setRecordListener(object : OnRecordListener {
+                override fun onRecord() {
+                    if (checkPermissionFromDevice()) {
+                        pathSave = Environment.getDownloadCacheDirectory()
+                            .absolutePath + "/" + UUID.randomUUID().toString() + "_audio_record.3gp"
+                        setupMediaRecorder()
 
-            override fun onRecordCancel() {
-                println("onRecordCancel")
-            }
+                        try {
+                            mediaRecorder.prepare()
+                            mediaRecorder.start()
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
 
-            override fun onRecordFinish() {
-                println("onRecordFinish")
-            }
-        })
+                        val cell = adapter.selectedCell as Cell
+                        cell.hasData = true
+                        adapter.notifyDataSetChanged()
+                    } else {
+                        requestPermission()
+                    }
+                }
+
+                override fun onRecordCancel() {
+//                    mediaRecorder.stop()
+
+                    println("onRecordCancel")
+                }
+
+                override fun onRecordFinish() {
+                    println("onRecordFinish")
+                }
+            })
 
         super.onViewCreated(view, savedInstanceState)
     }
@@ -88,6 +125,43 @@ class HomeFragment : Fragment() {
                 setDisplayHomeAsUpEnabled(true)
                 setHomeAsUpIndicator(R.drawable.ic_account_circle_dark)
                 setHomeActionContentDescription(getString(R.string.open_profile_card))
+            }
+        }
+    }
+
+    private fun checkPermissionFromDevice(): Boolean {
+        val writeExternalStorage = ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val recordAudioResult = ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.RECORD_AUDIO)
+        return writeExternalStorage == PackageManager.PERMISSION_GRANTED && recordAudioResult == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(requireActivity(),
+            arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.RECORD_AUDIO),
+            REQUEST_PERMISSION_CODE
+            )
+    }
+
+    private fun setupMediaRecorder() {
+        mediaRecorder = MediaRecorder()
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+        mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB)
+        mediaRecorder.setOutputFile(pathSave)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            REQUEST_PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(requireContext(), "Permission granted.", Toast.LENGTH_SHORT).show()
+                else
+                    Toast.makeText(requireContext(), "Permission denied.", Toast.LENGTH_SHORT).show()
             }
         }
     }
