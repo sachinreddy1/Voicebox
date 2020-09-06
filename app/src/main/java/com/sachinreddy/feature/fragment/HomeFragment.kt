@@ -50,6 +50,8 @@ class HomeFragment : Fragment() {
     lateinit var mediaRecorder: MediaRecorder
     lateinit var mediaPlayer: MediaPlayer
 
+    private var isRecording: Boolean = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -69,8 +71,8 @@ class HomeFragment : Fragment() {
 
         mediaRecorder = MediaRecorder()
         ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)
+        setupMediaRecorder()
 
-        // record button click listener
         recordBtn.setRecordListener(object : OnRecordListener {
             override fun onRecord() {
                 val cell = adapter.selectedCell as Cell
@@ -112,24 +114,42 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun setupMediaRecorder() {
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+        checkPermissionFromDevice()
+    }
+
     private fun startRecording() {
+        if (isRecording) return
+
         try {
             val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
             val file = File(path, "/test.3gp")
-
-            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT)
-            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
-            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
             mediaRecorder.setOutputFile(file)
+
+            mediaRecorder.prepare()
+            mediaRecorder.start()
+
+            isRecording = true
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
     private fun stopRecording() {
+        if (!isRecording) return
+
         mediaRecorder.stop()
         mediaRecorder.release()
+        isRecording = false
+    }
+
+    private fun checkPermissionFromDevice(): Boolean {
+        val write_external_storage_result = ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val record_audio_format = ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.RECORD_AUDIO)
+        return write_external_storage_result == PackageManager.PERMISSION_GRANTED && record_audio_format == PackageManager.PERMISSION_GRANTED
     }
 
     override fun onRequestPermissionsResult(
