@@ -1,11 +1,8 @@
 package com.sachinreddy.feature.fragment
 
-import android.content.pm.PackageManager
-import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Bundle
 import android.os.Environment
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -13,14 +10,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.emrekose.recordbutton.OnRecordListener
-import com.emrekose.recordbutton.RecordButton
 import com.evrencoskun.tableview.TableView
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.adapter.EditCellAdapter
@@ -30,16 +25,12 @@ import com.sachinreddy.feature.injection.appComponent
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.table_view_cell_layout.*
 import java.io.File
-import java.io.IOException
 import java.lang.Exception
-import java.util.*
-import java.util.jar.Manifest
 import javax.inject.Inject
 
 
-const val REQUEST_PERMISSION_CODE = 1000
+const val REQUEST_PERMISSION_CODE = 200
 val PERMISSIONS = arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.RECORD_AUDIO)
 
 class HomeFragment : Fragment() {
@@ -66,8 +57,7 @@ class HomeFragment : Fragment() {
         content_container.adapter = adapter
         content_container.tableViewListener = EditCellListener(requireContext())
 
-        if(!checkPermissionFromDevice())
-            ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)
+        ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)
 
         startButton.setOnClickListener { startRecording() }
         endButton.setOnClickListener { stopRecording() }
@@ -90,25 +80,19 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    // ---------------------------------------- //
-
-    fun startRecording(){
-        if (checkPermissionFromDevice()) {
-            setupMediaRecorder()
-            try {
-                mediaRecorder?.prepare();
-                mediaRecorder?.start();
-                Toast.makeText(requireContext(), "Recording...", Toast.LENGTH_SHORT).show()
-            }
-            catch (e: Exception){
-                e.printStackTrace();
-            }
-        } else {
-            ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)
+    private fun startRecording() {
+        setupMediaRecorder()
+        try {
+            mediaRecorder?.prepare();
+            mediaRecorder?.start();
+            Toast.makeText(requireContext(), "Recording...", Toast.LENGTH_SHORT).show()
+        }
+        catch (e: Exception){
+            e.printStackTrace();
         }
     }
 
-    fun stopRecording(){
+    private fun stopRecording() {
         mediaRecorder?.let {
             it.stop()
             it.release()
@@ -116,7 +100,7 @@ class HomeFragment : Fragment() {
         Toast.makeText(requireContext(), "Stopped recording...", Toast.LENGTH_SHORT).show()
     }
 
-    fun setupMediaRecorder() {
+    private fun setupMediaRecorder() {
         mediaRecorder = MediaRecorder()
         mediaRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -127,31 +111,6 @@ class HomeFragment : Fragment() {
 
         mediaRecorder?.setOutputFile(file);
     }
-
-    // ---------------------------------------- //
-
-    private fun checkPermissionFromDevice(): Boolean {
-        val write_external_storage_result = ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        val record_audio_format = ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.RECORD_AUDIO)
-        return write_external_storage_result == PackageManager.PERMISSION_GRANTED && record_audio_format == PackageManager.PERMISSION_GRANTED
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-            REQUEST_PERMISSION_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    Toast.makeText(requireContext(), "Permission granted.", Toast.LENGTH_SHORT).show()
-                else
-                    Toast.makeText(requireContext(), "Permission denied.", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    // ---------------------------------------- //
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
