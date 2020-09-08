@@ -47,10 +47,7 @@ class HomeFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val appViewModel by activityViewModels<AppViewModel> { viewModelFactory }
 
-    lateinit var mediaRecorder: MediaRecorder
-    lateinit var mediaPlayer: MediaPlayer
-
-    private var isRecording: Boolean = false
+    var mediaRecorder: MediaRecorder? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,23 +66,20 @@ class HomeFragment : Fragment() {
         content_container.adapter = adapter
         content_container.tableViewListener = EditCellListener(requireContext())
 
-        mediaRecorder = MediaRecorder()
-        ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)
+        if(!checkPermissionFromDevice())
+            ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)
 
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+        startButton.setOnClickListener { startRecording() }
+        endButton.setOnClickListener { stopRecording() }
 
         recordBtn.setRecordListener(object : OnRecordListener {
             override fun onRecord() {
                 val cell = adapter.selectedCell as Cell
                 cell.hasData = true
                 adapter.notifyDataSetChanged()
-                startRecording()
             }
 
             override fun onRecordCancel() {
-                stopRecording()
             }
 
             override fun onRecordFinish() {
@@ -96,52 +90,45 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home ->
-                validNavController?.navigate(R.id.action_HomeFragment_to_ProfileFragment)
-        }
-        return true
-    }
+    // ---------------------------------------- //
 
-    private fun setupActionBar() {
-        setHasOptionsMenu(true)
-        (requireActivity() as AppCompatActivity).apply {
-            setSupportActionBar(app_action_bar)
-            supportActionBar?.apply {
-                title = getString(R.string.app_name)
-                setDisplayHomeAsUpEnabled(true)
-                setHomeAsUpIndicator(R.drawable.ic_account_circle_dark)
-                setHomeActionContentDescription(getString(R.string.open_profile_card))
+    fun startRecording(){
+        if (checkPermissionFromDevice()) {
+            setupMediaRecorder()
+            try {
+                mediaRecorder?.prepare();
+                mediaRecorder?.start();
+                Toast.makeText(requireContext(), "Recording...", Toast.LENGTH_SHORT).show()
             }
+            catch (e: Exception){
+                e.printStackTrace();
+            }
+        } else {
+            ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)
         }
     }
 
-    private fun startRecording() {
-        if (isRecording) return
-
-        try {
-            val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-            val file = File(path, "/test.3gp")
-            mediaRecorder.setOutputFile(file)
-
-            mediaRecorder.prepare()
-            mediaRecorder.start()
-
-            isRecording = true
-        } catch (e: Exception) {
-            e.printStackTrace()
+    fun stopRecording(){
+        mediaRecorder?.let {
+            it.stop()
+            it.release()
         }
+        Toast.makeText(requireContext(), "Stopped recording...", Toast.LENGTH_SHORT).show()
     }
 
-    private fun stopRecording() {
-        if (!isRecording) return
+    fun setupMediaRecorder() {
+        mediaRecorder = MediaRecorder()
+        mediaRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
-        mediaRecorder.stop()
-        mediaRecorder.reset()
-        mediaRecorder.release()
-        isRecording = false
+        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        val file = File(path, "/test.3gp")
+
+        mediaRecorder?.setOutputFile(file);
     }
+
+    // ---------------------------------------- //
 
     private fun checkPermissionFromDevice(): Boolean {
         val write_external_storage_result = ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -160,6 +147,29 @@ class HomeFragment : Fragment() {
                     Toast.makeText(requireContext(), "Permission granted.", Toast.LENGTH_SHORT).show()
                 else
                     Toast.makeText(requireContext(), "Permission denied.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // ---------------------------------------- //
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home ->
+                validNavController?.navigate(R.id.action_HomeFragment_to_ProfileFragment)
+        }
+        return true
+    }
+
+    private fun setupActionBar() {
+        setHasOptionsMenu(true)
+        (requireActivity() as AppCompatActivity).apply {
+            setSupportActionBar(app_action_bar)
+            supportActionBar?.apply {
+                title = getString(R.string.app_name)
+                setDisplayHomeAsUpEnabled(true)
+                setHomeAsUpIndicator(R.drawable.ic_account_circle_dark)
+                setHomeActionContentDescription(getString(R.string.open_profile_card))
             }
         }
     }
