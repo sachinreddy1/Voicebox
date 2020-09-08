@@ -62,9 +62,11 @@ class HomeFragment : Fragment() {
 
         recordBtn.setRecordListener(object : OnRecordListener {
             override fun onRecord() {
-                (adapter.selectedCell as Cell).hasData = true
-                adapter.notifyDataSetChanged()
-                startRecording()
+                (adapter.selectedCell as Cell).apply {
+                    hasData = true
+                    startRecording(columnPosition, rowPosition ?: 0)
+                    adapter.notifyDataSetChanged()
+                }
             }
 
             override fun onRecordCancel() {
@@ -79,15 +81,23 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun startRecording() {
+    private fun startRecording(columnPosition: Int, rowPosition: Int) {
         if (isRecording) return
 
-        setupMediaRecorder()
+        mediaRecorder = MediaRecorder()
+        mediaRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        val file = File(path, "/${columnPosition}_${rowPosition}.3gp")
+
+        mediaRecorder?.setOutputFile(file)
+
         try {
             mediaRecorder?.prepare();
             mediaRecorder?.start();
             isRecording = true
-            Toast.makeText(requireContext(), "Recording...", Toast.LENGTH_SHORT).show()
         }
         catch (e: Exception){
             e.printStackTrace();
@@ -102,19 +112,6 @@ class HomeFragment : Fragment() {
             it.release()
             isRecording = false
         }
-        Toast.makeText(requireContext(), "Stopped recording...", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun setupMediaRecorder() {
-        mediaRecorder = MediaRecorder()
-        mediaRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mediaRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
-        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-        val file = File(path, "/test.3gp")
-
-        mediaRecorder?.setOutputFile(file);
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
