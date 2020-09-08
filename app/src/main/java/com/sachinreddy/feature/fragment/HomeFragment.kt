@@ -39,6 +39,7 @@ class HomeFragment : Fragment() {
     private val appViewModel by activityViewModels<AppViewModel> { viewModelFactory }
 
     var mediaRecorder: MediaRecorder? = null
+    private var isRecording = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,21 +60,19 @@ class HomeFragment : Fragment() {
 
         ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)
 
-        startButton.setOnClickListener { startRecording() }
-        endButton.setOnClickListener { stopRecording() }
-
         recordBtn.setRecordListener(object : OnRecordListener {
             override fun onRecord() {
-                val cell = adapter.selectedCell as Cell
-                cell.hasData = true
+                (adapter.selectedCell as Cell).hasData = true
                 adapter.notifyDataSetChanged()
+                startRecording()
             }
 
             override fun onRecordCancel() {
+                stopRecording()
             }
 
             override fun onRecordFinish() {
-                // TODO
+                stopRecording()
             }
         })
 
@@ -81,10 +80,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun startRecording() {
+        if (isRecording) return
+
         setupMediaRecorder()
         try {
             mediaRecorder?.prepare();
             mediaRecorder?.start();
+            isRecording = true
             Toast.makeText(requireContext(), "Recording...", Toast.LENGTH_SHORT).show()
         }
         catch (e: Exception){
@@ -93,9 +95,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun stopRecording() {
+        if (!isRecording) return
+
         mediaRecorder?.let {
             it.stop()
             it.release()
+            isRecording = false
         }
         Toast.makeText(requireContext(), "Stopped recording...", Toast.LENGTH_SHORT).show()
     }
