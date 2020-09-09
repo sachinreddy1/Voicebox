@@ -1,5 +1,6 @@
 package com.sachinreddy.feature.fragment
 
+import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Bundle
 import android.os.Environment
@@ -26,6 +27,7 @@ import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.io.File
+import java.io.IOException
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -112,6 +114,8 @@ class HomeFragment : Fragment() {
             it.release()
             isRecording = false
         }
+
+        mediaRecorder = null
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -1,7 +1,9 @@
 package com.sachinreddy.feature.adapter
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Build
+import android.os.Environment
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.LayoutInflater
@@ -20,13 +22,15 @@ import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.RowHeader
 import com.sachinreddy.feature.data.table.TimelineHeader
 import com.sachinreddy.feature.viewModel.AppViewModel
+import java.io.IOException
 
 
 class EditCellAdapter(val context: Context, val appViewModel: AppViewModel, private val tracks: MutableList<Track>) : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
     var selectedCell: Cell? = tracks.first().cellList?.first()
+    var mediaPlayer: MediaPlayer? = null
 
     internal inner class MyCellViewHolder(itemView: View) : AbstractViewHolder(itemView) {
-        val cell_textview: TextView = itemView.findViewById(R.id.cell_data)
+        val cell_button: ImageButton = itemView.findViewById(R.id.playStopButton)
         val selection_container: ConstraintLayout = itemView.findViewById(R.id.selection_container)
         val edit_cell: ConstraintLayout = itemView.findViewById(R.id.edit_cell)
     }
@@ -52,9 +56,20 @@ class EditCellAdapter(val context: Context, val appViewModel: AppViewModel, priv
         // Get the holder
         val viewHolder = holder as MyCellViewHolder
         viewHolder.apply {
-            cell_textview.text = cell.data.toString()
             selection_container.visibility = if (cell.isSelected) View.VISIBLE else View.GONE
             edit_cell.visibility = if (cell.hasData) View.VISIBLE else View.GONE
+
+            cell_button.setOnClickListener {
+                if (!cell.isPlaying) {
+                    cell_button.setImageResource(R.drawable.ic_stop)
+                    startPlaying(columnPosition, rowPosition)
+                    cell.isPlaying = true
+                } else {
+                    cell_button.setImageResource(R.drawable.ic_play)
+                    stopPlaying()
+                    cell.isPlaying = false
+                }
+            }
 
             // Long press for selection
             itemView.setOnLongClickListener {
@@ -201,5 +216,24 @@ class EditCellAdapter(val context: Context, val appViewModel: AppViewModel, priv
         }
 
         setAllItems(timelineHeaderList_.toList(), rowHeaderList_.toList(), cellList_.toList())
+    }
+
+    private fun startPlaying(columnPosition: Int, rowPosition: Int) {
+        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + "/${columnPosition}_${rowPosition}.3gp"
+
+        mediaPlayer = MediaPlayer().apply {
+            try {
+                setDataSource(path)
+                prepare()
+                start()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun stopPlaying() {
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 }

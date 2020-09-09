@@ -13,17 +13,16 @@
         android:backgroundTint="@color/editCellColor"
         >
 
-        <TextView
-            android:id="@+id/cell_data"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <ImageButton
+            android:id="@+id/playStopButton"
 
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textSize="10dp"
-            android:textColor="@color/colorPrimary"
-            tools:text="Cell Data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+            android:src="@drawable/ic_play"
+            android:tint="@color/colorPrimary"
+            android:background="#00000000"
             />
 
     </androidx.cardview.widget.CardView>
