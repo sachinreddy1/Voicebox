@@ -1,5 +1,8 @@
 package com.sachinreddy.feature.fragment
 
+import android.content.Context
+import android.media.AudioFormat
+import android.media.AudioManager
 import android.media.AudioRecord
 import android.media.MediaRecorder
 import android.os.Bundle
@@ -24,8 +27,6 @@ import com.sachinreddy.feature.injection.appComponent
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
 import kotlinx.android.synthetic.main.fragment_home.*
-import java.nio.ByteBuffer
-import java.util.*
 import javax.inject.Inject
 
 
@@ -44,8 +45,12 @@ class HomeFragment : Fragment() {
     private var isRecording = false
 
     private val RECORDER_SAMPLERATE = 8000
-    private val RECORDER_CHANNELS: Int = android.media.AudioFormat.CHANNEL_IN_MONO
-    private val RECORDER_AUDIO_ENCODING: Int = android.media.AudioFormat.ENCODING_PCM_16BIT
+    private val RECORDER_CHANNELS = AudioFormat.CHANNEL_IN_MONO
+    private val TRACK_CHANNELS = AudioFormat.CHANNEL_OUT_MONO
+    private val RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT
+
+    private var minBufferSizeRec = 0
+    lateinit var bufferRec: ShortArray
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,9 +61,15 @@ class HomeFragment : Fragment() {
         appComponent!!.inject(this)
         setupActionBar()
 
+        minBufferSizeRec = AudioRecord.getMinBufferSize(RECORDER_SAMPLERATE, RECORDER_CHANNELS, RECORDER_AUDIO_ENCODING);
+
+        val manager = activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        manager.mode = AudioManager.MODE_NORMAL
+        activity?.volumeControlStream = AudioManager.STREAM_VOICE_CALL
+
         // Setting up tableView and adapter
         val tableView = TableView(requireContext())
-        val adapter = EditCellAdapter(requireContext(), appViewModel, appViewModel.mTrackList)
+        val adapter = EditCellAdapter(requireContext(), manager, appViewModel, appViewModel.mTrackList)
         tableView.adapter = adapter
         adapter.setTracks(appViewModel.mTrackList)
         content_container.adapter = adapter
@@ -99,25 +110,16 @@ class HomeFragment : Fragment() {
         audioRecord?.startRecording()
         isRecording = true
         recorderThread = Thread(Runnable {
-            var bData = ByteBuffer.allocate(BufferElements2Rec)
-            val bbArray = ByteArray(bData.remaining())
-            bData.get(bbArray)
+            cell.data = ShortArray(minBufferSizeRec / 2)
+            bufferRec = ShortArray(minBufferSizeRec/2)
             while (isRecording) {
-                val result = audioRecord?.read(bbArray, 0, BufferElements2Rec)
-                println("READ DATA")
-                if (result != null && result > 0) {
-                    cell.qArray.add(bData)
-                    bData = ByteBuffer.allocate(BufferElements2Rec)
-                } else if (result == AudioRecord.ERROR_INVALID_OPERATION) {
-                    println("Recording: Invalid operation error")
-                    break
-                } else if (result == AudioRecord.ERROR_BAD_VALUE) {
-                    println("Recording: Bad value error")
-                    break
-                } else if (result == AudioRecord.ERROR) {
-                    println("Recording: Unknown error")
-                    break
+
+                audioRecord?.read(bufferRec, 0, minBufferSizeRec / 2)
+                cell.data?.let {
+                    for (i in it.indices)
+                        cell.data?.set(i, bufferRec[i])
                 }
+
                 try {
                     Thread.sleep(10)
                 } catch (e: InterruptedException) {

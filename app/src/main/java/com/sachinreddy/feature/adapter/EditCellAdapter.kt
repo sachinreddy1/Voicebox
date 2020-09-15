@@ -1,9 +1,9 @@
 package com.sachinreddy.feature.adapter
 
 import android.content.Context
-import android.media.MediaPlayer
+import android.media.*
 import android.os.Build
-import android.os.Environment
+import android.os.Process
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.LayoutInflater
@@ -13,7 +13,6 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat.getSystemService
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.sachinreddy.feature.R
@@ -22,12 +21,25 @@ import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.RowHeader
 import com.sachinreddy.feature.data.table.TimelineHeader
 import com.sachinreddy.feature.viewModel.AppViewModel
-import java.io.IOException
 
 
-class EditCellAdapter(val context: Context, val appViewModel: AppViewModel, private val tracks: MutableList<Track>) : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
+class EditCellAdapter(
+    val context: Context,
+    val audioManager: AudioManager,
+    private val appViewModel: AppViewModel,
+    private val tracks: MutableList<Track>)
+    : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
+
     var selectedCell: Cell? = tracks.first().cellList?.first()
-    var mediaPlayer: MediaPlayer? = null
+    private var track: AudioTrack? = null
+    private var recorderThread: Thread? = null
+
+    private val RECORDER_SAMPLERATE = 8000
+    private val RECORDER_CHANNELS = AudioFormat.CHANNEL_IN_MONO
+    private val TRACK_CHANNELS = AudioFormat.CHANNEL_OUT_MONO
+    private val RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT
+
+    private val minBufferSizeRec = 0
 
     internal inner class MyCellViewHolder(itemView: View) : AbstractViewHolder(itemView) {
         val cell_button: ImageButton = itemView.findViewById(R.id.playStopButton)
@@ -62,12 +74,12 @@ class EditCellAdapter(val context: Context, val appViewModel: AppViewModel, priv
             cell_button.setOnClickListener {
                 if (!cell.isPlaying) {
                     cell_button.setImageResource(R.drawable.ic_stop)
-                    startPlaying(columnPosition, rowPosition)
                     cell.isPlaying = true
+                    runThread(cell.isPlaying)
                 } else {
                     cell_button.setImageResource(R.drawable.ic_play)
-                    stopPlaying()
                     cell.isPlaying = false
+                    runThread(cell.isPlaying)
                 }
             }
 
@@ -218,22 +230,70 @@ class EditCellAdapter(val context: Context, val appViewModel: AppViewModel, priv
         setAllItems(timelineHeaderList_.toList(), rowHeaderList_.toList(), cellList_.toList())
     }
 
-    private fun startPlaying(columnPosition: Int, rowPosition: Int) {
-        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + "/${columnPosition}_${rowPosition}.3gp"
+    private fun runThread(flag: Boolean) {
+        recorderThread = Thread(Runnable { runRunnable(flag) })
+        Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_AUDIO)
+        recorderThread?.start()
+    }
 
-        mediaPlayer = MediaPlayer().apply {
-            try {
-                setDataSource(path)
-                prepare()
-                start()
-            } catch (e: IOException) {
-                e.printStackTrace()
+    private fun setAudioTrack() {
+        val myBufferSize = AudioTrack.getMinBufferSize(RECORDER_SAMPLERATE, TRACK_CHANNELS, RECORDER_AUDIO_ENCODING)
+        if (myBufferSize != AudioTrack.ERROR_BAD_VALUE) {
+            track = AudioTrack(
+                AudioManager.STREAM_MUSIC,
+                RECORDER_SAMPLERATE,
+                TRACK_CHANNELS,
+                RECORDER_AUDIO_ENCODING,
+                myBufferSize,
+                AudioTrack.MODE_STREAM
+            )
+            track?.playbackRate = RECORDER_SAMPLERATE
+
+            if (track?.state == AudioTrack.STATE_UNINITIALIZED) {
+                println("AudioTrack Uninitialized")
             }
         }
     }
 
-    private fun stopPlaying() {
-        mediaPlayer?.release()
-        mediaPlayer = null
+    fun runRunnable(isRunning: Boolean) {
+        if (!isRunning) {
+            if (track != null && AudioTrack.STATE_INITIALIZED == track?.state) {
+                if (track?.playState != AudioTrack.PLAYSTATE_STOPPED) {
+                    try {
+                        track?.stop()
+                    } catch (e: IllegalStateException) {
+                        e.printStackTrace()
+                    }
+                }
+                track?.release()
+                audioManager.mode = AudioManager.MODE_NORMAL
+            }
+            return
+        } else if (isRunning) {
+            setAudioTrack()
+            if (track == null) {
+                println("findAudioTrack error")
+                return
+            }
+            track?.playbackRate = RECORDER_SAMPLERATE
+            if (AudioTrack.STATE_INITIALIZED == track?.state) {
+                selectedCell?.data?.let {
+                    track?.write(it, 0, it.size)
+                }
+                track?.play()
+//                while (isRunning) {
+//                    for (i in data.indices)
+//                        data[i] = selectedCell?.data?.get(i)!!
+//
+//                    track?.write(data, 0, data.size)
+//                    data = ShortArray(minBufferSizeRec / 2)
+//                }
+            } else {
+                println("Init for Recorder and Track failed")
+                return
+            }
+            return
+        }
+        recorderThread?.interrupt()
     }
 }
