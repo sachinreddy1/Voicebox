@@ -25,7 +25,6 @@ import com.sachinreddy.feature.viewModel.AppViewModel
 
 class EditCellAdapter(
     val context: Context,
-    val audioManager: AudioManager,
     private val appViewModel: AppViewModel,
     private val tracks: MutableList<Track>)
     : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
@@ -75,11 +74,9 @@ class EditCellAdapter(
                 if (!cell.isPlaying) {
                     cell_button.setImageResource(R.drawable.ic_stop)
                     cell.isPlaying = true
-                    runThread(cell.isPlaying)
                 } else {
                     cell_button.setImageResource(R.drawable.ic_play)
                     cell.isPlaying = false
-                    runThread(cell.isPlaying)
                 }
             }
 
@@ -228,72 +225,5 @@ class EditCellAdapter(
         }
 
         setAllItems(timelineHeaderList_.toList(), rowHeaderList_.toList(), cellList_.toList())
-    }
-
-    private fun runThread(flag: Boolean) {
-        recorderThread = Thread(Runnable { runRunnable(flag) })
-        Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_AUDIO)
-        recorderThread?.start()
-    }
-
-    private fun setAudioTrack() {
-        val myBufferSize = AudioTrack.getMinBufferSize(RECORDER_SAMPLERATE, TRACK_CHANNELS, RECORDER_AUDIO_ENCODING)
-        if (myBufferSize != AudioTrack.ERROR_BAD_VALUE) {
-            track = AudioTrack(
-                AudioManager.STREAM_MUSIC,
-                RECORDER_SAMPLERATE,
-                TRACK_CHANNELS,
-                RECORDER_AUDIO_ENCODING,
-                myBufferSize,
-                AudioTrack.MODE_STREAM
-            )
-            track?.playbackRate = RECORDER_SAMPLERATE
-
-            if (track?.state == AudioTrack.STATE_UNINITIALIZED) {
-                println("AudioTrack Uninitialized")
-            }
-        }
-    }
-
-    fun runRunnable(isRunning: Boolean) {
-        if (!isRunning) {
-            if (track != null && AudioTrack.STATE_INITIALIZED == track?.state) {
-                if (track?.playState != AudioTrack.PLAYSTATE_STOPPED) {
-                    try {
-                        track?.stop()
-                    } catch (e: IllegalStateException) {
-                        e.printStackTrace()
-                    }
-                }
-                track?.release()
-                audioManager.mode = AudioManager.MODE_NORMAL
-            }
-            return
-        } else if (isRunning) {
-            setAudioTrack()
-            if (track == null) {
-                println("findAudioTrack error")
-                return
-            }
-            track?.playbackRate = RECORDER_SAMPLERATE
-            if (AudioTrack.STATE_INITIALIZED == track?.state) {
-                selectedCell?.data?.let {
-                    track?.write(it, 0, it.size)
-                }
-                track?.play()
-//                while (isRunning) {
-//                    for (i in data.indices)
-//                        data[i] = selectedCell?.data?.get(i)!!
-//
-//                    track?.write(data, 0, data.size)
-//                    data = ShortArray(minBufferSizeRec / 2)
-//                }
-            } else {
-                println("Init for Recorder and Track failed")
-                return
-            }
-            return
-        }
-        recorderThread?.interrupt()
     }
 }
