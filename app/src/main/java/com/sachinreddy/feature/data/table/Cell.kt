@@ -11,5 +11,5 @@ class Cell(
     var rowPosition: Int? = null,
     var hasData: Boolean = false,
 
-    var data: ShortArray? = null
+    var data: ShortArray? = ShortArray(1024)
 )
