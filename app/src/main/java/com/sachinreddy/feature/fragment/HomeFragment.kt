@@ -35,6 +35,7 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val appViewModel by activityViewModels<AppViewModel> { viewModelFactory }
+    lateinit var adapter: EditCellAdapter
 
     var isRecording = false
     var audioManager: AudioManager? = null
@@ -52,7 +53,7 @@ class HomeFragment : Fragment() {
 
         // Setting up tableView and adapter
         val tableView = TableView(requireContext())
-        val adapter = EditCellAdapter(requireContext(), appViewModel, appViewModel.mTrackList)
+        adapter = EditCellAdapter(requireContext(), appViewModel, appViewModel.mTrackList)
         tableView.adapter = adapter
         adapter.setTracks(appViewModel.mTrackList)
         content_container.adapter = adapter
@@ -129,14 +130,15 @@ class HomeFragment : Fragment() {
     }
 
     private fun recordAndPlay() {
-        val lin = ShortArray(1024)
         var num = 0
 
         audioManager?.mode = AudioManager.MODE_IN_COMMUNICATION
         while (true) {
             if (isRecording) {
-                num = record!!.read(lin, 0, 1024)
-                track!!.write(lin, 0, num)
+                adapter.selectedCell?.let {
+                    num = record!!.read(it.data, 0, 1024)
+                    track!!.write(it.data, 0, num)
+                }
             }
         }
     }
