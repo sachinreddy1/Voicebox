@@ -2,8 +2,8 @@ package com.sachinreddy.feature.fragment
 
 import android.content.Context
 import android.media.*
+import android.media.audiofx.AcousticEchoCanceler
 import android.os.Bundle
-import android.os.Process
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -36,21 +36,10 @@ class HomeFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val appViewModel by activityViewModels<AppViewModel> { viewModelFactory }
 
-    private var recorder: AudioRecord? = null
-    private var track: AudioTrack? = null
-
-    private val SAMPLERATE = 8000
-    private val RECORDER_CHANNELS = AudioFormat.CHANNEL_IN_MONO
-    private val TRACK_CHANNELS = AudioFormat.CHANNEL_OUT_MONO
-    private val AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT
-
-    private var minBufferSizeRec = 0
-    lateinit var bufferRec: ShortArray
-
-    private var thread: Thread? = null
-    private var isRunning = false
-
-    private var manager: AudioManager? = null
+    var isRecording = false
+    var audioManager: AudioManager? = null
+    var record: AudioRecord? = null
+    var track: AudioTrack? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,152 +60,97 @@ class HomeFragment : Fragment() {
 
         ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)
 
-        minBufferSizeRec = AudioRecord.getMinBufferSize(SAMPLERATE, RECORDER_CHANNELS, AUDIO_ENCODING)
-        bufferRec = ShortArray(minBufferSizeRec / 2)
+        initRecordAndTrack()
+        audioManager = activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
-        manager = activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        manager?.mode = AudioManager.MODE_NORMAL
-        activity?.volumeControlStream = AudioManager.STREAM_VOICE_CALL
+        object : Thread() {
+            override fun run() {
+                recordAndPlay()
+            }
+        }.start()
 
         recordBtn.setRecordListener(object : OnRecordListener {
             override fun onRecord() {
                 (adapter.selectedCell as Cell).apply {
                     hasData = true
-                    if (!isRunning) {
-                        isRunning = true
-                        runThread(isRunning)
+                    if (!isRecording) {
+                        startRecordAndPlay()
                     }
                     adapter.notifyDataSetChanged()
                 }
             }
 
             override fun onRecordCancel() {
-                if (isRunning) {
-                    isRunning = false
-                    runThread(isRunning)
+                if (isRecording) {
+                    stopRecordAndPlay();
                 }
             }
 
             override fun onRecordFinish() {
-                isRunning = false
-                runThread(isRunning)
+                if (isRecording) {
+                    stopRecordAndPlay();
+                }
             }
         })
 
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun runThread(flag: Boolean) {
-        thread = Thread(Runnable { runRunnable(flag) })
-        Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_AUDIO)
-        thread?.start()
+    private fun initRecordAndTrack() {
+        val min = AudioRecord.getMinBufferSize(
+            8000,
+            AudioFormat.CHANNEL_IN_STEREO,
+            AudioFormat.ENCODING_PCM_16BIT
+        )
+        record = AudioRecord(
+            MediaRecorder.AudioSource.VOICE_COMMUNICATION,
+            8000,
+            AudioFormat.CHANNEL_IN_STEREO,
+            AudioFormat.ENCODING_PCM_16BIT,
+            min
+        )
+        if (AcousticEchoCanceler.isAvailable()) {
+            val echoCanceler = AcousticEchoCanceler.create(record!!.audioSessionId)
+            echoCanceler.enabled = true
+        }
+        val maxJitter = AudioTrack.getMinBufferSize(
+            8000,
+            AudioFormat.CHANNEL_OUT_STEREO,
+            AudioFormat.ENCODING_PCM_16BIT
+        )
+        track = AudioTrack(
+            AudioManager.MODE_IN_COMMUNICATION,
+            8000,
+            AudioFormat.CHANNEL_OUT_STEREO,
+            AudioFormat.ENCODING_PCM_16BIT,
+            maxJitter,
+            AudioTrack.MODE_STREAM
+        )
     }
 
-    fun getAudioTrack() {
-        val myBufferSize = AudioTrack.getMinBufferSize(SAMPLERATE, TRACK_CHANNELS, AUDIO_ENCODING)
-        if (myBufferSize != AudioTrack.ERROR_BAD_VALUE) {
-            track = AudioTrack(
-                AudioManager.STREAM_MUSIC,
-                SAMPLERATE,
-                TRACK_CHANNELS,
-                AUDIO_ENCODING,
-                myBufferSize,
-                AudioTrack.MODE_STREAM
-            )
-            track?.playbackRate = SAMPLERATE
-            if (track?.state == AudioTrack.STATE_UNINITIALIZED) {
-                println("AudioTrack Uninitialized")
-                return
+    private fun recordAndPlay() {
+        val lin = ShortArray(1024)
+        var num = 0
+
+        audioManager?.mode = AudioManager.MODE_IN_COMMUNICATION
+        while (true) {
+            if (isRecording) {
+                num = record!!.read(lin, 0, 1024)
+                track!!.write(lin, 0, num)
             }
         }
     }
 
-    fun runRunnable(isRunning: Boolean) {
-        if (!isRunning) {
-            if (AudioRecord.STATE_INITIALIZED == recorder?.state) {
-                recorder?.stop()
-                recorder?.release()
-            }
-            if (track != null && AudioTrack.STATE_INITIALIZED == track?.state) {
-                if (track?.playState != AudioTrack.PLAYSTATE_STOPPED) {
-                    try {
-                        track?.stop()
-                    } catch (e: IllegalStateException) {
-                        e.printStackTrace()
-                    }
-                }
-                track?.release()
-                manager!!.mode = AudioManager.MODE_NORMAL
-            }
-            return
-        } else if (isRunning) {
-            recorder = findAudioRecord()
-            if (recorder == null) {
-                println("findAudioRecord error")
-                return
-            }
-            getAudioTrack()
-            if (track == null) {
-                println( "findAudioTrack error")
-                return
-            }
-            track?.playbackRate = SAMPLERATE
-            if (AudioRecord.STATE_INITIALIZED == recorder?.state && AudioTrack.STATE_INITIALIZED == track?.state) {
-                var data = ShortArray(minBufferSizeRec / 2)
-                recorder?.startRecording()
-                track?.play()
-                while (isRunning) {
-                    recorder?.read(bufferRec, 0, minBufferSizeRec / 2)
-                    for (i in data.indices) {
-                        data[i] = bufferRec[i]
-                    }
-                    track?.write(data, 0, data.size)
-                    bufferRec = ShortArray(minBufferSizeRec / 2)
-                    data = ShortArray(minBufferSizeRec / 2)
-                }
-            } else {
-                println("Init for Recorder and Track failed")
-                return
-            }
-            return
-        }
-        thread!!.interrupt()
+    private fun startRecordAndPlay() {
+        record?.startRecording()
+        track?.play()
+        isRecording = true
     }
 
-    private val mSampleRates = intArrayOf(8000, 11025, 22050, 44100)
-    fun findAudioRecord(): AudioRecord? {
-        for (rate in mSampleRates) {
-            for (audioFormat in shortArrayOf(
-                AudioFormat.ENCODING_PCM_8BIT.toShort(),
-                AudioFormat.ENCODING_PCM_16BIT.toShort()
-            )) {
-                for (channelConfig in shortArrayOf(
-                    AudioFormat.CHANNEL_IN_MONO.toShort(),
-                    AudioFormat.CHANNEL_IN_STEREO.toShort()
-                )) {
-                    try {
-                        val bufferSize = AudioRecord.getMinBufferSize(
-                            rate,
-                            channelConfig.toInt(),
-                            audioFormat.toInt()
-                        )
-                        if (bufferSize != AudioRecord.ERROR_BAD_VALUE) {
-                            val recorder = AudioRecord(
-                                MediaRecorder.AudioSource.MIC,
-                                rate,
-                                channelConfig.toInt(),
-                                audioFormat.toInt(),
-                                bufferSize
-                            )
-                            if (recorder.state == AudioRecord.STATE_INITIALIZED) return recorder
-                        }
-                    } catch (e: Exception) {
-                        println(rate.toString() + "Exception, keep trying.")
-                    }
-                }
-            }
-        }
-        return null
+    private fun stopRecordAndPlay() {
+        record?.stop()
+        track?.pause()
+        isRecording = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
