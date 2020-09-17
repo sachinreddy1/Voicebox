@@ -2,6 +2,7 @@ package com.sachinreddy.feature.adapter
 
 import android.content.Context
 import android.media.*
+import android.media.audiofx.AcousticEchoCanceler
 import android.os.Build
 import android.os.Process
 import android.os.VibrationEffect
@@ -30,15 +31,16 @@ class EditCellAdapter(
     : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
 
     var selectedCell: Cell? = tracks.first().cellList?.first()
-    private var track: AudioTrack? = null
-    private var recorderThread: Thread? = null
+    var track: AudioTrack? = null
 
-    private val RECORDER_SAMPLERATE = 8000
-    private val RECORDER_CHANNELS = AudioFormat.CHANNEL_IN_MONO
-    private val TRACK_CHANNELS = AudioFormat.CHANNEL_OUT_MONO
-    private val RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT
-
-    private val minBufferSizeRec = 0
+    init {
+        initPlayer()
+        object : Thread() {
+            override fun run() {
+                playerThread()
+            }
+        }.start()
+    }
 
     internal inner class MyCellViewHolder(itemView: View) : AbstractViewHolder(itemView) {
         val cell_button: ImageButton = itemView.findViewById(R.id.playStopButton)
@@ -73,9 +75,11 @@ class EditCellAdapter(
             cell_button.setOnClickListener {
                 if (!cell.isPlaying) {
                     cell_button.setImageResource(R.drawable.ic_stop)
+                    track?.play()
                     cell.isPlaying = true
                 } else {
                     cell_button.setImageResource(R.drawable.ic_play)
+                    track?.pause()
                     cell.isPlaying = false
                 }
             }
@@ -225,5 +229,34 @@ class EditCellAdapter(
         }
 
         setAllItems(timelineHeaderList_.toList(), rowHeaderList_.toList(), cellList_.toList())
+    }
+
+    fun initPlayer() {
+        val maxJitter = AudioTrack.getMinBufferSize(
+            8000,
+            AudioFormat.CHANNEL_OUT_STEREO,
+            AudioFormat.ENCODING_PCM_16BIT
+        )
+        track = AudioTrack(
+            AudioManager.MODE_IN_COMMUNICATION,
+            8000,
+            AudioFormat.CHANNEL_OUT_STEREO,
+            AudioFormat.ENCODING_PCM_16BIT,
+            maxJitter,
+            AudioTrack.MODE_STREAM
+        )
+    }
+
+    private fun playerThread() {
+        while (true) {
+            selectedCell?.let { cell ->
+                if (cell.isPlaying) {
+                    println("PLAYING")
+                    cell.data.forEach {
+                        track?.write(it, 0, 1024)
+                    }
+                }
+            }
+        }
     }
 }

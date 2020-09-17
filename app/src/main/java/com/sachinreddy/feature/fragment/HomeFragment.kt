@@ -40,7 +40,6 @@ class HomeFragment : Fragment() {
     var isRecording = false
     var audioManager: AudioManager? = null
     var record: AudioRecord? = null
-    var track: AudioTrack? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,12 +60,12 @@ class HomeFragment : Fragment() {
 
         ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)
 
-        initRecordAndTrack()
+        initRecorder()
         audioManager = activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
         object : Thread() {
             override fun run() {
-                recordAndPlay()
+                recordThread()
             }
         }.start()
 
@@ -75,6 +74,8 @@ class HomeFragment : Fragment() {
                 (adapter.selectedCell as Cell).apply {
                     hasData = true
                     if (!isRecording) {
+                        data.clear()
+                        isPlaying = false
                         startRecordAndPlay()
                     }
                     adapter.notifyDataSetChanged()
@@ -97,7 +98,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun initRecordAndTrack() {
+    private fun initRecorder() {
         val min = AudioRecord.getMinBufferSize(
             8000,
             AudioFormat.CHANNEL_IN_STEREO,
@@ -114,30 +115,16 @@ class HomeFragment : Fragment() {
             val echoCanceler = AcousticEchoCanceler.create(record!!.audioSessionId)
             echoCanceler.enabled = true
         }
-        val maxJitter = AudioTrack.getMinBufferSize(
-            8000,
-            AudioFormat.CHANNEL_OUT_STEREO,
-            AudioFormat.ENCODING_PCM_16BIT
-        )
-        track = AudioTrack(
-            AudioManager.MODE_IN_COMMUNICATION,
-            8000,
-            AudioFormat.CHANNEL_OUT_STEREO,
-            AudioFormat.ENCODING_PCM_16BIT,
-            maxJitter,
-            AudioTrack.MODE_STREAM
-        )
     }
 
-    private fun recordAndPlay() {
-        var num = 0
-
+    private fun recordThread() {
         audioManager?.mode = AudioManager.MODE_IN_COMMUNICATION
         while (true) {
             if (isRecording) {
                 adapter.selectedCell?.let {
-                    num = record!!.read(it.data, 0, 1024)
-                    track!!.write(it.data, 0, num)
+                    val data = ShortArray(1024)
+                    record?.read(data, 0, 1024)
+                    it.data.add(data)
                 }
             }
         }
@@ -145,13 +132,11 @@ class HomeFragment : Fragment() {
 
     private fun startRecordAndPlay() {
         record?.startRecording()
-        track?.play()
         isRecording = true
     }
 
     private fun stopRecordAndPlay() {
         record?.stop()
-        track?.pause()
         isRecording = false
     }
 

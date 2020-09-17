@@ -1,5 +1,6 @@
 package com.sachinreddy.feature.data.table
 
+import android.media.AudioTrack
 import java.nio.ByteBuffer
 import java.util.*
 
@@ -11,5 +12,5 @@ class Cell(
     var rowPosition: Int? = null,
     var hasData: Boolean = false,
 
-    var data: ShortArray = ShortArray(1024)
+    var data: MutableList<ShortArray> = mutableListOf()
 )
