@@ -76,7 +76,7 @@ class HomeFragment : Fragment() {
                     if (!isRecording) {
                         data.clear()
                         isPlaying = false
-                        startRecordAndPlay()
+                        startRecording()
                     }
                     adapter.notifyDataSetChanged()
                 }
@@ -84,13 +84,13 @@ class HomeFragment : Fragment() {
 
             override fun onRecordCancel() {
                 if (isRecording) {
-                    stopRecordAndPlay();
+                    stopRecording();
                 }
             }
 
             override fun onRecordFinish() {
                 if (isRecording) {
-                    stopRecordAndPlay();
+                    stopRecording();
                 }
             }
         })
@@ -130,12 +130,12 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun startRecordAndPlay() {
+    private fun startRecording() {
         record?.startRecording()
         isRecording = true
     }
 
-    private fun stopRecordAndPlay() {
+    private fun stopRecording() {
         record?.stop()
         isRecording = false
     }

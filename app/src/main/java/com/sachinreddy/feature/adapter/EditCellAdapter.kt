@@ -22,6 +22,7 @@ import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.RowHeader
 import com.sachinreddy.feature.data.table.TimelineHeader
 import com.sachinreddy.feature.viewModel.AppViewModel
+import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class EditCellAdapter(
@@ -63,7 +64,6 @@ class EditCellAdapter(
         rowPosition: Int
     ) {
         val cell = cellItemModel as Cell
-
         cell.rowPosition = rowPosition
 
         // Get the holder
@@ -231,7 +231,7 @@ class EditCellAdapter(
         setAllItems(timelineHeaderList_.toList(), rowHeaderList_.toList(), cellList_.toList())
     }
 
-    fun initPlayer() {
+    private fun initPlayer() {
         val maxJitter = AudioTrack.getMinBufferSize(
             8000,
             AudioFormat.CHANNEL_OUT_STEREO,
