@@ -14,6 +14,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.Observer
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.sachinreddy.feature.R

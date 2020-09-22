@@ -39,7 +39,7 @@ class HomeFragment : Fragment() {
 
     var isRecording = false
     var audioManager: AudioManager? = null
-    var record: AudioRecord? = null
+    var recorder: AudioRecord? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -104,7 +104,7 @@ class HomeFragment : Fragment() {
             AudioFormat.CHANNEL_IN_STEREO,
             AudioFormat.ENCODING_PCM_16BIT
         )
-        record = AudioRecord(
+        recorder = AudioRecord(
             MediaRecorder.AudioSource.VOICE_COMMUNICATION,
             8000,
             AudioFormat.CHANNEL_IN_STEREO,
@@ -112,7 +112,7 @@ class HomeFragment : Fragment() {
             min
         )
         if (AcousticEchoCanceler.isAvailable()) {
-            val echoCanceler = AcousticEchoCanceler.create(record!!.audioSessionId)
+            val echoCanceler = AcousticEchoCanceler.create(recorder!!.audioSessionId)
             echoCanceler.enabled = true
         }
     }
@@ -123,7 +123,7 @@ class HomeFragment : Fragment() {
             if (isRecording) {
                 adapter.selectedCell?.let {
                     val data = ShortArray(1024)
-                    record?.read(data, 0, 1024)
+                    recorder?.read(data, 0, 1024)
                     it.data.add(data)
                 }
             }
@@ -131,12 +131,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun startRecording() {
-        record?.startRecording()
+        recorder?.startRecording()
         isRecording = true
     }
 
     private fun stopRecording() {
-        record?.stop()
+        recorder?.stop()
         isRecording = false
     }
 
