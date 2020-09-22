@@ -37,10 +37,6 @@ class HomeFragment : Fragment() {
     private val appViewModel by activityViewModels<AppViewModel> { viewModelFactory }
     lateinit var adapter: EditCellAdapter
 
-    var isRecording = false
-    var audioManager: AudioManager? = null
-    var recorder: AudioRecord? = null
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,7 +48,7 @@ class HomeFragment : Fragment() {
 
         // Setting up tableView and adapter
         val tableView = TableView(requireContext())
-        adapter = EditCellAdapter(requireContext(), appViewModel, appViewModel.mTrackList)
+        adapter = EditCellAdapter(requireContext(), appViewModel)
         tableView.adapter = adapter
         adapter.setTracks(appViewModel.mTrackList)
         content_container.adapter = adapter
@@ -61,7 +57,7 @@ class HomeFragment : Fragment() {
         ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)
 
         initRecorder()
-        audioManager = activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        appViewModel.audioManager = activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
         object : Thread() {
             override fun run() {
@@ -71,9 +67,9 @@ class HomeFragment : Fragment() {
 
         recordBtn.setRecordListener(object : OnRecordListener {
             override fun onRecord() {
-                (adapter.selectedCell as Cell).apply {
+                (appViewModel.selectedCell as Cell).apply {
                     hasData = true
-                    if (!isRecording) {
+                    if (!appViewModel.isRecording) {
                         data.clear()
                         isPlaying = false
                         startRecording()
@@ -83,13 +79,13 @@ class HomeFragment : Fragment() {
             }
 
             override fun onRecordCancel() {
-                if (isRecording) {
+                if (appViewModel.isRecording) {
                     stopRecording();
                 }
             }
 
             override fun onRecordFinish() {
-                if (isRecording) {
+                if (appViewModel.isRecording) {
                     stopRecording();
                 }
             }
@@ -104,7 +100,7 @@ class HomeFragment : Fragment() {
             AudioFormat.CHANNEL_IN_STEREO,
             AudioFormat.ENCODING_PCM_16BIT
         )
-        recorder = AudioRecord(
+        appViewModel.recorder = AudioRecord(
             MediaRecorder.AudioSource.VOICE_COMMUNICATION,
             8000,
             AudioFormat.CHANNEL_IN_STEREO,
@@ -112,32 +108,38 @@ class HomeFragment : Fragment() {
             min
         )
         if (AcousticEchoCanceler.isAvailable()) {
-            val echoCanceler = AcousticEchoCanceler.create(recorder!!.audioSessionId)
+            val echoCanceler = AcousticEchoCanceler.create(appViewModel.recorder!!.audioSessionId)
             echoCanceler.enabled = true
         }
     }
 
     private fun recordThread() {
-        audioManager?.mode = AudioManager.MODE_IN_COMMUNICATION
+        appViewModel.audioManager?.mode = AudioManager.MODE_IN_COMMUNICATION
         while (true) {
-            if (isRecording) {
-                adapter.selectedCell?.let {
-                    val data = ShortArray(1024)
-                    recorder?.read(data, 0, 1024)
-                    it.data.add(data)
+            appViewModel.apply {
+                if (isRecording) {
+                    selectedCell?.let {
+                        val data = ShortArray(1024)
+                        recorder?.read(data, 0, 1024)
+                        it.data.add(data)
+                    }
                 }
             }
         }
     }
 
     private fun startRecording() {
-        recorder?.startRecording()
-        isRecording = true
+        appViewModel.apply {
+            recorder?.startRecording()
+            isRecording = true
+        }
     }
 
     private fun stopRecording() {
-        recorder?.stop()
-        isRecording = false
+        appViewModel.apply {
+            recorder?.stop()
+            isRecording = false
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

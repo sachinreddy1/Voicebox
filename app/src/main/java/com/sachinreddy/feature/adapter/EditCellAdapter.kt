@@ -28,11 +28,9 @@ import kotlinx.android.synthetic.main.fragment_home.*
 
 class EditCellAdapter(
     val context: Context,
-    private val appViewModel: AppViewModel,
-    private val tracks: MutableList<Track>)
+    private val appViewModel: AppViewModel)
     : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
 
-    var selectedCell: Cell? = tracks.first().cellList?.first()
     var track: AudioTrack? = null
 
     init {
@@ -107,7 +105,7 @@ class EditCellAdapter(
 
                 // Select the new cell
                 cell.isSelected = true
-                selectedCell = cell
+                appViewModel.selectedCell = cell
                 notifyDataSetChanged()
                 true
             }
@@ -176,8 +174,8 @@ class EditCellAdapter(
 
         rowHeaderViewHolder.row_header_button.apply {
             setOnClickListener {
-                tracks.add(Track(RowHeader(""), appViewModel.numberBars, rowPosition + 1))
-                setTracks(tracks)
+                appViewModel.mTrackList.add(Track(RowHeader(""), appViewModel.numberBars, rowPosition + 1))
+                setTracks(appViewModel.mTrackList)
             }
         }
 
@@ -250,7 +248,7 @@ class EditCellAdapter(
 
     private fun playerThread() {
         while (true) {
-            selectedCell?.let { cell ->
+            appViewModel.selectedCell?.let { cell ->
                 if (cell.isPlaying) {
                     println("PLAYING")
                     cell.data.forEach {
