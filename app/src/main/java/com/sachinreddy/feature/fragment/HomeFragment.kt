@@ -37,6 +37,12 @@ class HomeFragment : Fragment() {
     private val appViewModel by activityViewModels<AppViewModel> { viewModelFactory }
     lateinit var adapter: EditCellAdapter
 
+    val recorderThread = object : Thread() {
+        override fun run() {
+            recordThread()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,11 +65,7 @@ class HomeFragment : Fragment() {
         initRecorder()
         appViewModel.audioManager = activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
-        object : Thread() {
-            override fun run() {
-                recordThread()
-            }
-        }.start()
+        recorderThread.start()
 
         recordBtn.setRecordListener(object : OnRecordListener {
             override fun onRecord() {

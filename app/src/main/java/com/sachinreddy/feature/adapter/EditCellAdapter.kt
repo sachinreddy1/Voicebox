@@ -32,14 +32,15 @@ class EditCellAdapter(
     : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
 
     var track: AudioTrack? = null
+    val playerThread = object : Thread() {
+        override fun run() {
+            playerThread()
+        }
+    }
 
     init {
         initPlayer()
-        object : Thread() {
-            override fun run() {
-                playerThread()
-            }
-        }.start()
+        playerThread.start()
     }
 
     internal inner class MyCellViewHolder(itemView: View) : AbstractViewHolder(itemView) {
