@@ -29,7 +29,10 @@ import javax.inject.Inject
 
 
 const val REQUEST_PERMISSION_CODE = 200
-val PERMISSIONS = arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.RECORD_AUDIO)
+val PERMISSIONS = arrayOf(
+    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    android.Manifest.permission.RECORD_AUDIO
+)
 
 class HomeFragment : Fragment() {
     @Inject
@@ -63,8 +66,8 @@ class HomeFragment : Fragment() {
         ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)
 
         initRecorder()
-        appViewModel.audioManager = activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-
+        appViewModel.audioManager =
+            activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         recorderThread.start()
 
         recordBtn.setRecordListener(object : OnRecordListener {
