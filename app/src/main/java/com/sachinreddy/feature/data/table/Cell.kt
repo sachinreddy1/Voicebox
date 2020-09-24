@@ -1,5 +1,6 @@
 package com.sachinreddy.feature.data.table
 
+import android.media.AudioTrack
 import androidx.lifecycle.MutableLiveData
 
 class Cell(
@@ -10,5 +11,6 @@ class Cell(
     var rowPosition: Int? = null,
     var hasData: Boolean = false,
 
-    var data: MutableList<ShortArray> = mutableListOf()
+    var data: MutableList<ShortArray> = mutableListOf(),
+    var track: AudioTrack? = null
 )

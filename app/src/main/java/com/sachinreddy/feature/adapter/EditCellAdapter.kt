@@ -31,18 +31,6 @@ class EditCellAdapter(
     private val appViewModel: AppViewModel)
     : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
 
-    var track: AudioTrack? = null
-    val playerThread = object : Thread() {
-        override fun run() {
-            playerThread()
-        }
-    }
-
-    init {
-        initPlayer()
-        playerThread.start()
-    }
-
     internal inner class MyCellViewHolder(itemView: View) : AbstractViewHolder(itemView) {
         val cell_button: ImageButton = itemView.findViewById(R.id.playStopButton)
         val selection_container: ConstraintLayout = itemView.findViewById(R.id.selection_container)
@@ -66,6 +54,13 @@ class EditCellAdapter(
         val cell = cellItemModel as Cell
         cell.rowPosition = rowPosition
 
+        cell.track = initPlayer()
+        val playerThread = object : Thread() {
+            override fun run() {
+                playerThread(cell)
+            }
+        }
+
         // Get the holder
         val viewHolder = holder as MyCellViewHolder
         viewHolder.apply {
@@ -75,11 +70,12 @@ class EditCellAdapter(
             cell_button.setOnClickListener {
                 if (!cell.isPlaying) {
                     cell_button.setImageResource(R.drawable.ic_stop)
-                    track?.play()
+                    playerThread.start()
+                    cell.track?.play()
                     cell.isPlaying = true
                 } else {
                     cell_button.setImageResource(R.drawable.ic_play)
-                    track?.pause()
+                    cell.track?.pause()
                     cell.isPlaying = false
                 }
             }
@@ -231,13 +227,13 @@ class EditCellAdapter(
         setAllItems(timelineHeaderList_.toList(), rowHeaderList_.toList(), cellList_.toList())
     }
 
-    private fun initPlayer() {
+    private fun initPlayer(): AudioTrack {
         val maxJitter = AudioTrack.getMinBufferSize(
             8000,
             AudioFormat.CHANNEL_OUT_STEREO,
             AudioFormat.ENCODING_PCM_16BIT
         )
-        track = AudioTrack(
+        return AudioTrack(
             AudioManager.MODE_IN_COMMUNICATION,
             8000,
             AudioFormat.CHANNEL_OUT_STEREO,
@@ -247,12 +243,12 @@ class EditCellAdapter(
         )
     }
 
-    private fun playerThread() {
+    private fun playerThread(cell: Cell) {
         while (true) {
-            appViewModel.selectedCell?.let { cell ->
-                if (cell.isPlaying) {
+            cell.apply {
+                if (isPlaying) {
                     println("PLAYING")
-                    cell.data.forEach {
+                    data.forEach {
                         track?.write(it, 0, 1024)
                     }
                 }
