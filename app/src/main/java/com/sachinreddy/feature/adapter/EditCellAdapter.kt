@@ -2,9 +2,7 @@ package com.sachinreddy.feature.adapter
 
 import android.content.Context
 import android.media.*
-import android.media.audiofx.AcousticEchoCanceler
 import android.os.Build
-import android.os.Process
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.LayoutInflater
@@ -14,7 +12,6 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.Observer
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.sachinreddy.feature.R
@@ -23,7 +20,6 @@ import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.RowHeader
 import com.sachinreddy.feature.data.table.TimelineHeader
 import com.sachinreddy.feature.viewModel.AppViewModel
-import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class EditCellAdapter(
