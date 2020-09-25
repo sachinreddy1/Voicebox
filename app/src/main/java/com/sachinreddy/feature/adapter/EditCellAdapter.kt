@@ -51,7 +51,7 @@ class EditCellAdapter(
         cell.rowPosition = rowPosition
 
         cell.track = initPlayer()
-        val playerThread = object : Thread() {
+        cell.playerThread = object : Thread() {
             override fun run() {
                 playerThread(cell)
             }
@@ -66,7 +66,7 @@ class EditCellAdapter(
             cell_button.setOnClickListener {
                 if (!cell.isPlaying) {
                     cell_button.setImageResource(R.drawable.ic_stop)
-                    playerThread.start()
+                    cell.playerThread?.start()
                     cell.track?.play()
                     cell.isPlaying = true
                 } else {

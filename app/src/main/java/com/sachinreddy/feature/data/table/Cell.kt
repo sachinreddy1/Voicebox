@@ -12,5 +12,7 @@ class Cell(
     var hasData: Boolean = false,
 
     var data: MutableList<ShortArray> = mutableListOf(),
-    var track: AudioTrack? = null
+
+    var track: AudioTrack? = null,
+    var playerThread: Thread? = null
 )
