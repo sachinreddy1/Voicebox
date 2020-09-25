@@ -74,9 +74,10 @@ class HomeFragment : Fragment() {
             override fun onRecord() {
                 (appViewModel.selectedCell as Cell).apply {
                     hasData = true
+                    isPlaying = false
+                    playerThread?.join()
                     if (!appViewModel.isRecording) {
                         data.clear()
-                        isPlaying = false
                         startRecording()
                     }
                     adapter.notifyDataSetChanged()

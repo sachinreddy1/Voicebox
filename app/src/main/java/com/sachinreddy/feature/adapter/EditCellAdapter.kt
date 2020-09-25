@@ -66,13 +66,13 @@ class EditCellAdapter(
             cell_button.setOnClickListener {
                 if (!cell.isPlaying) {
                     cell_button.setImageResource(R.drawable.ic_stop)
+                    cell.isPlaying = true
                     cell.playerThread?.start()
                     cell.track?.play()
-                    cell.isPlaying = true
                 } else {
                     cell_button.setImageResource(R.drawable.ic_play)
-                    cell.track?.pause()
                     cell.isPlaying = false
+                    cell.track?.pause()
                 }
             }
 
@@ -240,13 +240,11 @@ class EditCellAdapter(
     }
 
     private fun playerThread(cell: Cell) {
-        while (true) {
-            cell.apply {
-                if (isPlaying) {
-                    println("PLAYING")
-                    data.forEach {
-                        track?.write(it, 0, 1024)
-                    }
+        cell.apply {
+            while (isPlaying) {
+                println("PLAYING")
+                data.forEach {
+                    track?.write(it, 0, 1024)
                 }
             }
         }
