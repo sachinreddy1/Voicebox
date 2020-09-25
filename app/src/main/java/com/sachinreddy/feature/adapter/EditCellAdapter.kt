@@ -48,32 +48,24 @@ class EditCellAdapter(
         rowPosition: Int
     ) {
         val cell = cellItemModel as Cell
-        cell.rowPosition = rowPosition
 
-        cell.track = initPlayer()
-        cell.playerThread = object : Thread() {
-            override fun run() {
-                playerThread(cell)
-            }
+        cell.let {
+            it.rowPosition = rowPosition
+            it.track = initPlayer()
         }
 
         // Get the holder
         val viewHolder = holder as MyCellViewHolder
         viewHolder.apply {
+            cell.cellButton = cell_button
             selection_container.visibility = if (cell.isSelected) View.VISIBLE else View.GONE
             edit_cell.visibility = if (cell.hasData) View.VISIBLE else View.GONE
 
             cell_button.setOnClickListener {
-                if (!cell.isPlaying) {
-                    cell_button.setImageResource(R.drawable.ic_stop)
-                    cell.isPlaying = true
-                    cell.playerThread?.start()
-                    cell.track?.play()
-                } else {
-                    cell_button.setImageResource(R.drawable.ic_play)
-                    cell.isPlaying = false
-                    cell.track?.pause()
-                }
+                if (!cell.isPlaying)
+                    playTrack(cell)
+                else
+                    stopTrack(cell)
             }
 
             // Long press for selection
@@ -247,6 +239,29 @@ class EditCellAdapter(
                     track?.write(it, 0, 1024)
                 }
             }
+        }
+    }
+
+    fun playTrack(cell: Cell) {
+        cell.let {
+            it.playerThread = object : Thread() {
+                override fun run() {
+                    playerThread(cell)
+                }
+            }
+            it.isPlaying = true
+            it.cellButton?.setImageResource(R.drawable.ic_stop)
+            it.playerThread?.start()
+            it.track?.play()
+        }
+    }
+
+    fun stopTrack(cell: Cell) {
+        cell.let {
+            it.isPlaying = false
+            it.cellButton?.setImageResource(R.drawable.ic_play)
+            it.track?.pause()
+            it.playerThread?.join()
         }
     }
 }

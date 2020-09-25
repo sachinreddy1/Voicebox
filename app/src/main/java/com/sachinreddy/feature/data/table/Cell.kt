@@ -1,6 +1,7 @@
 package com.sachinreddy.feature.data.table
 
 import android.media.AudioTrack
+import android.widget.ImageButton
 import androidx.lifecycle.MutableLiveData
 
 class Cell(
@@ -14,5 +15,7 @@ class Cell(
     var data: MutableList<ShortArray> = mutableListOf(),
 
     var track: AudioTrack? = null,
-    var playerThread: Thread? = null
+    var playerThread: Thread? = null,
+
+    var cellButton: ImageButton? = null
 )
