@@ -73,10 +73,8 @@ class HomeFragment : Fragment() {
         recordBtn.setRecordListener(object : OnRecordListener {
             override fun onRecord() {
                 (appViewModel.selectedCell as Cell).apply {
-                    adapter.stopTrack(this)
                     if (!appViewModel.isRecording) {
-                        data.clear()
-                        startRecording()
+                        startRecording(this)
                     }
                     adapter.notifyDataSetChanged()
                 }
@@ -84,13 +82,13 @@ class HomeFragment : Fragment() {
 
             override fun onRecordCancel() {
                 if (appViewModel.isRecording) {
-                    stopRecording();
+                    stopRecording()
                 }
             }
 
             override fun onRecordFinish() {
                 if (appViewModel.isRecording) {
-                    stopRecording();
+                    stopRecording()
                 }
             }
         })
@@ -132,7 +130,9 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun startRecording() {
+    private fun startRecording(cell: Cell) {
+        adapter.stopTrack(cell)
+        cell.data.clear()
         appViewModel.apply {
             recorder?.startRecording()
             isRecording = true
