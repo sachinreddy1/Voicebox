@@ -73,7 +73,6 @@ class HomeFragment : Fragment() {
         recordBtn.setRecordListener(object : OnRecordListener {
             override fun onRecord() {
                 (appViewModel.selectedCell as Cell).apply {
-                    hasData = true
                     adapter.stopTrack(this)
                     if (!appViewModel.isRecording) {
                         data.clear()

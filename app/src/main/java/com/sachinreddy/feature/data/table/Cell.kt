@@ -10,7 +10,6 @@ class Cell(
 
     var columnPosition: Int,
     var rowPosition: Int? = null,
-    var hasData: Boolean = false,
 
     var data: MutableList<ShortArray> = mutableListOf(),
 

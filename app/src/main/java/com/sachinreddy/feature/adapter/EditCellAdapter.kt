@@ -59,7 +59,7 @@ class EditCellAdapter(
         viewHolder.apply {
             cell.cellButton = cell_button
             selection_container.visibility = if (cell.isSelected) View.VISIBLE else View.GONE
-            edit_cell.visibility = if (cell.hasData) View.VISIBLE else View.GONE
+            edit_cell.visibility = if (cell.data.isNotEmpty()) View.VISIBLE else View.GONE
 
             cell_button.setOnClickListener {
                 if (!cell.isPlaying)
@@ -234,7 +234,6 @@ class EditCellAdapter(
     private fun playerThread(cell: Cell) {
         cell.apply {
             while (isPlaying) {
-                println("PLAYING")
                 data.forEach {
                     track?.write(it, 0, 1024)
                 }

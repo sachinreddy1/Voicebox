@@ -2,7 +2,6 @@ package com.sachinreddy.feature.data
 
 import com.google.firebase.database.IgnoreExtraProperties
 import com.sachinreddy.feature.data.table.Cell
-import com.sachinreddy.feature.data.table.TimelineHeader
 import com.sachinreddy.feature.data.table.RowHeader
 
 @IgnoreExtraProperties
@@ -21,8 +20,7 @@ class Track {
             val cell = Cell(
                 isSelected = false,
                 columnPosition = i,
-                rowPosition = rowPosition,
-                hasData = false
+                rowPosition = rowPosition
             )
             cellList?.add(cell)
         }
