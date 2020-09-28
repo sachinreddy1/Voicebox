@@ -72,6 +72,11 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
 
         // Create Cell RecyclerView Adapter
         mCellRecyclerViewAdapter = new CellRecyclerViewAdapter<>(context, mCellItems, mTableView);
+
+        // Create corner view
+        mCornerView = onCreateCornerView((ViewGroup) mTableView);
+        mTableView.addView(mCornerView, new FrameLayout.LayoutParams(mRowHeaderWidth,
+                mColumnHeaderHeight));
     }
 
     public void setColumnHeaderItems(@Nullable List<CH> columnHeaderItems) {

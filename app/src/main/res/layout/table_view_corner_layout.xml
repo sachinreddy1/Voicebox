@@ -4,15 +4,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="@dimen/row_header_width"
         android:layout_height="@dimen/column_header_height"
 
-        android:text="Corner"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-
-        android:background="@color/cardBackground"
+        android:background="@color/instrumentBackground"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
