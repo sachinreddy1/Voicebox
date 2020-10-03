@@ -1,4 +1,4 @@
-package com.sachinreddy.feature.adapter
+package com.sachinreddy.feature.table.adapter
 
 import android.content.Context
 import android.media.*
@@ -8,10 +8,6 @@ import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.sachinreddy.feature.R
@@ -19,27 +15,21 @@ import com.sachinreddy.feature.data.Track
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.RowHeader
 import com.sachinreddy.feature.data.table.TimelineHeader
+import com.sachinreddy.feature.table.holder.CellViewHolder
+import com.sachinreddy.feature.table.holder.ColumnHeaderViewHolder
+import com.sachinreddy.feature.table.holder.RowHeaderViewHolder
 import com.sachinreddy.feature.viewModel.AppViewModel
-
 
 class EditCellAdapter(
     val context: Context,
-    private val appViewModel: AppViewModel)
-    : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
+    private val appViewModel: AppViewModel
+) : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
 
-    internal inner class MyCellViewHolder(itemView: View) : AbstractViewHolder(itemView) {
-        val cell_button: ImageButton = itemView.findViewById(R.id.playStopButton)
-        val selection_container: ConstraintLayout = itemView.findViewById(R.id.selection_container)
-        val edit_cell: ConstraintLayout = itemView.findViewById(R.id.edit_cell)
-    }
-
-    override fun onCreateCellViewHolder(parent: ViewGroup, viewType: Int): AbstractViewHolder {
-        // Get cell xml layout
-        val layout: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.table_view_cell_layout, parent, false)
-        // Create a Custom ViewHolder for a Cell item.
-        return MyCellViewHolder(layout)
-    }
+    override fun onCreateCellViewHolder(parent: ViewGroup, viewType: Int): AbstractViewHolder =
+        CellViewHolder(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.table_view_cell_layout, parent, false)
+        )
 
     override fun onBindCellViewHolder(
         holder: AbstractViewHolder,
@@ -55,7 +45,7 @@ class EditCellAdapter(
         }
 
         // Get the holder
-        val viewHolder = holder as MyCellViewHolder
+        val viewHolder = holder as CellViewHolder
         viewHolder.apply {
             cell.cellButton = cell_button
             selection_container.visibility = if (cell.isSelected) View.VISIBLE else View.GONE
@@ -97,22 +87,13 @@ class EditCellAdapter(
         }
     }
 
-    internal inner class MyColumnHeaderViewHolder(itemView: View) : AbstractViewHolder(itemView) {
-        val column_header_barNumber: TextView = itemView.findViewById(R.id.column_header_barNumber)
-    }
-
     override fun onCreateColumnHeaderViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): AbstractViewHolder {
-
-        // Get Column Header xml Layout
-        val layout: View = LayoutInflater.from(parent.context)
+    ): AbstractViewHolder = ColumnHeaderViewHolder(
+        LayoutInflater.from(parent.context)
             .inflate(R.layout.table_view_column_header_layout, parent, false)
-
-        // Create a ColumnHeader ViewHolder
-        return MyColumnHeaderViewHolder(layout)
-    }
+    )
 
     override fun onBindColumnHeaderViewHolder(
         holder: AbstractViewHolder,
@@ -123,28 +104,17 @@ class EditCellAdapter(
 
         // Get the holder to update cell item text
         val columnHeaderViewHolder =
-            holder as MyColumnHeaderViewHolder
+            holder as ColumnHeaderViewHolder
         columnHeaderViewHolder.column_header_barNumber.text = columnHeader.data.toString()
-    }
-
-    internal inner class MyRowHeaderViewHolder(itemView: View) : AbstractViewHolder(itemView) {
-        val row_header_imageView: ImageView = itemView.findViewById(R.id.row_header_imageView)
-        val row_header_button_container: ConstraintLayout = itemView.findViewById(R.id.row_header_button_container)
-        val row_header_button: ImageButton = itemView.findViewById(R.id.row_header_button)
     }
 
     override fun onCreateRowHeaderViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): AbstractViewHolder {
-
-        // Get Row Header xml Layout
-        val layout: View = LayoutInflater.from(parent.context)
+    ): AbstractViewHolder = RowHeaderViewHolder(
+        LayoutInflater.from(parent.context)
             .inflate(R.layout.table_view_row_header_layout, parent, false)
-
-        // Create a Row Header ViewHolder
-        return MyRowHeaderViewHolder(layout)
-    }
+    )
 
     override fun onBindRowHeaderViewHolder(
         holder: AbstractViewHolder,
@@ -155,11 +125,17 @@ class EditCellAdapter(
 
         // Get the holder to update row header item text
         val rowHeaderViewHolder =
-            holder as MyRowHeaderViewHolder
+            holder as RowHeaderViewHolder
 
         rowHeaderViewHolder.row_header_button.apply {
             setOnClickListener {
-                appViewModel.mTrackList.add(Track(RowHeader(""), appViewModel.numberBars, rowPosition + 1))
+                appViewModel.mTrackList.add(
+                    Track(
+                        RowHeader(""),
+                        appViewModel.numberBars,
+                        rowPosition + 1
+                    )
+                )
                 setTracks(appViewModel.mTrackList)
             }
         }
@@ -172,35 +148,14 @@ class EditCellAdapter(
         }
     }
 
-    override fun onCreateCornerView(parent: ViewGroup): View {
-        // Get Corner xml layout
-        return LayoutInflater.from(parent.context)
-            .inflate(R.layout.table_view_corner_layout, parent, false)
-    }
+    override fun onCreateCornerView(parent: ViewGroup): View = LayoutInflater.from(parent.context)
+        .inflate(R.layout.table_view_corner_layout, parent, false)
 
-    override fun getColumnHeaderItemViewType(columnPosition: Int): Int {
-        // The unique ID for this type of column header item
-        // If you have different items for Cell View by X (Column) position,
-        // then you should fill this method to be able create different
-        // type of ColumnViewHolder on "onCreateColumnViewHolder"
-        return 0
-    }
+    override fun getColumnHeaderItemViewType(columnPosition: Int): Int = 0
 
-    override fun getRowHeaderItemViewType(rowPosition: Int): Int {
-        // The unique ID for this type of row header item
-        // If you have different items for Row Header View by Y (Row) position,
-        // then you should fill this method to be able create different
-        // type of RowHeaderViewHolder on "onCreateRowHeaderViewHolder"
-        return 0
-    }
+    override fun getRowHeaderItemViewType(rowPosition: Int): Int = 0
 
-    override fun getCellItemViewType(columnPosition: Int): Int {
-        // The unique ID for this type of cell item
-        // If you have different items for Cell View by X (Column) position,
-        // then you should fill this method to be able create different
-        // type of CellViewHolder on "onCreateCellViewHolder"
-        return 0
-    }
+    override fun getCellItemViewType(columnPosition: Int): Int = 0
 
     fun setTracks(tracks: MutableList<Track>) {
         var timelineHeaderList_: MutableList<TimelineHeader> = mutableListOf()

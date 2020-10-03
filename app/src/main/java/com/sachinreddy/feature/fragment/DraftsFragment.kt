@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.adapter.SongAdapter
+import com.sachinreddy.feature.table.adapter.SongAdapter
 import com.sachinreddy.feature.auth.Authenticator
 import com.sachinreddy.feature.injection.appComponent
 import com.sachinreddy.feature.viewModel.AppViewModel
@@ -51,7 +51,8 @@ class DraftsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupActionBar()
 
-        songAdapter = SongAdapter(requireContext())
+        songAdapter =
+            SongAdapter(requireContext())
         songs_recycler_view.adapter = songAdapter
 
         // Songs go here

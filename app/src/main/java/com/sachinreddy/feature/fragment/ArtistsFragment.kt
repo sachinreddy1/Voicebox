@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.adapter.ArtistAdapter
+import com.sachinreddy.feature.table.adapter.ArtistAdapter
 import com.sachinreddy.feature.auth.Authenticator
 import com.sachinreddy.feature.injection.appComponent
 import com.sachinreddy.feature.viewModel.AppViewModel
@@ -46,7 +46,10 @@ class ArtistsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupActionBar()
-        artistsAdapter = ArtistAdapter(requireContext(), Authenticator.currentFriends)
+        artistsAdapter = ArtistAdapter(
+            requireContext(),
+            Authenticator.currentFriends
+        )
         friends_recycler_view.adapter = artistsAdapter
 
         swipe_refresh.setOnRefreshListener {

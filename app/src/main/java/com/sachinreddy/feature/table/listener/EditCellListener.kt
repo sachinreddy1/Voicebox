@@ -1,4 +1,4 @@
-package com.sachinreddy.feature.adapter
+package com.sachinreddy.feature.table.listener
 
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView

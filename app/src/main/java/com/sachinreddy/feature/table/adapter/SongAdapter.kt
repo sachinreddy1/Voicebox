@@ -1,4 +1,4 @@
-package com.sachinreddy.feature.adapter
+package com.sachinreddy.feature.table.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

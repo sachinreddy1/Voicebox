@@ -18,8 +18,8 @@ import androidx.navigation.fragment.findNavController
 import com.emrekose.recordbutton.OnRecordListener
 import com.evrencoskun.tableview.TableView
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.adapter.EditCellAdapter
-import com.sachinreddy.feature.adapter.EditCellListener
+import com.sachinreddy.feature.table.adapter.EditCellAdapter
+import com.sachinreddy.feature.table.listener.EditCellListener
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.injection.appComponent
 import com.sachinreddy.feature.viewModel.AppViewModel
@@ -57,11 +57,17 @@ class HomeFragment : Fragment() {
 
         // Setting up tableView and adapter
         val tableView = TableView(requireContext())
-        adapter = EditCellAdapter(requireContext(), appViewModel)
+        adapter = EditCellAdapter(
+            requireContext(),
+            appViewModel
+        )
         tableView.adapter = adapter
         adapter.setTracks(appViewModel.mTrackList)
         content_container.adapter = adapter
-        content_container.tableViewListener = EditCellListener(requireContext())
+        content_container.tableViewListener =
+            EditCellListener(
+                requireContext()
+            )
 
         ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)
 
