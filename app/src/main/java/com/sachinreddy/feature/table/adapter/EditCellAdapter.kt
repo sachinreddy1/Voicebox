@@ -1,10 +1,6 @@
 package com.sachinreddy.feature.table.adapter
 
 import android.content.Context
-import android.media.*
-import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +20,6 @@ class EditCellAdapter(
     val context: Context,
     private val appViewModel: AppViewModel
 ) : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
-
     override fun onCreateCellViewHolder(parent: ViewGroup, viewType: Int): AbstractViewHolder =
         CellViewHolder(
             LayoutInflater.from(parent.context)

@@ -3,13 +3,11 @@ package com.sachinreddy.feature.table.holder
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.Track
 import com.sachinreddy.feature.data.table.RowHeader
-import com.sachinreddy.feature.data.table.TimelineHeader
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.viewModel.AppViewModel
 
@@ -35,10 +33,6 @@ class RowHeaderViewHolder(
         }
 
         // Set the add button at the bottom of the rowHeaders
-        if (rowPosition == appViewModel.mTrackList.size - 1) {
-            row_header_button_container.visibility = View.VISIBLE
-        } else {
-            row_header_button_container.visibility = View.GONE
-        }
+        row_header_button_container.visibility = if (rowPosition == appViewModel.mTrackList.size - 1) View.VISIBLE else View.GONE
     }
 }
