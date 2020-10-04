@@ -1,6 +1,9 @@
 package com.sachinreddy.feature.table.adapter
 
 import android.content.Context
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +27,6 @@ class EditCellAdapter(
         CellViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.table_view_cell_layout, parent, false),
-            context,
             appViewModel,
             this
         )
@@ -63,7 +65,9 @@ class EditCellAdapter(
         viewType: Int
     ): AbstractViewHolder = RowHeaderViewHolder(
         LayoutInflater.from(parent.context)
-            .inflate(R.layout.table_view_row_header_layout, parent, false)
+            .inflate(R.layout.table_view_row_header_layout, parent, false),
+        appViewModel,
+        this
     )
 
     override fun onBindRowHeaderViewHolder(
@@ -72,7 +76,7 @@ class EditCellAdapter(
         rowPosition: Int
     ) {
         (holder as RowHeaderViewHolder).apply {
-            bind(appViewModel, rowPosition, this@EditCellAdapter)
+            bind(rowPosition)
         }
     }
 
@@ -96,5 +100,17 @@ class EditCellAdapter(
         }
 
         setAllItems(timelineHeaderList_.toList(), rowHeaderList_.toList(), cellList_.toList())
+    }
+
+    fun vibrate() {
+        val v = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(
+                VibrationEffect.createOneShot(
+                    100,
+                    VibrationEffect.DEFAULT_AMPLITUDE
+                )
+            )
+        }
     }
 }

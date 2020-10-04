@@ -1,9 +1,5 @@
 package com.sachinreddy.feature.table.holder
 
-import android.content.Context
-import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
 import android.view.View
 import android.widget.ImageButton
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -15,9 +11,8 @@ import com.sachinreddy.feature.viewModel.AppViewModel
 
 class CellViewHolder(
     layout: View,
-    private val context: Context,
     private val appViewModel: AppViewModel,
-    private val adapter: EditCellAdapter
+    private val editCellAdapter: EditCellAdapter
 ) : AbstractViewHolder(layout) {
     val cell_button: ImageButton = layout.findViewById(R.id.playStopButton)
     val selection_container: ConstraintLayout = layout.findViewById(R.id.selection_container)
@@ -44,7 +39,7 @@ class CellViewHolder(
 
         // Long press for selection
         itemView.setOnLongClickListener {
-            vibrate()
+            editCellAdapter.vibrate()
 
             // Un-selecting all the cells
             for (i in cellItems) {
@@ -56,20 +51,8 @@ class CellViewHolder(
             // Select the new cell
             cell.isSelected = true
             appViewModel.selectedCell = cell
-            adapter.notifyDataSetChanged()
+            editCellAdapter.notifyDataSetChanged()
             true
-        }
-    }
-
-    private fun vibrate() {
-        val v = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(
-                VibrationEffect.createOneShot(
-                    100,
-                    VibrationEffect.DEFAULT_AMPLITUDE
-                )
-            )
         }
     }
 }

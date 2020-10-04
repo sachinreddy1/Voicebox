@@ -12,13 +12,15 @@ import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.viewModel.AppViewModel
 
 class RowHeaderViewHolder(
-    layout: View
+    layout: View,
+    private val appViewModel: AppViewModel,
+    private val editCellAdapter: EditCellAdapter
 ) : AbstractViewHolder(layout) {
     val row_header_imageView: ImageView = layout.findViewById(R.id.row_header_imageView)
     val row_header_button_container: ConstraintLayout = layout.findViewById(R.id.row_header_button_container)
     val row_header_button: ImageButton = layout.findViewById(R.id.row_header_button)
 
-    fun bind(appViewModel: AppViewModel, rowPosition: Int, editCellAdapter: EditCellAdapter) {
+    fun bind(rowPosition: Int) {
         row_header_button.apply {
             setOnClickListener {
                 appViewModel.mTrackList.add(
