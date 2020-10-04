@@ -40,7 +40,6 @@ class EditCellAdapter(
         columnPosition: Int,
         rowPosition: Int
     ) {
-        // Get the holder
         (holder as CellViewHolder).apply {
             cellItemModel?.let { bind(it, rowPosition, mCellItems) }
         }
@@ -59,12 +58,9 @@ class EditCellAdapter(
         timelineHeaderItemModel: TimelineHeader?,
         columnPosition: Int
     ) {
-        val columnHeader = timelineHeaderItemModel as TimelineHeader
-
-        // Get the holder to update cell item text
-        val columnHeaderViewHolder =
-            holder as ColumnHeaderViewHolder
-        columnHeaderViewHolder.column_header_barNumber.text = columnHeader.data.toString()
+        (holder as ColumnHeaderViewHolder).apply {
+            timelineHeaderItemModel?.let { bind(it) }
+        }
     }
 
     override fun onCreateRowHeaderViewHolder(
@@ -80,30 +76,8 @@ class EditCellAdapter(
         rowHeaderItemModel: RowHeader?,
         rowPosition: Int
     ) {
-        val rowHeader = rowHeaderItemModel as RowHeader
-
-        // Get the holder to update row header item text
-        val rowHeaderViewHolder =
-            holder as RowHeaderViewHolder
-
-        rowHeaderViewHolder.row_header_button.apply {
-            setOnClickListener {
-                appViewModel.mTrackList.add(
-                    Track(
-                        RowHeader(""),
-                        appViewModel.numberBars,
-                        rowPosition + 1
-                    )
-                )
-                setTracks(appViewModel.mTrackList)
-            }
-        }
-
-        // Set the add button at the bottom of the rowHeaders
-        if (rowPosition == mRowHeaderItems.size - 1) {
-            rowHeaderViewHolder.row_header_button_container.visibility = View.VISIBLE
-        } else {
-            rowHeaderViewHolder.row_header_button_container.visibility = View.GONE
+        (holder as RowHeaderViewHolder).apply {
+            bind(appViewModel, rowPosition, this@EditCellAdapter)
         }
     }
 
