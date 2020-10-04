@@ -137,7 +137,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun startRecording(cell: Cell) {
-        adapter.stopTrack(cell)
+        cell.stopTrack()
         cell.data.clear()
         appViewModel.apply {
             recorder?.startRecording()

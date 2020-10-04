@@ -28,7 +28,10 @@ class EditCellAdapter(
     override fun onCreateCellViewHolder(parent: ViewGroup, viewType: Int): AbstractViewHolder =
         CellViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.table_view_cell_layout, parent, false)
+                .inflate(R.layout.table_view_cell_layout, parent, false),
+            context,
+            appViewModel,
+            this
         )
 
     override fun onBindCellViewHolder(
@@ -37,53 +40,9 @@ class EditCellAdapter(
         columnPosition: Int,
         rowPosition: Int
     ) {
-        val cell = cellItemModel as Cell
-
-        cell.let {
-            it.rowPosition = rowPosition
-            it.track = initPlayer()
-        }
-
         // Get the holder
-        val viewHolder = holder as CellViewHolder
-        viewHolder.apply {
-            cell.cellButton = cell_button
-            selection_container.visibility = if (cell.isSelected) View.VISIBLE else View.GONE
-            edit_cell.visibility = if (cell.data.isNotEmpty()) View.VISIBLE else View.GONE
-
-            cell_button.setOnClickListener {
-                if (!cell.isPlaying)
-                    playTrack(cell)
-                else
-                    stopTrack(cell)
-            }
-
-            // Long press for selection
-            itemView.setOnLongClickListener {
-                // Add short vibration
-                val v = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    v.vibrate(
-                        VibrationEffect.createOneShot(
-                            100,
-                            VibrationEffect.DEFAULT_AMPLITUDE
-                        )
-                    )
-                }
-
-                // Un-selecting all the cells
-                for (i in mCellItems) {
-                    for (j in i) {
-                        j?.isSelected = false
-                    }
-                }
-
-                // Select the new cell
-                cell.isSelected = true
-                appViewModel.selectedCell = cell
-                notifyDataSetChanged()
-                true
-            }
+        (holder as CellViewHolder).apply {
+            cellItemModel?.let { bind(it, rowPosition, mCellItems) }
         }
     }
 
@@ -168,54 +127,5 @@ class EditCellAdapter(
         }
 
         setAllItems(timelineHeaderList_.toList(), rowHeaderList_.toList(), cellList_.toList())
-    }
-
-    private fun initPlayer(): AudioTrack {
-        val maxJitter = AudioTrack.getMinBufferSize(
-            8000,
-            AudioFormat.CHANNEL_OUT_STEREO,
-            AudioFormat.ENCODING_PCM_16BIT
-        )
-        return AudioTrack(
-            AudioManager.MODE_IN_COMMUNICATION,
-            8000,
-            AudioFormat.CHANNEL_OUT_STEREO,
-            AudioFormat.ENCODING_PCM_16BIT,
-            maxJitter,
-            AudioTrack.MODE_STREAM
-        )
-    }
-
-    private fun playerThread(cell: Cell) {
-        cell.apply {
-            while (isPlaying) {
-                data.forEach {
-                    track?.write(it, 0, 1024)
-                }
-            }
-        }
-    }
-
-    fun playTrack(cell: Cell) {
-        cell.let {
-            it.playerThread = object : Thread() {
-                override fun run() {
-                    playerThread(cell)
-                }
-            }
-            it.isPlaying = true
-            it.cellButton?.setImageResource(R.drawable.ic_stop)
-            it.playerThread?.start()
-            it.track?.play()
-        }
-    }
-
-    fun stopTrack(cell: Cell) {
-        cell.let {
-            it.isPlaying = false
-            it.cellButton?.setImageResource(R.drawable.ic_play)
-            it.track?.pause()
-            it.playerThread?.join()
-        }
     }
 }
