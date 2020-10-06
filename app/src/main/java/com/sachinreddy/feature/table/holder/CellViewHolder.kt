@@ -1,6 +1,9 @@
 package com.sachinreddy.feature.table.holder
 
+import android.content.ClipData
+import android.content.ClipDescription
 import android.view.View
+import android.view.View.DragShadowBuilder
 import android.widget.ImageButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
@@ -8,6 +11,7 @@ import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.viewModel.AppViewModel
+
 
 class CellViewHolder(
     layout: View,
@@ -35,6 +39,20 @@ class CellViewHolder(
                 cell.playTrack()
             else
                 cell.stopTrack()
+        }
+
+        // Long press for drag and drop
+        val IMAGEVIEW_TAG = "icon bitmap"
+        edit_cell.apply {
+            tag = IMAGEVIEW_TAG
+            setOnLongClickListener {
+                val item = ClipData.Item(it.tag as? CharSequence)
+                val data = ClipData(it.tag as? CharSequence, arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN), item)
+                val shadowBuilder = DragShadowBuilder(it)
+                it.startDrag(data, shadowBuilder, it, 0)
+                it.visibility = View.INVISIBLE
+                true
+            }
         }
 
         // Long press for selection
