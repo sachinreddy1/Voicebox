@@ -108,7 +108,6 @@ class CellViewHolder(
 
                     // Displays a message containing the dragged data.
                     println("REDDY")
-
                     // Turns off any color tints
                     v.background.clearColorFilter()
 
