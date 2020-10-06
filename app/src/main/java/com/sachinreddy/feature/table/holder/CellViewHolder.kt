@@ -2,6 +2,10 @@ package com.sachinreddy.feature.table.holder
 
 import android.content.ClipData
 import android.content.ClipDescription
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.util.Log
+import android.view.DragEvent
 import android.view.View
 import android.view.View.DragShadowBuilder
 import android.widget.ImageButton
@@ -71,6 +75,75 @@ class CellViewHolder(
             appViewModel.selectedCell = cell
             editCellAdapter.notifyDataSetChanged()
             true
+        }
+
+        itemView.setOnDragListener { v, event ->
+            when (event.action) {
+                DragEvent.ACTION_DRAG_STARTED -> {
+                    if (event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
+                        println("SACHIN")
+                        true
+                    }
+                    false
+                }
+                DragEvent.ACTION_DRAG_ENTERED -> {
+                    v.background.setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_IN)
+                    v.invalidate()
+                    true
+                }
+
+                DragEvent.ACTION_DRAG_LOCATION ->
+                    true
+                DragEvent.ACTION_DRAG_EXITED -> {
+                    v.background.clearColorFilter()
+                    v.invalidate()
+                    true
+                }
+                DragEvent.ACTION_DROP -> {
+                    // Gets the item containing the dragged data
+                    val item: ClipData.Item = event.clipData.getItemAt(0)
+
+                    // Gets the text data from the item.
+                    val dragData = item.text
+
+                    // Displays a message containing the dragged data.
+                    println("REDDY")
+
+                    // Turns off any color tints
+                    v.background.clearColorFilter()
+
+                    // Invalidates the view to force a redraw
+                    v.invalidate()
+
+                    // Returns true. DragEvent.getResult() will return true.
+                    true
+                }
+
+                DragEvent.ACTION_DRAG_ENDED -> {
+                    // Turns off any color tinting
+                    v.background.clearColorFilter()
+
+                    // Invalidates the view to force a redraw
+                    v.invalidate()
+
+                    // Does a getResult(), and displays what happened.
+                    when(event.result) {
+                        true ->
+                            println("The drop was handled.")
+                        else ->
+                            println("The drop didn't work.")
+                    }
+
+                    // returns true; the value is ignored.
+                    true
+                }
+                else -> {
+                    // An unknown action type was received.
+                    Log.e("DragDrop Example", "Unknown action type received by OnDragListener.")
+                    false
+                }
+            }
+            false
         }
     }
 }
