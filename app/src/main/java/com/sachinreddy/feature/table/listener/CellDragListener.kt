@@ -1,5 +1,7 @@
 package com.sachinreddy.feature.table.listener
 
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.util.Log
 import android.view.DragEvent
 import android.view.View
@@ -24,6 +26,8 @@ class CellDragListener : View.OnDragListener {
                     TAG,
                     "onDrag: ACTION_DRAG_ENTERED"
                 )
+                containerView.background.setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN)
+                containerView.invalidate()
                 true
             }
             DragEvent.ACTION_DRAG_EXITED -> {
@@ -31,9 +35,13 @@ class CellDragListener : View.OnDragListener {
                     TAG,
                     "onDrag: ACTION_DRAG_EXITED"
                 )
+                containerView.background.clearColorFilter()
+                containerView.invalidate()
                 true
             }
             DragEvent.ACTION_DROP -> {
+                containerView.background.clearColorFilter()
+                containerView.invalidate()
                 Log.d(TAG, "onDrag: ACTION_DROP")
                 hit = true
                 draggedView.post(Runnable { draggedView.setVisibility(View.GONE) })
