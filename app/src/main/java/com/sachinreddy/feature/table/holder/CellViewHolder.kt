@@ -46,17 +46,10 @@ class CellViewHolder(
         edit_cell.apply {
             tag = IMAGEVIEW_TAG
             setOnLongClickListener {
-//                val item = ClipData.Item(it.tag as? CharSequence)
-//                val data = ClipData(it.tag as? CharSequence, arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN), item)
-//                val shadowBuilder = DragShadowBuilder(it)
-//                it.startDrag(data, shadowBuilder, it, 0)
-//                it.visibility = View.INVISIBLE
-
                 val data = ClipData.newPlainText("", "")
                 val shadowBuilder = View.DragShadowBuilder(it)
                 it.startDrag(data, shadowBuilder, it, 0)
                 it.visibility = View.INVISIBLE
-
                 true
             }
         }
