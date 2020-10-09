@@ -25,6 +25,7 @@ class CellViewHolder(
     val cell_button: ImageButton = layout.findViewById(R.id.playStopButton)
     val selection_container: ConstraintLayout = layout.findViewById(R.id.selection_container)
     val edit_cell: ConstraintLayout = layout.findViewById(R.id.edit_cell)
+    val layout_cell: ConstraintLayout = layout.findViewById(R.id.layout_cell)
 
     lateinit var cell: Cell
 
@@ -77,7 +78,7 @@ class CellViewHolder(
             true
         }
 
-        itemView.setOnDragListener { v, event ->
+        val onDragListener = View.OnDragListener { v, event ->
             when (event.action) {
                 DragEvent.ACTION_DRAG_STARTED -> {
                     if (event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
@@ -91,7 +92,6 @@ class CellViewHolder(
                     v.invalidate()
                     true
                 }
-
                 DragEvent.ACTION_DRAG_LOCATION ->
                     true
                 DragEvent.ACTION_DRAG_EXITED -> {
@@ -117,7 +117,6 @@ class CellViewHolder(
                     // Returns true. DragEvent.getResult() will return true.
                     true
                 }
-
                 DragEvent.ACTION_DRAG_ENDED -> {
                     // Turns off any color tinting
                     v.background.clearColorFilter()
@@ -144,5 +143,8 @@ class CellViewHolder(
             }
             false
         }
+
+        edit_cell.setOnDragListener(onDragListener)
+        itemView.setOnDragListener(onDragListener)
     }
 }
