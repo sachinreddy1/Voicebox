@@ -6,8 +6,9 @@ import android.util.Log
 import android.view.DragEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.evrencoskun.tableview.ITableView
 
-class CellDragListener : View.OnDragListener {
+class CellDragListener(private val tableView: ITableView) : View.OnDragListener {
     private var hit = false
     override fun onDrag(v: View, event: DragEvent): Boolean {
         val containerView: ConstraintLayout = v as ConstraintLayout
@@ -40,20 +41,31 @@ class CellDragListener : View.OnDragListener {
                 true
             }
             DragEvent.ACTION_DROP -> {
-                containerView.background.clearColorFilter()
+                containerView.background.setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_IN)
                 containerView.invalidate()
+
                 Log.d(TAG, "onDrag: ACTION_DROP")
                 hit = true
-                draggedView.post(Runnable { draggedView.setVisibility(View.GONE) })
+                draggedView.post(Runnable { draggedView.visibility = View.GONE })
                 true
             }
             DragEvent.ACTION_DRAG_ENDED -> {
                 Log.d(TAG, "onDrag: ACTION_DRAG_ENDED")
                 v.visibility = View.VISIBLE
                 if (!hit) {
-                    draggedView.post(Runnable { draggedView.setVisibility(View.VISIBLE) })
+                    draggedView.post(Runnable { draggedView.visibility = View.VISIBLE })
                 }
                 true
+            }
+            DragEvent.ACTION_DRAG_LOCATION -> {
+                val translatedX = event.x - tableView.columnHeaderRecyclerView.scrolledX
+                val threshold = 50
+
+                if (translatedX < threshold) {
+                    tableView.columnHeaderRecyclerView.scrollBy(30, 0)
+                    tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(0)?.scrollBy(30, 0)
+                }
+                false
             }
             else -> true
         }

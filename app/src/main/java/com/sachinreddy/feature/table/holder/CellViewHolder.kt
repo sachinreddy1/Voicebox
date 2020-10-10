@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.view.View
 import android.widget.ImageButton
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.evrencoskun.tableview.ITableView
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.table.Cell
@@ -14,6 +15,7 @@ import com.sachinreddy.feature.viewModel.AppViewModel
 
 class CellViewHolder(
     layout: View,
+    private val tableView: ITableView,
     private val appViewModel: AppViewModel,
     private val editCellAdapter: EditCellAdapter
 ) : AbstractViewHolder(layout) {
@@ -72,6 +74,6 @@ class CellViewHolder(
             true
         }
 
-        layout_cell.setOnDragListener(CellDragListener())
+        layout_cell.setOnDragListener(CellDragListener(tableView))
     }
 }
