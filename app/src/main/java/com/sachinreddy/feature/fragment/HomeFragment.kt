@@ -1,7 +1,10 @@
 package com.sachinreddy.feature.fragment
 
 import android.content.Context
-import android.media.*
+import android.media.AudioFormat
+import android.media.AudioManager
+import android.media.AudioRecord
+import android.media.MediaRecorder
 import android.media.audiofx.AcousticEchoCanceler
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,10 +21,10 @@ import androidx.navigation.fragment.findNavController
 import com.emrekose.recordbutton.OnRecordListener
 import com.evrencoskun.tableview.TableView
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.table.adapter.EditCellAdapter
-import com.sachinreddy.feature.table.listener.EditCellListener
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.injection.appComponent
+import com.sachinreddy.feature.table.adapter.EditCellAdapter
+import com.sachinreddy.feature.table.listener.EditCellListener
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -155,7 +158,7 @@ class HomeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home ->
-                validNavController?.navigate(R.id.action_HomeFragment_to_ProfileFragment)
+                validNavController?.navigate(R.id.action_HomeFragment_to_FriendsFragment)
         }
         return true
     }
