@@ -1,12 +1,15 @@
 package com.sachinreddy.feature.table.listener
 
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.PorterDuff
+import android.graphics.Rect
 import android.util.Log
 import android.view.DragEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.evrencoskun.tableview.ITableView
+import kotlin.math.roundToInt
 
 class CellDragListener(private val tableView: ITableView) : View.OnDragListener {
     private var hit = false
@@ -58,22 +61,47 @@ class CellDragListener(private val tableView: ITableView) : View.OnDragListener 
                 true
             }
             DragEvent.ACTION_DRAG_LOCATION -> {
-                var coordinates = IntArray(2)
-                v.getLocationOnScreen(coordinates);
+                val coordinates = IntArray(2)
+                tableView.cellRecyclerView.getLocationOnScreen(coordinates)
 
-                val translatedX = coordinates.first() + event.x
-                val threshold = 100
+                val touchPosition = getTouchPositionFromDragEvent(v, event)
+                val xPosition = touchPosition.x
 
-                if (translatedX > 1000) {
+                val threshold = 150
+                val minWidth = coordinates.first()
+                val maxWidth = coordinates.first() + tableView.cellRecyclerView.width
+
+                if (xPosition > maxWidth - threshold) {
                     tableView.columnHeaderRecyclerView.scrollBy(30, 0)
                     tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(0)?.scrollBy(30, 0)
-                } else if (translatedX < 300) {
+                } else if (xPosition < minWidth + threshold) {
                     tableView.columnHeaderRecyclerView.scrollBy(-30, 0)
                     tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(0)?.scrollBy(-30, 0)
                 }
                 false
             }
             else -> true
+        }
+    }
+
+    fun getTouchPositionFromDragEvent(item: View, event: DragEvent): Point {
+        val rItem = Rect()
+        (item.parent as View).getGlobalVisibleRect(rItem)
+
+        val entireWidth = (item.parent.parent as View).width
+        val hiddenWidth = item.width - (rItem.right - rItem.left)
+
+        // If left most item
+        return if (rItem.left < entireWidth/2) {
+            Point(
+                rItem.left + (event.x.roundToInt() - hiddenWidth),
+                rItem.top + event.y.roundToInt()
+            )
+        } else {
+            Point(
+                rItem.left + event.x.roundToInt(),
+                rItem.top + event.y.roundToInt()
+            )
         }
     }
 
