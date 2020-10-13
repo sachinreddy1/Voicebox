@@ -58,12 +58,18 @@ class CellDragListener(private val tableView: ITableView) : View.OnDragListener 
                 true
             }
             DragEvent.ACTION_DRAG_LOCATION -> {
-                val translatedX = event.x - tableView.columnHeaderRecyclerView.scrolledX
-                val threshold = 50
+                var coordinates = IntArray(2)
+                v.getLocationOnScreen(coordinates);
 
-                if (translatedX < threshold) {
+                val translatedX = coordinates.first() + event.x
+                val threshold = 100
+
+                if (translatedX > 1000) {
                     tableView.columnHeaderRecyclerView.scrollBy(30, 0)
                     tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(0)?.scrollBy(30, 0)
+                } else if (translatedX < 300) {
+                    tableView.columnHeaderRecyclerView.scrollBy(-30, 0)
+                    tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(0)?.scrollBy(-30, 0)
                 }
                 false
             }
