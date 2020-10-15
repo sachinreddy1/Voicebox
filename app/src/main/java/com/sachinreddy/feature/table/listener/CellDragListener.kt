@@ -73,10 +73,14 @@ class CellDragListener(private val tableView: ITableView) : View.OnDragListener 
 
                 if (xPosition > maxWidth - threshold) {
                     tableView.columnHeaderRecyclerView.scrollBy(30, 0)
-                    tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(0)?.scrollBy(30, 0)
+                    for (i in tableView.cellLayoutManager.visibleCellRowRecyclerViews!!) {
+                        i.scrollBy(30, 0)
+                    }
                 } else if (xPosition < minWidth + threshold) {
                     tableView.columnHeaderRecyclerView.scrollBy(-30, 0)
-                    tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(0)?.scrollBy(-30, 0)
+                    for (i in tableView.cellLayoutManager.visibleCellRowRecyclerViews!!) {
+                        i.scrollBy(-30, 0)
+                    }
                 }
                 false
             }

@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.evrencoskun.tableview.ITableView;
@@ -283,4 +284,20 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         // Change data without notifying. Because we already did for visible recyclerViews.
         setItems((List<C>) cellItems, false);
     }
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END, 0) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+//            int fromPosition = viewHolder.getAdapterPosition();
+//            int toPosition = target.getAdapterPosition();
+//            Collections.swap(moviesList, fromPosition, toPosition);
+//            recyclerView.getAdapter().notifyItemMoved(fromPosition, toPosition);
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+        }
+    };
 }
