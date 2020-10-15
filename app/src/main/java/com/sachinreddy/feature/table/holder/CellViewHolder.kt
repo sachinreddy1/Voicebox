@@ -48,6 +48,7 @@ class CellViewHolder(
         edit_cell.apply {
             tag = IMAGEVIEW_TAG
             setOnLongClickListener {
+                editCellAdapter.startScrollThread()
                 val data = ClipData.newPlainText("", "")
                 val shadowBuilder = View.DragShadowBuilder(it)
                 it.startDrag(data, shadowBuilder, it, 0)
@@ -74,6 +75,6 @@ class CellViewHolder(
             true
         }
 
-        layout_cell.setOnDragListener(CellDragListener(tableView))
+        layout_cell.setOnDragListener(CellDragListener(tableView, editCellAdapter))
     }
 }

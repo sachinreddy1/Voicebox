@@ -23,6 +23,10 @@ class EditCellAdapter(
     val context: Context,
     private val appViewModel: AppViewModel
 ) : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
+    var xPosition: Int = 0
+    var isDragging: Boolean = false
+    var scrollThread: Thread? = null
+
     override fun onCreateCellViewHolder(parent: ViewGroup, viewType: Int): AbstractViewHolder =
         CellViewHolder(
             LayoutInflater.from(parent.context)
@@ -113,5 +117,42 @@ class EditCellAdapter(
                 )
             )
         }
+    }
+
+    fun startScrollThread() {
+        val coordinates = IntArray(2)
+        tableView.cellRecyclerView.getLocationOnScreen(coordinates)
+
+        val threshold = 150
+        val minWidth = coordinates.first()
+        val maxWidth = minWidth + tableView.cellRecyclerView.width
+
+        scrollThread = object : Thread() {
+            override fun run() {
+                while (isDragging) {
+                    if (xPosition > maxWidth - threshold) {
+                        tableView.columnHeaderRecyclerView.scrollBy(10, 0)
+                        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.forEach {
+                            it.scrollBy(10, 0)
+                        }
+                    } else if (xPosition < minWidth + threshold) {
+                        tableView.columnHeaderRecyclerView.scrollBy(-10, 0)
+                        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.forEach {
+                            it.scrollBy(-10, 0)
+                        }
+                    }
+                    sleep(10)
+                }
+            }
+        }
+
+        isDragging = true
+        scrollThread?.start()
+    }
+
+    fun stopScrollThread() {
+        isDragging = false
+        scrollThread?.join()
+        scrollThread = null
     }
 }

@@ -9,9 +9,10 @@ import android.view.DragEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.evrencoskun.tableview.ITableView
+import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import kotlin.math.roundToInt
 
-class CellDragListener(private val tableView: ITableView) : View.OnDragListener {
+class CellDragListener(private val tableView: ITableView, private val editCellAdapter: EditCellAdapter) : View.OnDragListener {
     private var hit = false
     override fun onDrag(v: View, event: DragEvent): Boolean {
         val containerView: ConstraintLayout = v as ConstraintLayout
@@ -58,30 +59,12 @@ class CellDragListener(private val tableView: ITableView) : View.OnDragListener 
                 if (!hit) {
                     draggedView.post(Runnable { draggedView.visibility = View.VISIBLE })
                 }
+                editCellAdapter.stopScrollThread()
                 true
             }
             DragEvent.ACTION_DRAG_LOCATION -> {
-                val coordinates = IntArray(2)
-                tableView.cellRecyclerView.getLocationOnScreen(coordinates)
-
                 val touchPosition = getTouchPositionFromDragEvent(v, event)
-                val xPosition = touchPosition.x
-
-                val threshold = 150
-                val minWidth = coordinates.first()
-                val maxWidth = coordinates.first() + tableView.cellRecyclerView.width
-
-                if (xPosition > maxWidth - threshold) {
-                    tableView.columnHeaderRecyclerView.scrollBy(30, 0)
-                    for (i in tableView.cellLayoutManager.visibleCellRowRecyclerViews!!) {
-                        i.scrollBy(30, 0)
-                    }
-                } else if (xPosition < minWidth + threshold) {
-                    tableView.columnHeaderRecyclerView.scrollBy(-30, 0)
-                    for (i in tableView.cellLayoutManager.visibleCellRowRecyclerViews!!) {
-                        i.scrollBy(-30, 0)
-                    }
-                }
+                editCellAdapter.xPosition = touchPosition.x
                 false
             }
             else -> true
