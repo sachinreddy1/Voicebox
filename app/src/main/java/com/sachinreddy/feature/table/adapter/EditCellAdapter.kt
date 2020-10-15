@@ -25,7 +25,7 @@ class EditCellAdapter(
 ) : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
     var xPosition: Int = 0
     var isDragging: Boolean = false
-    var scrollThread: Thread? = null
+    private var scrollThread: Thread? = null
 
     override fun onCreateCellViewHolder(parent: ViewGroup, viewType: Int): AbstractViewHolder =
         CellViewHolder(
