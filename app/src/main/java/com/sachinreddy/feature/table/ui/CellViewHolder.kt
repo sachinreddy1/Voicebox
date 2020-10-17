@@ -1,4 +1,4 @@
-package com.sachinreddy.feature.table.holder
+package com.sachinreddy.feature.table.ui
 
 import android.content.ClipData
 import android.content.Context

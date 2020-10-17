@@ -40,7 +40,6 @@ class CellDragListener(
             }
             DragEvent.ACTION_DROP -> {
                 Log.d(TAG, "onDrag: ACTION_DROP")
-                containerView.background.clearColorFilter()
                 containerView.invalidate()
                 draggedView.post(Runnable { draggedView.visibility = View.GONE })
                 true

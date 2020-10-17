@@ -1,12 +1,9 @@
-package com.sachinreddy.feature.table.holder
+package com.sachinreddy.feature.table.ui
 
 import android.view.View
-import android.widget.ImageButton
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.TimelineHeader
 
 class ColumnHeaderViewHolder(

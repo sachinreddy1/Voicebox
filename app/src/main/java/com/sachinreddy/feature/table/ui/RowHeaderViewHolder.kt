@@ -1,4 +1,4 @@
-package com.sachinreddy.feature.table.holder
+package com.sachinreddy.feature.table.ui
 
 import android.view.View
 import android.widget.ImageButton

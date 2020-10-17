@@ -14,9 +14,9 @@ import com.sachinreddy.feature.data.Track
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.RowHeader
 import com.sachinreddy.feature.data.table.TimelineHeader
-import com.sachinreddy.feature.table.holder.CellViewHolder
-import com.sachinreddy.feature.table.holder.ColumnHeaderViewHolder
-import com.sachinreddy.feature.table.holder.RowHeaderViewHolder
+import com.sachinreddy.feature.table.ui.CellViewHolder
+import com.sachinreddy.feature.table.ui.ColumnHeaderViewHolder
+import com.sachinreddy.feature.table.ui.RowHeaderViewHolder
 import com.sachinreddy.feature.viewModel.AppViewModel
 
 class EditCellAdapter(
