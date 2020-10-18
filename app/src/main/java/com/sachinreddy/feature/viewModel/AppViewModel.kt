@@ -17,6 +17,7 @@ class AppViewModel @Inject constructor() : ViewModel() {
     var isRecording = false
     var audioManager: AudioManager? = null
     var recorder: AudioRecord? = null
+    var draggedCell: Cell? = null
 
     init {
         val track = Track(RowHeader(""), numberBars, 0)

@@ -9,12 +9,16 @@ import android.view.DragEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.sachinreddy.feature.R
+import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
+import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlin.math.roundToInt
 
 class CellDragListener(
     private val context: Context,
-    private val editCellAdapter: EditCellAdapter
+    private val editCellAdapter: EditCellAdapter,
+    private val appViewModel: AppViewModel,
+    private var cell: Cell
 ) : View.OnDragListener {
 
     override fun onDrag(v: View, event: DragEvent): Boolean {
@@ -40,6 +44,17 @@ class CellDragListener(
             }
             DragEvent.ACTION_DROP -> {
                 Log.d(TAG, "onDrag: ACTION_DROP")
+
+                println("${cell.rowPosition}, ${cell.columnPosition}")
+                appViewModel.apply {
+                    draggedCell?.let { cell.data = it.data.toMutableList() }
+                    draggedCell?.data?.clear()
+                    draggedCell = null
+
+                }
+                editCellAdapter.notifyDataSetChanged()
+
+                containerView.background.clearColorFilter()
                 containerView.invalidate()
                 draggedView.post(Runnable { draggedView.visibility = View.GONE })
                 true

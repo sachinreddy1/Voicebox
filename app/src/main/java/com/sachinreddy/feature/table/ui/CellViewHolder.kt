@@ -51,6 +51,12 @@ class CellViewHolder(
             tag = IMAGEVIEW_TAG
             setOnLongClickListener {
                 editCellAdapter.startScrollThread()
+
+                if (appViewModel.draggedCell == null){
+                    println("${cell.rowPosition}, ${cell.columnPosition}")
+                    appViewModel.draggedCell = cell
+                }
+
                 val data = ClipData.newPlainText("", "")
                 val shadowBuilder = View.DragShadowBuilder(it)
                 it.startDragAndDrop(data, shadowBuilder, it, 0)
@@ -77,6 +83,6 @@ class CellViewHolder(
             true
         }
 
-        layout_cell.setOnDragListener(CellDragListener(context, editCellAdapter))
+        layout_cell.setOnDragListener(CellDragListener(context, editCellAdapter, appViewModel, cell))
     }
 }
