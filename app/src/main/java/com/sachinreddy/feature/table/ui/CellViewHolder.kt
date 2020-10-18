@@ -53,7 +53,7 @@ class CellViewHolder(
                 editCellAdapter.startScrollThread()
                 val data = ClipData.newPlainText("", "")
                 val shadowBuilder = View.DragShadowBuilder(it)
-                it.startDrag(data, shadowBuilder, it, 0)
+                it.startDragAndDrop(data, shadowBuilder, it, 0)
                 it.visibility = View.INVISIBLE
                 true
             }
