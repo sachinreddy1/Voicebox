@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Point
 import android.graphics.PorterDuff
 import android.graphics.Rect
-import android.util.Log
+import android.os.VibrationEffect
 import android.view.DragEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -25,26 +25,20 @@ class CellDragListener(
         val containerView: ConstraintLayout = v as ConstraintLayout
         val draggedView: ConstraintLayout = event.localState as ConstraintLayout
         return when (event.action) {
-            DragEvent.ACTION_DRAG_STARTED -> {
-                Log.d(TAG, "onDrag: ACTION_DRAG_STARTED")
-                true
-            }
+            DragEvent.ACTION_DRAG_STARTED -> true
             DragEvent.ACTION_DRAG_ENTERED -> {
-                Log.d(TAG, "onDrag: ACTION_DRAG_ENTERED")
+                editCellAdapter.vibrate(50, VibrationEffect.EFFECT_TICK)
                 val highlightColor = context.getColor(R.color.colorPrimary)
                 containerView.background.setColorFilter(highlightColor, PorterDuff.Mode.SRC_IN)
                 containerView.invalidate()
                 true
             }
             DragEvent.ACTION_DRAG_EXITED -> {
-                Log.d(TAG, "onDrag: ACTION_DRAG_EXITED")
                 containerView.background.clearColorFilter()
                 containerView.invalidate()
                 true
             }
             DragEvent.ACTION_DROP -> {
-                Log.d(TAG, "onDrag: ACTION_DROP")
-
                 println("${cell.rowPosition}, ${cell.columnPosition}")
                 appViewModel.apply {
                     draggedCell?.let { cell.data = it.data.toMutableList() }
@@ -60,7 +54,6 @@ class CellDragListener(
                 true
             }
             DragEvent.ACTION_DRAG_ENDED -> {
-                Log.d(TAG, "onDrag: ACTION_DRAG_ENDED")
                 v.visibility = View.VISIBLE
                 draggedView.post(Runnable { draggedView.visibility = View.VISIBLE })
                 editCellAdapter.stopScrollThread()
@@ -94,9 +87,5 @@ class CellDragListener(
                 rItem.top + event.y.roundToInt()
             )
         }
-    }
-
-    companion object {
-        private const val TAG = "TrashDragListener"
     }
 }

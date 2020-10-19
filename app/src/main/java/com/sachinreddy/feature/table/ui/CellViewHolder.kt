@@ -2,6 +2,7 @@ package com.sachinreddy.feature.table.ui
 
 import android.content.ClipData
 import android.content.Context
+import android.os.VibrationEffect
 import android.view.View
 import android.widget.ImageButton
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -67,7 +68,7 @@ class CellViewHolder(
 
         // Long press for selection
         itemView.setOnLongClickListener {
-            editCellAdapter.vibrate()
+            editCellAdapter.vibrate(90, VibrationEffect.EFFECT_HEAVY_CLICK)
 
             // Un-selecting all the cells
             for (i in cellItems) {

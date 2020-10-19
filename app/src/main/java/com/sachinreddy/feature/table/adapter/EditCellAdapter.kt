@@ -108,13 +108,13 @@ class EditCellAdapter(
         setAllItems(timelineHeaderList_.toList(), rowHeaderList_.toList(), cellList_.toList())
     }
 
-    fun vibrate() {
+    fun vibrate(duration: Long, effect: Int) {
         val v = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             v.vibrate(
                 VibrationEffect.createOneShot(
-                    100,
-                    VibrationEffect.DEFAULT_AMPLITUDE
+                    duration,
+                    effect
                 )
             )
         }
@@ -124,7 +124,7 @@ class EditCellAdapter(
         val coordinates = IntArray(2)
         tableView.cellRecyclerView.getLocationOnScreen(coordinates)
 
-        val threshold = 150
+        val threshold = 100
         val minWidth = coordinates.first()
         val maxWidth = minWidth + tableView.cellRecyclerView.width
 
