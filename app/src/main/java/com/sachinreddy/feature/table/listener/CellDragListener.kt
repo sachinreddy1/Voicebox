@@ -51,13 +51,19 @@ class CellDragListener(
                 containerView.background.clearColorFilter()
                 containerView.invalidate()
 
-                editCellAdapter.notifyDataSetChanged()
+                editCellAdapter.apply {
+                    if (!isScrolling) {
+                        notifyDataSetChanged()
+                    }
+                }
                 true
             }
             DragEvent.ACTION_DRAG_ENDED -> {
                 editCellAdapter.apply {
                     stopScrollThread()
-                    notifyDataSetChanged()
+                    if (!isScrolling) {
+                        notifyDataSetChanged()
+                    }
                 }
                 true
             }

@@ -27,6 +27,7 @@ class EditCellAdapter @Inject constructor(
 
     var xPosition: Int = 0
     var isDragging: Boolean = false
+    var isScrolling: Boolean = false
     private var scrollThread: Thread? = null
 
     override fun onCreateCellViewHolder(parent: ViewGroup, viewType: Int): AbstractViewHolder =
@@ -134,15 +135,19 @@ class EditCellAdapter @Inject constructor(
             override fun run() {
                 while (isDragging) {
                     if (xPosition > maxWidth - threshold) {
+                        isScrolling = true
                         tableView.columnHeaderRecyclerView.scrollBy(10, 0)
                         tableView.cellLayoutManager.visibleCellRowRecyclerViews?.forEach {
                             it.scrollBy(10, 0)
                         }
                     } else if (xPosition < minWidth + threshold) {
+                        isScrolling = true
                         tableView.columnHeaderRecyclerView.scrollBy(-10, 0)
                         tableView.cellLayoutManager.visibleCellRowRecyclerViews?.forEach {
                             it.scrollBy(-10, 0)
                         }
+                    } else {
+                        isScrolling = false
                     }
                     sleep(10)
                 }
