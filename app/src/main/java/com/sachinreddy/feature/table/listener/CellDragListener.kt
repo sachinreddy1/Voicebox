@@ -23,7 +23,6 @@ class CellDragListener(
 
     override fun onDrag(v: View, event: DragEvent): Boolean {
         val containerView: ConstraintLayout = v as ConstraintLayout
-        val draggedView: ConstraintLayout = event.localState as ConstraintLayout
         return when (event.action) {
             DragEvent.ACTION_DRAG_STARTED -> true
             DragEvent.ACTION_DRAG_ENTERED -> {
