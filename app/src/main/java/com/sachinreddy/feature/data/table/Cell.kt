@@ -4,15 +4,17 @@ import android.media.AudioFormat
 import android.media.AudioManager
 import android.media.AudioTrack
 import android.widget.ImageButton
-import androidx.lifecycle.MutableLiveData
 import com.sachinreddy.feature.R
 
 class Cell(
     var isSelected: Boolean = false,
     var isPlaying: Boolean = false,
+
     var columnPosition: Int,
     var rowPosition: Int? = null,
+
     var data: MutableList<ShortArray> = mutableListOf(),
+
     var track: AudioTrack? = null,
     var playerThread: Thread? = null,
     var cellButton: ImageButton? = null
