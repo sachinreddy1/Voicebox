@@ -58,6 +58,7 @@ class CellViewHolder(
                     appViewModel.draggedCell = cell
                 }
 
+                cell.stopTrack()
                 val data = ClipData.newPlainText("", "")
                 val shadowBuilder = View.DragShadowBuilder(it)
                 it.startDragAndDrop(data, shadowBuilder, it, 0)
