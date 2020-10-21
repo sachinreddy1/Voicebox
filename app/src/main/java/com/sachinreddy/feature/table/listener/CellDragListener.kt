@@ -39,8 +39,12 @@ class CellDragListener(
             }
             DragEvent.ACTION_DROP -> {
                 appViewModel.apply {
-                    draggedCell?.let { cell.data = it.data.toMutableList() }
-                    draggedCell?.data?.clear()
+                    draggedCell?.let {
+                        if (cell != it) {
+                            cell.data = it.data.toMutableList()
+                            it.data.clear()
+                        }
+                    }
                     draggedCell = null
                 }
 
@@ -51,7 +55,10 @@ class CellDragListener(
                 true
             }
             DragEvent.ACTION_DRAG_ENDED -> {
-                editCellAdapter.stopScrollThread()
+                editCellAdapter.apply {
+                    stopScrollThread()
+                    notifyDataSetChanged()
+                }
                 true
             }
             DragEvent.ACTION_DRAG_LOCATION -> {
