@@ -39,23 +39,19 @@ class CellDragListener(
                 true
             }
             DragEvent.ACTION_DROP -> {
-                println("${cell.rowPosition}, ${cell.columnPosition}")
                 appViewModel.apply {
                     draggedCell?.let { cell.data = it.data.toMutableList() }
                     draggedCell?.data?.clear()
                     draggedCell = null
-
                 }
-                editCellAdapter.notifyDataSetChanged()
 
                 containerView.background.clearColorFilter()
                 containerView.invalidate()
-                draggedView.post(Runnable { draggedView.visibility = View.GONE })
+
+                editCellAdapter.notifyDataSetChanged()
                 true
             }
             DragEvent.ACTION_DRAG_ENDED -> {
-                v.visibility = View.VISIBLE
-                draggedView.post(Runnable { draggedView.visibility = View.VISIBLE })
                 editCellAdapter.stopScrollThread()
                 true
             }
