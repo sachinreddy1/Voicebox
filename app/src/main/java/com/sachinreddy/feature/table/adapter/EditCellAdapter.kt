@@ -18,11 +18,13 @@ import com.sachinreddy.feature.table.ui.CellViewHolder
 import com.sachinreddy.feature.table.ui.ColumnHeaderViewHolder
 import com.sachinreddy.feature.table.ui.RowHeaderViewHolder
 import com.sachinreddy.feature.viewModel.AppViewModel
+import javax.inject.Inject
 
-class EditCellAdapter(
+class EditCellAdapter @Inject constructor(
     val context: Context,
     private val appViewModel: AppViewModel
 ) : AbstractTableAdapter<TimelineHeader?, RowHeader?, Cell?>() {
+
     var xPosition: Int = 0
     var isDragging: Boolean = false
     private var scrollThread: Thread? = null
