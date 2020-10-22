@@ -40,6 +40,7 @@ class HomeFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val appViewModel by activityViewModels<AppViewModel> { viewModelFactory }
     lateinit var adapter: EditCellAdapter
+    lateinit var tableView: TableView
 
     val recorderThread = object : Thread() {
         override fun run() {
@@ -57,7 +58,7 @@ class HomeFragment : Fragment() {
         setupActionBar()
 
         // Setting up tableView and adapter
-        val tableView = TableView(requireContext())
+        tableView = TableView(requireContext())
         adapter = EditCellAdapter(
             requireContext(),
             appViewModel
