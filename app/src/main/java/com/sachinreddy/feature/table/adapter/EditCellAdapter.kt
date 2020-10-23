@@ -27,7 +27,6 @@ class EditCellAdapter @Inject constructor(
 
     var xPosition: Int = 0
     var isDragging: Boolean = false
-    var isFrozen: Boolean = false
     var isScrolling: Boolean = false
     private var scrollThread: Thread? = null
 
@@ -161,30 +160,6 @@ class EditCellAdapter @Inject constructor(
 
     fun stopScrollThread() {
         isDragging = false
-        scrollThread?.join()
-        scrollThread = null
-    }
-
-    // -------------------------------------- //
-
-    fun startFreezeThread() {
-        scrollThread = object : Thread() {
-            override fun run() {
-                while (isFrozen) {
-                    tableView.columnHeaderRecyclerView.stopScroll()
-                    tableView.cellLayoutManager.visibleCellRowRecyclerViews?.forEach {
-                        it?.stopScroll()
-                    }
-                }
-            }
-        }
-
-        isFrozen = true
-        scrollThread?.start()
-    }
-
-    fun stopFreezeThread() {
-        isFrozen = false
         scrollThread?.join()
         scrollThread = null
     }

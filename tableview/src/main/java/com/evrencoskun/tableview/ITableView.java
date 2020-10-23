@@ -154,6 +154,10 @@ public interface ITableView {
 
     void setRowHeaderWidth(int rowHeaderWidth);
 
+    boolean getIsFrozen();
+
+    void setIsFrozen(boolean value);
+
     @Nullable
     AbstractTableAdapter getAdapter();
 

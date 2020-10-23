@@ -39,6 +39,7 @@ class HomeFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val appViewModel by activityViewModels<AppViewModel> { viewModelFactory }
     lateinit var adapter: EditCellAdapter
+    lateinit var tableView: TableView
 
     val recorderThread = object : Thread() {
         override fun run() {
@@ -56,12 +57,12 @@ class HomeFragment : Fragment() {
         setupActionBar()
 
         // Setting up tableView and adapter
-        appViewModel.tableView = TableView(requireContext())
+        tableView = TableView(requireContext())
         adapter = EditCellAdapter(
             requireContext(),
             appViewModel
         )
-        (appViewModel.tableView)?.adapter = adapter
+        tableView.adapter = adapter
         adapter.setTracks(appViewModel.mTrackList)
         content_container.adapter = adapter
         content_container.tableViewListener =
@@ -161,15 +162,7 @@ class HomeFragment : Fragment() {
             android.R.id.home ->
                 validNavController?.navigate(R.id.action_HomeFragment_to_ProfileFragment)
             R.id.editor_actions -> {
-                adapter.apply {
-                    if (isFrozen) {
-                        stopFreezeThread()
-                    }
-                    else {
-//                        freezeMethod()
-                        startFreezeThread()
-                    }
-                }
+                content_container.isFrozen = !content_container.isFrozen
             }
         }
         return true

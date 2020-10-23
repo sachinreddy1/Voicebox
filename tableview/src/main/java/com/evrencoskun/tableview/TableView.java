@@ -115,6 +115,7 @@ public class TableView extends FrameLayout implements ITableView {
     private boolean mAllowClickInsideCell = false;
     private boolean mAllowClickInsideRowHeader = false;
     private boolean mAllowClickInsideColumnHeader = false;
+    private boolean mIsFrozen = false;
     private boolean mIsSortable;
 
     public TableView(@NonNull Context context) {
@@ -599,6 +600,10 @@ public class TableView extends FrameLayout implements ITableView {
 
         mSelectionHandler.setSelectedRowPosition(rowViewHolder, row);
     }
+
+    public boolean getIsFrozen() { return mIsFrozen; }
+
+    public void setIsFrozen(boolean value) { mIsFrozen = value; }
 
     /**
      * Returns the index of the selected column, -1 if no column is selected.

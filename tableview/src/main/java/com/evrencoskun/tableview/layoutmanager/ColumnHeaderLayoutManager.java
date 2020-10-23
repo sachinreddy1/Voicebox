@@ -147,4 +147,8 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
                 .findViewHolderForAdapterPosition(xPosition);
     }
 
+    @Override
+    public boolean canScrollHorizontally() {
+        return !mTableView.getIsFrozen();
+    }
 }

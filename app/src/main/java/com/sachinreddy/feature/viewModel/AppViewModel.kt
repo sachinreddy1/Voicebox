@@ -3,7 +3,6 @@ package com.sachinreddy.feature.viewModel
 import android.media.AudioManager
 import android.media.AudioRecord
 import androidx.lifecycle.ViewModel
-import com.evrencoskun.tableview.TableView
 import com.sachinreddy.feature.data.Track
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.RowHeader
@@ -24,8 +23,6 @@ class AppViewModel @Inject constructor() : ViewModel() {
 
     var audioManager: AudioManager? = null
     var recorder: AudioRecord? = null
-
-    var tableView: TableView? = null
 
     init {
         val track = Track(RowHeader(""), numberBars, 0)

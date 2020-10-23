@@ -239,4 +239,9 @@ public class ColumnLayoutManager extends LinearLayoutManager {
         }
         return views;
     }
+
+    @Override
+    public boolean canScrollHorizontally() {
+        return !mTableView.getIsFrozen();
+    }
 }
