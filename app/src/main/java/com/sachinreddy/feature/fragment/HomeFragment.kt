@@ -8,7 +8,6 @@ import android.media.MediaRecorder
 import android.media.audiofx.AcousticEchoCanceler
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -162,7 +161,15 @@ class HomeFragment : Fragment() {
             android.R.id.home ->
                 validNavController?.navigate(R.id.action_HomeFragment_to_ProfileFragment)
             R.id.editor_actions -> {
-                Toast.makeText(requireContext(), "Worked", Toast.LENGTH_SHORT).show()
+                adapter.apply {
+                    if (isFrozen) {
+                        stopFreezeThread()
+                    }
+                    else {
+                        freezeMethod()
+                        startFreezeThread()
+                    }
+                }
             }
         }
         return true
