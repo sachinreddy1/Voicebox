@@ -165,17 +165,15 @@ class EditCellAdapter @Inject constructor(
         scrollThread = null
     }
 
+    // -------------------------------------- //
+
     fun startFreezeThread() {
         scrollThread = object : Thread() {
             override fun run() {
                 while (isFrozen) {
-//                    tableView.columnHeaderRecyclerView.scrollBy(0, 0)
                     tableView.columnHeaderRecyclerView.stopScroll()
-//                    tableView.columnHeaderRecyclerView.clearScrolledX()
                     tableView.cellLayoutManager.visibleCellRowRecyclerViews?.forEach {
-//                        it?.scrollBy(0, 0)
                         it?.stopScroll()
-//                        it?.clearScrolledX()
                     }
                 }
             }
@@ -183,13 +181,6 @@ class EditCellAdapter @Inject constructor(
 
         isFrozen = true
         scrollThread?.start()
-    }
-
-    fun freezeMethod() {
-        tableView.columnHeaderRecyclerView.stopNestedScroll()
-        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.forEach {
-            it?.stopNestedScroll()
-        }
     }
 
     fun stopFreezeThread() {

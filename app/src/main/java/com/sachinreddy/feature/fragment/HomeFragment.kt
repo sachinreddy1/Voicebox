@@ -166,7 +166,7 @@ class HomeFragment : Fragment() {
                         stopFreezeThread()
                     }
                     else {
-                        freezeMethod()
+//                        freezeMethod()
                         startFreezeThread()
                     }
                 }
