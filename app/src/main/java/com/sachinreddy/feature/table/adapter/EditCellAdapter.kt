@@ -35,7 +35,6 @@ class EditCellAdapter @Inject constructor(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.table_view_cell_layout, parent, false),
             context,
-            tableView,
             appViewModel,
             this
         )

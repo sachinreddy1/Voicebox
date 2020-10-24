@@ -6,19 +6,17 @@ import android.os.VibrationEffect
 import android.view.View
 import android.widget.ImageButton
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.evrencoskun.tableview.ITableView
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
-import com.sachinreddy.feature.table.listener.CellDragListener
+import com.sachinreddy.feature.table.listener.TranslationListener
 import com.sachinreddy.feature.viewModel.AppViewModel
 
 
 class CellViewHolder(
     layout: View,
     private val context: Context,
-    private val tableView: ITableView,
     private val appViewModel: AppViewModel,
     private val editCellAdapter: EditCellAdapter
 ) : AbstractViewHolder(layout) {
@@ -47,14 +45,11 @@ class CellViewHolder(
         }
 
         // Long press for drag and drop
-        val IMAGEVIEW_TAG = "icon bitmap"
         edit_cell.apply {
-            tag = IMAGEVIEW_TAG
             setOnLongClickListener {
                 editCellAdapter.startScrollThread()
 
                 if (appViewModel.draggedCell == null){
-                    println("${cell.rowPosition}, ${cell.columnPosition}")
                     appViewModel.draggedCell = cell
                 }
 
@@ -68,7 +63,7 @@ class CellViewHolder(
         }
 
         // Long press for selection
-        itemView.setOnLongClickListener {
+        layout_cell.setOnLongClickListener {
             editCellAdapter.vibrate(90, VibrationEffect.EFFECT_HEAVY_CLICK)
 
             // Un-selecting all the cells
@@ -85,6 +80,6 @@ class CellViewHolder(
             true
         }
 
-        layout_cell.setOnDragListener(CellDragListener(context, editCellAdapter, appViewModel, cell))
+        layout_cell.setOnDragListener(TranslationListener(context, editCellAdapter, appViewModel, cell))
     }
 }

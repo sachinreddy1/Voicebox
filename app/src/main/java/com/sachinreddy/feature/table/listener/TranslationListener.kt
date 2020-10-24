@@ -14,7 +14,7 @@ import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlin.math.roundToInt
 
-class CellDragListener(
+class TranslationListener(
     private val context: Context,
     private val editCellAdapter: EditCellAdapter,
     private val appViewModel: AppViewModel,
