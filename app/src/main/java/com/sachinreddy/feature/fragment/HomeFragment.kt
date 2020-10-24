@@ -39,9 +39,9 @@ class HomeFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val appViewModel by activityViewModels<AppViewModel> { viewModelFactory }
     lateinit var adapter: EditCellAdapter
-    lateinit var tableView: TableView
+    private lateinit var tableView: TableView
 
-    val recorderThread = object : Thread() {
+    private val recorderThread = object : Thread() {
         override fun run() {
             recordThread()
         }
@@ -162,12 +162,14 @@ class HomeFragment : Fragment() {
             android.R.id.home ->
                 validNavController?.navigate(R.id.action_HomeFragment_to_ProfileFragment)
             R.id.editor_actions -> {
-                if (content_container.isFrozen) {
+                if (appViewModel.isSelecting) {
                     item.setIcon(R.drawable.ic_selection)
                     content_container.isFrozen = false
+                    appViewModel.isSelecting = false
                 } else {
                     item.setIcon(R.drawable.ic_translation)
                     content_container.isFrozen = true
+                    appViewModel.isSelecting = true
                 }
             }
         }

@@ -24,6 +24,8 @@ class AppViewModel @Inject constructor() : ViewModel() {
     var audioManager: AudioManager? = null
     var recorder: AudioRecord? = null
 
+    var isSelecting: Boolean = false
+
     init {
         val track = Track(RowHeader(""), numberBars, 0)
         // Setting the first cell to selected
