@@ -6,7 +6,7 @@
         android:id="@+id/editor_actions"
         android:orderInCategory="100"
         android:title="@string/editor_actions"
-        android:icon="@drawable/ic_select"
+        android:icon="@drawable/ic_selection"
         app:showAsAction="ifRoom|collapseActionView"
         />
 </menu>

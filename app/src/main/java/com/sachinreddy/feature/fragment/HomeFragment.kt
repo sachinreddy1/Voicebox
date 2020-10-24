@@ -162,7 +162,13 @@ class HomeFragment : Fragment() {
             android.R.id.home ->
                 validNavController?.navigate(R.id.action_HomeFragment_to_ProfileFragment)
             R.id.editor_actions -> {
-                content_container.isFrozen = !content_container.isFrozen
+                if (content_container.isFrozen) {
+                    item.setIcon(R.drawable.ic_selection)
+                    content_container.isFrozen = false
+                } else {
+                    item.setIcon(R.drawable.ic_translation)
+                    content_container.isFrozen = true
+                }
             }
         }
         return true
