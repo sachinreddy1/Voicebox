@@ -137,13 +137,13 @@ class EditCellAdapter @Inject constructor(
                         isScrolling = true
                         tableView.columnHeaderRecyclerView.scrollBy(10, 0)
                         tableView.cellLayoutManager.visibleCellRowRecyclerViews?.forEach {
-                            it.scrollBy(10, 0)
+                            it?.scrollBy(10, 0)
                         }
                     } else if (xPosition < minWidth + threshold) {
                         isScrolling = true
                         tableView.columnHeaderRecyclerView.scrollBy(-10, 0)
                         tableView.cellLayoutManager.visibleCellRowRecyclerViews?.forEach {
-                            it.scrollBy(-10, 0)
+                            it?.scrollBy(-10, 0)
                         }
                     } else {
                         isScrolling = false

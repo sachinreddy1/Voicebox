@@ -66,6 +66,14 @@ class CellViewHolder(
         // Touch for selection
         layout_cell.setOnTouchListener { v, event ->
             if (appViewModel.isSelecting) {
+                appViewModel.selectedCell = cell
+
+                for (i in cellItems) {
+                    for (j in i) {
+                        j?.isSelected = false
+                    }
+                }
+
                 editCellAdapter.startScrollThread()
                 val data = ClipData.newPlainText("", "")
                 val shadowBuilder = UtilDragShadowBuilder(v)
