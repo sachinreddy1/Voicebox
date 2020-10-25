@@ -2,7 +2,6 @@ package com.sachinreddy.feature.table.ui
 
 import android.content.ClipData
 import android.content.Context
-import android.os.VibrationEffect
 import android.view.View
 import android.widget.ImageButton
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -10,7 +9,9 @@ import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
+import com.sachinreddy.feature.table.listener.SelectionListener
 import com.sachinreddy.feature.table.listener.TranslationListener
+import com.sachinreddy.feature.table.ui.shadow.UtilDragShadowBuilder
 import com.sachinreddy.feature.viewModel.AppViewModel
 
 
@@ -61,23 +62,22 @@ class CellViewHolder(
         }
 
         // Long press for selection
-        layout_cell.setOnLongClickListener {
-            editCellAdapter.vibrate(90, VibrationEffect.EFFECT_HEAVY_CLICK)
-
-            // Un-selecting all the cells
-            for (i in cellItems) {
-                for (j in i) {
-                    j?.isSelected = false
-                }
+        layout_cell.setOnTouchListener { v, event ->
+            if (appViewModel.isSelecting) {
+                editCellAdapter.startScrollThread()
+                val data = ClipData.newPlainText("", "")
+                val shadowBuilder = UtilDragShadowBuilder(v)
+                v.startDragAndDrop(data, shadowBuilder, v, 0)
+                editCellAdapter.notifyDataSetChanged()
             }
-
-            // Select the new cell
-            cell.isSelected = true
-            appViewModel.selectedCell = cell
-            editCellAdapter.notifyDataSetChanged()
             true
         }
 
-        layout_cell.setOnDragListener(TranslationListener(context, editCellAdapter, appViewModel, cell))
+        layout_cell.apply {
+            if (appViewModel.isSelecting)
+                setOnDragListener(SelectionListener(context, editCellAdapter, appViewModel, cell))
+            else
+                setOnDragListener(TranslationListener(context, editCellAdapter, appViewModel, cell))
+        }
     }
 }

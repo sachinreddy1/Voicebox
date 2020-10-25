@@ -171,6 +171,7 @@ class HomeFragment : Fragment() {
                     content_container.isFrozen = true
                     appViewModel.isSelecting = true
                 }
+                adapter.notifyDataSetChanged()
             }
         }
         return true

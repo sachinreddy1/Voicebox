@@ -22,7 +22,7 @@ class SelectionListener(
         return when (event.action) {
             DragEvent.ACTION_DRAG_STARTED -> true
             DragEvent.ACTION_DRAG_ENTERED -> {
-                val highlightColor = context.getColor(R.color.colorPrimary)
+                val highlightColor = context.getColor(R.color.recordButtonColor)
                 containerView.background.setColorFilter(highlightColor, PorterDuff.Mode.SRC_IN)
                 containerView.invalidate()
                 true
@@ -38,6 +38,12 @@ class SelectionListener(
                 true
             }
             DragEvent.ACTION_DRAG_ENDED -> {
+                editCellAdapter.apply {
+                    stopScrollThread()
+                    if (!isScrolling) {
+                        notifyDataSetChanged()
+                    }
+                }
                 true
             }
             DragEvent.ACTION_DRAG_LOCATION -> {
