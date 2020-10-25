@@ -63,7 +63,7 @@ class CellViewHolder(
             true
         }
 
-        // Long press for selection
+        // Touch for selection
         layout_cell.setOnTouchListener { v, event ->
             if (appViewModel.isSelecting) {
                 editCellAdapter.startScrollThread()
