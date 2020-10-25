@@ -47,17 +47,19 @@ class CellViewHolder(
 
         // Long press for drag and drop
         edit_cell.setOnLongClickListener {
-            editCellAdapter.startScrollThread()
+            if (!appViewModel.isSelecting) {
+                editCellAdapter.startScrollThread()
 
-            if (appViewModel.draggedCell == null){
-                appViewModel.draggedCell = cell
+                if (appViewModel.draggedCell == null) {
+                    appViewModel.draggedCell = cell
+                }
+
+                cell.stopTrack()
+                val data = ClipData.newPlainText("", "")
+                val shadowBuilder = View.DragShadowBuilder(it)
+                it.startDragAndDrop(data, shadowBuilder, it, 0)
+                it.visibility = View.INVISIBLE
             }
-
-            cell.stopTrack()
-            val data = ClipData.newPlainText("", "")
-            val shadowBuilder = View.DragShadowBuilder(it)
-            it.startDragAndDrop(data, shadowBuilder, it, 0)
-            it.visibility = View.INVISIBLE
             true
         }
 
