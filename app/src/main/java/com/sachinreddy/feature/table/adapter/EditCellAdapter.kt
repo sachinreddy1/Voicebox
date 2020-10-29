@@ -162,4 +162,12 @@ class EditCellAdapter @Inject constructor(
         scrollThread?.join()
         scrollThread = null
     }
+
+    fun clearSelectedCells() {
+        for (i in mCellItems) {
+            for (j in i) {
+                j?.isSelected = false
+            }
+        }
+    }
 }

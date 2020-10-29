@@ -11,7 +11,7 @@ class Cell(
     var isPlaying: Boolean = false,
 
     var columnPosition: Int,
-    var rowPosition: Int? = null,
+    var rowPosition: Int,
 
     var data: MutableList<ShortArray> = mutableListOf(),
 

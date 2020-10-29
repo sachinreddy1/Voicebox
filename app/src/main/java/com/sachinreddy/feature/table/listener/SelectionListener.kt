@@ -23,8 +23,30 @@ class SelectionListener(
         return when (event.action) {
             DragEvent.ACTION_DRAG_STARTED -> true
             DragEvent.ACTION_DRAG_ENTERED -> {
-                println("(${appViewModel.startingCell?.columnPosition}, ${appViewModel.startingCell?.rowPosition}) || (${cell.columnPosition}, ${cell.rowPosition})")
-                cell.isSelected = true
+                var columnRange = listOf<Int>()
+                var rowRange = listOf<Int>()
+
+                appViewModel.startingCell?.let {
+                    columnRange = if (it.columnPosition < cell.columnPosition)
+                        (it.columnPosition..cell.columnPosition).toList()
+                    else
+                        (it.columnPosition downTo cell.columnPosition).toList()
+
+                    rowRange = if (it.rowPosition < cell.rowPosition)
+                        (it.rowPosition..cell.rowPosition).toList()
+                    else
+                        (it.rowPosition downTo cell.rowPosition).toList()
+                }
+
+                editCellAdapter.clearSelectedCells()
+                appViewModel.startingCell?.let {
+                    for (i in columnRange) {
+                        for (j in rowRange) {
+                            val cell = editCellAdapter.getCellItem(i, j)
+                            cell?.isSelected = true
+                        }
+                    }
+                }
                 editCellAdapter.notifyDataSetChanged()
                 true
             }
