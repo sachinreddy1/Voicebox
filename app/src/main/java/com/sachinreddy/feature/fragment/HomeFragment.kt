@@ -79,7 +79,7 @@ class HomeFragment : Fragment() {
 
         recordBtn.setRecordListener(object : OnRecordListener {
             override fun onRecord() {
-                (appViewModel.selectedCell as Cell).apply {
+                (appViewModel.startingCell as Cell).apply {
                     if (!appViewModel.isRecording) {
                         startRecording(this)
                     }
@@ -127,7 +127,7 @@ class HomeFragment : Fragment() {
         while (true) {
             appViewModel.apply {
                 if (isRecording) {
-                    selectedCell?.let {
+                    startingCell?.let {
                         val data = ShortArray(1024)
                         recorder?.read(data, 0, 1024)
                         it.data.add(data)

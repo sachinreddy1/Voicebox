@@ -16,7 +16,7 @@ class AppViewModel @Inject constructor() : ViewModel() {
     var mTrackList: MutableList<Track> = mutableListOf()
     var timelineHeaderList: MutableList<TimelineHeader>? = mutableListOf()
 
-    var selectedCell: Cell? = null
+    var startingCell: Cell? = null
     var draggedCell: Cell? = null
 
     var isRecording = false
@@ -38,6 +38,6 @@ class AppViewModel @Inject constructor() : ViewModel() {
             timelineHeaderList?.add(TimelineHeader(i + 1))
         }
 
-        selectedCell = mTrackList.first().cellList?.first()
+        startingCell = mTrackList.first().cellList?.first()
     }
 }

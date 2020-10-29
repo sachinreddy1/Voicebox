@@ -66,7 +66,7 @@ class CellViewHolder(
         // Touch for selection
         layout_cell.setOnTouchListener { v, event ->
             if (appViewModel.isSelecting) {
-                appViewModel.selectedCell = cell
+                appViewModel.startingCell = cell
 
                 for (i in cellItems) {
                     for (j in i) {
