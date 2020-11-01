@@ -47,7 +47,13 @@ class SelectionListener(
                         }
                     }
                 }
-                editCellAdapter.notifyDataSetChanged()
+
+                editCellAdapter.apply {
+                    if (!isScrolling) {
+                        notifyDataSetChanged()
+                    }
+                }
+
                 true
             }
             DragEvent.ACTION_DRAG_EXITED -> {

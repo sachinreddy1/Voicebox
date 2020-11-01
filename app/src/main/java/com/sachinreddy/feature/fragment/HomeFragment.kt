@@ -164,11 +164,11 @@ class HomeFragment : Fragment() {
             R.id.editor_actions -> {
                 if (appViewModel.isSelecting) {
                     item.setIcon(R.drawable.ic_selection)
-                    content_container.isFrozen = false
+//                    content_container.isFrozen = false
                     appViewModel.isSelecting = false
                 } else {
                     item.setIcon(R.drawable.ic_translation)
-                    content_container.isFrozen = true
+//                    content_container.isFrozen = true
                     appViewModel.isSelecting = true
                 }
                 adapter.notifyDataSetChanged()

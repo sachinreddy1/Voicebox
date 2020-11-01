@@ -126,9 +126,12 @@ class EditCellAdapter @Inject constructor(
         val coordinates = IntArray(2)
         tableView.cellRecyclerView.getLocationOnScreen(coordinates)
 
+        stopScrollThread()
+
         val threshold = 100
         val minWidth = coordinates.first()
         val maxWidth = minWidth + tableView.cellRecyclerView.width
+        xPosition = tableView.cellRecyclerView.width/2
 
         scrollThread = object : Thread() {
             override fun run() {
