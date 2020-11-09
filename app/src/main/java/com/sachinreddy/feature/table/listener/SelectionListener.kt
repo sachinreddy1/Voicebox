@@ -42,8 +42,7 @@ class SelectionListener(
                 appViewModel.startingCell?.let {
                     for (i in columnRange) {
                         for (j in rowRange) {
-                            val cell = editCellAdapter.getCellItem(i, j)
-                            cell?.isSelected = true
+                            editCellAdapter.getCellItem(i, j)?.isSelected = true
                         }
                     }
                 }

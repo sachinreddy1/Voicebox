@@ -9,12 +9,9 @@ import com.sachinreddy.feature.R
 class Cell(
     var isSelected: Boolean = false,
     var isPlaying: Boolean = false,
-
     var columnPosition: Int,
     var rowPosition: Int,
-
     var data: MutableList<ShortArray> = mutableListOf(),
-
     var track: AudioTrack? = null,
     var playerThread: Thread? = null,
     var cellButton: ImageButton? = null

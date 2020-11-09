@@ -15,4 +15,5 @@
 
     <color name="recordButtonColor">#FF6C6C</color>
     <color name="editCellColor">#434F59</color>
+    <color name="selection_color">#616161</color>
 </resources>

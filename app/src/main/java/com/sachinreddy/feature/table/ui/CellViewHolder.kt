@@ -22,7 +22,6 @@ class CellViewHolder(
     private val editCellAdapter: EditCellAdapter
 ) : AbstractViewHolder(layout) {
     val cell_button: ImageButton = layout.findViewById(R.id.playStopButton)
-    val selection_container: ConstraintLayout = layout.findViewById(R.id.selection_container)
     val edit_cell: ConstraintLayout = layout.findViewById(R.id.edit_cell)
     val layout_cell: ConstraintLayout = layout.findViewById(R.id.layout_cell)
 
@@ -35,7 +34,9 @@ class CellViewHolder(
             it.cellButton = cell_button
         }
 
-        selection_container.visibility = if (cell.isSelected) View.VISIBLE else View.GONE
+        val backgroundColor = if (cell.isSelected) context.getColor(R.color.selection_color) else context.getColor(R.color.cardBackground)
+        layout_cell.setBackgroundColor(backgroundColor)
+
         edit_cell.visibility = if (cell.data.isNotEmpty()) View.VISIBLE else View.GONE
 
         cell_button.setOnClickListener {

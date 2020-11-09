@@ -17,16 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!--    SELECTION CONTAINER    -->
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/selection_container"
-            android:background="@color/colorPrimary"
-            android:visibility="visible"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            />
-
         <!--    EDIT CELL    -->
 
         <include
