@@ -27,11 +27,12 @@ class CellViewHolder(
 
     lateinit var cell: Cell
 
-    fun bind(cell: Cell, rowPosition: Int, cellItems: MutableList<MutableList<Cell?>>) {
+    fun bind(cell: Cell, rowPosition: Int) {
         this.cell = cell
         cell.let {
             it.rowPosition = rowPosition
             it.cellButton = cell_button
+            it.view = layout_cell
         }
 
         val backgroundColor = if (cell.isSelected) context.getColor(R.color.selection_color) else context.getColor(R.color.cardBackground)

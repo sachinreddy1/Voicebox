@@ -6,6 +6,7 @@ import android.graphics.Rect
 import android.view.DragEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.viewModel.AppViewModel
@@ -42,7 +43,9 @@ class SelectionListener(
                 appViewModel.startingCell?.let {
                     for (i in columnRange) {
                         for (j in rowRange) {
-                            editCellAdapter.getCellItem(i, j)?.isSelected = true
+                            val cell = editCellAdapter.getCellItem(i, j)
+                            cell?.isSelected = true
+                            cell?.view?.setBackgroundColor(context.getColor(R.color.selection_color))
                         }
                     }
                 }

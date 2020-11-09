@@ -4,6 +4,7 @@ import android.media.AudioFormat
 import android.media.AudioManager
 import android.media.AudioTrack
 import android.widget.ImageButton
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.sachinreddy.feature.R
 
 class Cell(
@@ -14,7 +15,8 @@ class Cell(
     var data: MutableList<ShortArray> = mutableListOf(),
     var track: AudioTrack? = null,
     var playerThread: Thread? = null,
-    var cellButton: ImageButton? = null
+    var cellButton: ImageButton? = null,
+    var view: ConstraintLayout? = null
 ) {
     init {
         track = initPlayer()

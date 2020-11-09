@@ -46,7 +46,7 @@ class EditCellAdapter @Inject constructor(
         rowPosition: Int
     ) {
         (holder as CellViewHolder).apply {
-            cellItemModel?.let { bind(it, rowPosition, mCellItems) }
+            cellItemModel?.let { bind(it, rowPosition) }
         }
     }
 
@@ -169,7 +169,10 @@ class EditCellAdapter @Inject constructor(
     fun clearSelectedCells() {
         for (i in mCellItems) {
             for (j in i) {
-                j?.isSelected = false
+                j?.apply {
+                    isSelected = false
+                    view?.setBackgroundColor(context.getColor(R.color.cardBackground))
+                }
             }
         }
     }
