@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
-        android:backgroundTint="@color/editCellColor"
+        android:backgroundTint="@color/colorPrimary"
         >
 
         <ImageButton
@@ -19,7 +19,7 @@
             android:layout_gravity="center"
 
             android:src="@drawable/ic_play"
-            android:tint="@color/colorPrimary"
+            android:tint="@color/cardBackground"
             android:background="#00000000"
             />
 
