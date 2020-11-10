@@ -67,7 +67,9 @@ class HomeFragment : Fragment() {
         content_container.adapter = adapter
         content_container.tableViewListener =
             EditCellListener(
-                requireContext()
+                requireContext(),
+                appViewModel,
+                adapter
             )
 
         ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)

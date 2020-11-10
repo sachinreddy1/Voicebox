@@ -3,8 +3,14 @@ package com.sachinreddy.feature.table.listener
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import com.evrencoskun.tableview.listener.ITableViewListener
+import com.sachinreddy.feature.table.adapter.EditCellAdapter
+import com.sachinreddy.feature.viewModel.AppViewModel
 
-class EditCellListener(val context: Context) : ITableViewListener {
+class EditCellListener(
+    val context: Context,
+    val appViewModel: AppViewModel,
+    val adapter: EditCellAdapter
+) : ITableViewListener {
     override fun onCellClicked(
         cellView: RecyclerView.ViewHolder,
         columnPosition: Int,
@@ -25,7 +31,17 @@ class EditCellListener(val context: Context) : ITableViewListener {
         columnHeaderView: RecyclerView.ViewHolder,
         columnPosition: Int
     ) {
-        // Do what you want.
+        if (!appViewModel.isSelecting) return
+
+        adapter.clearSelectedCells()
+        for (i in 0..appViewModel.mTrackList.size) {
+            val cell = adapter.getCellItem(columnPosition, i)
+            cell?.let {
+                it.isSelected = true
+            }
+        }
+
+        adapter.notifyDataSetChanged()
     }
 
     override fun onColumnHeaderLongPressed(
@@ -39,7 +55,17 @@ class EditCellListener(val context: Context) : ITableViewListener {
         rowHeaderView: RecyclerView.ViewHolder,
         rowPosition: Int
     ) {
-        // Do what you want.
+        if (!appViewModel.isSelecting) return
+
+        adapter.clearSelectedCells()
+        for (i in 0..appViewModel.numberBars) {
+            val cell = adapter.getCellItem(i, rowPosition)
+            cell?.let {
+                it.isSelected = true
+            }
+        }
+
+        adapter.notifyDataSetChanged()
     }
 
     override fun onRowHeaderLongPressed(
