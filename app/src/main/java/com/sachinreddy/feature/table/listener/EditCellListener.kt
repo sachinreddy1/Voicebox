@@ -9,7 +9,7 @@ import com.sachinreddy.feature.viewModel.AppViewModel
 class EditCellListener(
     val context: Context,
     val appViewModel: AppViewModel,
-    val adapter: EditCellAdapter
+    private val editCellAdapter: EditCellAdapter
 ) : ITableViewListener {
     override fun onCellClicked(
         cellView: RecyclerView.ViewHolder,
@@ -33,15 +33,15 @@ class EditCellListener(
     ) {
         if (!appViewModel.isSelecting) return
 
-        adapter.clearSelectedCells()
+        editCellAdapter.clearSelectedCells()
         for (i in 0..appViewModel.mTrackList.size) {
-            val cell = adapter.getCellItem(columnPosition, i)
+            val cell = editCellAdapter.getCellItem(columnPosition, i)
             cell?.let {
                 it.isSelected = true
             }
         }
 
-        adapter.notifyDataSetChanged()
+        editCellAdapter.notifyDataSetChanged()
     }
 
     override fun onColumnHeaderLongPressed(
@@ -57,15 +57,15 @@ class EditCellListener(
     ) {
         if (!appViewModel.isSelecting) return
 
-        adapter.clearSelectedCells()
+        editCellAdapter.clearSelectedCells()
         for (i in 0..appViewModel.numberBars) {
-            val cell = adapter.getCellItem(i, rowPosition)
+            val cell = editCellAdapter.getCellItem(i, rowPosition)
             cell?.let {
                 it.isSelected = true
             }
         }
 
-        adapter.notifyDataSetChanged()
+        editCellAdapter.notifyDataSetChanged()
     }
 
     override fun onRowHeaderLongPressed(
