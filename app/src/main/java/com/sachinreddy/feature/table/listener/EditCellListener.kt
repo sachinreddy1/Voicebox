@@ -31,17 +31,7 @@ class EditCellListener(
         columnHeaderView: RecyclerView.ViewHolder,
         columnPosition: Int
     ) {
-        if (!appViewModel.isSelecting) return
-
-        editCellAdapter.clearSelectedCells()
-        for (i in 0..appViewModel.mTrackList.size) {
-            val cell = editCellAdapter.getCellItem(columnPosition, i)
-            cell?.let {
-                it.isSelected = true
-            }
-        }
-
-        editCellAdapter.notifyDataSetChanged()
+        // Do what you want.
     }
 
     override fun onColumnHeaderLongPressed(
@@ -55,17 +45,7 @@ class EditCellListener(
         rowHeaderView: RecyclerView.ViewHolder,
         rowPosition: Int
     ) {
-        if (!appViewModel.isSelecting) return
-
-        editCellAdapter.clearSelectedCells()
-        for (i in 0..appViewModel.numberBars) {
-            val cell = editCellAdapter.getCellItem(i, rowPosition)
-            cell?.let {
-                it.isSelected = true
-            }
-        }
-
-        editCellAdapter.notifyDataSetChanged()
+        // Do what you want.
     }
 
     override fun onRowHeaderLongPressed(

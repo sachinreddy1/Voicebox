@@ -16,11 +16,27 @@ class RowHeaderViewHolder(
     private val appViewModel: AppViewModel,
     private val editCellAdapter: EditCellAdapter
 ) : AbstractViewHolder(layout) {
+    val row_header_container: ConstraintLayout = layout.findViewById(R.id.row_header_container)
     val row_header_imageView: ImageView = layout.findViewById(R.id.row_header_imageView)
     val row_header_button_container: ConstraintLayout = layout.findViewById(R.id.row_header_button_container)
     val row_header_button: ImageButton = layout.findViewById(R.id.row_header_button)
 
     fun bind(rowPosition: Int) {
+        row_header_container.apply {
+            setOnClickListener {
+                if (appViewModel.isSelecting) {
+                    editCellAdapter.clearSelectedCells()
+                    for (i in 0..appViewModel.numberBars) {
+                        val cell = editCellAdapter.getCellItem(i, rowPosition)
+                        cell?.let {
+                            it.isSelected = true
+                        }
+                    }
+                    editCellAdapter.notifyDataSetChanged()
+                }
+            }
+        }
+
         row_header_button.apply {
             setOnClickListener {
                 appViewModel.mTrackList.add(

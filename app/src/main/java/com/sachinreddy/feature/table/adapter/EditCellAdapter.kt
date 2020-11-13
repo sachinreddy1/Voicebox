@@ -55,7 +55,9 @@ class EditCellAdapter @Inject constructor(
         viewType: Int
     ): AbstractViewHolder = ColumnHeaderViewHolder(
         LayoutInflater.from(parent.context)
-            .inflate(R.layout.table_view_column_header_layout, parent, false)
+            .inflate(R.layout.table_view_column_header_layout, parent, false),
+        appViewModel,
+        this
     )
 
     override fun onBindColumnHeaderViewHolder(
@@ -64,7 +66,7 @@ class EditCellAdapter @Inject constructor(
         columnPosition: Int
     ) {
         (holder as ColumnHeaderViewHolder).apply {
-            timelineHeaderItemModel?.let { bind(it) }
+            timelineHeaderItemModel?.let { bind(columnPosition) }
         }
     }
 
