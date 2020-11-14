@@ -88,7 +88,8 @@ public class VerticalRecyclerViewListener extends RecyclerView.OnScrollListener 
         // Prevent multitouch, once we start to listen with a RV,
         // we ignore any other RV until the touch is released (UP)
         if ((mCurrentRVTouched != null && rv != mCurrentRVTouched)) {
-            return true;
+            mCurrentRVTouched = null;
+//            return true;
         }
 
         // If scroll direction is not Vertical, then ignore and reset last RV touched
