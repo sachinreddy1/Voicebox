@@ -17,27 +17,30 @@ class AppViewModel @Inject constructor() : ViewModel() {
     var timelineHeaderList: MutableList<TimelineHeader>? = mutableListOf()
 
     var startingCell: Cell? = null
+    var selectedCells: MutableList<Cell> = mutableListOf()
     var draggedCell: Cell? = null
-
-    var isRecording = false
 
     var audioManager: AudioManager? = null
     var recorder: AudioRecord? = null
 
+    var isRecording = false
     var isSelecting: Boolean = false
 
     init {
+        // Add first track
         val track = Track(RowHeader(""), numberBars, 0)
-        // Setting the first cell to selected
-        track.cellList?.let {
-            it.first().isSelected = true
-        }
         mTrackList.add(track)
-        
+
+        // Add timelineHeaders
         for (i in 0 until numberBars) {
             timelineHeaderList?.add(TimelineHeader(i + 1))
         }
 
-        startingCell = mTrackList.first().cellList?.first()
+        // Select the first cell
+        mTrackList.first().cellList?.first()?.let {
+            it.isSelected = true
+            selectedCells.clear()
+            selectedCells.add(it)
+        }
     }
 }

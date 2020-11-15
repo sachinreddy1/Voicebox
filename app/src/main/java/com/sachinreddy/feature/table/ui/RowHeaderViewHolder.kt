@@ -27,13 +27,12 @@ class RowHeaderViewHolder(
                 if (appViewModel.isSelecting) {
                     editCellAdapter.clearSelectedCells()
                     for (i in 0..appViewModel.numberBars) {
-                        val cell = editCellAdapter.getCellItem(i, rowPosition)
-                        cell?.let {
+                        editCellAdapter.getCellItem(i, rowPosition)?.let {
                             it.isSelected = true
+                            appViewModel.selectedCells.add(it)
                         }
                     }
 
-                    appViewModel.startingCell = editCellAdapter.getCellItem(0, rowPosition)
                     editCellAdapter.notifyDataSetChanged()
                 }
             }

@@ -40,12 +40,12 @@ class SelectionListener(
                 }
 
                 editCellAdapter.clearSelectedCells()
-                appViewModel.startingCell?.let {
-                    for (i in columnRange) {
-                        for (j in rowRange) {
-                            val cell = editCellAdapter.getCellItem(i, j)
-                            cell?.isSelected = true
-                            cell?.view?.setBackgroundColor(context.getColor(R.color.selection_color))
+                for (i in columnRange) {
+                    for (j in rowRange) {
+                        editCellAdapter.getCellItem(i, j)?.let {
+                            it.isSelected = true
+                            it.view?.setBackgroundColor(context.getColor(R.color.selection_color))
+                            appViewModel.selectedCells.add(it)
                         }
                     }
                 }

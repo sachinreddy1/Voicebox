@@ -22,13 +22,12 @@ class ColumnHeaderViewHolder(
                 if (appViewModel.isSelecting) {
                     editCellAdapter.clearSelectedCells()
                     for (i in 0..appViewModel.mTrackList.size) {
-                        val cell = editCellAdapter.getCellItem(columnPosition, i)
-                        cell?.let {
+                        editCellAdapter.getCellItem(columnPosition, i)?.let {
                             it.isSelected = true
+                            appViewModel.selectedCells.add(it)
                         }
                     }
 
-                    appViewModel.startingCell = editCellAdapter.getCellItem(columnPosition, 0)
                     editCellAdapter.notifyDataSetChanged()
                 }
             }

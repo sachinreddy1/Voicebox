@@ -18,7 +18,6 @@ import androidx.navigation.fragment.findNavController
 import com.emrekose.recordbutton.OnRecordListener
 import com.evrencoskun.tableview.TableView
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.injection.appComponent
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.table.listener.EditCellListener
@@ -81,12 +80,10 @@ class HomeFragment : Fragment() {
 
         recordBtn.setRecordListener(object : OnRecordListener {
             override fun onRecord() {
-                (appViewModel.startingCell as Cell).apply {
-                    if (!appViewModel.isRecording) {
-                        startRecording(this)
-                    }
-                    adapter.notifyDataSetChanged()
+                if (!appViewModel.isRecording) {
+                    startRecording()
                 }
+                adapter.notifyDataSetChanged()
             }
 
             override fun onRecordCancel() {
@@ -129,20 +126,23 @@ class HomeFragment : Fragment() {
         while (true) {
             appViewModel.apply {
                 if (isRecording) {
-                    startingCell?.let {
+                    for (cell in selectedCells) {
                         val data = ShortArray(1024)
                         recorder?.read(data, 0, 1024)
-                        it.data.add(data)
+                        cell.data.add(data)
                     }
                 }
             }
         }
     }
 
-    private fun startRecording(cell: Cell) {
-        cell.stopTrack()
-        cell.data.clear()
+    private fun startRecording() {
         appViewModel.apply {
+            for (cell in selectedCells) {
+                cell.stopTrack()
+                cell.data.clear()
+            }
+
             recorder?.startRecording()
             isRecording = true
         }

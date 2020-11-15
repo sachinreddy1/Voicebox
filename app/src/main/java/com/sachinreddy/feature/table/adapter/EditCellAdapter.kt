@@ -169,6 +169,7 @@ class EditCellAdapter @Inject constructor(
     }
 
     fun clearSelectedCells() {
+        appViewModel.selectedCells.clear()
         for (i in mCellItems) {
             for (j in i) {
                 j?.apply {
