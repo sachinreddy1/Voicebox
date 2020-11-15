@@ -27,6 +27,8 @@ class ColumnHeaderViewHolder(
                             it.isSelected = true
                         }
                     }
+
+                    appViewModel.startingCell = editCellAdapter.getCellItem(columnPosition, 0)
                     editCellAdapter.notifyDataSetChanged()
                 }
             }

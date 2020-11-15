@@ -32,6 +32,8 @@ class RowHeaderViewHolder(
                             it.isSelected = true
                         }
                     }
+
+                    appViewModel.startingCell = editCellAdapter.getCellItem(0, rowPosition)
                     editCellAdapter.notifyDataSetChanged()
                 }
             }
