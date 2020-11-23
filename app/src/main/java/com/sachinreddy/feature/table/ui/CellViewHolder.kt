@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.table.Cell
+import com.sachinreddy.feature.databinding.TableViewCellLayoutBinding
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.table.listener.SelectionListener
 import com.sachinreddy.feature.table.listener.TranslationListener
@@ -16,19 +17,21 @@ import com.sachinreddy.feature.viewModel.AppViewModel
 
 
 class CellViewHolder(
-    layout: View,
+    private val binding: TableViewCellLayoutBinding,
     private val context: Context,
     private val appViewModel: AppViewModel,
     private val editCellAdapter: EditCellAdapter
-) : AbstractViewHolder(layout) {
-    val cell_button: ImageButton = layout.findViewById(R.id.playStopButton)
-    val edit_cell: ConstraintLayout = layout.findViewById(R.id.edit_cell)
-    val layout_cell: ConstraintLayout = layout.findViewById(R.id.layout_cell)
+) : AbstractViewHolder(binding.root) {
+    val cell_button: ImageButton = binding.root.findViewById(R.id.action_button)
+    val edit_cell: ConstraintLayout = binding.root.findViewById(R.id.edit_cell)
+    val layout_cell: ConstraintLayout = binding.root.findViewById(R.id.layout_cell)
 
     lateinit var cell: Cell
 
     fun bind(cell: Cell, rowPosition: Int) {
         this.cell = cell
+        binding.cell = cell
+
         cell.let {
             it.rowPosition = rowPosition
             it.cellButton = cell_button
@@ -38,7 +41,7 @@ class CellViewHolder(
         val backgroundColor = if (cell.isSelected) context.getColor(R.color.selection_color) else context.getColor(R.color.cardBackground)
         layout_cell.setBackgroundColor(backgroundColor)
 
-        edit_cell.visibility = if (cell.data.isNotEmpty()) View.VISIBLE else View.GONE
+//        edit_cell.visibility = if (cell.data.isNotEmpty()) View.VISIBLE else View.GONE
 
         cell_button.setOnClickListener {
             if (!cell.isPlaying)

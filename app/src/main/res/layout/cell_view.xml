@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/edit_cell_item"
+        android:id="@+id/cell_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
@@ -12,7 +12,7 @@
         >
 
         <ImageButton
-            android:id="@+id/playStopButton"
+            android:id="@+id/action_button"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

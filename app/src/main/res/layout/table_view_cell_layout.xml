@@ -1,31 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cell_container"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    >
+
+    <data>
+        <variable
+            name="cell"
+            type="com.sachinreddy.feature.data.table.Cell" />
+        <variable
+            name="view"
+            type="android.view.View" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_cell"
-        android:layout_width="@dimen/cell_length"
-        android:layout_height="@dimen/cell_length"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        android:background="@color/cardBackground"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_cell"
+            android:layout_width="@dimen/cell_length"
+            android:layout_height="@dimen/cell_length"
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+            android:background="@color/cardBackground"
 
-        <!--    EDIT CELL    -->
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <include
-            android:id="@+id/edit_cell"
-            layout="@layout/cell_edit"
-            android:visibility="visible"
-            />
+            <!--    EDIT CELL    -->
+
+            <com.sachinreddy.feature.table.ui.view.CellView
+                android:id="@+id/edit_cell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cellColor="@color/colorPrimary"
+                app:buttonColor="@color/cardBackground"
+                android:visibility="@{cell.data.empty ? view.GONE : view.VISIBLE}"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
-
+</layout>
