@@ -14,7 +14,6 @@ import com.sachinreddy.feature.data.Track
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.RowHeader
 import com.sachinreddy.feature.data.table.TimelineHeader
-import com.sachinreddy.feature.databinding.TableViewCellLayoutBinding
 import com.sachinreddy.feature.table.ui.CellViewHolder
 import com.sachinreddy.feature.table.ui.ColumnHeaderViewHolder
 import com.sachinreddy.feature.table.ui.RowHeaderViewHolder
@@ -31,11 +30,14 @@ class EditCellAdapter @Inject constructor(
     var isScrolling: Boolean = false
     private var scrollThread: Thread? = null
 
-    override fun onCreateCellViewHolder(parent: ViewGroup, viewType: Int): AbstractViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding: TableViewCellLayoutBinding = TableViewCellLayoutBinding.inflate(layoutInflater, parent, false)
-        return CellViewHolder(binding, context, appViewModel, this)
-    }
+    override fun onCreateCellViewHolder(parent: ViewGroup, viewType: Int): AbstractViewHolder =
+        CellViewHolder(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.table_view_cell_layout, parent, false),
+            context,
+            appViewModel,
+            this
+        )
 
     override fun onBindCellViewHolder(
         holder: AbstractViewHolder,

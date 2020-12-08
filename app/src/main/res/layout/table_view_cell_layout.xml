@@ -37,7 +37,6 @@
                 android:layout_height="wrap_content"
                 app:cellColor="@color/colorPrimary"
                 app:buttonColor="@color/cardBackground"
-                android:visibility="@{cell.data.empty ? view.GONE : view.VISIBLE}"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
