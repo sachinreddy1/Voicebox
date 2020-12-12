@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="80dp"
-    android:layout_height="80dp"
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="@dimen/cell_length"
+    android:layout_height="@dimen/cell_length"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.cardview.widget.CardView

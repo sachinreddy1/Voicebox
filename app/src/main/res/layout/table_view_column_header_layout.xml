@@ -12,35 +12,22 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/column_header_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="@dimen/row_header_width"
+        android:layout_height="@dimen/column_header_height"
+        >
 
-        <ImageView
-            android:layout_width="@dimen/row_header_width"
-            android:layout_height="@dimen/column_header_height"
-
-            android:background="@color/cardBackground"
-            android:src="@drawable/ic_timeline"
-            app:layout_constraintBottom_toBottomOf="parent"
-
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/colorPrimary" />
-
-        <TextView
-            android:id="@+id/column_header_barNumber"
+        <com.sachinreddy.feature.table.ui.view.ColumnView
+            android:id="@+id/column_header_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginStart="6dp"
-            android:text="@{columnHeader.columnPosition}"
-            android:textColor="@color/colorPrimary"
-            android:textSize="12dp"
+            android:barNumber="@{columnHeader.columnPosition}"
 
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

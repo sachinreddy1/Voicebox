@@ -46,14 +46,14 @@ class AppViewModel @Inject constructor() : ViewModel() {
 
     var columnHeaders: MutableLiveData<List<ColumnHeader>> = MutableLiveData(
         listOf(
-            ColumnHeader(0),
             ColumnHeader(1),
             ColumnHeader(2),
             ColumnHeader(3),
             ColumnHeader(4),
             ColumnHeader(5),
             ColumnHeader(6),
-            ColumnHeader(7)
+            ColumnHeader(7),
+            ColumnHeader(8)
         )
     )
 }
