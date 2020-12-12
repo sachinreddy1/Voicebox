@@ -1,34 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/column_header_container"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    >
 
-    <ImageView
-        android:layout_width="@dimen/row_header_width"
-        android:layout_height="@dimen/column_header_height"
+    <data>
+        <variable
+            name="columnHeader"
+            type="com.sachinreddy.feature.data.table.ColumnHeader"
+            />
+    </data>
 
-        android:src="@drawable/ic_timeline"
-        app:tint="@color/colorPrimary"
-        android:background="@color/cardBackground"
-
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <TextView
-        android:id="@+id/column_header_barNumber"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/column_header_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="wrap_content">
 
-        android:layout_marginStart="6dp"
-        android:text="1"
-        android:textColor="@color/colorPrimary"
-        android:textSize="12dp"
+        <ImageView
+            android:layout_width="@dimen/row_header_width"
+            android:layout_height="@dimen/column_header_height"
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            android:background="@color/cardBackground"
+            android:src="@drawable/ic_timeline"
+            app:layout_constraintBottom_toBottomOf="parent"
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/column_header_barNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="6dp"
+            android:text="@{columnHeader.columnPosition}"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12dp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

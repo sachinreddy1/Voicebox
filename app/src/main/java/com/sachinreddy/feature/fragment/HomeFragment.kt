@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.emrekose.recordbutton.OnRecordListener
 import com.evrencoskun.tableview.TableView
 import com.sachinreddy.feature.R
+import com.sachinreddy.feature.databinding.FragmentHomeBinding
 import com.sachinreddy.feature.injection.appComponent
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.table.listener.EditCellListener
@@ -37,8 +38,10 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val appViewModel by activityViewModels<AppViewModel> { viewModelFactory }
-    lateinit var adapter: EditCellAdapter
+
+    private lateinit var binding: FragmentHomeBinding
     private lateinit var tableView: TableView
+    private lateinit var adapter: EditCellAdapter
 
     private val recorderThread = object : Thread() {
         override fun run() {
@@ -49,11 +52,12 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_home, container, false)
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    ): View? {
         appComponent!!.inject(this)
-        setupActionBar()
+
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = this
+        binding.vm = ViewModelProvider(this@HomeFragment, viewModelFactory).get(AppViewModel::class.java)
 
         // Setting up tableView and adapter
         tableView = TableView(requireContext())
@@ -62,14 +66,20 @@ class HomeFragment : Fragment() {
             appViewModel
         )
         tableView.adapter = adapter
-        adapter.setTracks(appViewModel.mTrackList)
-        content_container.adapter = adapter
-        content_container.tableViewListener =
+        binding.contentContainer.adapter = adapter
+        binding.contentContainer.tableViewListener =
             EditCellListener(
                 requireContext(),
                 appViewModel,
                 adapter
             )
+
+        binding.executePendingBindings()
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupActionBar()
 
         ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)
 

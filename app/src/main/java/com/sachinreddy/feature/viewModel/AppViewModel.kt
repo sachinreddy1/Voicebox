@@ -2,19 +2,16 @@ package com.sachinreddy.feature.viewModel
 
 import android.media.AudioManager
 import android.media.AudioRecord
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sachinreddy.feature.data.Track
 import com.sachinreddy.feature.data.table.Cell
+import com.sachinreddy.feature.data.table.ColumnHeader
 import com.sachinreddy.feature.data.table.RowHeader
-import com.sachinreddy.feature.data.table.TimelineHeader
 import javax.inject.Inject
 
 class AppViewModel @Inject constructor() : ViewModel() {
 
     var numberBars: Int = 8
-
-    var mTrackList: MutableList<Track> = mutableListOf()
-    var timelineHeaderList: MutableList<TimelineHeader>? = mutableListOf()
 
     var startingCell: Cell? = null
     var selectedCells: MutableList<Cell> = mutableListOf()
@@ -26,21 +23,37 @@ class AppViewModel @Inject constructor() : ViewModel() {
     var isRecording = false
     var isSelecting: Boolean = false
 
-    init {
-        // Add first track
-        val track = Track(RowHeader(""), numberBars, 0)
-        mTrackList.add(track)
+    var cells: MutableLiveData<List<List<Cell>>> = MutableLiveData(
+        listOf(
+            listOf(
+                Cell(columnPosition = 0, rowPosition = 0),
+                Cell(columnPosition = 1, rowPosition = 0),
+                Cell(columnPosition = 2, rowPosition = 0),
+                Cell(columnPosition = 3, rowPosition = 0),
+                Cell(columnPosition = 4, rowPosition = 0),
+                Cell(columnPosition = 5, rowPosition = 0),
+                Cell(columnPosition = 6, rowPosition = 0),
+                Cell(columnPosition = 7, rowPosition = 0)
+            )
+        )
+    )
 
-        // Add timelineHeaders
-        for (i in 0 until numberBars) {
-            timelineHeaderList?.add(TimelineHeader(i + 1))
-        }
+    var rowHeaders: MutableLiveData<List<RowHeader>> = MutableLiveData(
+        listOf(
+            RowHeader(0)
+        )
+    )
 
-        // Select the first cell
-        mTrackList.first().cellList?.first()?.let {
-            it.isSelected = true
-            selectedCells.clear()
-            selectedCells.add(it)
-        }
-    }
+    var columnHeaders: MutableLiveData<List<ColumnHeader>> = MutableLiveData(
+        listOf(
+            ColumnHeader(0),
+            ColumnHeader(1),
+            ColumnHeader(2),
+            ColumnHeader(3),
+            ColumnHeader(4),
+            ColumnHeader(5),
+            ColumnHeader(6),
+            ColumnHeader(7)
+        )
+    )
 }

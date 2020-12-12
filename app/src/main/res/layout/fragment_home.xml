@@ -1,46 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.AppActivity"
-    android:background="@color/colorBackground">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.evrencoskun.tableview.TableView
-        android:id="@+id/content_container"
+    <data>
+        <variable
+            name="vm"
+            type="com.sachinreddy.feature.viewModel.AppViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorBackground"
+        tools:context=".activity.AppActivity">
 
-        app:column_header_height="@dimen/column_header_height"
-        app:row_header_width="@dimen/row_header_width"
-        app:separator_color="@color/colorPrimary"
-        app:show_horizontal_separator="false"
-        app:show_vertical_separator="false"
+        <com.evrencoskun.tableview.TableView
+            android:id="@+id/content_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+            android:cells="@{vm.cells}"
+            android:columnHeaders="@{vm.columnHeaders}"
+            android:rowHeaders="@{vm.rowHeaders}"
 
-    <com.emrekose.recordbutton.RecordButton
-        android:id="@+id/recordBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            app:column_header_height="@dimen/column_header_height"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
 
-        app:buttonRadius="@dimen/record_button_radius"
-        app:buttonGap="10dp"
-        app:maxMilisecond="10000"
-        app:progressStroke="15"
+            app:row_header_width="@dimen/row_header_width"
+            app:separator_color="@color/colorPrimary"
+            app:show_horizontal_separator="false"
+            app:show_vertical_separator="false" />
 
-        app:buttonColor="@color/recordButtonColor"
-        app:progressEmptyColor="@color/instrumentBackground"
-        app:progressColor="@color/colorPrimary"
+        <com.emrekose.recordbutton.RecordButton
+            android:id="@+id/recordBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        app:layout_constraintVertical_bias="0.925"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            app:buttonColor="@color/recordButtonColor"
+            app:buttonGap="10dp"
+            app:buttonRadius="@dimen/record_button_radius"
+            app:layout_constraintBottom_toBottomOf="parent"
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:layout_constraintVertical_bias="0.925"
+            app:maxMilisecond="10000"
+            app:progressColor="@color/colorPrimary"
+            app:progressEmptyColor="@color/instrumentBackground"
+            app:progressStroke="15" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

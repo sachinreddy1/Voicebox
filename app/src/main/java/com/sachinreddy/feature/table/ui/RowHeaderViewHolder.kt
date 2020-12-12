@@ -4,10 +4,11 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.databinding.DataBindingUtil
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.data.Track
 import com.sachinreddy.feature.data.table.RowHeader
+import com.sachinreddy.feature.databinding.TableViewRowHeaderLayoutBinding
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.viewModel.AppViewModel
 
@@ -21,37 +22,46 @@ class RowHeaderViewHolder(
     val row_header_button_container: ConstraintLayout = layout.findViewById(R.id.row_header_button_container)
     val row_header_button: ImageButton = layout.findViewById(R.id.row_header_button)
 
-    fun bind(rowPosition: Int) {
-        row_header_container.apply {
-            setOnClickListener {
-                if (appViewModel.isSelecting) {
-                    editCellAdapter.clearSelectedCells()
-                    for (i in 0..appViewModel.numberBars) {
-                        editCellAdapter.getCellItem(i, rowPosition)?.let {
-                            it.isSelected = true
-                            appViewModel.selectedCells.add(it)
-                        }
-                    }
+    private var _rowHeader: RowHeader? = null
+    val binding: TableViewRowHeaderLayoutBinding? = try { DataBindingUtil.bind(itemView) } catch (t: Throwable) { null }
 
-                    editCellAdapter.notifyDataSetChanged()
+    var rowHeader: RowHeader?
+        set(value) {
+            _rowHeader = value
+
+            row_header_container.apply {
+                setOnClickListener {
+                    if (appViewModel.isSelecting) {
+                        editCellAdapter.clearSelectedCells()
+                        for (i in 0..appViewModel.numberBars) {
+                            editCellAdapter.getCellItem(i, _rowHeader?.rowPosition ?: 0)?.let {
+                                it.isSelected = true
+                                appViewModel.selectedCells.add(it)
+                            }
+                        }
+
+                        editCellAdapter.notifyDataSetChanged()
+                    }
                 }
             }
-        }
 
-        row_header_button.apply {
-            setOnClickListener {
-                appViewModel.mTrackList.add(
-                    Track(
-                        RowHeader(""),
-                        appViewModel.numberBars,
-                        rowPosition + 1
-                    )
-                )
-                editCellAdapter.setTracks(appViewModel.mTrackList)
+            row_header_button.apply {
+                setOnClickListener {
+//                    appViewModel.mTrackList.add(
+//                        Track(
+//                            RowHeader(""),
+//                            appViewModel.numberBars,
+//                            rowPosition + 1
+//                        )
+//                    )
+//                    editCellAdapter.setTracks(appViewModel.mTrackList)
+                }
             }
-        }
 
-        // Set the add button at the bottom of the rowHeaders
-        row_header_button_container.visibility = if (rowPosition == appViewModel.mTrackList.size - 1) View.VISIBLE else View.GONE
-    }
+            // Set the add button at the bottom of the rowHeaders
+            row_header_button_container.visibility = if (_rowHeader?.rowPosition ?: 0 == appViewModel.rowHeaders.value?.size ?: 0 - 1) View.VISIBLE else View.GONE
+
+            binding?.executePendingBindings()
+        }
+        get() = _rowHeader
 }

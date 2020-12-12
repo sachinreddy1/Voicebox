@@ -27,70 +27,74 @@ class CellViewHolder(
     val edit_cell: ConstraintLayout = itemView.findViewById(R.id.edit_cell)
     val layout_cell: ConstraintLayout = itemView.findViewById(R.id.layout_cell)
 
-    lateinit var cell: Cell
+    private var _cell: Cell? = null
     val binding: TableViewCellLayoutBinding? = try { DataBindingUtil.bind(itemView) } catch (t: Throwable) { null }
 
-    fun bind(cell: Cell, rowPosition: Int) {
-        this.cell = cell
+    var cell: Cell?
+        set(value) {
+            _cell = value
 
-        cell.let {
-            it.rowPosition = rowPosition
-            it.cellButton = cell_button
-            it.view = layout_cell
-        }
+            cell?.let {cell ->
+//                cell.rowPosition = rowPosition
+                cell.cellButton = cell_button
+                cell.view = layout_cell
 
-        val backgroundColor = if (cell.isSelected) context.getColor(R.color.selection_color) else context.getColor(R.color.cardBackground)
-        layout_cell.setBackgroundColor(backgroundColor)
+                val backgroundColor = if (cell.isSelected) context.getColor(R.color.selection_color) else context.getColor(R.color.cardBackground)
+                layout_cell.setBackgroundColor(backgroundColor)
 
-        edit_cell.visibility = if (cell.data.isNotEmpty()) View.VISIBLE else View.GONE
+                edit_cell.visibility = if (cell.data.isNotEmpty()) View.VISIBLE else View.GONE
 
-        cell_button.setOnClickListener {
-            if (!cell.isPlaying)
-                cell.playTrack()
-            else
-                cell.stopTrack()
-        }
-
-        // Long press for drag and drop
-        edit_cell.setOnLongClickListener {
-            if (!appViewModel.isSelecting) {
-                editCellAdapter.startScrollThread()
-
-                if (appViewModel.draggedCell == null) {
-                    appViewModel.draggedCell = cell
+                cell_button.setOnClickListener {
+                    if (!cell.isPlaying)
+                        cell.playTrack()
+                    else
+                        cell.stopTrack()
                 }
 
-                cell.stopTrack()
-                val data = ClipData.newPlainText("", "")
-                val shadowBuilder = View.DragShadowBuilder(it)
-                it.startDragAndDrop(data, shadowBuilder, it, 0)
-                it.visibility = View.INVISIBLE
+                // Long press for drag and drop
+                edit_cell.setOnLongClickListener {
+                    if (!appViewModel.isSelecting) {
+                        editCellAdapter.startScrollThread()
+
+                        if (appViewModel.draggedCell == null) {
+                            appViewModel.draggedCell = cell
+                        }
+
+                        cell.stopTrack()
+                        val data = ClipData.newPlainText("", "")
+                        val shadowBuilder = View.DragShadowBuilder(it)
+                        it.startDragAndDrop(data, shadowBuilder, it, 0)
+                        it.visibility = View.INVISIBLE
+                    }
+                    true
+                }
+
+                // Touch for selection
+                layout_cell.setOnTouchListener { v, event ->
+                    if (appViewModel.isSelecting) {
+                        appViewModel.startingCell = cell
+
+                        editCellAdapter.clearSelectedCells()
+                        editCellAdapter.startScrollThread()
+                        val data = ClipData.newPlainText("", "")
+                        val shadowBuilder = UtilDragShadowBuilder(v)
+                        v.startDragAndDrop(data, shadowBuilder, v, 0)
+                        editCellAdapter.notifyDataSetChanged()
+                    }
+                    true
+                }
+
+                layout_cell.apply {
+                    if (appViewModel.isSelecting)
+                        setOnDragListener(SelectionListener(context, editCellAdapter, appViewModel, cell))
+                    else
+                        setOnDragListener(TranslationListener(context, editCellAdapter, appViewModel, cell))
+                }
             }
-            true
+
+
+
+            binding?.executePendingBindings()
         }
-
-        // Touch for selection
-        layout_cell.setOnTouchListener { v, event ->
-            if (appViewModel.isSelecting) {
-                appViewModel.startingCell = cell
-
-                editCellAdapter.clearSelectedCells()
-                editCellAdapter.startScrollThread()
-                val data = ClipData.newPlainText("", "")
-                val shadowBuilder = UtilDragShadowBuilder(v)
-                v.startDragAndDrop(data, shadowBuilder, v, 0)
-                editCellAdapter.notifyDataSetChanged()
-            }
-            true
-        }
-
-        layout_cell.apply {
-            if (appViewModel.isSelecting)
-                setOnDragListener(SelectionListener(context, editCellAdapter, appViewModel, cell))
-            else
-                setOnDragListener(TranslationListener(context, editCellAdapter, appViewModel, cell))
-        }
-
-        binding?.executePendingBindings()
-    }
+        get() = _cell
 }
