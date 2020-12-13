@@ -114,8 +114,7 @@ class EditCellAdapter @Inject constructor(
     ): AbstractViewHolder = ColumnHeaderViewHolder(
         LayoutInflater.from(parent.context)
             .inflate(R.layout.table_view_column_header_layout, parent, false),
-        appViewModel,
-        this
+        appViewModel
     )
 
     override fun onBindColumnHeaderViewHolder(
@@ -132,8 +131,7 @@ class EditCellAdapter @Inject constructor(
     ): AbstractViewHolder = RowHeaderViewHolder(
         LayoutInflater.from(parent.context)
             .inflate(R.layout.table_view_row_header_layout, parent, false),
-        appViewModel,
-        this
+        appViewModel
     )
 
     override fun onBindRowHeaderViewHolder(

@@ -117,4 +117,18 @@ class AppViewModel @Inject constructor() : ViewModel() {
             cells.postValue(newCells)
         }
     }
+
+    fun selectColumn(columnPosition: Int) {
+        if (isSelecting) {
+            val newCells = cells.value?.map { track ->
+                track.mapIndexed { index, cell ->
+                    cell.isSelected = index == columnPosition
+                    cell
+                }
+                track
+            }
+
+            cells.postValue(newCells)
+        }
+    }
 }

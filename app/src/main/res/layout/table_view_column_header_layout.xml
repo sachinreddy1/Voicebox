@@ -9,6 +9,10 @@
             name="columnHeader"
             type="com.sachinreddy.feature.data.table.ColumnHeader"
             />
+        <variable
+            name="vm"
+            type="com.sachinreddy.feature.viewModel.AppViewModel"
+            />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,6 +26,7 @@
             android:layout_height="wrap_content"
 
             android:barNumber="@{columnHeader.columnPosition + 1}"
+            android:onClick="@{() -> vm.selectColumn(columnHeader.columnPosition)}"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
