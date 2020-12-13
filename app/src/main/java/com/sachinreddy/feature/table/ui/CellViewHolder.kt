@@ -35,7 +35,6 @@ class CellViewHolder(
             binding?.cell = value
 
             _cell?.let {cell ->
-//                cell.rowPosition = rowPosition
                 cell.cellButton = cell_button
                 cell.view = layout_cell
 

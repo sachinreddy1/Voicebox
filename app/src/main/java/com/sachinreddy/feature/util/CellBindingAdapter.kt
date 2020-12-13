@@ -29,3 +29,11 @@ fun setSelected(constraintLayout: ConstraintLayout, isSelected: Boolean) {
     val backgroundColor = if (isSelected) "#616161" else "#2C2C2C"
     constraintLayout.setBackgroundColor(Color.parseColor(backgroundColor))
 }
+
+@BindingAdapter("android:onLongClick")
+fun setOnLongClickListener(cellView: CellView, func : () -> Unit) {
+    cellView.setOnLongClickListener {
+        func()
+        return@setOnLongClickListener true
+    }
+}

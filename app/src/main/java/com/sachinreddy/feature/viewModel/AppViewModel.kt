@@ -118,6 +118,8 @@ class AppViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    // ------------------------------------------------- //
+
     fun selectColumn(columnPosition: Int) {
         if (isSelecting) {
             val newCells = cells.value?.map { track ->
@@ -131,4 +133,8 @@ class AppViewModel @Inject constructor() : ViewModel() {
             cells.postValue(newCells)
         }
     }
+
+    // ------------------------------------------------- //
+
+
 }

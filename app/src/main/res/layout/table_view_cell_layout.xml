@@ -9,6 +9,9 @@
             name="cell"
             type="com.sachinreddy.feature.data.table.Cell" />
         <variable
+            name="vm"
+            type="com.sachinreddy.feature.viewModel.AppViewModel" />
+        <variable
             name="view"
             type="android.view.View" />
     </data>
