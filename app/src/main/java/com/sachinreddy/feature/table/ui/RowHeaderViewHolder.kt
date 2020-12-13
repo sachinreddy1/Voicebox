@@ -24,24 +24,9 @@ class RowHeaderViewHolder(
     var rowHeader: RowHeader?
         set(value) {
             _rowHeader = value
+
             binding?.rowHeader = value
             binding?.vm = appViewModel
-
-            row_header_container.apply {
-                setOnClickListener {
-                    if (appViewModel.isSelecting) {
-                        editCellAdapter.clearSelectedCells()
-                        for (i in 0..appViewModel.numberBars) {
-                            editCellAdapter.getCellItem(i, _rowHeader?.rowPosition ?: 0)?.let {
-                                it.isSelected = true
-                                appViewModel.selectedCells.add(it)
-                            }
-                        }
-
-                        editCellAdapter.notifyDataSetChanged()
-                    }
-                }
-            }
 
             binding?.executePendingBindings()
         }

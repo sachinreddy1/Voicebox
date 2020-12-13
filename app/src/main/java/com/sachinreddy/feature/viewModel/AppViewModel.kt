@@ -96,4 +96,25 @@ class AppViewModel @Inject constructor() : ViewModel() {
         cells.postValue(newCells)
         rowHeaders.postValue(newRowHeader)
     }
+
+    fun selectRow(rowPosition: Int) {
+        if (isSelecting) {
+            val newCells = cells.value?.mapIndexed { index, track ->
+                if (index == rowPosition) {
+                    track.map {cell ->
+                        cell.isSelected = true
+                        cell
+                    }
+                } else {
+                    track.map { cell ->
+                        cell.isSelected = false
+                        cell
+                    }
+                }
+                track
+            }
+
+            cells.postValue(newCells)
+        }
+    }
 }
