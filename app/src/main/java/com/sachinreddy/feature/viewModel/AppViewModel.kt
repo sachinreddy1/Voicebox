@@ -139,6 +139,15 @@ class AppViewModel @Inject constructor() : ViewModel() {
                 tracks.mapIndexed { columnPosition, newCell ->
                     if (columnPosition == cell.columnPosition) {
                         newCell.apply {
+                            playerThread = object : Thread() {
+                                override fun run() {
+                                    while (isPlaying) {
+                                        data.forEach {
+                                            track?.write(it, 0, 1024)
+                                        }
+                                    }
+                                }
+                            }
                             isPlaying = true
                             playerThread?.start()
                             track?.play()
