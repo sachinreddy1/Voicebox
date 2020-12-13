@@ -6,6 +6,12 @@
         <variable
             name="rowHeader"
             type="com.sachinreddy.feature.data.table.RowHeader" />
+        <variable
+            name="vm"
+            type="com.sachinreddy.feature.viewModel.AppViewModel" />
+        <variable
+            name="view"
+            type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -45,7 +51,7 @@
             android:layout_height="wrap_content"
 
             android:background="@color/colorBackground"
-            android:visibility="visible"
+            android:visibility="@{rowHeader.rowPosition == vm.rowHeaders.size() - 1? view.VISIBLE : view.GONE}"
 
             app:layout_constraintEnd_toEndOf="@id/row_header_container"
             app:layout_constraintStart_toStartOf="@id/row_header_container"

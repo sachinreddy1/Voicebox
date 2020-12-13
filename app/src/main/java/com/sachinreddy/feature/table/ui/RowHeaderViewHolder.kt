@@ -18,8 +18,6 @@ class RowHeaderViewHolder(
     private val editCellAdapter: EditCellAdapter
 ) : AbstractViewHolder(layout) {
     val row_header_container: ConstraintLayout = layout.findViewById(R.id.row_header_container)
-    val row_header_imageView: ImageView = layout.findViewById(R.id.row_header_imageView)
-    val row_header_button_container: ConstraintLayout = layout.findViewById(R.id.row_header_button_container)
     val row_header_button: ImageButton = layout.findViewById(R.id.row_header_button)
 
     private var _rowHeader: RowHeader? = null
@@ -27,6 +25,8 @@ class RowHeaderViewHolder(
     var rowHeader: RowHeader?
         set(value) {
             _rowHeader = value
+            binding?.rowHeader = value
+            binding?.vm = appViewModel
 
             row_header_container.apply {
                 setOnClickListener {
@@ -56,9 +56,6 @@ class RowHeaderViewHolder(
 //                    editCellAdapter.setTracks(appViewModel.mTrackList)
                 }
             }
-
-            // Set the add button at the bottom of the rowHeaders
-            row_header_button_container.visibility = if (_rowHeader?.rowPosition ?: 0 == appViewModel.rowHeaders.value?.size ?: 0 - 1) View.VISIBLE else View.GONE
 
             binding?.executePendingBindings()
         }
