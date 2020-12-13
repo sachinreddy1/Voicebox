@@ -40,5 +40,5 @@ class ColumnHeaderViewHolder(
         }
         get() = _columnHeader
 
-    val binding: TableViewColumnHeaderLayoutBinding? = try { DataBindingUtil.bind(itemView) } catch (t: Throwable) { null }
+    private val binding: TableViewColumnHeaderLayoutBinding? = try { DataBindingUtil.bind(itemView) } catch (t: Throwable) { null }
 }

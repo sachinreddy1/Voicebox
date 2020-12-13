@@ -23,7 +23,6 @@ class RowHeaderViewHolder(
     val row_header_button: ImageButton = layout.findViewById(R.id.row_header_button)
 
     private var _rowHeader: RowHeader? = null
-    val binding: TableViewRowHeaderLayoutBinding? = try { DataBindingUtil.bind(itemView) } catch (t: Throwable) { null }
 
     var rowHeader: RowHeader?
         set(value) {
@@ -64,4 +63,6 @@ class RowHeaderViewHolder(
             binding?.executePendingBindings()
         }
         get() = _rowHeader
+
+    private val binding: TableViewRowHeaderLayoutBinding? = try { DataBindingUtil.bind(itemView) } catch (t: Throwable) { null }
 }
