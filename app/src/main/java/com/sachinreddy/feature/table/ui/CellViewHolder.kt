@@ -28,21 +28,16 @@ class CellViewHolder(
     val layout_cell: ConstraintLayout = itemView.findViewById(R.id.layout_cell)
 
     private var _cell: Cell? = null
-    val binding: TableViewCellLayoutBinding? = try { DataBindingUtil.bind(itemView) } catch (t: Throwable) { null }
 
     var cell: Cell?
         set(value) {
             _cell = value
+            binding?.cell = value
 
-            cell?.let {cell ->
+            _cell?.let {cell ->
 //                cell.rowPosition = rowPosition
                 cell.cellButton = cell_button
                 cell.view = layout_cell
-
-                val backgroundColor = if (cell.isSelected) context.getColor(R.color.selection_color) else context.getColor(R.color.cardBackground)
-                layout_cell.setBackgroundColor(backgroundColor)
-
-                edit_cell.visibility = if (cell.data.isNotEmpty()) View.VISIBLE else View.GONE
 
                 cell_button.setOnClickListener {
                     if (!cell.isPlaying)
@@ -79,7 +74,6 @@ class CellViewHolder(
                         val data = ClipData.newPlainText("", "")
                         val shadowBuilder = UtilDragShadowBuilder(v)
                         v.startDragAndDrop(data, shadowBuilder, v, 0)
-                        editCellAdapter.notifyDataSetChanged()
                     }
                     true
                 }
@@ -93,8 +87,9 @@ class CellViewHolder(
             }
 
 
-
             binding?.executePendingBindings()
         }
         get() = _cell
+
+    private val binding: TableViewCellLayoutBinding? = try { DataBindingUtil.bind(itemView) } catch (t: Throwable) { null }
 }

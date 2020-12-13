@@ -23,6 +23,7 @@
             android:layout_height="@dimen/cell_length"
 
             android:background="@color/cardBackground"
+            android:isSelected="@{cell.selected}"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,8 +36,10 @@
                 android:id="@+id/edit_cell"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 app:cellColor="@color/colorPrimary"
                 app:buttonColor="@color/cardBackground"
+                android:data="@{cell.data}"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -56,4 +56,12 @@ class AppViewModel @Inject constructor() : ViewModel() {
             ColumnHeader(8)
         )
     )
+
+    init {
+        cells.value?.first()?.first()?.let {
+            it.isSelected = true
+            selectedCells.clear()
+            selectedCells.add(it)
+        }
+    }
 }

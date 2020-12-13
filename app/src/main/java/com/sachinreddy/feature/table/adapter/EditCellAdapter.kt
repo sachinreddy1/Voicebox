@@ -34,6 +34,7 @@ class EditCellAdapter @Inject constructor(
 
     var cells : List<List<Cell>> = listOf()
         set(value) {
+            println("new values set")
             val diff = DiffUtil.calculateDiff(
                 CellDiffCallback(
                     cells,
@@ -105,7 +106,7 @@ class EditCellAdapter @Inject constructor(
         columnPosition: Int,
         rowPosition: Int
     ) {
-        cells[rowPosition][columnPosition]
+        (holder as CellViewHolder).cell = cells[rowPosition][columnPosition]
     }
 
     override fun onCreateColumnHeaderViewHolder(

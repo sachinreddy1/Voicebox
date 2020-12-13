@@ -11,7 +11,6 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -37,7 +36,7 @@ val PERMISSIONS = arrayOf(
 class HomeFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val appViewModel by activityViewModels<AppViewModel> { viewModelFactory }
+    private lateinit var appViewModel: AppViewModel
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var tableView: TableView
@@ -57,7 +56,10 @@ class HomeFragment : Fragment() {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
-        binding.vm = ViewModelProvider(this@HomeFragment, viewModelFactory).get(AppViewModel::class.java)
+        ViewModelProvider(this@HomeFragment, viewModelFactory).get(AppViewModel::class.java).let {
+            binding.vm = it
+            appViewModel = it
+        }
 
         // Setting up tableView and adapter
         tableView = TableView(requireContext())
@@ -93,7 +95,6 @@ class HomeFragment : Fragment() {
                 if (!appViewModel.isRecording) {
                     startRecording()
                 }
-                adapter.notifyDataSetChanged()
             }
 
             override fun onRecordCancel() {
@@ -136,11 +137,19 @@ class HomeFragment : Fragment() {
         while (true) {
             appViewModel.apply {
                 if (isRecording) {
-                    for (cell in selectedCells) {
-                        val data = ShortArray(1024)
-                        recorder?.read(data, 0, 1024)
-                        cell.data.add(data)
+                    val newCells = cells.value?.map { track ->
+                        track.map { cell ->
+                            if (cell.isSelected) {
+                                val data = ShortArray(1024)
+                                recorder?.read(data, 0, 1024)
+                                cell.data.add(data)
+                            }
+                            cell
+                        }
+                        track
                     }
+
+                    cells.postValue(newCells)
                 }
             }
         }
