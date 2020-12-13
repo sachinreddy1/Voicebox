@@ -65,6 +65,8 @@
                 android:background="@drawable/round_half_background"
                 android:src="@drawable/ic_add"
 
+                android:onClick="@{() -> vm.addTrack()}"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

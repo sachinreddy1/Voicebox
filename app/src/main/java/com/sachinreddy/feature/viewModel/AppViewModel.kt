@@ -7,11 +7,14 @@ import androidx.lifecycle.ViewModel
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.ColumnHeader
 import com.sachinreddy.feature.data.table.RowHeader
+import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import javax.inject.Inject
 
 class AppViewModel @Inject constructor() : ViewModel() {
 
     var numberBars: Int = 8
+
+    lateinit var adapter: EditCellAdapter
 
     var startingCell: Cell? = null
     var selectedCells: MutableList<Cell> = mutableListOf()
@@ -22,6 +25,8 @@ class AppViewModel @Inject constructor() : ViewModel() {
 
     var isRecording = false
     var isSelecting: Boolean = false
+
+    // ------------------------------------------------- //
 
     var cells: MutableLiveData<List<List<Cell>>> = MutableLiveData(
         listOf(
@@ -46,16 +51,18 @@ class AppViewModel @Inject constructor() : ViewModel() {
 
     var columnHeaders: MutableLiveData<List<ColumnHeader>> = MutableLiveData(
         listOf(
+            ColumnHeader(0),
             ColumnHeader(1),
             ColumnHeader(2),
             ColumnHeader(3),
             ColumnHeader(4),
             ColumnHeader(5),
             ColumnHeader(6),
-            ColumnHeader(7),
-            ColumnHeader(8)
+            ColumnHeader(7)
         )
     )
+
+    // ------------------------------------------------- //
 
     init {
         cells.value?.first()?.first()?.let {
@@ -63,5 +70,30 @@ class AppViewModel @Inject constructor() : ViewModel() {
             selectedCells.clear()
             selectedCells.add(it)
         }
+    }
+
+    // ------------------------------------------------- //
+
+    fun addTrack() {
+        val trackCells: MutableList<Cell> = mutableListOf()
+        for (i in 0 until numberBars) {
+            trackCells.add(
+                Cell(
+                    columnPosition = i,
+                    rowPosition = rowHeaders.value!!.size
+                )
+            )
+        }
+
+        val newCells = cells.value!!.toMutableList()
+        newCells.add(trackCells)
+
+        val newRowHeader = rowHeaders.value!!.toMutableList()
+        newRowHeader.add(
+            RowHeader(rowHeaders.value!!.size)
+        )
+
+        cells.postValue(newCells)
+        rowHeaders.postValue(newRowHeader)
     }
 }

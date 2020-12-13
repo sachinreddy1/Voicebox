@@ -34,7 +34,6 @@ class EditCellAdapter @Inject constructor(
 
     var cells : List<List<Cell>> = listOf()
         set(value) {
-            println("new values set")
             val diff = DiffUtil.calculateDiff(
                 CellDiffCallback(
                     cells,

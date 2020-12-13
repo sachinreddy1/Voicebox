@@ -2,7 +2,6 @@ package com.sachinreddy.feature.table.ui
 
 import android.view.View
 import android.widget.ImageButton
-import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
@@ -41,19 +40,6 @@ class RowHeaderViewHolder(
 
                         editCellAdapter.notifyDataSetChanged()
                     }
-                }
-            }
-
-            row_header_button.apply {
-                setOnClickListener {
-//                    appViewModel.mTrackList.add(
-//                        Track(
-//                            RowHeader(""),
-//                            appViewModel.numberBars,
-//                            rowPosition + 1
-//                        )
-//                    )
-//                    editCellAdapter.setTracks(appViewModel.mTrackList)
                 }
             }
 
