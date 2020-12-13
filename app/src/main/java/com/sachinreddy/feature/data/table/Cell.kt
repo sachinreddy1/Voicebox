@@ -15,6 +15,15 @@ class Cell(
 ) {
     init {
         track = initPlayer()
+        playerThread = object : Thread() {
+            override fun run() {
+                while (isPlaying) {
+                    data.forEach {
+                        track?.write(it, 0, 1024)
+                    }
+                }
+            }
+        }
     }
 
     /*

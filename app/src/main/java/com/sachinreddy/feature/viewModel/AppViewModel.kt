@@ -121,7 +121,7 @@ class AppViewModel @Inject constructor() : ViewModel() {
         if (isSelecting) {
             val newCells = cells.value?.map { track ->
                 track.mapIndexed { index, cell ->
-                    cell.isSelected = index == columnPosition
+                    cell.isSelected = (index == columnPosition)
                     cell
                 }
                 track
@@ -139,15 +139,6 @@ class AppViewModel @Inject constructor() : ViewModel() {
                 tracks.mapIndexed { columnPosition, newCell ->
                     if (columnPosition == cell.columnPosition) {
                         newCell.apply {
-                            playerThread = object : Thread() {
-                                override fun run() {
-                                    while (isPlaying) {
-                                        data.forEach {
-                                            track?.write(it, 0, 1024)
-                                        }
-                                    }
-                                }
-                            }
                             isPlaying = true
                             playerThread?.start()
                             track?.play()
