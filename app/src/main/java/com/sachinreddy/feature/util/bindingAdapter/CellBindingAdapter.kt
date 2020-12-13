@@ -1,13 +1,15 @@
-package com.sachinreddy.feature.util
+package com.sachinreddy.feature.util.bindingAdapter
 
 import android.graphics.Color
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.evrencoskun.tableview.TableView
+import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.table.ui.view.CellView
+import kotlinx.android.synthetic.main.cell_view.view.*
 
 @BindingAdapter("android:cells")
 fun setCells(tableView: TableView, cells: List<List<Cell>>) {
@@ -30,10 +32,9 @@ fun setSelected(constraintLayout: ConstraintLayout, isSelected: Boolean) {
     constraintLayout.setBackgroundColor(Color.parseColor(backgroundColor))
 }
 
-@BindingAdapter("android:onLongClick")
-fun setOnLongClickListener(cellView: CellView, func : () -> Unit) {
-    cellView.setOnLongClickListener {
-        func()
-        return@setOnLongClickListener true
-    }
+@BindingAdapter("android:isPlaying")
+fun setIsPlaying(cellView: CellView, isPlaying: Boolean) {
+    cellView.action_button.setImageResource(
+        if (isPlaying) R.drawable.ic_stop else R.drawable.ic_play
+    )
 }

@@ -1,4 +1,4 @@
-package com.sachinreddy.feature.util
+package com.sachinreddy.feature.util.bindingAdapter
 
 import androidx.databinding.BindingAdapter
 import com.evrencoskun.tableview.TableView

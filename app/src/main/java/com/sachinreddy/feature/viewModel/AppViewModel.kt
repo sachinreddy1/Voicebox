@@ -7,14 +7,11 @@ import androidx.lifecycle.ViewModel
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.ColumnHeader
 import com.sachinreddy.feature.data.table.RowHeader
-import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import javax.inject.Inject
 
 class AppViewModel @Inject constructor() : ViewModel() {
 
     var numberBars: Int = 8
-
-    lateinit var adapter: EditCellAdapter
 
     var startingCell: Cell? = null
     var selectedCells: MutableList<Cell> = mutableListOf()
@@ -136,5 +133,52 @@ class AppViewModel @Inject constructor() : ViewModel() {
 
     // ------------------------------------------------- //
 
+    fun playTrack(cell: Cell) {
+        val newCells = cells.value?.mapIndexed { rowPosition, tracks ->
+            if (rowPosition == cell.rowPosition) {
+                tracks.mapIndexed { columnPosition, newCell ->
+                    if (columnPosition == cell.columnPosition) {
+                        newCell.apply {
+                            playerThread = object : Thread() {
+                                override fun run() {
+                                    while (isPlaying) {
+                                        data.forEach {
+                                            track?.write(it, 0, 1024)
+                                        }
+                                    }
+                                }
+                            }
+                            isPlaying = true
+                            playerThread?.start()
+                            track?.play()
+                        }
+                    }
+                    newCell
+                }
+            }
+            tracks
+        }
 
+        cells.postValue(newCells)
+    }
+
+    fun stopTrack(cell: Cell) {
+        val newCells = cells.value?.mapIndexed { rowPosition, tracks ->
+            if (rowPosition == cell.rowPosition) {
+                tracks.mapIndexed { columnPosition, newCell ->
+                    if (columnPosition == cell.columnPosition) {
+                        newCell.apply {
+                            isPlaying = false
+                            track?.pause()
+                            playerThread?.join()
+                        }
+                    }
+                    newCell
+                }
+            }
+            tracks
+        }
+
+        cells.postValue(newCells)
+    }
 }

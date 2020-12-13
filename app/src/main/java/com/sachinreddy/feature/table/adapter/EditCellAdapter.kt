@@ -215,7 +215,7 @@ class EditCellAdapter @Inject constructor(
             for (j in i) {
                 j?.apply {
                     isSelected = false
-                    view?.setBackgroundColor(context.getColor(R.color.cardBackground))
+//                    view?.setBackgroundColor(context.getColor(R.color.cardBackground))
                 }
             }
         }

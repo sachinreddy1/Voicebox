@@ -43,6 +43,7 @@
                 app:cellColor="@color/colorPrimary"
                 app:buttonColor="@color/cardBackground"
                 android:data="@{cell.data}"
+                android:isPlaying="@{cell.playing}"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

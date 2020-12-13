@@ -40,6 +40,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var tableView: TableView
+    private lateinit var adapter: EditCellAdapter
 
     private val recorderThread = object : Thread() {
         override fun run() {
@@ -62,17 +63,17 @@ class HomeFragment : Fragment() {
 
         // Setting up tableView and adapter
         tableView = TableView(requireContext())
-        appViewModel.adapter = EditCellAdapter(
+        adapter = EditCellAdapter(
             requireContext(),
             appViewModel
         )
-        tableView.adapter = appViewModel.adapter
-        binding.contentContainer.adapter = appViewModel.adapter
+        tableView.adapter = adapter
+        binding.contentContainer.adapter = adapter
         binding.contentContainer.tableViewListener =
             EditCellListener(
                 requireContext(),
                 appViewModel,
-                appViewModel.adapter
+                adapter
             )
 
         binding.executePendingBindings()
@@ -157,7 +158,7 @@ class HomeFragment : Fragment() {
     private fun startRecording() {
         appViewModel.apply {
             for (cell in selectedCells) {
-                cell.stopTrack()
+                stopTrack(cell)
                 cell.data.clear()
             }
 
@@ -191,7 +192,7 @@ class HomeFragment : Fragment() {
 //                    content_container.isFrozen = true
                     appViewModel.isSelecting = true
                 }
-                appViewModel.adapter.notifyDataSetChanged()
+                adapter.notifyDataSetChanged()
             }
         }
         return true

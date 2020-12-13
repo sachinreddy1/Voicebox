@@ -35,14 +35,12 @@ class CellViewHolder(
             binding?.cell = value
 
             _cell?.let {cell ->
-                cell.cellButton = cell_button
-                cell.view = layout_cell
 
                 cell_button.setOnClickListener {
                     if (!cell.isPlaying)
-                        cell.playTrack()
+                        appViewModel.playTrack(cell)
                     else
-                        cell.stopTrack()
+                        appViewModel.stopTrack(cell)
                 }
 
                 // Long press for drag and drop
@@ -54,7 +52,7 @@ class CellViewHolder(
                             appViewModel.draggedCell = cell
                         }
 
-                        cell.stopTrack()
+                        appViewModel.stopTrack(cell)
                         val data = ClipData.newPlainText("", "")
                         val shadowBuilder = View.DragShadowBuilder(it)
                         it.startDragAndDrop(data, shadowBuilder, it, 0)
