@@ -1,6 +1,5 @@
 package com.sachinreddy.feature.util.bindingAdapter
 
-import android.content.ClipData
 import android.graphics.Color
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -41,15 +40,6 @@ fun setIsPlaying(cellView: CellView, isPlaying: Boolean) {
 }
 
 @BindingAdapter("android:onLongClick")
-fun setOnLongClick(cellView: CellView, func: () -> Unit) {
-    cellView.setOnLongClickListener {
-        func()
-
-        val data = ClipData.newPlainText("", "")
-        val shadowBuilder = View.DragShadowBuilder(it)
-        it.startDragAndDrop(data, shadowBuilder, it, 0)
-        it.visibility = View.INVISIBLE
-
-        true
-    }
+fun setOnLongClick(cellView: CellView, onLongClickListener: View.OnLongClickListener) {
+    cellView.setOnLongClickListener(onLongClickListener)
 }

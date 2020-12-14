@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="cell"
             type="com.sachinreddy.feature.data.table.Cell" />
@@ -42,7 +41,7 @@
 
                 android:data="@{cell.data}"
                 android:isPlaying="@{cell.playing}"
-                android:onLongClick="@{() -> vm.onEditCellLongClicked(cell)}"
+                android:onLongClick="@{(view) -> vm.onEditCellLongClicked(view, cell)}"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

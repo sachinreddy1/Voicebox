@@ -1,7 +1,9 @@
 package com.sachinreddy.feature.viewModel
 
+import android.content.ClipData
 import android.media.AudioManager
 import android.media.AudioRecord
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sachinreddy.feature.data.table.Cell
@@ -189,7 +191,7 @@ class AppViewModel @Inject constructor() : ViewModel() {
             playTrack(cell)
     }
 
-    fun onEditCellLongClicked(cell: Cell) {
+    fun onEditCellLongClicked(view: View, cell: Cell): Boolean {
         if (!isSelecting) {
 //            editCellAdapter.startScrollThread()
 
@@ -198,6 +200,11 @@ class AppViewModel @Inject constructor() : ViewModel() {
             }
 
             stopTrack(cell)
+            val data = ClipData.newPlainText("", "")
+            val shadowBuilder = View.DragShadowBuilder(view)
+            view.startDragAndDrop(data, shadowBuilder, view, 0)
+            view.visibility = View.INVISIBLE
         }
+        return false
     }
 }
