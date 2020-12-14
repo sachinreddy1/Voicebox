@@ -1,29 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="@dimen/cell_length"
-    android:layout_height="@dimen/cell_length"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cell_item"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:backgroundTint="@color/colorPrimary"
-        >
+    <data>
 
-        <ImageButton
-            android:id="@+id/action_button"
+        <variable
+            name="cell"
+            type="com.sachinreddy.feature.data.table.Cell" />
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+        <variable
+            name="vm"
+            type="com.sachinreddy.feature.viewModel.AppViewModel" />
+    </data>
 
-            android:src="@drawable/ic_play"
-            android:tint="@color/cardBackground"
-            android:background="#00000000"
-            />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/cell_length"
+        android:layout_height="@dimen/cell_length">
 
-    </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cell_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/colorPrimary">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageButton
+                android:id="@+id/action_button"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+
+                android:onClick="@{() -> vm.onClickCellButton(cell)}"
+
+                android:background="#00000000"
+                android:src="@drawable/ic_play"
+                android:tint="@color/cardBackground" />
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

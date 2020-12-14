@@ -188,4 +188,16 @@ class AppViewModel @Inject constructor() : ViewModel() {
         else
             playTrack(cell)
     }
+
+    fun onEditCellLongClicked(cell: Cell) {
+        if (!isSelecting) {
+//            editCellAdapter.startScrollThread()
+
+            if (draggedCell == null) {
+                draggedCell = cell
+            }
+
+            stopTrack(cell)
+        }
+    }
 }

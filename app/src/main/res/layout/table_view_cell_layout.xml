@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="cell"
             type="com.sachinreddy.feature.data.table.Cell" />
+
         <variable
             name="vm"
             type="com.sachinreddy.feature.viewModel.AppViewModel" />
@@ -39,9 +39,10 @@
 
                 app:cellColor="@color/colorPrimary"
                 app:buttonColor="@color/cardBackground"
+
                 android:data="@{cell.data}"
                 android:isPlaying="@{cell.playing}"
-                android:onCellButtonClicked="@{() -> vm.onClickCellButton(cell)}"
+                android:onLongClick="@{() -> vm.onEditCellLongClicked(cell)}"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
