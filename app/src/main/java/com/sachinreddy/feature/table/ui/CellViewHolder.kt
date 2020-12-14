@@ -28,48 +28,66 @@ class CellViewHolder(
     var cell: Cell?
         set(value) {
             _cell = value
+
             binding?.cell = value
             binding?.vm = appViewModel
 
-            _cell?.let { cell ->
-                // Long press for drag and drop
-                edit_cell.setOnLongClickListener {
-                    if (!appViewModel.isSelecting) {
-                        editCellAdapter.startScrollThread()
+            // TRANSLATION
+            edit_cell.setOnLongClickListener {
+                if (!appViewModel.isSelecting) {
+                    editCellAdapter.startScrollThread()
 
-                        if (appViewModel.draggedCell == null) {
-                            appViewModel.draggedCell = cell
-                        }
-
-                        appViewModel.stopTrack(cell)
-                        val data = ClipData.newPlainText("", "")
-                        val shadowBuilder = View.DragShadowBuilder(it)
-                        it.startDragAndDrop(data, shadowBuilder, it, 0)
-                        it.visibility = View.INVISIBLE
+                    if (appViewModel.draggedCell == null) {
+                        _cell?.let { appViewModel.draggedCell = it }
                     }
-                    true
+
+                    _cell?.let { appViewModel.stopTrack(it) }
+                    val data = ClipData.newPlainText("", "")
+                    val shadowBuilder = View.DragShadowBuilder(it)
+                    it.startDragAndDrop(data, shadowBuilder, it, 0)
+                    it.visibility = View.INVISIBLE
                 }
+                true
+            }
 
-                // Touch for selection
-                layout_cell.setOnTouchListener { v, event ->
-                    if (appViewModel.isSelecting) {
-                        appViewModel.startingCell = cell
+            // SELECTION
+            layout_cell.setOnTouchListener { v, event ->
+                if (appViewModel.isSelecting) {
+                    _cell?.let { appViewModel.startingCell = it }
 
-                        editCellAdapter.clearSelectedCells()
-                        editCellAdapter.startScrollThread()
-                        val data = ClipData.newPlainText("", "")
-                        val shadowBuilder = UtilDragShadowBuilder(v)
-                        v.startDragAndDrop(data, shadowBuilder, v, 0)
+                    editCellAdapter.clearSelectedCells()
+                    editCellAdapter.startScrollThread()
+                    val data = ClipData.newPlainText("", "")
+                    val shadowBuilder = UtilDragShadowBuilder(v)
+                    v.startDragAndDrop(data, shadowBuilder, v, 0)
+                }
+                true
+            }
+
+            // DRAG LISTENERS
+            layout_cell.apply {
+                if (appViewModel.isSelecting)
+                    _cell?.let {
+                        setOnDragListener(
+                            SelectionListener(
+                                context,
+                                editCellAdapter,
+                                appViewModel,
+                                it
+                            )
+                        )
                     }
-                    true
-                }
-
-                layout_cell.apply {
-                    if (appViewModel.isSelecting)
-                        setOnDragListener(SelectionListener(context, editCellAdapter, appViewModel, cell))
-                    else
-                        setOnDragListener(TranslationListener(context, editCellAdapter, appViewModel, cell))
-                }
+                else
+                    _cell?.let {
+                        setOnDragListener(
+                            TranslationListener(
+                                context,
+                                editCellAdapter,
+                                appViewModel,
+                                it
+                            )
+                        )
+                    }
             }
 
             binding?.executePendingBindings()
