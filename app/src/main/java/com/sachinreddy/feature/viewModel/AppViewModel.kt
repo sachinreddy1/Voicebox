@@ -181,4 +181,11 @@ class AppViewModel @Inject constructor() : ViewModel() {
 
         cells.postValue(newCells)
     }
+
+    fun onClickCellButton(cell: Cell) {
+        if (cell.isPlaying)
+            stopTrack(cell)
+        else
+            playTrack(cell)
+    }
 }

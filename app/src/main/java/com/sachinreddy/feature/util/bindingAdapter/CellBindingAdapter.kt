@@ -38,3 +38,11 @@ fun setIsPlaying(cellView: CellView, isPlaying: Boolean) {
         if (isPlaying) R.drawable.ic_stop else R.drawable.ic_play
     )
 }
+
+@BindingAdapter("android:onCellButtonClicked")
+fun setOnCellButtonClicked(cellView: CellView, func: () -> Unit) {
+    cellView.action_button.setOnClickListener {
+        func()
+        return@setOnClickListener
+    }
+}

@@ -1,9 +1,7 @@
 package com.sachinreddy.feature.table.ui
 
 import android.content.ClipData
-import android.content.Context
 import android.view.View
-import android.widget.ImageButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
@@ -19,11 +17,9 @@ import com.sachinreddy.feature.viewModel.AppViewModel
 
 class CellViewHolder(
     itemView: View,
-    private val context: Context,
     private val appViewModel: AppViewModel,
     private val editCellAdapter: EditCellAdapter
 ) : AbstractViewHolder(itemView) {
-    val cell_button: ImageButton = itemView.findViewById(R.id.action_button)
     val edit_cell: ConstraintLayout = itemView.findViewById(R.id.edit_cell)
     val layout_cell: ConstraintLayout = itemView.findViewById(R.id.layout_cell)
 
@@ -33,16 +29,9 @@ class CellViewHolder(
         set(value) {
             _cell = value
             binding?.cell = value
+            binding?.vm = appViewModel
 
-            _cell?.let {cell ->
-
-                cell_button.setOnClickListener {
-                    if (!cell.isPlaying)
-                        appViewModel.playTrack(cell)
-                    else
-                        appViewModel.stopTrack(cell)
-                }
-
+            _cell?.let { cell ->
                 // Long press for drag and drop
                 edit_cell.setOnLongClickListener {
                     if (!appViewModel.isSelecting) {
@@ -82,7 +71,6 @@ class CellViewHolder(
                         setOnDragListener(TranslationListener(context, editCellAdapter, appViewModel, cell))
                 }
             }
-
 
             binding?.executePendingBindings()
         }
