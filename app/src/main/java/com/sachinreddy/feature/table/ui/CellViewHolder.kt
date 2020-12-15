@@ -1,23 +1,20 @@
 package com.sachinreddy.feature.table.ui
 
+import android.content.Context
 import android.view.View
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
-import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.databinding.TableViewCellLayoutBinding
-import com.sachinreddy.feature.table.adapter.EditCellAdapter
+import com.sachinreddy.feature.table.listener.TranslationListener
 import com.sachinreddy.feature.viewModel.AppViewModel
 
 
 class CellViewHolder(
     itemView: View,
-    private val appViewModel: AppViewModel,
-    private val editCellAdapter: EditCellAdapter
+    val context: Context,
+    private val appViewModel: AppViewModel
 ) : AbstractViewHolder(itemView) {
-    val layout_cell: ConstraintLayout = itemView.findViewById(R.id.layout_cell)
-
     private var _cell: Cell? = null
 
     var cell: Cell?
@@ -32,6 +29,12 @@ class CellViewHolder(
                 binding.cell = value
             }
 
+            binding?.translationListener = TranslationListener(
+                context,
+                value!!,
+                appViewModel
+            )
+
             // SELECTION
 //            layout_cell.setOnTouchListener { v, event ->
 //                if (appViewModel.isSelecting) {
@@ -44,32 +47,6 @@ class CellViewHolder(
 //                    v.startDragAndDrop(data, shadowBuilder, v, 0)
 //                }
 //                true
-//            }
-
-            // DRAG LISTENERS
-//            layout_cell.apply {
-//                if (appViewModel.isSelecting)
-//                    _cell?.let {
-//                        setOnDragListener(
-//                            SelectionListener(
-//                                context,
-//                                editCellAdapter,
-//                                appViewModel,
-//                                it
-//                            )
-//                        )
-//                    }
-//                else
-//                    _cell?.let {
-//                        setOnDragListener(
-//                            TranslationListener(
-//                                context,
-//                                editCellAdapter,
-//                                appViewModel,
-//                                it
-//                            )
-//                        )
-//                    }
 //            }
 
             binding?.executePendingBindings()

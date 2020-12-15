@@ -8,6 +8,7 @@ import com.evrencoskun.tableview.TableView
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
+import com.sachinreddy.feature.table.listener.TranslationListener
 import com.sachinreddy.feature.table.ui.view.CellView
 import kotlinx.android.synthetic.main.cell_view.view.*
 
@@ -42,4 +43,12 @@ fun setIsPlaying(cellView: CellView, isPlaying: Boolean) {
 @BindingAdapter("android:onLongClick")
 fun setOnLongClick(cellView: CellView, onLongClickListener: View.OnLongClickListener) {
     cellView.setOnLongClickListener(onLongClickListener)
+}
+
+@BindingAdapter("android:translationListener")
+fun bindOnTranslationListener(
+    constraintLayout: ConstraintLayout,
+    translationListener: TranslationListener
+) {
+    constraintLayout.setOnDragListener(translationListener)
 }

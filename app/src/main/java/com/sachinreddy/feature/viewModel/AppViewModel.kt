@@ -100,7 +100,7 @@ class AppViewModel @Inject constructor() : ViewModel() {
         if (isSelecting) {
             val newCells = cells.value?.mapIndexed { index, track ->
                 if (index == rowPosition) {
-                    track.map {cell ->
+                    track.map { cell ->
                         cell.isSelected = true
                         cell
                     }
@@ -136,49 +136,33 @@ class AppViewModel @Inject constructor() : ViewModel() {
     // ------------------------------------------------- //
 
     fun playTrack(cell: Cell) {
-        val newCells = cells.value?.mapIndexed { rowPosition, tracks ->
-            if (rowPosition == cell.rowPosition) {
-                tracks.mapIndexed { columnPosition, newCell ->
-                    if (columnPosition == cell.columnPosition) {
-                        newCell.apply {
-                            playerThread = object : Thread() {
-                                override fun run() {
-                                    while (isPlaying) {
-                                        data.forEach {
-                                            track?.write(it, 0, 1024)
-                                        }
-                                    }
-                                }
-                            }
-                            isPlaying = true
-                            playerThread?.start()
-                            track?.play()
+        val newCells = cells.value.orEmpty()
+
+        newCells[cell.rowPosition][cell.columnPosition].apply {
+            playerThread = object : Thread() {
+                override fun run() {
+                    while (isPlaying) {
+                        data.forEach {
+                            track?.write(it, 0, 1024)
                         }
                     }
-                    newCell
                 }
             }
-            tracks
+            isPlaying = true
+            playerThread?.start()
+            track?.play()
         }
 
         cells.postValue(newCells)
     }
 
     fun stopTrack(cell: Cell) {
-        val newCells = cells.value?.mapIndexed { rowPosition, tracks ->
-            if (rowPosition == cell.rowPosition) {
-                tracks.mapIndexed { columnPosition, newCell ->
-                    if (columnPosition == cell.columnPosition) {
-                        newCell.apply {
-                            isPlaying = false
-                            track?.pause()
-                            playerThread?.join()
-                        }
-                    }
-                    newCell
-                }
-            }
-            tracks
+        val newCells = cells.value.orEmpty()
+
+        newCells[cell.rowPosition][cell.columnPosition].apply {
+            isPlaying = false
+            track?.pause()
+            playerThread?.join()
         }
 
         cells.postValue(newCells)
@@ -194,17 +178,29 @@ class AppViewModel @Inject constructor() : ViewModel() {
     fun onEditCellLongClicked(view: View, cell: Cell): Boolean {
         if (!isSelecting) {
 //            editCellAdapter.startScrollThread()
+//            stopTrack(cell)
 
             if (draggedCell == null) {
                 draggedCell = cell
             }
 
-            stopTrack(cell)
             val data = ClipData.newPlainText("", "")
             val shadowBuilder = View.DragShadowBuilder(view)
             view.startDragAndDrop(data, shadowBuilder, view, 0)
             view.visibility = View.INVISIBLE
         }
         return false
+    }
+
+    fun dropCell(cell: Cell) {
+        val newCells = cells.value.orEmpty()
+
+        draggedCell?.apply {
+            newCells[cell.rowPosition][cell.columnPosition].data = data
+            newCells[rowPosition][columnPosition].data = mutableListOf()
+        }
+
+        cells.postValue(newCells)
+        draggedCell = null
     }
 }
