@@ -18,17 +18,16 @@
         <com.evrencoskun.tableview.TableView
             android:id="@+id/content_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
 
             android:cells="@{vm.cells}"
             android:columnHeaders="@{vm.columnHeaders}"
             android:rowHeaders="@{vm.rowHeaders}"
 
             app:column_header_height="@dimen/column_header_height"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
 
             app:row_header_width="@dimen/row_header_width"
             app:separator_color="@color/colorPrimary"
