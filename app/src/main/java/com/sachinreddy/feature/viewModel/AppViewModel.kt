@@ -199,8 +199,10 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
         val newCells = cells.value.orEmpty()
 
         draggedCell?.apply {
-            newCells[cell.rowPosition][cell.columnPosition].data = data
-            newCells[rowPosition][columnPosition].data = mutableListOf()
+            if (this != cell) {
+                newCells[cell.rowPosition][cell.columnPosition].data = data
+                newCells[rowPosition][columnPosition].data = mutableListOf()
+            }
         }
 
         cells.postValue(newCells)
