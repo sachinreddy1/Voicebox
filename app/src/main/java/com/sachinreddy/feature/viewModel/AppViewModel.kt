@@ -20,7 +20,7 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
 
     var startingCell: Cell? = null
     var selectedCells: MutableList<Cell> = mutableListOf()
-    var draggedCell: Cell? = null
+    var draggedCell: MutableLiveData<Cell?> = MutableLiveData(null)
 
     var audioManager: AudioManager? = null
     var recorder: AudioRecord? = null
@@ -183,8 +183,8 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
 //            editCellAdapter.startScrollThread()
 //            stopTrack(cell)
 
-            if (draggedCell == null) {
-                draggedCell = cell
+            if (draggedCell.value == null) {
+                draggedCell.postValue(cell)
             }
 
             val data = ClipData.newPlainText("", "")
@@ -198,7 +198,7 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     fun dropCell(cell: Cell) {
         val newCells = cells.value.orEmpty()
 
-        draggedCell?.apply {
+        draggedCell.value?.apply {
             if (this != cell) {
                 newCells[cell.rowPosition][cell.columnPosition].data = data
                 newCells[rowPosition][columnPosition].data = mutableListOf()
@@ -206,7 +206,7 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
         }
 
         cells.postValue(newCells)
-        draggedCell = null
+        draggedCell.postValue(null)
     }
 
     fun toggleSelection(view: View) {

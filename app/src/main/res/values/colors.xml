@@ -18,4 +18,5 @@
     <color name="selection_color">#616161</color>
 
     <color name="operationBackground">#434F59</color>
+    <color name="transparent">#00000000</color>
 </resources>
