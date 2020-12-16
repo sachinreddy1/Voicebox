@@ -40,6 +40,7 @@
             android:layout_height="@dimen/operation_view_height"
 
             app:buttonCircleColor="@color/whitesmoke"
+            app:buttonImage="@drawable/ic_selection"
             android:onClick="@{(view) -> vm.toggleSelection(view)}"
 
             app:layout_constraintStart_toEndOf="@id/operation_add_button"

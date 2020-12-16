@@ -17,5 +17,6 @@
 
     <declare-styleable name="OperationButton">
         <attr name="buttonCircleColor" format="color" />
+        <attr name="buttonImage" format="reference" />
     </declare-styleable>
 </resources>
