@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.sachinreddy.feature.viewModel.AppViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/cell_length"
+        android:layout_height="@dimen/operation_view_height">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/button_circle"
+            android:layout_width="@dimen/operation_button_length"
+            android:layout_height="@dimen/operation_button_length"
+
+            android:background="@drawable/round_background_circle"
+            android:visibility="invisible"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <ImageView
+            android:id="@+id/button_icon"
+            android:layout_width="@dimen/operation_button_length"
+            android:layout_height="@dimen/operation_button_length"
+
+            android:src="@drawable/ic_selection"
+            app:tint="@color/whitesmoke"
+            android:padding="4dp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

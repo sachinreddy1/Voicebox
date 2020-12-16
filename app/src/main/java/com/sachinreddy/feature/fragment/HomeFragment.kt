@@ -8,6 +8,7 @@ import android.media.MediaRecorder
 import android.media.audiofx.AcousticEchoCanceler
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -175,25 +176,17 @@ class HomeFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_editor, menu)
+        inflater.inflate(R.menu.menu_home, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home ->
                 validNavController?.navigate(R.id.action_HomeFragment_to_ProfileFragment)
-            R.id.editor_actions -> {
-                if (appViewModel.isSelecting) {
-                    item.setIcon(R.drawable.ic_selection)
-//                    content_container.isFrozen = false
-                    appViewModel.isSelecting = false
-                } else {
-                    item.setIcon(R.drawable.ic_translation)
-//                    content_container.isFrozen = true
-                    appViewModel.isSelecting = true
-                }
-                adapter.notifyDataSetChanged()
-            }
+            R.id.action_reset ->
+                Toast.makeText(requireContext(), "RESETTING", Toast.LENGTH_SHORT).show()
+            R.id.action_download ->
+                Toast.makeText(requireContext(), "DOWNLOADING", Toast.LENGTH_SHORT).show()
         }
         return true
     }

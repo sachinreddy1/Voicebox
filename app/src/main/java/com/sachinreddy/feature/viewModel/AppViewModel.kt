@@ -1,17 +1,20 @@
 package com.sachinreddy.feature.viewModel
 
 import android.content.ClipData
+import android.content.Context
 import android.media.AudioManager
 import android.media.AudioRecord
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.ColumnHeader
 import com.sachinreddy.feature.data.table.RowHeader
+import kotlinx.android.synthetic.main.operation_button.view.*
 import javax.inject.Inject
 
-class AppViewModel @Inject constructor() : ViewModel() {
+class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
 
     var numberBars: Int = 8
 
@@ -202,5 +205,19 @@ class AppViewModel @Inject constructor() : ViewModel() {
 
         cells.postValue(newCells)
         draggedCell = null
+    }
+
+    fun toggleSelection(view: View) {
+        isSelecting = if (isSelecting) {
+            view.button_icon.setImageResource(R.drawable.ic_selection)
+            view.button_icon.imageTintList = context.getColorStateList(R.color.whitesmoke)
+            view.button_circle.visibility = View.INVISIBLE
+            false
+        } else {
+            view.button_icon.setImageResource(R.drawable.ic_translation)
+            view.button_icon.imageTintList = context.getColorStateList(R.color.operationBackground)
+            view.button_circle.visibility = View.VISIBLE
+            true
+        }
     }
 }

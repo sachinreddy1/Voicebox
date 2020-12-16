@@ -47,4 +47,6 @@
     <string name="edit_background">Edit background</string>
     <string name="add_artist">Add artist</string>
     <string name="editor_actions">Editor actions</string>
+    <string name="reset">Reset</string>
+    <string name="download">Download</string>
 </resources>

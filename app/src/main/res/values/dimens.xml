@@ -5,4 +5,5 @@
     <dimen name="cell_length">80dp</dimen>
     <dimen name="record_button_radius">28dp</dimen>
     <dimen name="operation_view_height">36dp</dimen>
+    <dimen name="operation_button_length">28dp</dimen>
 </resources>
