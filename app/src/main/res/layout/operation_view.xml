@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.sachinreddy.feature.viewModel.AppViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/operation_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@drawable/round_half_background"
+        android:backgroundTint="@color/instrumentBackground"
+
+        app:layout_constraintTop_toBottomOf="@id/content_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageButton
+            android:id="@+id/operation_add_button"
+            android:layout_width="@dimen/row_header_width"
+            android:layout_height="@dimen/column_header_height"
+
+            android:background="@drawable/round_corner_background"
+            android:backgroundTint="@color/colorPrimary"
+            android:src="@drawable/ic_add"
+
+            android:onClick="@{() -> vm.addTrack()}"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

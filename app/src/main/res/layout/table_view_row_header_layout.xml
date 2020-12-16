@@ -6,75 +6,38 @@
         <variable
             name="rowHeader"
             type="com.sachinreddy.feature.data.table.RowHeader" />
+
         <variable
             name="vm"
             type="com.sachinreddy.feature.viewModel.AppViewModel" />
+
         <variable
             name="view"
             type="android.view.View" />
     </data>
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:id="@+id/row_header_container"
+        android:layout_width="@dimen/cell_length"
+        android:layout_height="@dimen/cell_length"
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/row_header_container"
-            android:layout_width="@dimen/cell_length"
-            android:layout_height="@dimen/cell_length"
+        android:background="@color/instrumentBackground"
+        android:onClick="@{() -> vm.selectRow(rowHeader.rowPosition)}">
 
-            android:background="@color/instrumentBackground"
+        <ImageView
+            android:id="@+id/row_header_imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
 
-            android:onClick="@{() -> vm.selectRow(rowHeader.rowPosition)}"
+            android:gravity="center"
+            android:src="@drawable/piano"
 
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/row_header_imageView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="20dp"
-
-                android:gravity="center"
-                android:src="@drawable/piano"
-
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/row_header_button_container"
-            android:layout_width="@dimen/cell_length"
-            android:layout_height="wrap_content"
-
-            android:background="@color/colorBackground"
-            android:visibility="@{rowHeader.rowPosition == vm.rowHeaders.size() - 1? view.VISIBLE : view.GONE}"
-
-            app:layout_constraintEnd_toEndOf="@id/row_header_container"
-            app:layout_constraintStart_toStartOf="@id/row_header_container"
-            app:layout_constraintTop_toBottomOf="@id/row_header_container">
-
-            <ImageButton
-                android:id="@+id/row_header_button"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-
-                android:background="@drawable/round_half_background"
-                android:src="@drawable/ic_add"
-
-                android:onClick="@{() -> vm.addTrack()}"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

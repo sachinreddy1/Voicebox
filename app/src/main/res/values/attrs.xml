@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="CellView">
-        <attr name="cellColor" format="color"/>
-        <attr name="buttonColor" format="color"/>
+        <attr name="cellColor" format="color" />
+        <attr name="buttonColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="ColumnView">
-        <attr name="backgroundColor" format="color"/>
-        <attr name="barNumber" format="integer"/>
+        <attr name="backgroundColor" format="color" />
+        <attr name="barNumber" format="integer" />
     </declare-styleable>
 
-
+    <declare-styleable name="OperationView">
+        <attr name="operationBackgroundColor" format="color" />
+        <attr name="buttonBackgroundColor" format="color" />
+    </declare-styleable>
 </resources>
