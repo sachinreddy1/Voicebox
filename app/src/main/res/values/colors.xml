@@ -17,5 +17,5 @@
     <color name="editCellColor">#434F59</color>
     <color name="selection_color">#616161</color>
 
-    <color name="operationBackground">#2C2C2C</color>
+    <color name="operationBackground">#434F59</color>
 </resources>
