@@ -24,11 +24,6 @@ class CellViewHolder(
             binding?.cell = value
             binding?.vm = appViewModel
 
-            binding?.editCell?.apply {
-                binding.vm = appViewModel
-                binding.cell = value
-            }
-
             binding?.translationListener = TranslationListener(
                 context,
                 value!!,

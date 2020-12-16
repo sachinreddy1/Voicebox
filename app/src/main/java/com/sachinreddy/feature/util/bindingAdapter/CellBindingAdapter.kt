@@ -10,6 +10,7 @@ import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.table.listener.TranslationListener
 import com.sachinreddy.feature.table.ui.view.CellView
+import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.cell_view.view.*
 
 @BindingAdapter("android:cells")
@@ -38,6 +39,18 @@ fun setIsPlaying(cellView: CellView, isPlaying: Boolean) {
     cellView.action_button.setImageResource(
         if (isPlaying) R.drawable.ic_stop else R.drawable.ic_play
     )
+}
+
+@BindingAdapter(value = ["bind:cell", "bind:vm"], requireAll = true)
+fun bindVariables(
+    cellView: CellView,
+    cell: Cell,
+    vm: AppViewModel
+) {
+    cellView.binding.apply {
+        this.cell = cell
+        this.vm = vm
+    }
 }
 
 @BindingAdapter("android:onLongClick")

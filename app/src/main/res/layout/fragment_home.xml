@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
 
             android:vm="@{vm}"
-            app:operationBackgroundColor="@color/instrumentBackground"
+            app:operationBackgroundColor="@color/operationBackground"
             app:buttonBackgroundColor="@color/colorPrimary"
 
             app:layout_constraintTop_toBottomOf="@id/content_container"
