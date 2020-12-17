@@ -1,9 +1,6 @@
 package com.sachinreddy.feature.table.adapter
 
 import android.content.Context
-import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -158,18 +155,6 @@ class EditCellAdapter @Inject constructor(
     override fun getCellItemViewType(columnPosition: Int): Int = 0
 
     // ------------------------------------------------- //
-
-    fun vibrate(duration: Long, effect: Int) {
-        val v = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(
-                VibrationEffect.createOneShot(
-                    duration,
-                    effect
-                )
-            )
-        }
-    }
 
     fun clearSelectedCells() {
         appViewModel.selectedCells.clear()

@@ -4,7 +4,10 @@ import android.content.ClipData
 import android.content.Context
 import android.media.AudioManager
 import android.media.AudioRecord
+import android.os.Build
 import android.os.Handler
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -257,6 +260,18 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
                 }
                 Thread.sleep(12)
             }
+        }
+    }
+
+    fun vibrate(duration: Long, effect: Int) {
+        val v = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(
+                VibrationEffect.createOneShot(
+                    duration,
+                    effect
+                )
+            )
         }
     }
 }
