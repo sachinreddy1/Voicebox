@@ -17,7 +17,7 @@ import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.ColumnHeader
 import com.sachinreddy.feature.data.table.RowHeader
 import com.sachinreddy.feature.table.ui.shadow.UtilDragShadowBuilder
-import com.sachinreddy.feature.util.rangeTo
+import com.sachinreddy.feature.util.toward
 import kotlinx.android.synthetic.main.operation_button.view.*
 import kotlinx.android.synthetic.main.table_view_cell_layout.view.*
 import javax.inject.Inject
@@ -165,8 +165,8 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     fun selectCells(cell: Cell): List<List<Cell>> {
         val newCells = clearCellSelection()
         draggedCell.value?.apply {
-            for (i in rowPosition rangeTo cell.rowPosition) {
-                for (j in columnPosition rangeTo cell.columnPosition) {
+            for (i in rowPosition toward cell.rowPosition) {
+                for (j in columnPosition toward cell.columnPosition) {
                     newCells[i][j].isSelected = true
                     selectedCells.add(newCells[i][j])
                     val view =

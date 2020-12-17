@@ -9,9 +9,7 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false):
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 }
 
-infix fun Int.rangeTo(to: Int): List<Int> {
-    return if (this < to)
-        (this..to).toList()
-    else
-        (this downTo to).toList()
+infix fun Int.toward(to: Int): IntProgression {
+    val step = if (this > to) -1 else 1
+    return IntProgression.fromClosedRange(this, to, step)
 }
