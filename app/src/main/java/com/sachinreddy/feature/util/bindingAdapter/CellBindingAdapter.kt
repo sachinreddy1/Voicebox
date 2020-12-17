@@ -2,6 +2,7 @@ package com.sachinreddy.feature.util.bindingAdapter
 
 import android.graphics.Color
 import android.view.View
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.evrencoskun.tableview.TableView
@@ -39,6 +40,14 @@ fun setIsPlaying(cellView: CellView, isPlaying: Boolean) {
     cellView.action_button.setImageResource(
         if (isPlaying) R.drawable.ic_stop else R.drawable.ic_play
     )
+}
+
+@BindingAdapter("android:number")
+fun bindNumber(
+    textView: TextView,
+    value: Int
+) {
+    textView.text = value.toString()
 }
 
 @BindingAdapter(value = ["bind:cell", "bind:vm"], requireAll = true)
