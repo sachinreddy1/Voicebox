@@ -153,18 +153,4 @@ class EditCellAdapter @Inject constructor(
     override fun getRowHeaderItemViewType(rowPosition: Int): Int = 0
 
     override fun getCellItemViewType(columnPosition: Int): Int = 0
-
-    // ------------------------------------------------- //
-
-    fun clearSelectedCells() {
-        appViewModel.selectedCells.clear()
-        for (i in mCellItems) {
-            for (j in i) {
-                j?.apply {
-                    isSelected = false
-//                    view?.setBackgroundColor(context.getColor(R.color.cardBackground))
-                }
-            }
-        }
-    }
 }

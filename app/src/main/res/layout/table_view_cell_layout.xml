@@ -16,6 +16,10 @@
         <variable
             name="translationListener"
             type="com.sachinreddy.feature.table.listener.TranslationListener" />
+
+        <variable
+            name="selectionListener"
+            type="com.sachinreddy.feature.table.listener.SelectionListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,10 +30,13 @@
             android:id="@+id/layout_cell"
             android:layout_width="@dimen/cell_length"
             android:layout_height="@dimen/cell_length"
-
             android:background="@color/cardBackground"
+
             android:isSelected="@{cell.selected}"
+            android:isSelecting="@{vm.selecting}"
             android:translationListener="@{translationListener}"
+            android:selectionListener="@{selectionListener}"
+            android:onTouch="@{(view, event) -> vm.onLayoutCellTouched(view, cell)}"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

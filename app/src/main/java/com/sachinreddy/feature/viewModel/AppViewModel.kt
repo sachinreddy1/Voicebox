@@ -16,7 +16,10 @@ import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.ColumnHeader
 import com.sachinreddy.feature.data.table.RowHeader
+import com.sachinreddy.feature.table.ui.shadow.UtilDragShadowBuilder
+import com.sachinreddy.feature.util.rangeTo
 import kotlinx.android.synthetic.main.operation_button.view.*
+import kotlinx.android.synthetic.main.table_view_cell_layout.view.*
 import javax.inject.Inject
 
 class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
@@ -30,7 +33,6 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     private var scrollThread: Thread? = null
     private var scrollHandler: Handler = Handler()
 
-    var startingCell: Cell? = null
     var selectedCells: MutableList<Cell> = mutableListOf()
     var draggedCell: MutableLiveData<Cell?> = MutableLiveData(null)
 
@@ -130,8 +132,6 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
         }
     }
 
-    // ------------------------------------------------- //
-
     fun selectColumn(columnPosition: Int) {
         if (isSelecting) {
             val newCells = cells.value?.map { track ->
@@ -144,6 +144,40 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
 
             cells.postValue(newCells)
         }
+    }
+
+    fun clearCellSelection(): List<List<Cell>> {
+        selectedCells.clear()
+        return cells.value.orEmpty().mapIndexed { rowPosition, track ->
+            track.mapIndexed { columnPosition, cell ->
+                val view = tableView.cellLayoutManager.getCellViewHolder(
+                    columnPosition,
+                    rowPosition
+                )?.itemView?.layout_cell
+                view?.setBackgroundColor(context.getColor(R.color.cardBackground))
+                cell.isSelected = false
+                cell
+            }
+            track
+        }
+    }
+
+    fun selectCells(cell: Cell): List<List<Cell>> {
+        val newCells = clearCellSelection()
+
+        draggedCell.value?.apply {
+            for (i in rowPosition rangeTo cell.rowPosition) {
+                for (j in columnPosition rangeTo cell.columnPosition) {
+                    newCells[i][j].isSelected = true
+                    val view =
+                        tableView.cellLayoutManager.getCellViewHolder(j, i)?.itemView?.layout_cell
+                    view?.setBackgroundColor(context.getColor(R.color.selection_color))
+                    selectedCells.add(newCells[j][i])
+                }
+            }
+        }
+
+        return newCells
     }
 
     // ------------------------------------------------- //
@@ -204,6 +238,17 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
         return false
     }
 
+    fun onLayoutCellTouched(view: View, cell: Cell): Boolean {
+        if (isSelecting) {
+            draggedCell.postValue(cell)
+
+            val data = ClipData.newPlainText("", "")
+            val shadowBuilder = UtilDragShadowBuilder(view)
+            view.startDragAndDrop(data, shadowBuilder, view, 0)
+        }
+        return false
+    }
+
     fun dropCell(cell: Cell) {
         val newCells = cells.value.orEmpty()
 
@@ -232,6 +277,8 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
             view.button_circle.visibility = View.VISIBLE
             true
         }
+
+        tableView.adapter?.notifyDataSetChanged()
     }
 
     // ------------------------------------------------- //

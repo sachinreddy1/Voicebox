@@ -9,6 +9,7 @@ import com.evrencoskun.tableview.TableView
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
+import com.sachinreddy.feature.table.listener.SelectionListener
 import com.sachinreddy.feature.table.listener.TranslationListener
 import com.sachinreddy.feature.table.ui.view.CellView
 import com.sachinreddy.feature.viewModel.AppViewModel
@@ -67,10 +68,20 @@ fun setOnLongClick(cellView: CellView, onLongClickListener: View.OnLongClickList
     cellView.setOnLongClickListener(onLongClickListener)
 }
 
-@BindingAdapter("android:translationListener")
+@BindingAdapter("android:onTouch")
+fun setOnTouch(cellView: CellView, onTouchListener: View.OnTouchListener) {
+    cellView.setOnTouchListener(onTouchListener)
+}
+
+@BindingAdapter(
+    value = ["android:isSelecting", "android:translationListener", "android:selectionListener"],
+    requireAll = true
+)
 fun bindOnTranslationListener(
     constraintLayout: ConstraintLayout,
-    translationListener: TranslationListener
+    isSelecting: Boolean,
+    translationListener: TranslationListener,
+    selectionListener: SelectionListener
 ) {
-    constraintLayout.setOnDragListener(translationListener)
+    constraintLayout.setOnDragListener(if (isSelecting) selectionListener else translationListener)
 }

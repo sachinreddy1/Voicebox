@@ -6,9 +6,9 @@ import androidx.databinding.DataBindingUtil
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.databinding.TableViewCellLayoutBinding
+import com.sachinreddy.feature.table.listener.SelectionListener
 import com.sachinreddy.feature.table.listener.TranslationListener
 import com.sachinreddy.feature.viewModel.AppViewModel
-
 
 class CellViewHolder(
     itemView: View,
@@ -19,30 +19,21 @@ class CellViewHolder(
 
     var cell: Cell?
         set(value) {
-            _cell = value
+            _cell = value!!
 
             binding?.cell = value
             binding?.vm = appViewModel
 
             binding?.translationListener = TranslationListener(
                 context,
-                value!!,
+                value,
                 appViewModel
             )
 
-            // SELECTION
-//            layout_cell.setOnTouchListener { v, event ->
-//                if (appViewModel.isSelecting) {
-//                    _cell?.let { appViewModel.startingCell = it }
-//
-//                    editCellAdapter.clearSelectedCells()
-//                    editCellAdapter.startScrollThread()
-//                    val data = ClipData.newPlainText("", "")
-//                    val shadowBuilder = UtilDragShadowBuilder(v)
-//                    v.startDragAndDrop(data, shadowBuilder, v, 0)
-//                }
-//                true
-//            }
+            binding?.selectionListener = SelectionListener(
+                value,
+                appViewModel
+            )
 
             binding?.executePendingBindings()
         }
