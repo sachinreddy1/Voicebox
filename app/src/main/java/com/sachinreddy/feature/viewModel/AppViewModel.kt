@@ -21,15 +21,17 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     var numberBars: Int = 8
 
     lateinit var tableView: TableView
+    var audioManager: AudioManager? = null
+    var recorder: AudioRecord? = null
+
+    private var scrollThread: Thread? = null
+    private var scrollHandler: Handler = Handler()
 
     var startingCell: Cell? = null
     var selectedCells: MutableList<Cell> = mutableListOf()
     var draggedCell: MutableLiveData<Cell?> = MutableLiveData(null)
 
-    var audioManager: AudioManager? = null
-    var recorder: AudioRecord? = null
-
-    var isRecording = false
+    var isRecording: Boolean = false
     var isSelecting: Boolean = false
     var isScrolling: Boolean = false
 
@@ -185,7 +187,6 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
 
     fun onEditCellLongClicked(view: View, cell: Cell): Boolean {
         if (!isSelecting) {
-//            editCellAdapter.startScrollThread()
 //            stopTrack(cell)
 
             if (draggedCell.value == null) {
@@ -231,9 +232,6 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     }
 
     // ------------------------------------------------- //
-
-    private var scrollThread: Thread? = null
-    private var scrollHandler: Handler = Handler()
 
     fun startScrolling(right: Boolean) {
         isScrolling = true

@@ -35,7 +35,6 @@
             app:show_vertical_separator="false" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/left_threshold"
             android:layout_width="@dimen/scroll_view_left"
             android:layout_height="0dp"
             android:background="@color/transparent"
@@ -49,7 +48,6 @@
             app:layout_constraintBottom_toBottomOf="@id/content_container" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/right_threshold"
             android:layout_width="@dimen/scroll_view_right"
             android:layout_height="0dp"
             android:background="@color/transparent"

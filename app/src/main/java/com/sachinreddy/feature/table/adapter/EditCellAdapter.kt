@@ -24,7 +24,6 @@ class EditCellAdapter @Inject constructor(
     val context: Context,
     private val appViewModel: AppViewModel
 ) : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?>() {
-
     var cells: List<List<Cell>> = listOf()
         set(value) {
             val diff = DiffUtil.calculateDiff(
