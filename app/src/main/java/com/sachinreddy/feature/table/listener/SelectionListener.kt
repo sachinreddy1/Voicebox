@@ -49,12 +49,6 @@ class SelectionListener(
                     }
                 }
 
-                editCellAdapter.apply {
-                    if (!isScrolling) {
-                        notifyDataSetChanged()
-                    }
-                }
-
                 true
             }
             DragEvent.ACTION_DRAG_EXITED -> {
@@ -68,17 +62,13 @@ class SelectionListener(
                 true
             }
             DragEvent.ACTION_DRAG_ENDED -> {
-                editCellAdapter.apply {
-                    stopScrollThread()
-                    if (!isScrolling) {
-                        notifyDataSetChanged()
-                    }
-                }
+//                editCellAdapter.apply {
+//                    stopScrollThread()
+//                }
                 true
             }
             DragEvent.ACTION_DRAG_LOCATION -> {
                 val touchPosition = getTouchPositionFromDragEvent(v, event)
-                editCellAdapter.xPosition = touchPosition.x
                 false
             }
             else -> true

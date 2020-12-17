@@ -22,7 +22,6 @@ import com.sachinreddy.feature.databinding.FragmentHomeBinding
 import com.sachinreddy.feature.injection.appComponent
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.table.listener.EditCellListener
-import com.sachinreddy.feature.table.listener.ScrollingListener
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.activity_app.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -78,7 +77,7 @@ class HomeFragment : Fragment() {
                 adapter
             )
 
-        binding.scrollingListener = ScrollingListener(requireContext(), appViewModel)
+        appViewModel.tableView = binding.contentContainer
 
         binding.executePendingBindings()
         return binding.root

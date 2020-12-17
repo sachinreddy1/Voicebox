@@ -4,14 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="vm"
             type="com.sachinreddy.feature.viewModel.AppViewModel" />
-
-        <variable
-            name="scrollingListener"
-            type="com.sachinreddy.feature.table.listener.ScrollingListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,13 +35,28 @@
             app:show_vertical_separator="false" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/right_threshold"
-            android:layout_width="@dimen/operation_scroll_view"
+            android:id="@+id/left_threshold"
+            android:layout_width="@dimen/scroll_view_left"
             android:layout_height="0dp"
-
             android:background="@color/transparent"
+
             android:draggedCell="@{vm.draggedCell}"
-            android:scrollingListener="@{scrollingListener}"
+            android:vm="@{vm}"
+            android:right="@{false}"
+
+            app:layout_constraintTop_toTopOf="@id/content_container"
+            app:layout_constraintStart_toStartOf="@id/content_container"
+            app:layout_constraintBottom_toBottomOf="@id/content_container" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/right_threshold"
+            android:layout_width="@dimen/scroll_view_right"
+            android:layout_height="0dp"
+            android:background="@color/transparent"
+
+            android:draggedCell="@{vm.draggedCell}"
+            android:vm="@{vm}"
+            android:right="@{true}"
 
             app:layout_constraintTop_toTopOf="@id/content_container"
             app:layout_constraintEnd_toEndOf="@id/content_container"

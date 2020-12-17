@@ -25,67 +25,75 @@ class EditCellAdapter @Inject constructor(
     private val appViewModel: AppViewModel
 ) : AbstractTableAdapter<ColumnHeader?, RowHeader?, Cell?>() {
 
-    var xPosition: Int = 0
-    var isDragging: Boolean = false
-    var isScrolling: Boolean = false
-    private var scrollThread: Thread? = null
-
-    // ------------------------------------------------- //
-
-    var cells : List<List<Cell>> = listOf()
+    var cells: List<List<Cell>> = listOf()
         set(value) {
             val diff = DiffUtil.calculateDiff(
                 CellDiffCallback(
                     cells,
                     value
-                ), true)
+                ), true
+            )
             field = value
             diff.dispatchUpdatesTo(cellRecyclerViewAdapter)
         }
 
-    var rowHeaders : List<RowHeader> = listOf()
+    var rowHeaders: List<RowHeader> = listOf()
         set(value) {
             val diff = DiffUtil.calculateDiff(
                 RowHeaderDiffCallback(
                     rowHeaders,
                     value
-                ), true)
+                ), true
+            )
             field = value
             diff.dispatchUpdatesTo(rowHeaderRecyclerViewAdapter)
         }
 
-    var columnHeaders : List<ColumnHeader> = listOf()
+    var columnHeaders: List<ColumnHeader> = listOf()
         set(value) {
             val diff = DiffUtil.calculateDiff(
                 ColumnHeaderDiffCallback(
                     columnHeaders,
                     value
-                ), true)
+                ), true
+            )
             field = value
             diff.dispatchUpdatesTo(columnHeaderRecyclerViewAdapter)
         }
 
     // ------------------------------------------------- //
 
-    class CellDiffCallback(val old: List<List<Cell>>, val updated: List<List<Cell>>): DiffUtil.Callback() {
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = old[oldItemPosition].containsAll(updated[newItemPosition])
+    class CellDiffCallback(val old: List<List<Cell>>, val updated: List<List<Cell>>) :
+        DiffUtil.Callback() {
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            old[oldItemPosition].containsAll(updated[newItemPosition])
+
         override fun getOldListSize(): Int = old.size
         override fun getNewListSize(): Int = updated.size
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = old[oldItemPosition] == updated[newItemPosition]
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            old[oldItemPosition] == updated[newItemPosition]
     }
 
-    class RowHeaderDiffCallback(val old: List<RowHeader>, val updated: List<RowHeader>): DiffUtil.Callback() {
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = old[oldItemPosition] == updated[newItemPosition]
+    class RowHeaderDiffCallback(val old: List<RowHeader>, val updated: List<RowHeader>) :
+        DiffUtil.Callback() {
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            old[oldItemPosition] == updated[newItemPosition]
+
         override fun getOldListSize(): Int = old.size
         override fun getNewListSize(): Int = updated.size
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = old[oldItemPosition] == updated[newItemPosition]
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            old[oldItemPosition] == updated[newItemPosition]
     }
 
-    class ColumnHeaderDiffCallback(val old: List<ColumnHeader>, val updated: List<ColumnHeader>): DiffUtil.Callback() {
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = old[oldItemPosition] == updated[newItemPosition]
+    class ColumnHeaderDiffCallback(val old: List<ColumnHeader>, val updated: List<ColumnHeader>) :
+        DiffUtil.Callback() {
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            old[oldItemPosition] == updated[newItemPosition]
+
         override fun getOldListSize(): Int = old.size
         override fun getNewListSize(): Int = updated.size
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = old[oldItemPosition] == updated[newItemPosition]
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            old[oldItemPosition] == updated[newItemPosition]
     }
 
     // ------------------------------------------------- //
@@ -162,50 +170,6 @@ class EditCellAdapter @Inject constructor(
                 )
             )
         }
-    }
-
-    fun startScrollThread() {
-        val coordinates = IntArray(2)
-        tableView.cellRecyclerView.getLocationOnScreen(coordinates)
-
-        stopScrollThread()
-
-        val threshold = 100
-        val minWidth = coordinates.first()
-        val maxWidth = minWidth + tableView.cellRecyclerView.width
-        xPosition = tableView.cellRecyclerView.width/2
-
-        scrollThread = object : Thread() {
-            override fun run() {
-                while (isDragging) {
-                    if (xPosition > maxWidth - threshold) {
-                        isScrolling = true
-                        tableView.columnHeaderRecyclerView.scrollBy(10, 0)
-                        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.forEach {
-                            it?.scrollBy(10, 0)
-                        }
-                    } else if (xPosition < minWidth + threshold) {
-                        isScrolling = true
-                        tableView.columnHeaderRecyclerView.scrollBy(-10, 0)
-                        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.forEach {
-                            it?.scrollBy(-10, 0)
-                        }
-                    } else {
-                        isScrolling = false
-                    }
-                    sleep(10)
-                }
-            }
-        }
-
-        isDragging = true
-        scrollThread?.start()
-    }
-
-    fun stopScrollThread() {
-        isDragging = false
-        scrollThread?.join()
-        scrollThread = null
     }
 
     fun clearSelectedCells() {

@@ -18,10 +18,11 @@ fun setDragging(constraintLayout: ConstraintLayout, cell: Cell?) {
     constraintLayout.visibility = if (cell != null) View.VISIBLE else View.GONE
 }
 
-@BindingAdapter("android:scrollingListener")
+@BindingAdapter(value = ["android:vm", "android:right"], requireAll = true)
 fun bindOnScrollingListener(
     constraintLayout: ConstraintLayout,
-    scrollingListener: ScrollingListener
+    appViewModel: AppViewModel,
+    right: Boolean
 ) {
-    constraintLayout.setOnDragListener(scrollingListener)
+    constraintLayout.setOnDragListener(ScrollingListener(appViewModel, right))
 }

@@ -4,9 +4,11 @@ import android.content.ClipData
 import android.content.Context
 import android.media.AudioManager
 import android.media.AudioRecord
+import android.os.Handler
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.evrencoskun.tableview.TableView
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.ColumnHeader
@@ -18,6 +20,8 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
 
     var numberBars: Int = 8
 
+    lateinit var tableView: TableView
+
     var startingCell: Cell? = null
     var selectedCells: MutableList<Cell> = mutableListOf()
     var draggedCell: MutableLiveData<Cell?> = MutableLiveData(null)
@@ -27,6 +31,7 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
 
     var isRecording = false
     var isSelecting: Boolean = false
+    var isScrolling: Boolean = false
 
     // ------------------------------------------------- //
 
@@ -209,6 +214,8 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
         draggedCell.postValue(null)
     }
 
+    // ------------------------------------------------- //
+
     fun toggleSelection(view: View) {
         isSelecting = if (isSelecting) {
             view.button_icon.setImageResource(R.drawable.ic_selection)
@@ -220,6 +227,38 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
             view.button_icon.imageTintList = context.getColorStateList(R.color.operationBackground)
             view.button_circle.visibility = View.VISIBLE
             true
+        }
+    }
+
+    // ------------------------------------------------- //
+
+    private var scrollThread: Thread? = null
+    private var scrollHandler: Handler = Handler()
+
+    fun startScrolling(right: Boolean) {
+        isScrolling = true
+        scrollThread = Thread(Runner(right))
+        scrollThread?.start()
+    }
+
+    fun stopScrolling() {
+        isScrolling = false
+        scrollThread?.join()
+        scrollThread = null
+    }
+
+    private inner class Runner(right: Boolean) : Runnable {
+        val translationValue = if (right) 10 else -10
+        override fun run() {
+            while (isScrolling) {
+                scrollHandler.post {
+                    tableView.columnHeaderRecyclerView.scrollBy(translationValue, 0)
+                    tableView.cellLayoutManager.visibleCellRowRecyclerViews?.forEach {
+                        it?.scrollBy(translationValue, 0)
+                    }
+                }
+                Thread.sleep(12)
+            }
         }
     }
 }
