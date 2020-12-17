@@ -164,15 +164,14 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
 
     fun selectCells(cell: Cell): List<List<Cell>> {
         val newCells = clearCellSelection()
-
         draggedCell.value?.apply {
             for (i in rowPosition rangeTo cell.rowPosition) {
                 for (j in columnPosition rangeTo cell.columnPosition) {
                     newCells[i][j].isSelected = true
+                    selectedCells.add(newCells[i][j])
                     val view =
                         tableView.cellLayoutManager.getCellViewHolder(j, i)?.itemView?.layout_cell
                     view?.setBackgroundColor(context.getColor(R.color.selection_color))
-                    selectedCells.add(newCells[j][i])
                 }
             }
         }
