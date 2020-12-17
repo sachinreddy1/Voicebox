@@ -3,13 +3,9 @@ package com.sachinreddy.feature.table.listener
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import com.evrencoskun.tableview.listener.ITableViewListener
-import com.sachinreddy.feature.table.adapter.EditCellAdapter
-import com.sachinreddy.feature.viewModel.AppViewModel
 
 class EditCellListener(
-    val context: Context,
-    val appViewModel: AppViewModel,
-    private val editCellAdapter: EditCellAdapter
+    val context: Context
 ) : ITableViewListener {
     override fun onCellClicked(
         cellView: RecyclerView.ViewHolder,

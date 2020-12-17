@@ -16,7 +16,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.emrekose.recordbutton.OnRecordListener
-import com.evrencoskun.tableview.TableView
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.databinding.FragmentHomeBinding
 import com.sachinreddy.feature.injection.appComponent
@@ -38,10 +37,7 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var appViewModel: AppViewModel
-
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var tableView: TableView
-    private lateinit var adapter: EditCellAdapter
 
     private val recorderThread = object : Thread() {
         override fun run() {
@@ -62,22 +58,14 @@ class HomeFragment : Fragment() {
             appViewModel = it
         }
 
-        // Setting up tableView and adapter
-        tableView = TableView(requireContext())
-        adapter = EditCellAdapter(
-            requireContext(),
-            appViewModel
-        )
-        tableView.adapter = adapter
-        binding.contentContainer.adapter = adapter
-        binding.contentContainer.tableViewListener =
-            EditCellListener(
+        binding.contentContainer.apply {
+            this.adapter = EditCellAdapter(
                 requireContext(),
-                appViewModel,
-                adapter
+                appViewModel
             )
-
-        appViewModel.tableView = binding.contentContainer
+            this.tableViewListener = EditCellListener(requireContext())
+            appViewModel.tableView = this
+        }
 
         binding.executePendingBindings()
         return binding.root
