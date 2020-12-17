@@ -20,6 +20,7 @@ class ScrollingListener(
                 true
             }
             DragEvent.ACTION_DROP -> {
+                appViewModel.draggedCell.value?.let { appViewModel.dropCell(it) }
                 appViewModel.stopScrolling()
                 true
             }
