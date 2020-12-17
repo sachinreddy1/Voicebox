@@ -25,6 +25,7 @@ class ScrollingListener(
                 true
             }
             DragEvent.ACTION_DRAG_ENDED -> {
+                appViewModel.draggedCell.value?.let { appViewModel.dropCell(it) }
                 appViewModel.stopScrolling()
                 true
             }

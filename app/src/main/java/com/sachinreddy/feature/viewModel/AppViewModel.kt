@@ -258,7 +258,7 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
                         it?.scrollBy(translationValue, 0)
                     }
                 }
-                Thread.sleep(12)
+                Thread.sleep(14)
             }
         }
     }
