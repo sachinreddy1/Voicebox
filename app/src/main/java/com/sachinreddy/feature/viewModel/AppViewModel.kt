@@ -253,9 +253,10 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
         override fun run() {
             while (isScrolling) {
                 scrollHandler.post {
-                    tableView.columnHeaderRecyclerView.scrollBy(translationValue, 0)
-                    tableView.cellLayoutManager.visibleCellRowRecyclerViews?.forEach {
-                        it?.scrollBy(translationValue, 0)
+                    tableView.columnHeaderRecyclerView.scrollBy(translationValue, 0).also {
+                        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.forEach {
+                            it?.scrollBy(translationValue, 0)
+                        }
                     }
                 }
                 Thread.sleep(14)
