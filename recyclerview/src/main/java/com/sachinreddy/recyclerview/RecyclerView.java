@@ -205,7 +205,7 @@ import static androidx.core.view.ViewCompat.TYPE_TOUCH;
  * <a href="https://developer.android.com/topic/libraries/architecture/paging/">library
  * documentation</a>.
  * <p>
- * {@link androidx.recyclerview.R.attr#layoutManager}
+ * {@link com.sachinreddy.recyclerview.R.attr#layoutManager}
  */
 public class RecyclerView extends ViewGroup implements ScrollingView,
         NestedScrollingChild2, NestedScrollingChild3 {

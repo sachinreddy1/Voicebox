@@ -176,8 +176,8 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
      * "layoutManager". Defaults to vertical orientation.
      * <p>
      * {@link android.R.attr#orientation}
-     * {@link androidx.recyclerview.R.attr#reverseLayout}
-     * {@link androidx.recyclerview.R.attr#stackFromEnd}
+     * {@link com.sachinreddy.recyclerview.R.attr#reverseLayout}
+     * {@link com.sachinreddy.recyclerview.R.attr#stackFromEnd}
      */
     public LinearLayoutManager(Context context, AttributeSet attrs, int defStyleAttr,
                                int defStyleRes) {

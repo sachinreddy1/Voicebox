@@ -24,10 +24,10 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 /**
- * Configuration object for {@link ListAdapter}, {@link androidx.recyclerview.widget.AsyncListDiffer}, and similar
+ * Configuration object for {@link ListAdapter}, {@link com.sachinreddy.recyclerview.AsyncListDiffer}, and similar
  * background-thread list diffing adapter logic.
  * <p>
- * At minimum, defines item diffing behavior with a {@link androidx.recyclerview.widget.DiffUtil.ItemCallback}, used to compute
+ * At minimum, defines item diffing behavior with a {@link com.sachinreddy.recyclerview.DiffUtil.ItemCallback}, used to compute
  * item differences to pass to a RecyclerView adapter.
  *
  * @param <T> Type of items in the lists, and being compared.
@@ -73,7 +73,7 @@ public final class AsyncDifferConfig<T> {
     }
 
     /**
-     * Builder class for {@link androidx.recyclerview.widget.AsyncDifferConfig}.
+     * Builder class for {@link com.sachinreddy.recyclerview.AsyncDifferConfig}.
      *
      * @param <T>
      */
