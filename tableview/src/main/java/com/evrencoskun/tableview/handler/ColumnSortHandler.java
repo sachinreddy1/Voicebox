@@ -19,7 +19,6 @@ package com.evrencoskun.tableview.handler;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DiffUtil;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
@@ -34,6 +33,7 @@ import com.evrencoskun.tableview.sort.RowHeaderForCellSortComparator;
 import com.evrencoskun.tableview.sort.RowHeaderSortCallback;
 import com.evrencoskun.tableview.sort.RowHeaderSortComparator;
 import com.evrencoskun.tableview.sort.SortState;
+import com.sachinreddy.recyclerview.DiffUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

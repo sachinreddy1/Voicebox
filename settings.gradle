@@ -1,3 +1,4 @@
+include ':recyclerview'
 include ':tableview'
 rootProject.name='Feature'
 include ':app'

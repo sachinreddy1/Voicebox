@@ -19,7 +19,8 @@ package com.evrencoskun.tableview.sort;
 
 import androidx.annotation.NonNull;
 import androidx.core.util.ObjectsCompat;
-import androidx.recyclerview.widget.DiffUtil;
+
+import com.sachinreddy.recyclerview.DiffUtil;
 
 import java.util.List;
 

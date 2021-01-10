@@ -20,13 +20,13 @@ package com.evrencoskun.tableview.handler;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnLayoutManager;
+import com.sachinreddy.recyclerview.LinearLayoutManager;
+import com.sachinreddy.recyclerview.RecyclerView;
 
 /**
  * Created by evrencoskun on 13.01.2018.

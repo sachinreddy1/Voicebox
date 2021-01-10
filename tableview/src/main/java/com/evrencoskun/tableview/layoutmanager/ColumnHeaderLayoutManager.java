@@ -23,11 +23,11 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.util.TableViewUtils;
+import com.sachinreddy.recyclerview.LinearLayoutManager;
 
 /**
  * Created by evrencoskun on 30/07/2017.

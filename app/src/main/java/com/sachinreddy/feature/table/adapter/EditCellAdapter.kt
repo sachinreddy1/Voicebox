@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.sachinreddy.feature.R
@@ -15,6 +14,7 @@ import com.sachinreddy.feature.table.ui.CellViewHolder
 import com.sachinreddy.feature.table.ui.ColumnHeaderViewHolder
 import com.sachinreddy.feature.table.ui.RowHeaderViewHolder
 import com.sachinreddy.feature.viewModel.AppViewModel
+import com.sachinreddy.recyclerview.DiffUtil
 import javax.inject.Inject
 
 class EditCellAdapter @Inject constructor(

@@ -1,8 +1,8 @@
 package com.sachinreddy.feature.table.listener
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
 import com.evrencoskun.tableview.listener.ITableViewListener
+import com.sachinreddy.recyclerview.RecyclerView
 
 class EditCellListener(
     val context: Context

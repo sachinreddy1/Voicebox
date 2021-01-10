@@ -22,12 +22,12 @@ import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.listener.ITableViewListener;
+import com.sachinreddy.recyclerview.RecyclerView;
 
 /**
  * Created by evrencoskun on 22.11.2017.

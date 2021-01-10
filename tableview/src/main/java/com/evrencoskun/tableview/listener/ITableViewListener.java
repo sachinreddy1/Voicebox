@@ -18,7 +18,8 @@
 package com.evrencoskun.tableview.listener;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+
+import com.sachinreddy.recyclerview.RecyclerView;
 
 /**
  * Created by evrencoskun on 20/09/2017.

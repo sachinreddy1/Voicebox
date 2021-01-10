@@ -23,8 +23,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
@@ -39,6 +37,8 @@ import com.evrencoskun.tableview.listener.ITableViewListener;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
 import com.evrencoskun.tableview.sort.SortState;
+import com.sachinreddy.recyclerview.DividerItemDecoration;
+import com.sachinreddy.recyclerview.LinearLayoutManager;
 
 /**
  * Created by evrencoskun on 19/06/2017.

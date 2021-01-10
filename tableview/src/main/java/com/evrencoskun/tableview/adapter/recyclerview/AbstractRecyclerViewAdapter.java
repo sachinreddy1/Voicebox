@@ -21,9 +21,9 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+import com.sachinreddy.recyclerview.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;

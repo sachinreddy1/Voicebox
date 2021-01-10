@@ -21,7 +21,8 @@ import android.view.View;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+
+import com.sachinreddy.recyclerview.RecyclerView;
 
 /**
  * Created by evrencoskun on 23/10/2017.

@@ -1,7 +1,8 @@
 package com.evrencoskun.tableview.listener;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+
+import com.sachinreddy.recyclerview.RecyclerView;
 
 /**
  * Convenience class to extend when you are only interested in a subset of events of {@link ITableViewListener}.
