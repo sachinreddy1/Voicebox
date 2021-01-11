@@ -19,10 +19,12 @@ package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.R;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
@@ -41,8 +43,12 @@ public class CellRecyclerView extends RecyclerView {
     private boolean mIsHorizontalScrollListenerRemoved = true;
     private boolean mIsVerticalScrollListenerRemoved = true;
 
-    public CellRecyclerView(@NonNull Context context) {
+    private CellRecyclerView mColumnRecyclerView;
+
+    public CellRecyclerView(@NonNull Context context, @NonNull ITableView tableView) {
         super(context);
+
+        mColumnRecyclerView = tableView.getColumnHeaderRecyclerView();
 
         // These are necessary.
         this.setHasFixedSize(false);
@@ -72,6 +78,26 @@ public class CellRecyclerView extends RecyclerView {
 
     public int getScrolledY() {
         return mScrolledY;
+    }
+
+    @Override
+    public boolean scrollByInternal(int x, int y, MotionEvent ev) {
+        if (mColumnRecyclerView == null) {
+            return super.scrollByInternal(x, y, ev);
+        } else {
+            Integer xTopRecyclerView = mColumnRecyclerView.computeHorizontalScrollOffset();
+            Integer mTopWidth = mColumnRecyclerView.computeHorizontalScrollRange() - mColumnRecyclerView.computeHorizontalScrollExtent();
+            Integer mBottomWidth = computeHorizontalScrollRange() - computeHorizontalScrollExtent();
+
+            Integer xThreshold = (mTopWidth - mBottomWidth) / 2;
+
+            if (xTopRecyclerView > xThreshold && xTopRecyclerView < mTopWidth - xThreshold) {
+                return super.scrollByInternal(x, y, ev);
+            } else {
+                mColumnRecyclerView.scrollByInternal(x, y, ev);
+                return false;
+            }
+        }
     }
 
     @Override

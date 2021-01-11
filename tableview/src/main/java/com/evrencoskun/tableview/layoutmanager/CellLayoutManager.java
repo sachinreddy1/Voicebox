@@ -536,4 +536,9 @@ public class CellLayoutManager extends LinearLayoutManager {
     private int getCellRecyclerViewScrollState() {
         return mTableView.getCellRecyclerView().getScrollState();
     }
+
+    @Override
+    public boolean canScrollVertically() {
+        return false;
+    }
 }

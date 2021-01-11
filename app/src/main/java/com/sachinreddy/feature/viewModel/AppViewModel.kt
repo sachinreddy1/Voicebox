@@ -72,7 +72,11 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
             ColumnHeader(4),
             ColumnHeader(5),
             ColumnHeader(6),
-            ColumnHeader(7)
+            ColumnHeader(7),
+            ColumnHeader(8),
+            ColumnHeader(9),
+            ColumnHeader(10),
+            ColumnHeader(11)
         )
     )
 
