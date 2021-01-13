@@ -1823,7 +1823,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         final boolean canScrollHorizontal = mLayout.canScrollHorizontally();
         final boolean canScrollVertical = mLayout.canScrollVertically();
         if (canScrollHorizontal || canScrollVertical) {
-            scrollByInternal(canScrollHorizontal ? x : 0, canScrollVertical ? y : 0, null);
+            scrollByInternal(canScrollHorizontal ? x : 0, canScrollVertical ? y : 0, null, false);
         }
     }
 
@@ -1940,7 +1940,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
      * @param ev The originating MotionEvent, or null if not from a touch event.
      * @return Whether any scroll was consumed in either direction.
      */
-    public boolean scrollByInternal(int x, int y, MotionEvent ev) {
+    public boolean scrollByInternal(int x, int y, MotionEvent ev, boolean actionMove) {
         int unconsumedX = 0;
         int unconsumedY = 0;
         int consumedX = 0;
@@ -3407,7 +3407,8 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                     if (scrollByInternal(
                             canScrollHorizontally ? dx : 0,
                             canScrollVertically ? dy : 0,
-                            e)) {
+                            e,
+                            true)) {
                         getParent().requestDisallowInterceptTouchEvent(true);
                     }
                     if (mGapWorker != null && (dx != 0 || dy != 0)) {
@@ -3519,7 +3520,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
 
             if (vScroll != 0 || hScroll != 0) {
                 scrollByInternal((int) (hScroll * mScaledHorizontalScrollFactor),
-                        (int) (vScroll * mScaledVerticalScrollFactor), event);
+                        (int) (vScroll * mScaledVerticalScrollFactor), event, false);
             }
         }
         return false;

@@ -66,7 +66,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     public AbstractViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         // Create a RecyclerView as a Row of the CellRecyclerView
-        CellRecyclerView recyclerView = new CellRecyclerView(mContext, mTableView);
+        CellRecyclerView recyclerView = new TimeCellRecyclerView(mContext, mTableView);
 
         // Use the same view pool
         recyclerView.setRecycledViewPool(mRecycledViewPool);

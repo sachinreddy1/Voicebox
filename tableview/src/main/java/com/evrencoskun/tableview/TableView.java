@@ -259,7 +259,7 @@ public class TableView extends FrameLayout implements ITableView {
 
     @NonNull
     protected CellRecyclerView createColumnHeaderRecyclerView() {
-        CellRecyclerView recyclerView = new CellRecyclerView(getContext(), this);
+        CellRecyclerView recyclerView = new CellRecyclerView(getContext());
 
         // Set layout manager
         recyclerView.setLayoutManager(getColumnHeaderLayoutManager());
@@ -280,7 +280,7 @@ public class TableView extends FrameLayout implements ITableView {
 
     @NonNull
     protected CellRecyclerView createRowHeaderRecyclerView() {
-        CellRecyclerView recyclerView = new CellRecyclerView(getContext(), this);
+        CellRecyclerView recyclerView = new CellRecyclerView(getContext());
 
         // Set layout manager
         recyclerView.setLayoutManager(getRowHeaderLayoutManager());
@@ -301,7 +301,7 @@ public class TableView extends FrameLayout implements ITableView {
 
     @NonNull
     protected CellRecyclerView createCellRecyclerView() {
-        CellRecyclerView recyclerView = new CellRecyclerView(getContext(), this);
+        CellRecyclerView recyclerView = new CellRecyclerView(getContext());
 
         // Disable multitouch
         recyclerView.setMotionEventSplittingEnabled(false);

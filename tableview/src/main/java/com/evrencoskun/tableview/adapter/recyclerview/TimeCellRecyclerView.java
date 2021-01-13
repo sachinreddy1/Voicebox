@@ -19,21 +19,22 @@ package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.R;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
-import com.sachinreddy.recyclerview.RecyclerView;
 
 /**
  * Created by evrencoskun on 19/06/2017.
  */
 
-public class CellRecyclerView extends RecyclerView {
-    private static final String LOG_TAG = CellRecyclerView.class.getSimpleName();
+public class TimeCellRecyclerView extends CellRecyclerView {
+    private static final String LOG_TAG = TimeCellRecyclerView.class.getSimpleName();
 
     private int mScrolledX = 0;
     private int mScrolledY = 0;
@@ -41,8 +42,12 @@ public class CellRecyclerView extends RecyclerView {
     private boolean mIsHorizontalScrollListenerRemoved = true;
     private boolean mIsVerticalScrollListenerRemoved = true;
 
-    public CellRecyclerView(@NonNull Context context) {
+    private CellRecyclerView mColumnRecyclerView;
+
+    public TimeCellRecyclerView(@NonNull Context context, @NonNull ITableView tableView) {
         super(context);
+
+        mColumnRecyclerView = tableView.getColumnHeaderRecyclerView();
 
         // These are necessary.
         this.setHasFixedSize(false);
@@ -52,6 +57,25 @@ public class CellRecyclerView extends RecyclerView {
                 .default_item_cache_size));
         this.setDrawingCacheEnabled(true);
         this.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+    }
+
+    @Override
+    public boolean scrollByInternal(int x, int y, MotionEvent ev, boolean actionMove) {
+        if (actionMove) {
+            Integer xTopRecyclerView = mColumnRecyclerView.computeHorizontalScrollOffset();
+            Integer mTopWidth = mColumnRecyclerView.computeHorizontalScrollRange() - mColumnRecyclerView.computeHorizontalScrollExtent();
+            Integer mBottomWidth = computeHorizontalScrollRange() - computeHorizontalScrollExtent();
+            Integer xThreshold = (mTopWidth - mBottomWidth) / 2;
+
+            mColumnRecyclerView.scrollBy(x, y);
+            if (xTopRecyclerView > xThreshold && xTopRecyclerView < mTopWidth - xThreshold) {
+                return super.scrollByInternal(x, y, ev, true);
+            } else {
+                return true;
+            }
+        } else {
+            return super.scrollByInternal(x, y, ev, false);
+        }
     }
 
     @Override
