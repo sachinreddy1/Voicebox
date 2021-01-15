@@ -100,7 +100,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         recyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
             @Override
             public boolean onFling(int velocityX, int velocityY) {
-                mTableView.getColumnHeaderRecyclerView().fling(velocityX, velocityY);
+                mTableView.getTimelineRecyclerView().fling(velocityX, velocityY);
                 return false;
             }
         });

@@ -67,10 +67,16 @@ public interface ITableView {
     CellRecyclerView getCellRecyclerView();
 
     @NonNull
+    CellRecyclerView getTimelineRecyclerView();
+
+    @NonNull
     CellRecyclerView getColumnHeaderRecyclerView();
 
     @NonNull
     CellRecyclerView getRowHeaderRecyclerView();
+
+    @NonNull
+    ColumnHeaderLayoutManager getTimelineLayoutManager();
 
     @NonNull
     ColumnHeaderLayoutManager getColumnHeaderLayoutManager();

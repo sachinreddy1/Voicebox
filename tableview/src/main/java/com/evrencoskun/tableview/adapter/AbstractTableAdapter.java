@@ -29,6 +29,7 @@ import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.ColumnHeaderRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapter;
+import com.evrencoskun.tableview.adapter.recyclerview.TimelineRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,22 +38,24 @@ import java.util.List;
  * Created by evrencoskun on 10/06/2017.
  */
 
-public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<CH, RH, C> {
+public abstract class AbstractTableAdapter<T, CH, RH, C> implements ITableAdapter<T, CH, RH, C> {
 
     private int mRowHeaderWidth;
     private int mColumnHeaderHeight;
 
+    private TimelineRecyclerViewAdapter<T> mTimelineRecyclerViewAdapter;
     private ColumnHeaderRecyclerViewAdapter<CH> mColumnHeaderRecyclerViewAdapter;
     private RowHeaderRecyclerViewAdapter<RH> mRowHeaderRecyclerViewAdapter;
     private CellRecyclerViewAdapter mCellRecyclerViewAdapter;
     private View mCornerView;
 
+    protected List<T> mTimelineItems;
     protected List<CH> mColumnHeaderItems;
     protected List<RH> mRowHeaderItems;
     protected List<List<C>> mCellItems;
 
     private ITableView mTableView;
-    private List<AdapterDataSetChangedListener<CH, RH, C>> dataSetChangedListeners;
+    private List<AdapterDataSetChangedListener<T, CH, RH, C>> dataSetChangedListeners;
 
     public void setTableView(@NonNull ITableView tableView) {
         mTableView = tableView;
@@ -66,6 +69,10 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
         mColumnHeaderRecyclerViewAdapter = new ColumnHeaderRecyclerViewAdapter<>(context,
                 mColumnHeaderItems, this);
 
+        // Create Timeline RecyclerView Adapter
+        mTimelineRecyclerViewAdapter = new TimelineRecyclerViewAdapter<>(context,
+                mTimelineItems, this);
+
         // Create Row Header RecyclerView Adapter
         mRowHeaderRecyclerViewAdapter = new RowHeaderRecyclerViewAdapter<>(context,
                 mRowHeaderItems, this);
@@ -77,6 +84,20 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
         mCornerView = onCreateCornerView((ViewGroup) mTableView);
         mTableView.addView(mCornerView, new FrameLayout.LayoutParams(mRowHeaderWidth,
                 mColumnHeaderHeight));
+    }
+
+    public void setTimelineItems(@Nullable List<T> timelineItems) {
+        if (timelineItems == null) {
+            return;
+        }
+
+        mTimelineItems = timelineItems;
+        // Invalidate the cached widths for letting the view measure the cells width
+        // from scratch.
+        mTableView.getColumnHeaderLayoutManager().clearCachedWidths();
+        // Set the items to the adapter
+        mTimelineRecyclerViewAdapter.setItems(mTimelineItems);
+        dispatchTimelineDataSetChangesToListeners(timelineItems);
     }
 
     public void setColumnHeaderItems(@Nullable List<CH> columnHeaderItems) {
@@ -119,15 +140,16 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
         dispatchCellDataSetChangesToListeners(mCellItems);
     }
 
-    public void setAllItems(@Nullable List<CH> columnHeaderItems, @Nullable List<RH> rowHeaderItems, @Nullable List<List<C>>
+    public void setAllItems(@Nullable List<T> timelineItems, @Nullable List<CH> columnHeaderItems, @Nullable List<RH> rowHeaderItems, @Nullable List<List<C>>
             cellItems) {
         // Set all items
         setColumnHeaderItems(columnHeaderItems);
+        setTimelineItems(timelineItems);
         setRowHeaderItems(rowHeaderItems);
         setCellItems(cellItems);
 
         // Control corner view
-        if ((columnHeaderItems != null && !columnHeaderItems.isEmpty()) && (rowHeaderItems !=
+        if ((columnHeaderItems != null && !columnHeaderItems.isEmpty()) && (timelineItems != null && !timelineItems.isEmpty()) && (rowHeaderItems !=
                 null && !rowHeaderItems.isEmpty()) && (cellItems != null && !cellItems.isEmpty())
                 && mTableView != null && mCornerView == null) {
 
@@ -149,6 +171,10 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
     @Nullable
     public View getCornerView() {
         return mCornerView;
+    }
+
+    public TimelineRecyclerViewAdapter getTimelineRecyclerViewAdapter() {
+        return mTimelineRecyclerViewAdapter;
     }
 
     public ColumnHeaderRecyclerViewAdapter getColumnHeaderRecyclerViewAdapter() {
@@ -174,6 +200,15 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
 
     public void setColumnHeaderHeight(int columnHeaderHeight) {
         this.mColumnHeaderHeight = columnHeaderHeight;
+    }
+
+    @Nullable
+    public T getTimelineItem(int position) {
+        if ((mTimelineItems == null || mTimelineItems.isEmpty()) || position < 0 ||
+                position >= mTimelineItems.size()) {
+            return null;
+        }
+        return mTimelineItems.get(position);
     }
 
     @Nullable
@@ -295,17 +330,20 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
 
     public void removeColumn(int columnPosition) {
         mColumnHeaderRecyclerViewAdapter.deleteItem(columnPosition);
+        mTimelineRecyclerViewAdapter.deleteItem(columnPosition);
         mCellRecyclerViewAdapter.removeColumnItems(columnPosition);
     }
 
-    public void addColumn(int columnPosition, @Nullable CH columnHeaderItem, @NonNull List<C> cellItems) {
+    public void addColumn(int columnPosition, @Nullable T timelineItem, @Nullable CH columnHeaderItem, @NonNull List<C> cellItems) {
         mColumnHeaderRecyclerViewAdapter.addItem(columnPosition, columnHeaderItem);
+        mTimelineRecyclerViewAdapter.addItem(columnPosition, timelineItem);
         mCellRecyclerViewAdapter.addColumnItems(columnPosition, cellItems);
     }
 
 
     public final void notifyDataSetChanged() {
         mColumnHeaderRecyclerViewAdapter.notifyDataSetChanged();
+        mTimelineRecyclerViewAdapter.notifyDataSetChanged();
         mRowHeaderRecyclerViewAdapter.notifyDataSetChanged();
         mCellRecyclerViewAdapter.notifyCellDataSetChanged();
     }
@@ -315,9 +353,17 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
         return mTableView;
     }
 
+    private void dispatchTimelineDataSetChangesToListeners(@NonNull List<T> newTimelineItems) {
+        if (dataSetChangedListeners != null) {
+            for (AdapterDataSetChangedListener<T, CH, RH, C> listener : dataSetChangedListeners) {
+                listener.onTimelineItemsChanged(newTimelineItems);
+            }
+        }
+    }
+
     private void dispatchColumnHeaderDataSetChangesToListeners(@NonNull List<CH> newColumnHeaderItems) {
         if (dataSetChangedListeners != null) {
-            for (AdapterDataSetChangedListener<CH, RH, C> listener : dataSetChangedListeners) {
+            for (AdapterDataSetChangedListener<T, CH, RH, C> listener : dataSetChangedListeners) {
                 listener.onColumnHeaderItemsChanged(newColumnHeaderItems);
             }
         }
@@ -325,7 +371,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
 
     private void dispatchRowHeaderDataSetChangesToListeners(@NonNull final List<RH> newRowHeaderItems) {
         if (dataSetChangedListeners != null) {
-            for (AdapterDataSetChangedListener<CH, RH, C> listener : dataSetChangedListeners) {
+            for (AdapterDataSetChangedListener<T, CH, RH, C> listener : dataSetChangedListeners) {
                 listener.onRowHeaderItemsChanged(newRowHeaderItems);
             }
         }
@@ -333,7 +379,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
 
     private void dispatchCellDataSetChangesToListeners(@NonNull List<List<C>> newCellItems) {
         if (dataSetChangedListeners != null) {
-            for (AdapterDataSetChangedListener<CH, RH, C> listener : dataSetChangedListeners) {
+            for (AdapterDataSetChangedListener<T, CH, RH, C> listener : dataSetChangedListeners) {
                 listener.onCellItemsChanged(newCellItems);
             }
         }
@@ -344,7 +390,7 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
      *
      * @param listener The AdapterDataSetChangedListener listener.
      */
-    public void addAdapterDataSetChangedListener(@NonNull AdapterDataSetChangedListener<CH, RH, C> listener) {
+    public void addAdapterDataSetChangedListener(@NonNull AdapterDataSetChangedListener<T, CH, RH, C> listener) {
         if (dataSetChangedListeners == null) {
             dataSetChangedListeners = new ArrayList<>();
         }

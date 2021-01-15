@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
 
             android:cells="@{vm.cells}"
+            android:timelineHeaders="@{vm.timelineHeaders}"
             android:columnHeaders="@{vm.columnHeaders}"
             android:rowHeaders="@{vm.rowHeaders}"
 

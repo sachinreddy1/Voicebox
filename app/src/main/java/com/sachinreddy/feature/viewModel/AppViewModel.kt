@@ -16,6 +16,7 @@ import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.ColumnHeader
 import com.sachinreddy.feature.data.table.RowHeader
+import com.sachinreddy.feature.data.table.Timeline
 import com.sachinreddy.feature.table.ui.shadow.UtilDragShadowBuilder
 import com.sachinreddy.feature.util.toward
 import kotlinx.android.synthetic.main.operation_button.view.*
@@ -63,6 +64,23 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
         )
     )
 
+    var timelineHeaders: MutableLiveData<List<Timeline>> = MutableLiveData(
+        listOf(
+            Timeline(0),
+            Timeline(1),
+            Timeline(2),
+            Timeline(3),
+            Timeline(4),
+            Timeline(5),
+            Timeline(6),
+            Timeline(7),
+            Timeline(8),
+            Timeline(9),
+            Timeline(10),
+            Timeline(11)
+        )
+    )
+
     var columnHeaders: MutableLiveData<List<ColumnHeader>> = MutableLiveData(
         listOf(
             ColumnHeader(0),
@@ -72,11 +90,7 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
             ColumnHeader(4),
             ColumnHeader(5),
             ColumnHeader(6),
-            ColumnHeader(7),
-            ColumnHeader(8),
-            ColumnHeader(9),
-            ColumnHeader(10),
-            ColumnHeader(11)
+            ColumnHeader(7)
         )
     )
 

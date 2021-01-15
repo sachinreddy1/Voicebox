@@ -17,7 +17,6 @@ fun setColumnHeaders(tableView: TableView, columnHeaders: List<ColumnHeader>) {
     }
 }
 
-
 @BindingAdapter("android:barNumber")
 fun setBarNumber(columnView: ColumnView, value: Int) {
     columnView.column_header_barNumber.text = value.toString()

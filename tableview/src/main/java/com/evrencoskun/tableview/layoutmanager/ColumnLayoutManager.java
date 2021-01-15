@@ -197,7 +197,7 @@ public class ColumnLayoutManager extends LinearLayoutManager {
                 mCellRowRecyclerView.isScrollOthers()) {
             // Every CellRowRecyclerViews should be scrolled after the ColumnHeaderRecyclerView.
             // Because it is the main compared one to make each columns fit.
-//            mColumnHeaderRecyclerView.scrollBy(dx, 0);
+            mColumnHeaderRecyclerView.scrollBy(dx, 0);
         }
         // It is important to determine the next attached view to fit all columns
         mLastDx = dx;

@@ -42,12 +42,12 @@ public class TimeCellRecyclerView extends CellRecyclerView {
     private boolean mIsHorizontalScrollListenerRemoved = true;
     private boolean mIsVerticalScrollListenerRemoved = true;
 
-    private CellRecyclerView mColumnRecyclerView;
+    private CellRecyclerView mTimelineRecyclerView;
 
     public TimeCellRecyclerView(@NonNull Context context, @NonNull ITableView tableView) {
         super(context);
 
-        mColumnRecyclerView = tableView.getColumnHeaderRecyclerView();
+        mTimelineRecyclerView = tableView.getTimelineRecyclerView();
 
         // These are necessary.
         this.setHasFixedSize(false);
@@ -62,12 +62,14 @@ public class TimeCellRecyclerView extends CellRecyclerView {
     @Override
     public boolean scrollByInternal(int x, int y, MotionEvent ev, boolean actionMove) {
         if (actionMove) {
-            Integer xTopRecyclerView = mColumnRecyclerView.computeHorizontalScrollOffset();
-            Integer mTopWidth = mColumnRecyclerView.computeHorizontalScrollRange() - mColumnRecyclerView.computeHorizontalScrollExtent();
+            Integer xTopRecyclerView = mTimelineRecyclerView.computeHorizontalScrollOffset();
+            Integer mTopWidth = mTimelineRecyclerView.computeHorizontalScrollRange() - mTimelineRecyclerView.computeHorizontalScrollExtent();
             Integer mBottomWidth = computeHorizontalScrollRange() - computeHorizontalScrollExtent();
             Integer xThreshold = (mTopWidth - mBottomWidth) / 2;
 
-            mColumnRecyclerView.scrollBy(x, y);
+            System.out.println(xTopRecyclerView);
+
+            mTimelineRecyclerView.scrollBy(x, y);
             if (xTopRecyclerView > xThreshold && xTopRecyclerView < mTopWidth - xThreshold) {
                 return super.scrollByInternal(x, y, ev, true);
             } else {

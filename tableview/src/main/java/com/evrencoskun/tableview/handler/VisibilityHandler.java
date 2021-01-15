@@ -107,7 +107,7 @@ public class VisibilityHandler {
 
         if (hiddenColumn != null) {
             // add column model to the adapter
-            mTableView.getAdapter().addColumn(column, hiddenColumn.getColumnHeaderModel(),
+            mTableView.getAdapter().addColumn(column, hiddenColumn.getCellModelList(), hiddenColumn.getColumnHeaderModel(),
                     hiddenColumn.getCellModelList());
         } else {
             Log.e(LOG_TAG, "This column is already visible.");

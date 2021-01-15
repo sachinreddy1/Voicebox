@@ -30,7 +30,9 @@ import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
  * Created by evrencoskun on 10/06/2017.
  */
 
-public interface ITableAdapter<CH, RH, C> {
+public interface ITableAdapter<T, CH, RH, C> {
+
+    int getTimelineItemViewType(int position);
 
     int getColumnHeaderItemViewType(int position);
 
@@ -44,6 +46,11 @@ public interface ITableAdapter<CH, RH, C> {
     AbstractViewHolder onCreateCellViewHolder(@NonNull ViewGroup parent, int viewType);
 
     void onBindCellViewHolder(@NonNull AbstractViewHolder holder, @Nullable C cellItemModel, int columnPosition, int rowPosition);
+
+    @NonNull
+    AbstractViewHolder onCreateTimelineViewHolder(@NonNull ViewGroup parent, int viewType);
+
+    void onBindTimelineViewHolder(@NonNull AbstractViewHolder holder, @Nullable T timelineItemModel, int columnPosition);
 
     @NonNull
     AbstractViewHolder onCreateColumnHeaderViewHolder(@NonNull ViewGroup parent, int viewType);
@@ -65,5 +72,5 @@ public interface ITableAdapter<CH, RH, C> {
      *
      * @param listener The AdapterDataSetChangedListener listener.
      */
-    void addAdapterDataSetChangedListener(@NonNull AdapterDataSetChangedListener<CH, RH, C> listener);
+    void addAdapterDataSetChangedListener(@NonNull AdapterDataSetChangedListener<T, CH, RH, C> listener);
 }

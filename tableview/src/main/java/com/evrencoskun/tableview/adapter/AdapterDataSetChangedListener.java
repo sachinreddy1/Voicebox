@@ -21,7 +21,15 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-public abstract class AdapterDataSetChangedListener<CH, RH, C> {
+public abstract class AdapterDataSetChangedListener<T, CH, RH, C> {
+
+    /**
+     * Dispatches changes on timeline items to listener.
+     *
+     * @param timelineItems The current timeline items.
+     */
+    public void onTimelineItemsChanged(@NonNull List<T> timelineItems) {
+    }
 
     /**
      * Dispatches changes on column header items to listener.
@@ -55,6 +63,7 @@ public abstract class AdapterDataSetChangedListener<CH, RH, C> {
      * @param cellItems         The current cell items.
      */
     public void onDataSetChanged(
+            List<T> timelineItems,
             List<CH> columnHeaderItems,
             List<RH> rowHeaderItems,
             List<List<C>> cellItems) {

@@ -64,6 +64,8 @@ public class TableView extends FrameLayout implements ITableView {
     @NonNull
     protected CellRecyclerView mCellRecyclerView;
     @NonNull
+    protected CellRecyclerView mTimelineRecyclerView;
+    @NonNull
     protected CellRecyclerView mColumnHeaderRecyclerView;
     @NonNull
     protected CellRecyclerView mRowHeaderRecyclerView;
@@ -75,6 +77,8 @@ public class TableView extends FrameLayout implements ITableView {
     private VerticalRecyclerViewListener mVerticalRecyclerListener;
     @NonNull
     private HorizontalRecyclerViewListener mHorizontalRecyclerViewListener;
+    @NonNull
+    private ColumnHeaderLayoutManager mTimelineLayoutManager;
     @NonNull
     private ColumnHeaderLayoutManager mColumnHeaderLayoutManager;
     @NonNull
@@ -191,13 +195,14 @@ public class TableView extends FrameLayout implements ITableView {
     }
 
     private void initialize() {
-
         // Create Views
+        mTimelineRecyclerView = createTimelineRecyclerView();
         mColumnHeaderRecyclerView = createColumnHeaderRecyclerView();
         mRowHeaderRecyclerView = createRowHeaderRecyclerView();
         mCellRecyclerView = createCellRecyclerView();
 
         // Add Views
+        addView(mTimelineRecyclerView);
         addView(mColumnHeaderRecyclerView);
         addView(mRowHeaderRecyclerView);
         addView(mCellRecyclerView);
@@ -253,8 +258,30 @@ public class TableView extends FrameLayout implements ITableView {
         TableViewLayoutChangeListener layoutChangeListener = new TableViewLayoutChangeListener
                 (this);
         mColumnHeaderRecyclerView.addOnLayoutChangeListener(layoutChangeListener);
+        mTimelineRecyclerView.addOnLayoutChangeListener(layoutChangeListener);
         mCellRecyclerView.addOnLayoutChangeListener(layoutChangeListener);
 
+    }
+
+    @NonNull
+    protected CellRecyclerView createTimelineRecyclerView() {
+        CellRecyclerView recyclerView = new CellRecyclerView(getContext());
+
+        // Set layout manager
+        recyclerView.setLayoutManager(getTimelineLayoutManager());
+
+        // Set layout params
+        LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT,
+                mColumnHeaderHeight);
+        layoutParams.leftMargin = mRowHeaderWidth;
+        recyclerView.setLayoutParams(layoutParams);
+
+        if (isShowHorizontalSeparators()) {
+            // Add vertical item decoration to display column line
+            recyclerView.addItemDecoration(getHorizontalItemDecoration());
+        }
+
+        return recyclerView;
     }
 
     @NonNull
@@ -332,6 +359,7 @@ public class TableView extends FrameLayout implements ITableView {
             this.mTableAdapter.setTableView(this);
 
             // set adapters
+            mTimelineRecyclerView.setAdapter(mTableAdapter.getTimelineRecyclerViewAdapter());
             mColumnHeaderRecyclerView.setAdapter(mTableAdapter.getColumnHeaderRecyclerViewAdapter());
             mRowHeaderRecyclerView.setAdapter(mTableAdapter.getRowHeaderRecyclerViewAdapter());
             mCellRecyclerView.setAdapter(mTableAdapter.getCellRecyclerViewAdapter());
@@ -401,6 +429,12 @@ public class TableView extends FrameLayout implements ITableView {
 
     @NonNull
     @Override
+    public CellRecyclerView getTimelineRecyclerView() {
+        return mTimelineRecyclerView;
+    }
+
+    @NonNull
+    @Override
     public CellRecyclerView getColumnHeaderRecyclerView() {
         return mColumnHeaderRecyclerView;
     }
@@ -409,6 +443,15 @@ public class TableView extends FrameLayout implements ITableView {
     @Override
     public CellRecyclerView getRowHeaderRecyclerView() {
         return mRowHeaderRecyclerView;
+    }
+
+    @NonNull
+    @Override
+    public ColumnHeaderLayoutManager getTimelineLayoutManager() {
+        if (mTimelineLayoutManager == null) {
+            mTimelineLayoutManager = new ColumnHeaderLayoutManager(getContext(), this);
+        }
+        return mTimelineLayoutManager;
     }
 
     @NonNull
@@ -746,6 +789,12 @@ public class TableView extends FrameLayout implements ITableView {
         layoutParamsRow.width = rowHeaderWidth;
         mRowHeaderRecyclerView.setLayoutParams(layoutParamsRow);
         mRowHeaderRecyclerView.requestLayout();
+
+        // Update Timeline left margin
+        LayoutParams layoutParamsTimeline = (LayoutParams) mTimelineRecyclerView.getLayoutParams();
+        layoutParamsTimeline.leftMargin = rowHeaderWidth;
+        mTimelineRecyclerView.setLayoutParams(layoutParamsTimeline);
+        mTimelineRecyclerView.requestLayout();
 
         // Update ColumnHeader left margin
         LayoutParams layoutParamsColumn = (LayoutParams) mColumnHeaderRecyclerView.getLayoutParams();
