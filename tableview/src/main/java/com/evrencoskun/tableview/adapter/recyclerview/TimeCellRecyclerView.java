@@ -61,14 +61,12 @@ public class TimeCellRecyclerView extends CellRecyclerView {
 
     @Override
     public boolean scrollByInternal(int x, int y, MotionEvent ev, boolean actionMove) {
+        Integer xTopRecyclerView = mTimelineRecyclerView.computeHorizontalScrollOffset();
+        Integer mTopWidth = mTimelineRecyclerView.computeHorizontalScrollRange() - mTimelineRecyclerView.computeHorizontalScrollExtent();
+        Integer mBottomWidth = computeHorizontalScrollRange() - computeHorizontalScrollExtent();
+        Integer xThreshold = (mTopWidth - mBottomWidth) / 2;
+
         if (actionMove) {
-            Integer xTopRecyclerView = mTimelineRecyclerView.computeHorizontalScrollOffset();
-            Integer mTopWidth = mTimelineRecyclerView.computeHorizontalScrollRange() - mTimelineRecyclerView.computeHorizontalScrollExtent();
-            Integer mBottomWidth = computeHorizontalScrollRange() - computeHorizontalScrollExtent();
-            Integer xThreshold = (mTopWidth - mBottomWidth) / 2;
-
-            System.out.println(xTopRecyclerView);
-
             mTimelineRecyclerView.scrollBy(x, y);
             if (xTopRecyclerView > xThreshold && xTopRecyclerView < mTopWidth - xThreshold) {
                 return super.scrollByInternal(x, y, ev, true);
