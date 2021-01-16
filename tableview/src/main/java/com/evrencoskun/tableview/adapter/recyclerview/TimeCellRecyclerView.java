@@ -61,13 +61,13 @@ public class TimeCellRecyclerView extends CellRecyclerView {
 
     @Override
     public boolean scrollByInternal(int x, int y, MotionEvent ev, boolean actionMove) {
-        Integer xTopRecyclerView = mTimelineRecyclerView.computeHorizontalScrollOffset();
-        Integer mTopWidth = mTimelineRecyclerView.computeHorizontalScrollRange() - mTimelineRecyclerView.computeHorizontalScrollExtent();
-        Integer mBottomWidth = computeHorizontalScrollRange() - computeHorizontalScrollExtent();
-        Integer xThreshold = (mTopWidth - mBottomWidth) / 2;
-
         if (actionMove) {
             mTimelineRecyclerView.scrollBy(x, y);
+
+            Integer xTopRecyclerView = mTimelineRecyclerView.computeHorizontalScrollOffset();
+            Integer mTopWidth = mTimelineRecyclerView.computeHorizontalScrollRange() - mTimelineRecyclerView.computeHorizontalScrollExtent();
+            Integer mBottomWidth = computeHorizontalScrollRange() - computeHorizontalScrollExtent();
+            Integer xThreshold = (mTopWidth - mBottomWidth) / 2;
             if (xTopRecyclerView > xThreshold && xTopRecyclerView < mTopWidth - xThreshold) {
                 return super.scrollByInternal(x, y, ev, true);
             } else {
@@ -170,9 +170,7 @@ public class TimeCellRecyclerView extends CellRecyclerView {
      */
     @Override
     public boolean fling(int velocityX, int velocityY) {
-        // Adjust speeds to be able to provide smoother scroll.
-        //velocityX *= 0.6;
-        //velocityY *= 0.6;
+        mTimelineRecyclerView.fling(velocityX, velocityY);
         return super.fling(velocityX, velocityY);
     }
 }

@@ -96,15 +96,6 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         // Create CellRow adapter
         recyclerView.setAdapter(new CellRowRecyclerViewAdapter(mContext, mTableView));
 
-        // on fling listener
-        recyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
-            @Override
-            public boolean onFling(int velocityX, int velocityY) {
-                mTableView.getTimelineRecyclerView().fling(velocityX, velocityY);
-                return false;
-            }
-        });
-
         // This is for testing purpose to find out which recyclerView is displayed.
         recyclerView.setId(mRecyclerViewId);
 

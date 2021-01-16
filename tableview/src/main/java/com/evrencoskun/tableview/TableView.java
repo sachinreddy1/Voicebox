@@ -233,16 +233,11 @@ public class TableView extends FrameLayout implements ITableView {
                 Integer mTopWidth = recyclerView.computeHorizontalScrollRange() - recyclerView.computeHorizontalScrollExtent();
                 Integer xBottomRecyclerView = mColumnHeaderRecyclerView.computeHorizontalScrollOffset();
                 Integer mBottomWidth = mColumnHeaderRecyclerView.computeHorizontalScrollRange() - mColumnHeaderRecyclerView.computeHorizontalScrollExtent();
-                Integer xThreshold = (mTopWidth - mBottomWidth) / 2;
 
+                Float progressValue = (float) (xTopRecyclerView - xBottomRecyclerView);
+                Float progressMax = (float) (mTopWidth - mBottomWidth);
+                xProgress.postValue(progressValue / progressMax);
                 mTime.postValue(xTopRecyclerView);
-
-                if (xTopRecyclerView < xThreshold || xTopRecyclerView > mTopWidth - xThreshold) {
-                    xProgress.postValue((float) (xTopRecyclerView - xBottomRecyclerView) / (float) (mTopWidth - mBottomWidth));
-                }
-
-                Float value = ((float) (xTopRecyclerView - xBottomRecyclerView) / (float) (mTopWidth - mBottomWidth));
-                System.out.println(value);
 
                 super.onScrolled(recyclerView, dx, dy);
             }
