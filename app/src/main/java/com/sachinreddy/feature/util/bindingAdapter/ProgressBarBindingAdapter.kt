@@ -1,9 +1,11 @@
 package com.sachinreddy.feature.util.bindingAdapter
 
-import android.widget.ProgressBar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 
-@BindingAdapter("android:progressValue")
-fun setProgressValue(progressBar: ProgressBar, value: Float) {
-    progressBar.progress = (value * 100).toInt()
+@BindingAdapter("android:horizontalBias")
+fun setHorizontalBias(constraintLayout: ConstraintLayout, value: Float) {
+    val params = constraintLayout.layoutParams as ConstraintLayout.LayoutParams
+    params.horizontalBias = value
+    constraintLayout.layoutParams = params
 }

@@ -35,21 +35,19 @@
             app:show_horizontal_separator="false"
             app:show_vertical_separator="false" />
 
-        <ProgressBar
-            android:id="@+id/my_progressBar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="@dimen/timeline_width"
+            android:layout_height="0dp"
 
             android:layout_marginStart="@dimen/row_header_width"
-            android:layout_marginTop="@dimen/column_header_height"
+            android:background="@color/recordButtonColor"
 
-            android:progressValue="@{vm.tableView.timelineRecyclerView.xProgress}"
-            android:progressTint="@color/recordButtonColor"
+            android:horizontalBias="@{vm.tableView.timelineRecyclerView.xProgress}"
 
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/content_container"
+            app:layout_constraintBottom_toBottomOf="@id/content_container"
+            app:layout_constraintStart_toStartOf="@id/content_container"
+            app:layout_constraintEnd_toEndOf="@id/content_container" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout

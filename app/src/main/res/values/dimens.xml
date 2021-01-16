@@ -8,4 +8,5 @@
     <dimen name="operation_button_length">28dp</dimen>
     <dimen name="scroll_view_left">114dp</dimen>
     <dimen name="scroll_view_right">44dp</dimen>
+    <dimen name="timeline_width">4dp</dimen>
 </resources>
