@@ -90,6 +90,22 @@ public class TimelineRecyclerView extends RecyclerView {
                 // Scroll horizontally
                 child.scrollBy(dx, 0);
             }
+        } else if (progressValue < xThreshold && dx < 0) {
+            xProgress.postValue(progressValue / progressMax);
+            mColumnHeaderRecyclerView.scrollBy(dx, 0);
+            for (int i = 0; i < mCellLayoutManager.getChildCount(); i++) {
+                CellRecyclerView child = (CellRecyclerView) mCellLayoutManager.getChildAt(i);
+                // Scroll horizontally
+                child.scrollBy(dx, 0);
+            }
+        } else if (progressValue > xThreshold && dx > 0) {
+            xProgress.postValue(progressValue / progressMax);
+            mColumnHeaderRecyclerView.scrollBy(dx, 0);
+            for (int i = 0; i < mCellLayoutManager.getChildCount(); i++) {
+                CellRecyclerView child = (CellRecyclerView) mCellLayoutManager.getChildAt(i);
+                // Scroll horizontally
+                child.scrollBy(dx, 0);
+            }
         } else {
             xProgress.postValue(progressValue / progressMax);
         }
