@@ -25,7 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
-import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
+import com.evrencoskun.tableview.adapter.recyclerview.views.CellRecyclerView;
+import com.evrencoskun.tableview.adapter.recyclerview.views.TimelineRecyclerView;
 import com.evrencoskun.tableview.filter.Filter;
 import com.evrencoskun.tableview.handler.ColumnSortHandler;
 import com.evrencoskun.tableview.handler.FilterHandler;
@@ -67,7 +68,7 @@ public interface ITableView {
     CellRecyclerView getCellRecyclerView();
 
     @NonNull
-    CellRecyclerView getTimelineRecyclerView();
+    TimelineRecyclerView getTimelineRecyclerView();
 
     @NonNull
     CellRecyclerView getColumnHeaderRecyclerView();

@@ -27,6 +27,8 @@ import androidx.annotation.Nullable;
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
+import com.evrencoskun.tableview.adapter.recyclerview.views.CellRecyclerView;
+import com.evrencoskun.tableview.adapter.recyclerview.views.OverScrollCellRecyclerView;
 import com.evrencoskun.tableview.handler.ScrollHandler;
 import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;

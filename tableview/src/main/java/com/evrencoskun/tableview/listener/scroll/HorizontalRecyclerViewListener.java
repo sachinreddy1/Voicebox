@@ -24,7 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.ITableView;
-import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
+import com.evrencoskun.tableview.adapter.recyclerview.views.CellRecyclerView;
 import com.sachinreddy.recyclerview.LinearLayoutManager;
 import com.sachinreddy.recyclerview.RecyclerView;
 
@@ -37,8 +37,6 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
 
     private static final String LOG_TAG = HorizontalRecyclerViewListener.class.getSimpleName();
 
-    @NonNull
-    private CellRecyclerView mTimelineRecyclerView;
     @NonNull
     private CellRecyclerView mColumnHeaderRecyclerView;
     @Nullable
@@ -61,7 +59,6 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
 
     public HorizontalRecyclerViewListener(@NonNull ITableView tableView) {
         this.mColumnHeaderRecyclerView = tableView.getColumnHeaderRecyclerView();
-        this.mTimelineRecyclerView = tableView.getTimelineRecyclerView();
         this.mCellLayoutManager = tableView.getCellRecyclerView().getLayoutManager();
         this.mVerticalRecyclerViewListener = tableView.getVerticalRecyclerViewListener();
     }

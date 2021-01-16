@@ -22,7 +22,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.evrencoskun.tableview.ITableView;
-import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
+import com.evrencoskun.tableview.adapter.recyclerview.views.CellRecyclerView;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;

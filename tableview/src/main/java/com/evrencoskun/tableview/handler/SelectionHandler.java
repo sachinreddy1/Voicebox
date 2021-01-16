@@ -22,9 +22,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.ITableView;
-import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
+import com.evrencoskun.tableview.adapter.recyclerview.views.CellRecyclerView;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.sachinreddy.recyclerview.LinearLayoutManager;
 

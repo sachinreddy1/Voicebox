@@ -15,7 +15,7 @@
  *
  */
 
-package com.evrencoskun.tableview.adapter.recyclerview;
+package com.evrencoskun.tableview.adapter.recyclerview.views;
 
 import android.content.Context;
 import android.util.Log;
@@ -42,7 +42,7 @@ public class OverScrollCellRecyclerView extends CellRecyclerView {
     private boolean mIsHorizontalScrollListenerRemoved = true;
     private boolean mIsVerticalScrollListenerRemoved = true;
 
-    private CellRecyclerView mTimelineRecyclerView;
+    private TimelineRecyclerView mTimelineRecyclerView;
 
     public OverScrollCellRecyclerView(@NonNull Context context, @NonNull ITableView tableView) {
         super(context);

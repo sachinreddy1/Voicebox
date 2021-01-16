@@ -44,7 +44,7 @@
             android:layout_marginStart="@dimen/row_header_width"
             android:layout_marginTop="@dimen/column_header_height"
 
-            android:progressValue="@{vm.tableView.xProgress}"
+            android:progressValue="@{vm.tableView.timelineRecyclerView.xProgress}"
             android:progressTint="@color/recordButtonColor"
 
             app:layout_constraintTop_toTopOf="parent"

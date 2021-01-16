@@ -28,8 +28,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.ITableView;
-import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+import com.evrencoskun.tableview.adapter.recyclerview.views.CellRecyclerView;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.util.TableViewUtils;
 import com.sachinreddy.recyclerview.LinearLayoutManager;

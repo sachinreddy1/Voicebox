@@ -15,15 +15,18 @@
  *
  */
 
-package com.evrencoskun.tableview.adapter.recyclerview;
+package com.evrencoskun.tableview.adapter.recyclerview.views;
 
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
+import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.R;
+import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
 import com.sachinreddy.recyclerview.RecyclerView;
@@ -32,8 +35,8 @@ import com.sachinreddy.recyclerview.RecyclerView;
  * Created by evrencoskun on 19/06/2017.
  */
 
-public class CellRecyclerView extends RecyclerView {
-    private static final String LOG_TAG = CellRecyclerView.class.getSimpleName();
+public class TimelineRecyclerView extends RecyclerView {
+    private static final String LOG_TAG = TimelineRecyclerView.class.getSimpleName();
 
     private int mScrolledX = 0;
     private int mScrolledY = 0;
@@ -41,8 +44,15 @@ public class CellRecyclerView extends RecyclerView {
     private boolean mIsHorizontalScrollListenerRemoved = true;
     private boolean mIsVerticalScrollListenerRemoved = true;
 
-    public CellRecyclerView(@NonNull Context context) {
+    private ITableView mTableView;
+
+    public MutableLiveData<Float> xProgress = new MutableLiveData<>();
+    public MutableLiveData<Integer> mTime = new MutableLiveData<>();
+
+    public TimelineRecyclerView(@NonNull Context context, @NonNull ITableView tableView) {
         super(context);
+
+        mTableView = tableView;
 
         // These are necessary.
         this.setHasFixedSize(false);
@@ -58,6 +68,31 @@ public class CellRecyclerView extends RecyclerView {
     public void onScrolled(int dx, int dy) {
         mScrolledX += dx;
         mScrolledY += dy;
+
+        CellRecyclerView mColumnHeaderRecyclerView = mTableView.getColumnHeaderRecyclerView();
+        CellLayoutManager mCellLayoutManager = mTableView.getCellLayoutManager();
+
+        Integer xTopRecyclerView = computeHorizontalScrollOffset();
+        Integer mTopWidth = computeHorizontalScrollRange() - computeHorizontalScrollExtent();
+        Integer xBottomRecyclerView = mColumnHeaderRecyclerView.computeHorizontalScrollOffset();
+        Integer mBottomWidth = mColumnHeaderRecyclerView.computeHorizontalScrollRange() - mColumnHeaderRecyclerView.computeHorizontalScrollExtent();
+        Integer xThreshold = (mTopWidth - mBottomWidth) / 2;
+
+        Float progressValue = (float) (xTopRecyclerView - xBottomRecyclerView);
+        Float progressMax = (float) (mTopWidth - mBottomWidth);
+        mTime.postValue(xTopRecyclerView);
+
+        if (xTopRecyclerView >= xThreshold && xTopRecyclerView <= mTopWidth - xThreshold) {
+            xProgress.postValue(0.5f);
+            mColumnHeaderRecyclerView.scrollBy(dx, 0);
+            for (int i = 0; i < mCellLayoutManager.getChildCount(); i++) {
+                CellRecyclerView child = (CellRecyclerView) mCellLayoutManager.getChildAt(i);
+                // Scroll horizontally
+                child.scrollBy(dx, 0);
+            }
+        } else {
+            xProgress.postValue(progressValue / progressMax);
+        }
 
         super.onScrolled(dx, dy);
     }

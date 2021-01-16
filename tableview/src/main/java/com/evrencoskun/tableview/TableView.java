@@ -31,12 +31,12 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.MutableLiveData;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
-import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
-import com.evrencoskun.tableview.adapter.recyclerview.OverScrollCellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+import com.evrencoskun.tableview.adapter.recyclerview.views.CellRecyclerView;
+import com.evrencoskun.tableview.adapter.recyclerview.views.OverScrollCellRecyclerView;
+import com.evrencoskun.tableview.adapter.recyclerview.views.TimelineRecyclerView;
 import com.evrencoskun.tableview.filter.Filter;
 import com.evrencoskun.tableview.handler.ColumnSortHandler;
 import com.evrencoskun.tableview.handler.ColumnWidthHandler;
@@ -57,7 +57,6 @@ import com.evrencoskun.tableview.preference.SavedState;
 import com.evrencoskun.tableview.sort.SortState;
 import com.sachinreddy.recyclerview.DividerItemDecoration;
 import com.sachinreddy.recyclerview.LinearLayoutManager;
-import com.sachinreddy.recyclerview.RecyclerView;
 
 /**
  * Created by evrencoskun on 11/06/2017.
@@ -67,7 +66,7 @@ public class TableView extends FrameLayout implements ITableView {
     @NonNull
     protected CellRecyclerView mCellRecyclerView;
     @NonNull
-    protected CellRecyclerView mTimelineRecyclerView;
+    protected TimelineRecyclerView mTimelineRecyclerView;
     @NonNull
     protected OverScrollCellRecyclerView mColumnHeaderRecyclerView;
     @NonNull
@@ -114,9 +113,6 @@ public class TableView extends FrameLayout implements ITableView {
     private int mUnSelectedColor;
     private int mShadowColor;
     private int mSeparatorColor = -1;
-
-    public MutableLiveData<Float> xProgress = new MutableLiveData<>();
-    public MutableLiveData<Integer> mTime = new MutableLiveData<>();
 
     private boolean mHasFixedWidth;
     private boolean mIgnoreSelectionColors;
@@ -220,40 +216,7 @@ public class TableView extends FrameLayout implements ITableView {
         mPreferencesHandler = new PreferencesHandler(this);
         mColumnWidthHandler = new ColumnWidthHandler(this);
 
-        initializeTimeline();
         initializeListeners();
-    }
-
-    private void initializeTimeline() {
-        xProgress.postValue(0f);
-        mTime.postValue(0);
-
-        mTimelineRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                Integer xTopRecyclerView = recyclerView.computeHorizontalScrollOffset();
-                Integer mTopWidth = recyclerView.computeHorizontalScrollRange() - recyclerView.computeHorizontalScrollExtent();
-                Integer xBottomRecyclerView = mColumnHeaderRecyclerView.computeHorizontalScrollOffset();
-                Integer mBottomWidth = mColumnHeaderRecyclerView.computeHorizontalScrollRange() - mColumnHeaderRecyclerView.computeHorizontalScrollExtent();
-                Integer xThreshold = (mTopWidth - mBottomWidth) / 2;
-
-                Float progressValue = (float) (xTopRecyclerView - xBottomRecyclerView);
-                Float progressMax = (float) (mTopWidth - mBottomWidth);
-                xProgress.postValue(progressValue / progressMax);
-                mTime.postValue(xTopRecyclerView);
-
-                if (xTopRecyclerView >= xThreshold && xTopRecyclerView <= mTopWidth - xThreshold) {
-                    mColumnHeaderRecyclerView.scrollBy(dx, 0);
-                    for (int i = 0; i < mCellLayoutManager.getChildCount(); i++) {
-                        CellRecyclerView child = (CellRecyclerView) mCellLayoutManager.getChildAt(i);
-                        // Scroll horizontally
-                        child.scrollBy(dx, 0);
-                    }
-                }
-
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
     }
 
     protected void initializeListeners() {
@@ -303,8 +266,8 @@ public class TableView extends FrameLayout implements ITableView {
     }
 
     @NonNull
-    protected CellRecyclerView createTimelineRecyclerView() {
-        CellRecyclerView recyclerView = new CellRecyclerView(getContext());
+    protected TimelineRecyclerView createTimelineRecyclerView() {
+        TimelineRecyclerView recyclerView = new TimelineRecyclerView(getContext(), this);
 
         // Set layout manager
         recyclerView.setLayoutManager(getTimelineLayoutManager());
@@ -468,7 +431,7 @@ public class TableView extends FrameLayout implements ITableView {
 
     @NonNull
     @Override
-    public CellRecyclerView getTimelineRecyclerView() {
+    public TimelineRecyclerView getTimelineRecyclerView() {
         return mTimelineRecyclerView;
     }
 
