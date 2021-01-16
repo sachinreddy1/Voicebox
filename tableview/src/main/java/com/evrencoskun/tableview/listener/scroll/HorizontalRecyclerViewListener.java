@@ -174,37 +174,6 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
     }
 
     @Override
-    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-        // Column Header should be scrolled firstly. Because it is the compared recyclerView to
-        // make column width fit.
-
-        if (recyclerView == mColumnHeaderRecyclerView) {
-            super.onScrolled(recyclerView, dx, dy);
-
-            // Scroll each cell recyclerViews
-            for (int i = 0; i < mCellLayoutManager.getChildCount(); i++) {
-                CellRecyclerView child = (CellRecyclerView) mCellLayoutManager.getChildAt(i);
-                // Scroll horizontally
-                child.scrollBy(dx, 0);
-            }
-        } else {
-            // Scroll column header recycler view as well
-            //mColumnHeaderRecyclerView.scrollBy(dx, 0);
-
-            super.onScrolled(recyclerView, dx, dy);
-
-            // Scroll each cell recyclerViews except the current touched one
-            for (int i = 0; i < mCellLayoutManager.getChildCount(); i++) {
-                CellRecyclerView child = (CellRecyclerView) mCellLayoutManager.getChildAt(i);
-                if (child != recyclerView) {
-                    // Scroll horizontally
-                    child.scrollBy(dx, 0);
-                }
-            }
-        }
-    }
-
-    @Override
     public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
 

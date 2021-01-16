@@ -35,6 +35,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
+import com.evrencoskun.tableview.adapter.recyclerview.OverScrollCellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.filter.Filter;
 import com.evrencoskun.tableview.handler.ColumnSortHandler;
@@ -68,7 +69,7 @@ public class TableView extends FrameLayout implements ITableView {
     @NonNull
     protected CellRecyclerView mTimelineRecyclerView;
     @NonNull
-    protected CellRecyclerView mColumnHeaderRecyclerView;
+    protected OverScrollCellRecyclerView mColumnHeaderRecyclerView;
     @NonNull
     protected CellRecyclerView mRowHeaderRecyclerView;
     @Nullable
@@ -225,6 +226,7 @@ public class TableView extends FrameLayout implements ITableView {
 
     private void initializeTimeline() {
         xProgress.postValue(0f);
+        mTime.postValue(0);
 
         mTimelineRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -233,11 +235,21 @@ public class TableView extends FrameLayout implements ITableView {
                 Integer mTopWidth = recyclerView.computeHorizontalScrollRange() - recyclerView.computeHorizontalScrollExtent();
                 Integer xBottomRecyclerView = mColumnHeaderRecyclerView.computeHorizontalScrollOffset();
                 Integer mBottomWidth = mColumnHeaderRecyclerView.computeHorizontalScrollRange() - mColumnHeaderRecyclerView.computeHorizontalScrollExtent();
+                Integer xThreshold = (mTopWidth - mBottomWidth) / 2;
 
                 Float progressValue = (float) (xTopRecyclerView - xBottomRecyclerView);
                 Float progressMax = (float) (mTopWidth - mBottomWidth);
                 xProgress.postValue(progressValue / progressMax);
                 mTime.postValue(xTopRecyclerView);
+
+                if (xTopRecyclerView >= xThreshold && xTopRecyclerView <= mTopWidth - xThreshold) {
+                    mColumnHeaderRecyclerView.scrollBy(dx, 0);
+                    for (int i = 0; i < mCellLayoutManager.getChildCount(); i++) {
+                        CellRecyclerView child = (CellRecyclerView) mCellLayoutManager.getChildAt(i);
+                        // Scroll horizontally
+                        child.scrollBy(dx, 0);
+                    }
+                }
 
                 super.onScrolled(recyclerView, dx, dy);
             }
@@ -312,8 +324,8 @@ public class TableView extends FrameLayout implements ITableView {
     }
 
     @NonNull
-    protected CellRecyclerView createColumnHeaderRecyclerView() {
-        CellRecyclerView recyclerView = new CellRecyclerView(getContext());
+    protected OverScrollCellRecyclerView createColumnHeaderRecyclerView() {
+        OverScrollCellRecyclerView recyclerView = new OverScrollCellRecyclerView(getContext(), this);
 
         // Set layout manager
         recyclerView.setLayoutManager(getColumnHeaderLayoutManager());

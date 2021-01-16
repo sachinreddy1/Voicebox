@@ -33,8 +33,8 @@ import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
  * Created by evrencoskun on 19/06/2017.
  */
 
-public class TimeCellRecyclerView extends CellRecyclerView {
-    private static final String LOG_TAG = TimeCellRecyclerView.class.getSimpleName();
+public class OverScrollCellRecyclerView extends CellRecyclerView {
+    private static final String LOG_TAG = OverScrollCellRecyclerView.class.getSimpleName();
 
     private int mScrolledX = 0;
     private int mScrolledY = 0;
@@ -44,7 +44,7 @@ public class TimeCellRecyclerView extends CellRecyclerView {
 
     private CellRecyclerView mTimelineRecyclerView;
 
-    public TimeCellRecyclerView(@NonNull Context context, @NonNull ITableView tableView) {
+    public OverScrollCellRecyclerView(@NonNull Context context, @NonNull ITableView tableView) {
         super(context);
 
         mTimelineRecyclerView = tableView.getTimelineRecyclerView();
@@ -63,16 +63,7 @@ public class TimeCellRecyclerView extends CellRecyclerView {
     public boolean scrollByInternal(int x, int y, MotionEvent ev, boolean actionMove) {
         if (actionMove) {
             mTimelineRecyclerView.scrollBy(x, y);
-
-            Integer xTopRecyclerView = mTimelineRecyclerView.computeHorizontalScrollOffset();
-            Integer mTopWidth = mTimelineRecyclerView.computeHorizontalScrollRange() - mTimelineRecyclerView.computeHorizontalScrollExtent();
-            Integer mBottomWidth = computeHorizontalScrollRange() - computeHorizontalScrollExtent();
-            Integer xThreshold = (mTopWidth - mBottomWidth) / 2;
-            if (xTopRecyclerView > xThreshold && xTopRecyclerView < mTopWidth - xThreshold) {
-                return super.scrollByInternal(x, y, ev, true);
-            } else {
-                return true;
-            }
+            return true;
         } else {
             return super.scrollByInternal(x, y, ev, false);
         }
@@ -171,6 +162,6 @@ public class TimeCellRecyclerView extends CellRecyclerView {
     @Override
     public boolean fling(int velocityX, int velocityY) {
         mTimelineRecyclerView.fling(velocityX, velocityY);
-        return super.fling(velocityX, velocityY);
+        return false;
     }
 }
