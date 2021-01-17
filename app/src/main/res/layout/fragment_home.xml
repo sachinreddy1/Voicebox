@@ -39,6 +39,7 @@
             android:layout_width="@dimen/timeline_width"
             android:layout_height="0dp"
 
+            android:layout_marginTop="@dimen/column_header_height"
             android:layout_marginStart="@dimen/row_header_width"
             android:background="@color/recordButtonColor"
 
@@ -48,7 +49,6 @@
             app:layout_constraintBottom_toBottomOf="@id/content_container"
             app:layout_constraintStart_toStartOf="@id/content_container"
             app:layout_constraintEnd_toEndOf="@id/content_container" />
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="@dimen/scroll_view_left"
