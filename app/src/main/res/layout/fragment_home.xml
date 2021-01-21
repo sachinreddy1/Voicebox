@@ -73,7 +73,7 @@
                 android:background="@drawable/round_border_dark"
                 android:backgroundTint="@color/recordButtonColor"
 
-                android:text="4:21"
+                android:boundText="@{vm.tableView.timelineRecyclerView.mTime}"
                 android:textColor="@color/editCellColor"
                 android:fontFamily="@font/roboto_medium"
 
