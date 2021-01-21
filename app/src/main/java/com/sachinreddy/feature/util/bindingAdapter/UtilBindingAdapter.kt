@@ -7,3 +7,4 @@ import androidx.databinding.BindingAdapter
 fun setText(textView: TextView, value: Int) {
     textView.text = value.toString()
 }
+//
