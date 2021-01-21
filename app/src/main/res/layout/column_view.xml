@@ -28,6 +28,7 @@
         tools:text="1"
         android:textColor="@color/colorPrimary"
         android:textSize="12sp"
+        android:fontFamily="@font/roboto_medium"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
