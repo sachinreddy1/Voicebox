@@ -39,7 +39,6 @@
             android:layout_width="@dimen/timeline_width"
             android:layout_height="0dp"
 
-            android:layout_marginTop="@dimen/column_header_height"
             android:layout_marginStart="@dimen/row_header_width"
             android:background="@color/recordButtonColor"
 
