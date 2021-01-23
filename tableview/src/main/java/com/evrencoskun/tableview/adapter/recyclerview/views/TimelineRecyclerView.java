@@ -18,6 +18,7 @@
 package com.evrencoskun.tableview.adapter.recyclerview.views;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
@@ -48,11 +49,21 @@ public class TimelineRecyclerView extends RecyclerView {
 
     public MutableLiveData<Float> xProgress = new MutableLiveData<>();
     public MutableLiveData<Integer> mTime = new MutableLiveData<>();
+    public MutableLiveData<Boolean> mIsScrolling = new MutableLiveData<>();
+
+    private Handler handler = new Handler();
+    private Runnable runner = new Runnable() {
+        @Override
+        public void run() {
+            mIsScrolling.postValue(false);
+        }
+    };
 
     public TimelineRecyclerView(@NonNull Context context, @NonNull ITableView tableView) {
         super(context);
 
         mTableView = tableView;
+        mIsScrolling.postValue(false);
 
         // These are necessary.
         this.setHasFixedSize(false);
@@ -109,6 +120,10 @@ public class TimelineRecyclerView extends RecyclerView {
         } else {
             xProgress.postValue(progressValue / progressMax);
         }
+
+        mIsScrolling.postValue(true);
+        handler.removeCallbacks(runner);
+        handler.postDelayed(runner, 750);
 
         super.onScrolled(dx, dy);
     }

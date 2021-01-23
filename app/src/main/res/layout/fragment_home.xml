@@ -57,6 +57,9 @@
             android:layout_marginTop="@dimen/column_header_height"
             android:elevation="12dp"
 
+            android:isScrolling="@{vm.tableView.timelineRecyclerView.mIsScrolling}"
+            android:visibility="gone"
+
             app:layout_constraintTop_toTopOf="@id/content_container"
             app:layout_constraintStart_toStartOf="@id/content_container">
 
@@ -74,7 +77,7 @@
                 android:backgroundTint="@color/recordButtonColor"
 
                 android:boundText="@{vm.tableView.timelineRecyclerView.mTime}"
-                android:textColor="@color/editCellColor"
+                android:textColor="@color/whitesmoke"
                 android:fontFamily="@font/roboto_medium"
 
                 app:layout_constraintTop_toTopOf="parent"
