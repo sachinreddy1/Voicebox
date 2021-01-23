@@ -121,7 +121,12 @@ public class TimelineRecyclerView extends RecyclerView {
             xProgress.postValue(progressValue / progressMax);
         }
 
-        mIsScrolling.postValue(true);
+        if (dx == 0) {
+            mIsScrolling.postValue(false);
+        } else {
+            mIsScrolling.postValue(true);
+        }
+
         handler.removeCallbacks(runner);
         handler.postDelayed(runner, 750);
 
