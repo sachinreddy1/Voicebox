@@ -125,10 +125,9 @@ public class TimelineRecyclerView extends RecyclerView {
             mIsScrolling.postValue(false);
         } else {
             mIsScrolling.postValue(true);
+            handler.removeCallbacks(runner);
+            handler.postDelayed(runner, 700);
         }
-
-        handler.removeCallbacks(runner);
-        handler.postDelayed(runner, 700);
 
         super.onScrolled(dx, dy);
     }
