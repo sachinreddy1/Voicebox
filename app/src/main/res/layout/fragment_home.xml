@@ -87,7 +87,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="@dimen/scroll_view_left"
             android:layout_height="0dp"

@@ -22,4 +22,8 @@
         <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
 
+    <style name="textAccent" parent="NumberPicker.EditTextStyle">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
 </resources>

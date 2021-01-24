@@ -171,8 +171,6 @@ class HomeFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home ->
-                validNavController?.navigate(R.id.action_HomeFragment_to_ProfileFragment)
             R.id.action_reset ->
                 Toast.makeText(requireContext(), "RESETTING", Toast.LENGTH_SHORT).show()
             R.id.action_download ->
@@ -187,9 +185,6 @@ class HomeFragment : Fragment() {
             setSupportActionBar(app_action_bar)
             supportActionBar?.apply {
                 title = getString(R.string.app_name)
-                setDisplayHomeAsUpEnabled(true)
-                setHomeAsUpIndicator(R.drawable.ic_account_circle_dark)
-                setHomeActionContentDescription(getString(R.string.open_profile_card))
             }
         }
     }

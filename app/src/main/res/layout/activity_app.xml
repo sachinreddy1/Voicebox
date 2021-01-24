@@ -17,7 +17,30 @@
         android:layout_height="56dp"
         android:minHeight="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <it.sephiroth.android.library.numberpicker.NumberPicker
+            android:id="@+id/numberPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:background="@drawable/round_border_dark"
+
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+
+            style="@style/NumberPicker.Filled"
+            app:picker_editTextStyle="@style/textAccent"
+
+            app:picker_max="100"
+            app:picker_min="0"
+            android:progress="50"
+            app:picker_stepSize="2"
+
+            app:picker_tracker="exponential"
+            app:picker_orientation="horizontal" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <fragment
         android:id="@+id/nav_host_fragment_app"
