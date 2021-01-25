@@ -10,45 +10,6 @@
         android:name="com.sachinreddy.feature.fragment.HomeFragment"
         android:label="@string/home_fragment_label"
         tools:layout="@layout/fragment_home">
-
-        <action
-            android:id="@+id/action_HomeFragment_to_ProfileFragment"
-            app:destination="@id/ProfileFragment" />
-        <action
-            android:id="@+id/action_HomeFragment_to_FriendsFragment"
-            app:destination="@id/FriendsFragment" />
-        <action
-            android:id="@+id/action_HomeFragment_to_DraftsFragment"
-            app:destination="@id/DraftsFragment" />
     </fragment>
 
-    <fragment
-        android:id="@+id/DraftsFragment"
-        android:name="com.sachinreddy.feature.fragment.DraftsFragment"
-        android:label="DraftsFragment"
-        tools:layout="@layout/fragment_drafts">
-        <action
-            android:id="@+id/action_DraftsFragment_to_HomeFragment"
-            app:destination="@id/HomeFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/ProfileFragment"
-        android:name="com.sachinreddy.feature.fragment.ProfileFragment"
-        android:label="@string/profile_fragment_label"
-        tools:layout="@layout/fragment_profile">
-        <action
-            android:id="@+id/action_ProfileFragment_to_HomeFragment"
-            app:destination="@id/HomeFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/FriendsFragment"
-        android:name="com.sachinreddy.feature.fragment.ArtistsFragment"
-        android:label="@string/friends_fragment_label"
-        tools:layout="@layout/fragment_artists">
-        <action
-            android:id="@+id/action_FriendsFragment_to_HomeFragment"
-            app:destination="@id/HomeFragment" />
-    </fragment>
 </navigation>

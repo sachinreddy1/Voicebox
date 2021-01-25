@@ -88,5 +88,5 @@ dependencies {
     implementation 'com.mikhaellopez:circularimageview:4.2.0'
 
     // Number Picker
-    implementation 'it.sephiroth.android.library:number-sliding-picker:1.1.1'
+    implementation project(path: ':numberpicker')
 }

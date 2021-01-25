@@ -19,7 +19,7 @@
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-        <it.sephiroth.android.library.numberpicker.NumberPicker
+        <com.sachinreddy.numberpicker.NumberPicker
             android:id="@+id/numberPicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -3,7 +3,6 @@ package com.sachinreddy.feature.injection
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sachinreddy.feature.viewModel.AppViewModel
-import com.sachinreddy.feature.viewModel.AuthViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -24,11 +23,6 @@ import kotlin.reflect.KClass
 abstract class ViewModelBindings {
     @Binds
     abstract fun factory(factory: InjectedViewModelFactory): ViewModelProvider.Factory
-
-    @ViewModelKey(AuthViewModel::class)
-    @Binds
-    @IntoMap
-    abstract fun auth(vm: AuthViewModel): ViewModel
 
     @ViewModelKey(AppViewModel::class)
     @Binds
