@@ -9,9 +9,7 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.view.ContextThemeWrapper
@@ -45,7 +43,7 @@ class NumberPicker @JvmOverloads constructor(
 
     var numberPickerChangeListener: OnNumberPickerChangeListener? = null
 
-    private lateinit var editText: EditText
+    private lateinit var textView: TextView
     private lateinit var upButton: AppCompatImageButton
     private lateinit var downButton: AppCompatImageButton
     private lateinit var tracker: Tracker
@@ -75,8 +73,8 @@ class NumberPicker @JvmOverloads constructor(
         when {
             it.state == UIGestureRecognizer.State.Began -> {
                 requestFocus()
-                editText.isSelected = false
-                editText.clearFocus()
+                textView.isSelected = false
+                textView.clearFocus()
 
                 tracker.begin(it.downLocationX, it.downLocationY)
                 startInteraction()
@@ -116,9 +114,9 @@ class NumberPicker @JvmOverloads constructor(
     }
 
     private val tapGestureListener = { _: UIGestureRecognizer ->
-        requestFocus()
-        if (!editText.isFocused)
-            editText.requestFocus()
+//        requestFocus()
+//        if (!textView.isFocused)
+//            textView.requestFocus()
     }
 
     @Suppress("MemberVisibilityCanBePrivate")
@@ -128,8 +126,8 @@ class NumberPicker @JvmOverloads constructor(
             data.value = value
             tooltip?.update(data.value.toString())
 
-            if (editText.text.toString() != data.value.toString())
-                editText.setText(data.value.toString())
+            if (textView.text.toString() != data.value.toString())
+                textView.text = data.value.toString()
 
             numberPickerChangeListener?.onProgressChanged(this, progress, fromUser)
         }
@@ -207,7 +205,7 @@ class NumberPicker @JvmOverloads constructor(
             }
             inflateChildren()
 
-            editText.setText(data.value.toString())
+            textView.text = data.value.toString()
 
 
         } finally {
@@ -239,13 +237,9 @@ class NumberPicker @JvmOverloads constructor(
             upButton.rotation = 90f
         }
 
-        editText = EditText(ContextThemeWrapper(context, editTextStyleId), null, 0)
-        editText.setLines(1)
-        editText.setEms(max(abs(maxValue).toString().length, abs(minValue).toString().length))
-        editText.isFocusableInTouchMode = true
-        editText.isFocusable = true
-        editText.isClickable = true
-        editText.isLongClickable = false
+        textView = TextView(ContextThemeWrapper(context, editTextStyleId), null, 0)
+        textView.setLines(1)
+        textView.setEms(2)
 
         downButton = AppCompatImageButton(context)
         downButton.setImageResource(R.drawable.arrow_up_selector_18)
@@ -262,7 +256,7 @@ class NumberPicker @JvmOverloads constructor(
         params3.weight = 0f
 
         addView(downButton, params3)
-        addView(editText, params2)
+        addView(textView, params2)
         addView(upButton, params1)
     }
 
@@ -277,7 +271,7 @@ class NumberPicker @JvmOverloads constructor(
                     MotionEvent.ACTION_DOWN -> {
                         requestFocus()
                         setProgress(progress + stepSize)
-                        editText.clearFocus()
+                        textView.clearFocus()
                         hideKeyboard()
 
                         upButton.requestFocus()
@@ -316,7 +310,7 @@ class NumberPicker @JvmOverloads constructor(
                     MotionEvent.ACTION_DOWN -> {
                         requestFocus()
                         setProgress(progress - stepSize)
-                        editText.clearFocus()
+                        textView.clearFocus()
                         hideKeyboard()
 
                         downButton.requestFocus()
@@ -359,27 +353,27 @@ class NumberPicker @JvmOverloads constructor(
 //            }
 //        }
 
-        editText.setOnFocusChangeListener { _, hasFocus ->
+        textView.setOnFocusChangeListener { _, hasFocus ->
             setBackgroundFocused(hasFocus)
 
             if (!hasFocus) {
-                if (!editText.text.isNullOrEmpty()) {
-                    setProgress(Integer.valueOf(editText.text.toString()), true)
+                if (!textView.text.isNullOrEmpty()) {
+                    setProgress(Integer.valueOf(textView.text.toString()), true)
                 } else {
-                    editText.setText(data.value.toString())
+                    textView.text = data.value.toString()
                 }
             }
         }
 
-        editText.setOnEditorActionListener { _, actionId, _ ->
-            when (actionId) {
-                EditorInfo.IME_ACTION_DONE -> {
-                    editText.clearFocus()
-                    true
-                }
-                else -> false
-            }
-        }
+//        textView.setOnEditorActionListener { _, actionId, _ ->
+//            when (actionId) {
+//                EditorInfo.IME_ACTION_DONE -> {
+//                    textView.clearFocus()
+//                    true
+//                }
+//                else -> false
+//            }
+//        }
     }
 
     private fun setBackgroundFocused(hasFocus: Boolean) {
@@ -406,14 +400,14 @@ class NumberPicker @JvmOverloads constructor(
 
         delegate.isEnabled = isEnabled
 
-        editText.setGestureDelegate(delegate)
+        textView.setGestureDelegate(delegate)
     }
 
     private fun startInteraction() {
         animate().alpha(0.5f).start()
 
         tooltip = Tooltip.Builder(context)
-            .anchor(editText, 0, 0, false)
+            .anchor(textView, 0, 0, false)
             .styleId(tooltipStyleId)
             .arrow(true)
             .closePolicy(ClosePolicy.TOUCH_NONE)
