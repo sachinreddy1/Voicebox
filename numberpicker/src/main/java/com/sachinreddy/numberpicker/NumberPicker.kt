@@ -266,8 +266,7 @@ class NumberPicker @JvmOverloads constructor(
             if (!isEnabled) {
                 false
             } else {
-                val action = event.actionMasked
-                when (action) {
+                when (event.actionMasked) {
                     MotionEvent.ACTION_DOWN -> {
                         requestFocus()
                         setProgress(progress + stepSize)
