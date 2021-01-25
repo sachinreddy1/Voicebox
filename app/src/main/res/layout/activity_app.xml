@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
 
             android:background="@drawable/round_border_dark"
+            android:backgroundTint="@color/cardBackground"
 
             android:layout_gravity="center"
             android:layout_centerHorizontal="true"

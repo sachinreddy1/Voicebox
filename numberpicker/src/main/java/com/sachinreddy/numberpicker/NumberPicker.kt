@@ -305,8 +305,7 @@ class NumberPicker @JvmOverloads constructor(
             if (!isEnabled) {
                 false
             } else {
-                val action = event.actionMasked
-                when (action) {
+                when (event.actionMasked) {
                     MotionEvent.ACTION_DOWN -> {
                         requestFocus()
                         setProgress(progress - stepSize)
@@ -331,11 +330,8 @@ class NumberPicker @JvmOverloads constructor(
 
                     MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                         downButton.isPressed = false
-
                         buttonInterval?.dispose()
                         buttonInterval = null
-
-
                     }
                 }
 
@@ -448,7 +444,6 @@ class NumberPicker @JvmOverloads constructor(
     }
 
     companion object {
-
         const val TRACKER_LINEAR = 0
         const val TRACKER_EXPONENTIAL = 1
 
@@ -458,8 +453,6 @@ class NumberPicker @JvmOverloads constructor(
 
         val FOCUSED_STATE_ARRAY = intArrayOf(android.R.attr.state_focused)
         val UNFOCUSED_STATE_ARRAY = intArrayOf(0, -android.R.attr.state_focused)
-
-
     }
 }
 
