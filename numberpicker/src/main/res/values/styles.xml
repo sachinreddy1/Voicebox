@@ -28,6 +28,7 @@
         <item name="ttlm_animationStyle">@style/NumberPicker.AnimationHorizontal</item>
         <item name="ttlm_cornerRadius">10dp</item>
         <item name="ttlm_textStyle">@style/NumberPickerStyle.ToolTipStyle.ToolTipTextStyle</item>
+        <item name="ttlm_backgroundColor">@color/recordButtonColor</item>
     </style>
 
     <style name="NumberPickerStyle.ToolTipStyle.ToolTipTextStyle" parent="ToolTipTextStyle">
