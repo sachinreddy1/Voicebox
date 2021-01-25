@@ -429,7 +429,6 @@ class NumberPicker @JvmOverloads constructor(
         )
 
         numberPickerChangeListener?.onStartTrackingTouch(this)
-
     }
 
     private fun endInteraction() {
