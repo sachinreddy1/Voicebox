@@ -3,10 +3,10 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" android:constantSize="true" android:enterFadeDuration="@android:integer/config_shortAnimTime" android:exitFadeDuration="@android:integer/config_shortAnimTime">
 
     <item android:state_pressed="true">
-        <bitmap android:src="@drawable/round_keyboard_arrow_up_black_18" android:tint="?attr/colorControlActivated" />
+        <bitmap android:src="@drawable/round_keyboard_arrow_up_black_18" android:tint="@color/recordButtonColor" />
     </item>
 
     <item>
-        <bitmap android:src="@drawable/round_keyboard_arrow_up_black_18" android:tint="?attr/colorControlNormal" />
+        <bitmap android:src="@drawable/round_keyboard_arrow_up_black_18" android:tint="@color/colorPrimary" />
     </item>
 </selector>

@@ -7,6 +7,6 @@
     </item>
 
     <item>
-        <bitmap android:src="@drawable/round_keyboard_arrow_up_black_24" android:tint="?attr/colorControlNormal" />
+        <bitmap android:src="@drawable/round_keyboard_arrow_up_black_24" android:tint="@color/colorPrimary" />
     </item>
 </selector>

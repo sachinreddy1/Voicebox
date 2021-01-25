@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FCF4A3</color>
+    <color name="colorPrimaryDark">#131313</color>
+    <color name="colorAccent">#F5F5F5</color>
+    <color name="colorBackground">#1E1E1E</color>
+
+    <color name="whitesmoke">#f5f5f5</color>
+    <color name="cardBackground">#2C2C2C</color>
+    <color name="instrumentBackground">#3C3C3C</color>
+
+    <color name="cell_background_color">#ffffff</color>
+    <color name="header_line_color">#0a0a0a</color>
+    <color name="table_view_default_text_color">#0a0a0a</color>
+
+    <color name="recordButtonColor">#FF6C6C</color>
+    <color name="editCellColor">#434F59</color>
+    <color name="selection_color">#616161</color>
+
+    <color name="operationBackground">#434F59</color>
+    <color name="transparent">#00000000</color>
+</resources>

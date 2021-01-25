@@ -10,8 +10,8 @@
         <item name="picker_tracker">linear</item>
         <item name="picker_editTextStyle">@style/NumberPicker.EditTextStyle</item>
         <item name="picker_tooltipStyle">@style/NumberPicker.ToolTipStyle</item>
-        <item name="android:paddingLeft">8dp</item>
-        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
     </style>
 
     <style name="NumberPicker.AnimationHorizontal">
@@ -69,7 +69,7 @@
     <style name="ArrowStyle" />
 
     <style name="NumberPicker.ArrowStyle" parent="ArrowStyle">
-        <item name="android:src">@drawable/arrow_up_selector_24</item>
+        <item name="android:src">@drawable/arrow_up_selector_18</item>
         <item name="android:background">@drawable/arrow_up_background</item>
     </style>
 

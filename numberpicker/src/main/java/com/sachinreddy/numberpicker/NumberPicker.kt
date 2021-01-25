@@ -232,7 +232,7 @@ class NumberPicker @JvmOverloads constructor(
 
     private fun inflateChildren() {
         upButton = AppCompatImageButton(context)
-        upButton.setImageResource(R.drawable.arrow_up_selector_24)
+        upButton.setImageResource(R.drawable.arrow_up_selector_18)
         upButton.setBackgroundResource(R.drawable.arrow_up_background)
 
         if (data.orientation == HORIZONTAL) {
@@ -247,9 +247,8 @@ class NumberPicker @JvmOverloads constructor(
         editText.isClickable = true
         editText.isLongClickable = false
 
-
         downButton = AppCompatImageButton(context)
-        downButton.setImageResource(R.drawable.arrow_up_selector_24)
+        downButton.setImageResource(R.drawable.arrow_up_selector_18)
         downButton.setBackgroundResource(R.drawable.arrow_up_background)
         downButton.rotation = if (data.orientation == VERTICAL) 180f else -90f
 
