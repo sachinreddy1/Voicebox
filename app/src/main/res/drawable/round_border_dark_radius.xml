@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape android:shape="rectangle"
+    android:tint="@color/cardBackground"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <stroke
+        android:color="@color/cardBackground"
+        android:width="1dp" />
+    <corners android:radius="8dp" />
+</shape>

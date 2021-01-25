@@ -34,6 +34,7 @@
     <style name="NumberPickerStyle.ToolTipStyle.ToolTipTextStyle" parent="ToolTipTextStyle">
         <item name="android:gravity">center</item>
         <item name="android:lines">1</item>
+        <item name="android:textColor">@color/whitesmoke</item>
     </style>
 
     <style name="NumberPicker.Filled">
