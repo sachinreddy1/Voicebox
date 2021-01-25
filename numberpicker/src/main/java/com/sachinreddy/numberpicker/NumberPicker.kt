@@ -476,7 +476,6 @@ class Data(value: Int, minValue: Int, maxValue: Int, var stepSize: Int, val orie
             field = newValue
             if (newValue > value) value = newValue
         }
-
 }
 
 internal abstract class Tracker(
@@ -485,7 +484,6 @@ internal abstract class Tracker(
     val orientation: Int,
     val callback: (Int) -> Unit
 ) {
-
     internal var started: Boolean = false
     internal var initialValue: Int = 0
     internal var downPosition: Float = 0f
@@ -535,7 +533,6 @@ internal class ExponentialTracker(
     orientation: Int,
     callback: (Int) -> Unit
 ) : Tracker(numberPicker, maxDistance, orientation, callback) {
-
     private var time: Long = 1000L
     private var direction: Int = 0
 
@@ -598,8 +595,6 @@ internal class LinearTracker(
     orientation: Int,
     callback: (Int) -> Unit
 ) : Tracker(numberPicker, maxDistance, orientation, callback) {
-
-
     override fun addMovement(x: Float, y: Float) {
         Timber.i("addMovement($x, $y)")
         val currentPosition = if (orientation == LinearLayout.VERTICAL) -y else x
