@@ -35,9 +35,9 @@
             style="@style/NumberPicker.Filled"
             app:picker_editTextStyle="@style/textAccent"
 
-            app:picker_max="100"
-            app:picker_min="0"
-            android:progress="50"
+            app:picker_max="200"
+            app:picker_min="40"
+            android:progress="120"
             app:picker_stepSize="2"
 
             android:layout_margin="10dp"
