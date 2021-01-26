@@ -49,6 +49,8 @@
 
                 android:layout_margin="10dp"
 
+                android:onProgressChanged="@{(picker, progress, fromUser) -> vm.onProgressChanged(picker, progress, fromUser)}"
+
                 app:picker_tracker="exponential"
                 app:picker_orientation="horizontal" />
 

@@ -19,6 +19,7 @@ import com.sachinreddy.feature.data.table.RowHeader
 import com.sachinreddy.feature.data.table.Timeline
 import com.sachinreddy.feature.table.ui.shadow.UtilDragShadowBuilder
 import com.sachinreddy.feature.util.toward
+import com.sachinreddy.numberpicker.NumberPicker
 import kotlinx.android.synthetic.main.operation_button.view.*
 import kotlinx.android.synthetic.main.table_view_cell_layout.view.*
 import javax.inject.Inject
@@ -313,6 +314,14 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
         scrollThread?.join()
         scrollThread = null
     }
+
+    // ------------------------------------------------- //
+
+    fun onProgressChanged(numberPicker: NumberPicker, progress: Int, fromUser: Boolean) {
+        bpm.postValue(progress)
+    }
+
+    // ------------------------------------------------- //
 
     private inner class Runner(right: Boolean) : Runnable {
         val translationValue = if (right) 20 else -20
