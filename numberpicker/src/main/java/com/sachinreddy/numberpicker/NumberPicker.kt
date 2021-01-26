@@ -1,7 +1,6 @@
 package com.sachinreddy.numberpicker
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.graphics.PointF
 import android.os.Handler
@@ -9,7 +8,6 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.view.ContextThemeWrapper
@@ -127,7 +125,7 @@ class NumberPicker @JvmOverloads constructor(
             tooltip?.update(data.value.toString())
 
             if (textView.text.toString() != data.value.toString())
-                textView.text = data.value.toString()
+                textView.text = "${data.value} BPM"
 
             numberPickerChangeListener?.onProgressChanged(this, progress, fromUser)
         }
@@ -155,8 +153,6 @@ class NumberPicker @JvmOverloads constructor(
             data.stepSize = value
         }
 
-    private var initialized = false
-
     init {
         setWillNotDraw(false)
         isFocusable = true
@@ -178,6 +174,7 @@ class NumberPicker @JvmOverloads constructor(
             val orientation =
                 array.getInteger(R.styleable.NumberPicker_picker_orientation, LinearLayout.VERTICAL)
             val value = array.getInteger(R.styleable.NumberPicker_android_progress, 0)
+
             arrowStyle = array.getResourceId(R.styleable.NumberPicker_picker_arrowStyle, 0)
             background = array.getDrawable(R.styleable.NumberPicker_android_background)
             editTextStyleId = array.getResourceId(
@@ -205,9 +202,7 @@ class NumberPicker @JvmOverloads constructor(
             }
             inflateChildren()
 
-            textView.text = data.value.toString()
-
-
+            textView.text = "${data.value} BPM"
         } finally {
             array.recycle()
         }
@@ -223,11 +218,6 @@ class NumberPicker @JvmOverloads constructor(
         delegate.isEnabled = enabled
     }
 
-    private fun hideKeyboard() {
-        val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(windowToken, 0)
-    }
-
     private fun inflateChildren() {
         upButton = AppCompatImageButton(context)
         upButton.setImageResource(R.drawable.arrow_up_selector_18)
@@ -239,7 +229,7 @@ class NumberPicker @JvmOverloads constructor(
 
         textView = TextView(ContextThemeWrapper(context, editTextStyleId), null, 0)
         textView.setLines(1)
-        textView.setEms(2)
+        textView.setEms(4)
 
         downButton = AppCompatImageButton(context)
         downButton.setImageResource(R.drawable.arrow_up_selector_18)
@@ -270,8 +260,6 @@ class NumberPicker @JvmOverloads constructor(
                     MotionEvent.ACTION_DOWN -> {
                         requestFocus()
                         setProgress(progress + stepSize)
-                        textView.clearFocus()
-                        hideKeyboard()
 
                         upButton.requestFocus()
                         upButton.isPressed = true
@@ -308,8 +296,6 @@ class NumberPicker @JvmOverloads constructor(
                     MotionEvent.ACTION_DOWN -> {
                         requestFocus()
                         setProgress(progress - stepSize)
-                        textView.clearFocus()
-                        hideKeyboard()
 
                         downButton.requestFocus()
                         downButton.isPressed = true
@@ -338,37 +324,17 @@ class NumberPicker @JvmOverloads constructor(
             }
         }
 
-//        editText.doOnTextChanged { text, _, _, _ ->
-//            if (!text.isNullOrEmpty()) {
-//                try {
-//                    this.setProgress(Integer.valueOf(text.toString()))
-//                } catch (e: NumberFormatException) {
-//                    Timber.e(e)
-//                }
-//            }
-//        }
-
         textView.setOnFocusChangeListener { _, hasFocus ->
             setBackgroundFocused(hasFocus)
 
             if (!hasFocus) {
                 if (!textView.text.isNullOrEmpty()) {
-                    setProgress(Integer.valueOf(textView.text.toString()), true)
+                    setProgress(data.value, true)
                 } else {
-                    textView.text = data.value.toString()
+                    textView.text = "${data.value} BPM"
                 }
             }
         }
-
-//        textView.setOnEditorActionListener { _, actionId, _ ->
-//            when (actionId) {
-//                EditorInfo.IME_ACTION_DONE -> {
-//                    textView.clearFocus()
-//                    true
-//                }
-//                else -> false
-//            }
-//        }
     }
 
     private fun setBackgroundFocused(hasFocus: Boolean) {
