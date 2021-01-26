@@ -41,6 +41,8 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     var isSelecting: Boolean = false
     var isScrolling: Boolean = false
 
+    var bpm: MutableLiveData<Int> = MutableLiveData()
+
     // ------------------------------------------------- //
 
     var cells: MutableLiveData<List<List<Cell>>> = MutableLiveData(
