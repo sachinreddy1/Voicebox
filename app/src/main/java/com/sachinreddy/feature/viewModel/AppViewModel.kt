@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
 
-    var numberBars: Int = 8
+    var numberBars: MutableLiveData<Int> = MutableLiveData(8)
 
     lateinit var tableView: TableView
     var audioManager: AudioManager? = null
@@ -111,13 +111,15 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
 
     fun addTrack() {
         val trackCells: MutableList<Cell> = mutableListOf()
-        for (i in 0 until numberBars) {
-            trackCells.add(
-                Cell(
-                    columnPosition = i,
-                    rowPosition = rowHeaders.value!!.size
+        numberBars.value?.let {
+            for (i in 0 until it) {
+                trackCells.add(
+                    Cell(
+                        columnPosition = i,
+                        rowPosition = rowHeaders.value!!.size
+                    )
                 )
-            )
+            }
         }
 
         val newCells = cells.value!!.toMutableList()

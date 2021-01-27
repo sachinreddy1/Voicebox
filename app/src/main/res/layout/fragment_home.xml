@@ -117,8 +117,10 @@
                 android:background="@drawable/round_border_dark"
                 android:backgroundTint="@color/recordButtonColor"
 
-                android:boundText="@{vm.tableView.timelineRecyclerView.mTime}"
-                android:vm="@{vm}"
+                android:time="@{vm.tableView.timelineRecyclerView.mTime}"
+                android:maxTime="@{vm.tableView.timelineRecyclerView.mMaxTime}"
+                android:bpm="@{vm.bpm}"
+                android:numberBars="@{vm.numberBars}"
 
                 android:textColor="@color/whitesmoke"
                 android:fontFamily="@font/roboto_medium"
