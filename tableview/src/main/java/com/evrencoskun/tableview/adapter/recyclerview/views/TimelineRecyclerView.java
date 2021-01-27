@@ -126,16 +126,16 @@ public class TimelineRecyclerView extends RecyclerView {
         if (dx == 0) {
             mIsScrolling.postValue(false);
         } else {
-            showTimestamp();
+            showTimestamp(700);
         }
 
         super.onScrolled(dx, dy);
     }
 
-    public void showTimestamp() {
+    public void showTimestamp(Integer delay) {
         mIsScrolling.postValue(true);
         handler.removeCallbacks(runner);
-        handler.postDelayed(runner, 700);
+        handler.postDelayed(runner, delay);
     }
 
     public int getScrolledX() {
