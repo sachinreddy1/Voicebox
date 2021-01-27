@@ -41,6 +41,7 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     var isRecording: Boolean = false
     var isSelecting: Boolean = false
     var isScrolling: Boolean = false
+    var metronomeOn: Boolean = true
 
     var bpm: MutableLiveData<Int> = MutableLiveData(120)
 
@@ -301,6 +302,18 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
         }
 
         tableView.adapter?.notifyDataSetChanged()
+    }
+
+    fun toggleMetronome(view: View) {
+        metronomeOn = if (metronomeOn) {
+            view.button_icon.imageTintList = context.getColorStateList(R.color.whitesmoke)
+            view.button_circle.visibility = View.INVISIBLE
+            false
+        } else {
+            view.button_icon.imageTintList = context.getColorStateList(R.color.operationBackground)
+            view.button_circle.visibility = View.VISIBLE
+            true
+        }
     }
 
     // ------------------------------------------------- //

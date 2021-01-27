@@ -36,14 +36,30 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.sachinreddy.feature.table.ui.view.OperationButton
+            android:id="@+id/metronome"
+            android:layout_width="@dimen/cell_length"
+            android:layout_height="@dimen/operation_view_height"
+
+            app:buttonCircleColor="@color/whitesmoke"
+            app:buttonImage="@drawable/ic_metronome"
+            app:buttonEnabled="true"
+            app:buttonImageTint="@color/operationBackground"
+            android:onClick="@{(view) -> vm.toggleMetronome(view)}"
+
+            app:layout_constraintStart_toEndOf="@id/operation_add_button"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.sachinreddy.feature.table.ui.view.OperationButton
+            android:id="@+id/selection"
             android:layout_width="@dimen/cell_length"
             android:layout_height="@dimen/operation_view_height"
 
             app:buttonCircleColor="@color/whitesmoke"
             app:buttonImage="@drawable/ic_selection"
+            app:buttonImageTint="@color/whitesmoke"
             android:onClick="@{(view) -> vm.toggleSelection(view)}"
 
-            app:layout_constraintStart_toEndOf="@id/operation_add_button"
+            app:layout_constraintStart_toEndOf="@id/metronome"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
