@@ -118,6 +118,8 @@
                 android:backgroundTint="@color/recordButtonColor"
 
                 android:boundText="@{vm.tableView.timelineRecyclerView.mTime}"
+                android:vm="@{vm}"
+
                 android:textColor="@color/whitesmoke"
                 android:fontFamily="@font/roboto_medium"
 

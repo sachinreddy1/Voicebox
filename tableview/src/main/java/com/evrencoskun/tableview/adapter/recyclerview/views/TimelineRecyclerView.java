@@ -49,6 +49,7 @@ public class TimelineRecyclerView extends RecyclerView {
 
     public MutableLiveData<Float> xProgress = new MutableLiveData<>();
     public MutableLiveData<Integer> mTime = new MutableLiveData<>();
+    public MutableLiveData<Integer> mMaxTime = new MutableLiveData<>();
     public MutableLiveData<Boolean> mIsScrolling = new MutableLiveData<>();
 
     private Handler handler = new Handler();
@@ -92,6 +93,7 @@ public class TimelineRecyclerView extends RecyclerView {
         Float progressValue = (float) (xTopRecyclerView - xBottomRecyclerView);
         Float progressMax = (float) (mTopWidth - mBottomWidth);
         mTime.postValue(xTopRecyclerView);
+        mMaxTime.postValue(mTopWidth);
 
         if (xTopRecyclerView >= xThreshold && xTopRecyclerView <= mTopWidth - xThreshold) {
             xProgress.postValue(0.5f);
