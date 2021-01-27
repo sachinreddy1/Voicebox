@@ -321,6 +321,7 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
 
     fun onProgressChanged(numberPicker: NumberPicker, progress: Int, fromUser: Boolean) {
         bpm.postValue(progress)
+        tableView.timelineRecyclerView.showTimestamp()
     }
 
     // ------------------------------------------------- //
