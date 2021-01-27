@@ -176,7 +176,7 @@
             android:layout_height="wrap_content"
 
             app:buttonColor="@color/recordButtonColor"
-            app:buttonGap="10dp"
+            app:buttonGap="6dp"
             app:buttonRadius="@dimen/record_button_radius"
             app:layout_constraintBottom_toBottomOf="parent"
 
