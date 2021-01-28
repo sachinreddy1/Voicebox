@@ -9,4 +9,5 @@
     <dimen name="scroll_view_left">114dp</dimen>
     <dimen name="scroll_view_right">44dp</dimen>
     <dimen name="timeline_width">4dp</dimen>
+    <dimen name="small_fab_length">32dp</dimen>
 </resources>

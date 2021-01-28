@@ -21,4 +21,11 @@
         <attr name="buttonEnabled" format="boolean" />
         <attr name="buttonImageTint" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="SmallFAB">
+        <attr name="fabCircleColor" format="color" />
+        <attr name="fabImage" format="reference" />
+        <attr name="fabEnabled" format="boolean" />
+        <attr name="fabImageTint" format="color" />
+    </declare-styleable>
 </resources>

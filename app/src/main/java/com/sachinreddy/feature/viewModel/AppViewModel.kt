@@ -21,6 +21,7 @@ import com.sachinreddy.feature.table.ui.shadow.UtilDragShadowBuilder
 import com.sachinreddy.feature.util.toward
 import com.sachinreddy.numberpicker.NumberPicker
 import kotlinx.android.synthetic.main.operation_button.view.*
+import kotlinx.android.synthetic.main.small_fab.view.*
 import kotlinx.android.synthetic.main.table_view_cell_layout.view.*
 import javax.inject.Inject
 
@@ -42,6 +43,7 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     var isSelecting: Boolean = false
     var isScrolling: Boolean = false
     var metronomeOn: Boolean = true
+    var isPlaying: Boolean = true
 
     var bpm: MutableLiveData<Int> = MutableLiveData(120)
 
@@ -312,6 +314,16 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
         } else {
             view.button_icon.imageTintList = context.getColorStateList(R.color.operationBackground)
             view.button_circle.visibility = View.VISIBLE
+            true
+        }
+    }
+
+    fun toggleSmallFAB(view: View) {
+        isPlaying = if (isPlaying) {
+            view.fab_icon.setImageResource(R.drawable.ic_pause)
+            false
+        } else {
+            view.fab_icon.setImageResource(R.drawable.ic_play)
             true
         }
     }

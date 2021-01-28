@@ -176,10 +176,10 @@
             android:layout_height="wrap_content"
 
             app:buttonColor="@color/recordButtonColor"
-            app:buttonGap="6dp"
+            app:buttonGap="8dp"
             app:buttonRadius="@dimen/record_button_radius"
-            app:layout_constraintBottom_toBottomOf="parent"
 
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -189,6 +189,23 @@
             app:progressColor="@color/colorPrimary"
             app:progressEmptyColor="@color/instrumentBackground"
             app:progressStroke="15" />
+
+        <com.sachinreddy.feature.table.ui.view.SmallFAB
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_margin="10dp"
+
+            app:fabCircleColor="@color/whitesmoke"
+            app:fabImageTint="@color/colorBackground"
+            app:fabImage="@drawable/ic_play"
+            app:fabEnabled="true"
+
+            android:onClick="@{(view) -> vm.toggleSmallFAB(view)}"
+
+            app:layout_constraintTop_toTopOf="@id/recordBtn"
+            app:layout_constraintBottom_toBottomOf="@id/recordBtn"
+            app:layout_constraintStart_toEndOf="@id/recordBtn" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
