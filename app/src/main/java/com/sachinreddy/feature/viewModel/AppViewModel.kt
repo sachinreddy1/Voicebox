@@ -43,7 +43,7 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     var isSelecting: Boolean = false
     var isScrolling: Boolean = false
     var metronomeOn: Boolean = true
-    var isPlaying: Boolean = true
+    var isPlaying: Boolean = false
 
     var bpm: MutableLiveData<Int> = MutableLiveData(120)
 
@@ -319,12 +319,12 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     }
 
     fun toggleSmallFAB(view: View) {
-        isPlaying = if (isPlaying) {
-            view.fab_icon.setImageResource(R.drawable.ic_pause)
-            false
-        } else {
+        if (isPlaying) {
             view.fab_icon.setImageResource(R.drawable.ic_play)
-            true
+            stopPlaying()
+        } else {
+            view.fab_icon.setImageResource(R.drawable.ic_pause)
+            startPlaying()
         }
     }
 
@@ -332,12 +332,26 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
 
     fun startScrolling(right: Boolean) {
         isScrolling = true
-        scrollThread = Thread(Runner(right))
+        scrollThread = Thread(ScrollRunner(right))
         scrollThread?.start()
     }
 
     fun stopScrolling() {
         isScrolling = false
+        scrollThread?.join()
+        scrollThread = null
+    }
+
+    // ------------------------------------------------- //
+
+    fun startPlaying() {
+        isPlaying = true
+        scrollThread = Thread(PlayRunner())
+        scrollThread?.start()
+    }
+
+    fun stopPlaying() {
+        isPlaying = false
         scrollThread?.join()
         scrollThread = null
     }
@@ -351,7 +365,7 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
 
     // ------------------------------------------------- //
 
-    private inner class Runner(right: Boolean) : Runnable {
+    private inner class ScrollRunner(right: Boolean) : Runnable {
         val translationValue = if (right) 20 else -20
         override fun run() {
             while (isScrolling) {
@@ -359,6 +373,22 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
                     tableView.timelineRecyclerView.scrollBy(translationValue, 0)
                 }
                 Thread.sleep(14)
+            }
+        }
+    }
+
+    private inner class PlayRunner() : Runnable {
+        val barNumber =
+            numberBars.value!!.toFloat() / tableView.timelineRecyclerView.mMaxTime.value!!
+        val beatNumber = 4 * barNumber
+        val timeMS = beatNumber * (60000 / bpm.value!!)
+
+        override fun run() {
+            while (isPlaying) {
+                scrollHandler.post {
+                    tableView.timelineRecyclerView.scrollBy(1, 0)
+                }
+                Thread.sleep(timeMS.toLong())
             }
         }
     }
