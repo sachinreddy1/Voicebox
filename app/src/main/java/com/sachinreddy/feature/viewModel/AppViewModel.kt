@@ -21,7 +21,6 @@ import com.sachinreddy.feature.table.ui.shadow.UtilDragShadowBuilder
 import com.sachinreddy.feature.util.toward
 import com.sachinreddy.numberpicker.NumberPicker
 import kotlinx.android.synthetic.main.operation_button.view.*
-import kotlinx.android.synthetic.main.small_fab.view.*
 import kotlinx.android.synthetic.main.table_view_cell_layout.view.*
 import javax.inject.Inject
 
@@ -43,7 +42,7 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     var isSelecting: Boolean = false
     var isScrolling: Boolean = false
     var metronomeOn: Boolean = true
-    var isPlaying: Boolean = false
+    var isPlaying: MutableLiveData<Boolean> = MutableLiveData(false)
 
     var bpm: MutableLiveData<Int> = MutableLiveData(120)
 
@@ -318,14 +317,8 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
         }
     }
 
-    fun toggleSmallFAB(view: View) {
-        if (isPlaying) {
-            view.fab_icon.setImageResource(R.drawable.ic_play)
-            stopPlaying()
-        } else {
-            view.fab_icon.setImageResource(R.drawable.ic_pause)
-            startPlaying()
-        }
+    fun toggleSmallFAB() {
+        isPlaying.postValue(!isPlaying.value!!)
     }
 
     // ------------------------------------------------- //
@@ -345,13 +338,11 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     // ------------------------------------------------- //
 
     fun startPlaying() {
-        isPlaying = true
         scrollThread = Thread(PlayRunner())
         scrollThread?.start()
     }
 
     fun stopPlaying() {
-        isPlaying = false
         scrollThread?.join()
         scrollThread = null
     }
@@ -384,7 +375,15 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
         val timeMS = beatNumber * (60000 / bpm.value!!)
 
         override fun run() {
-            while (isPlaying) {
+            while (isPlaying.value!!) {
+                val time = tableView.timelineRecyclerView.mTime.value!!
+                val maxTime = tableView.timelineRecyclerView.mMaxTime.value!!
+
+                if (time == maxTime) {
+                    isPlaying.postValue(false)
+                    break
+                }
+
                 scrollHandler.post {
                     tableView.timelineRecyclerView.scrollBy(1, 0)
                 }

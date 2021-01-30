@@ -201,7 +201,9 @@
             app:fabImage="@drawable/ic_play"
             app:fabEnabled="true"
 
-            android:onClick="@{(view) -> vm.toggleSmallFAB(view)}"
+            android:onClick="@{() -> vm.toggleSmallFAB()}"
+            android:isPlaying="@{vm.isPlaying}"
+            android:vm="@{vm}"
 
             app:layout_constraintTop_toTopOf="@id/recordBtn"
             app:layout_constraintBottom_toBottomOf="@id/recordBtn"

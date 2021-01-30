@@ -4,6 +4,9 @@ import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
+import com.sachinreddy.feature.R
+import com.sachinreddy.feature.viewModel.AppViewModel
+import kotlinx.android.synthetic.main.small_fab.view.*
 import java.util.concurrent.TimeUnit
 
 @BindingAdapter(
@@ -46,4 +49,18 @@ fun setText(
 @BindingAdapter("android:isScrolling")
 fun setScrolling(constraintLayout: ConstraintLayout, isScrolling: Boolean) {
     constraintLayout.visibility = if (isScrolling) View.VISIBLE else View.GONE
+}
+
+@BindingAdapter(
+    value = ["android:isPlaying", "android:vm"],
+    requireAll = true
+)
+fun setIsPlaying(constraintLayout: ConstraintLayout, isPlaying: Boolean, vm: AppViewModel) {
+    if (isPlaying) {
+        constraintLayout.fab_icon.setImageResource(R.drawable.ic_pause)
+        vm.startPlaying()
+    } else {
+        constraintLayout.fab_icon.setImageResource(R.drawable.ic_play)
+        vm.stopPlaying()
+    }
 }
