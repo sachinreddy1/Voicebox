@@ -41,4 +41,15 @@ class SmallFAB(context: Context, attributeSet: AttributeSet) :
             attributes.getColorStateList(R.styleable.SmallFAB_fabImageTint)
         attributes.recycle()
     }
+
+    fun setFabEnabled(fabEnabled: Boolean) {
+        val fabCircle: ConstraintLayout = findViewById(R.id.fab_circle)
+
+        isEnabled = fabEnabled
+        fabCircle.backgroundTintList =
+            if (fabEnabled) context.getColorStateList(R.color.whitesmoke) else context.getColorStateList(
+                R.color.selection_color
+            )
+        fabCircle.children.forEach { child -> child.isEnabled = fabEnabled }
+    }
 }

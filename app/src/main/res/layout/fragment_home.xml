@@ -199,7 +199,7 @@
             app:fabCircleColor="@color/whitesmoke"
             app:fabImageTint="@color/colorBackground"
             app:fabImage="@drawable/ic_play"
-            app:fabEnabled="false"
+            app:fabEnabled="@{vm.tableView.timelineRecyclerView.mFabEnabled}"
 
             android:onClick="@{() -> vm.toggleSmallFAB()}"
             android:isPlaying="@{vm.isPlaying}"

@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.sachinreddy.feature.R
+import com.sachinreddy.feature.table.ui.view.SmallFAB
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.small_fab.view.*
 import java.util.concurrent.TimeUnit
@@ -63,4 +64,9 @@ fun setIsPlaying(constraintLayout: ConstraintLayout, isPlaying: Boolean, vm: App
         constraintLayout.fab_icon.setImageResource(R.drawable.ic_play)
         vm.stopPlaying()
     }
+}
+
+@BindingAdapter("android:isFabEnabled")
+fun setIsFabEnabled(smallFAB: SmallFAB, isFabEnabled: Boolean) {
+    smallFAB.setFabEnabled(isFabEnabled)
 }

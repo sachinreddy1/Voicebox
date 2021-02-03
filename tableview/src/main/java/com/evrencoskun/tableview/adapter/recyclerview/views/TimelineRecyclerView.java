@@ -51,6 +51,7 @@ public class TimelineRecyclerView extends RecyclerView {
     public MutableLiveData<Integer> mTime = new MutableLiveData<>();
     public MutableLiveData<Integer> mMaxTime = new MutableLiveData<>();
     public MutableLiveData<Boolean> mIsScrolling = new MutableLiveData<>();
+    public MutableLiveData<Boolean> mFabEnabled = new MutableLiveData<>();
 
     private Handler handler = new Handler();
     private Runnable runner = new Runnable() {
@@ -65,6 +66,7 @@ public class TimelineRecyclerView extends RecyclerView {
 
         mTableView = tableView;
         mIsScrolling.postValue(false);
+        mFabEnabled.postValue(true);
 
         // These are necessary.
         this.setHasFixedSize(false);
@@ -127,6 +129,12 @@ public class TimelineRecyclerView extends RecyclerView {
             mIsScrolling.postValue(false);
         } else {
             showTimestamp(700);
+        }
+
+        if ((progressValue / progressMax) == 1.0) {
+            mFabEnabled.postValue(false);
+        } else {
+            mFabEnabled.postValue(true);
         }
 
         super.onScrolled(dx, dy);
