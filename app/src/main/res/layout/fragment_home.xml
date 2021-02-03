@@ -199,7 +199,7 @@
             app:fabCircleColor="@color/whitesmoke"
             app:fabImageTint="@color/colorBackground"
             app:fabImage="@drawable/ic_play"
-            app:fabEnabled="true"
+            app:fabEnabled="false"
 
             android:onClick="@{() -> vm.toggleSmallFAB()}"
             android:isPlaying="@{vm.isPlaying}"

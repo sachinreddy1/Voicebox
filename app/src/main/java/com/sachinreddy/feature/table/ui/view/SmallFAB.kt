@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.children
 import com.sachinreddy.feature.R
 
 class SmallFAB(context: Context, attributeSet: AttributeSet) :
@@ -15,14 +16,21 @@ class SmallFAB(context: Context, attributeSet: AttributeSet) :
         val fabCircle: ConstraintLayout = findViewById(R.id.fab_circle)
         val fabIcon: ImageView = findViewById(R.id.fab_icon)
         val attributes = context.obtainStyledAttributes(attributeSet, R.styleable.SmallFAB)
-        fabCircle.backgroundTintList =
-            attributes.getColorStateList(R.styleable.SmallFAB_fabCircleColor)
-        fabCircle.visibility =
-            if (attributes.getBoolean(
-                    R.styleable.SmallFAB_fabEnabled,
-                    false
-                )
-            ) View.VISIBLE else View.INVISIBLE
+
+        val backgroundColor = attributes.getColorStateList(R.styleable.SmallFAB_fabCircleColor)
+        fabCircle.backgroundTintList = backgroundColor
+
+        attributes.getBoolean(
+            R.styleable.SmallFAB_fabEnabled,
+            false
+        ).apply {
+            isEnabled = this
+
+            fabCircle.backgroundTintList =
+                if (this) backgroundColor else context.getColorStateList(R.color.selection_color)
+            fabCircle.children.forEach { child -> child.isEnabled = this }
+        }
+
         fabIcon.setImageResource(
             attributes.getResourceId(
                 R.styleable.SmallFAB_fabImage,
