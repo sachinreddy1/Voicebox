@@ -369,13 +369,13 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     }
 
     private inner class PlayRunner() : Runnable {
-        val barNumber =
-            numberBars.value!!.toFloat() / tableView.timelineRecyclerView.mMaxTime.value!!
-        val beatNumber = 4 * barNumber
-        val timeMS = beatNumber * (60000 / bpm.value!!)
-
         override fun run() {
             while (isPlaying.value!!) {
+                val barNumber =
+                    numberBars.value!!.toFloat() / tableView.timelineRecyclerView.mMaxTime.value!!
+                val beatNumber = 4 * barNumber
+                val timeMS = beatNumber * (60000 / bpm.value!!)
+
                 val time = tableView.timelineRecyclerView.mTime.value!!
                 val maxTime = tableView.timelineRecyclerView.mMaxTime.value!!
 
