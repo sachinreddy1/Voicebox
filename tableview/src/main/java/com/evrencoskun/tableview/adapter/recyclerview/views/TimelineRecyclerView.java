@@ -53,7 +53,6 @@ public class TimelineRecyclerView extends RecyclerView {
     public MutableLiveData<Integer> mMaxTime = new MutableLiveData<>();
     public MutableLiveData<Boolean> mIsScrolling = new MutableLiveData<>();
     public MutableLiveData<Boolean> mFabEnabled = new MutableLiveData<>();
-
     public MutableLiveData<Boolean> metronomeOn = new MutableLiveData<>();
     public MutableLiveData<Boolean> isPlaying = new MutableLiveData<>();
 
@@ -146,12 +145,17 @@ public class TimelineRecyclerView extends RecyclerView {
             mFabEnabled.postValue(true);
         }
 
-        Float beatLength = (float) ((mTopWidth / 8) / 4);
+        Boolean metronomeValue = metronomeOn.getValue();
+        Boolean playingValue = isPlaying.getValue();
 
-        if (metronomeOn.getValue() != null && isPlaying.getValue() != null) {
-            if (isPlaying.getValue() && metronomeOn.getValue()) {
-                if (!metronomePlayer.isPlaying() && (xTopRecyclerView % beatLength) == 0f)
+        if (metronomeValue != null && playingValue != null) {
+            if (metronomeValue && playingValue) {
+                Integer beatLength = (getChildAt(0).getWidth() / 4);
+                if ((xTopRecyclerView % beatLength) == 0) {
+                    if (metronomePlayer.isPlaying())
+                        metronomePlayer.stop();
                     metronomePlayer.start();
+                }
             }
         }
 
