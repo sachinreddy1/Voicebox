@@ -18,6 +18,7 @@
 package com.evrencoskun.tableview.adapter.recyclerview.views;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -53,6 +54,11 @@ public class TimelineRecyclerView extends RecyclerView {
     public MutableLiveData<Boolean> mIsScrolling = new MutableLiveData<>();
     public MutableLiveData<Boolean> mFabEnabled = new MutableLiveData<>();
 
+    public MutableLiveData<Boolean> metronomeOn = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isPlaying = new MutableLiveData<>();
+
+    public MediaPlayer metronomePlayer = MediaPlayer.create(getContext(), R.raw.metronome);
+
     private Handler handler = new Handler();
     private Runnable runner = new Runnable() {
         @Override
@@ -67,6 +73,9 @@ public class TimelineRecyclerView extends RecyclerView {
         mTableView = tableView;
         mIsScrolling.postValue(false);
         mFabEnabled.postValue(true);
+
+        metronomeOn.postValue(true);
+        isPlaying.postValue(false);
 
         // These are necessary.
         this.setHasFixedSize(false);
@@ -135,6 +144,15 @@ public class TimelineRecyclerView extends RecyclerView {
             mFabEnabled.postValue(false);
         } else {
             mFabEnabled.postValue(true);
+        }
+
+        Float beatLength = (float) ((mTopWidth / 8) / 4);
+
+        if (metronomeOn.getValue() != null && isPlaying.getValue() != null) {
+            if (isPlaying.getValue() && metronomeOn.getValue()) {
+                if (!metronomePlayer.isPlaying() && (xTopRecyclerView % beatLength) == 0f)
+                    metronomePlayer.start();
+            }
         }
 
         super.onScrolled(dx, dy);

@@ -4,7 +4,6 @@ import android.content.ClipData
 import android.content.Context
 import android.media.AudioManager
 import android.media.AudioRecord
-import android.media.MediaPlayer
 import android.os.Build
 import android.os.Handler
 import android.os.VibrationEffect
@@ -42,12 +41,8 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     var isRecording: Boolean = false
     var isSelecting: Boolean = false
     var isScrolling: Boolean = false
-    var metronomeOn: Boolean = true
-    var isPlaying: MutableLiveData<Boolean> = MutableLiveData(false)
 
     var bpm: MutableLiveData<Int> = MutableLiveData(120)
-
-    val metronomePlayer: MediaPlayer = MediaPlayer.create(context, R.raw.metronome)
 
     // ------------------------------------------------- //
 
@@ -309,19 +304,21 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     }
 
     fun toggleMetronome(view: View) {
-        metronomeOn = if (metronomeOn) {
-            view.button_icon.imageTintList = context.getColorStateList(R.color.whitesmoke)
-            view.button_circle.visibility = View.INVISIBLE
-            false
-        } else {
-            view.button_icon.imageTintList = context.getColorStateList(R.color.operationBackground)
-            view.button_circle.visibility = View.VISIBLE
-            true
-        }
+        tableView.timelineRecyclerView.metronomeOn.value =
+            if (tableView.timelineRecyclerView.metronomeOn.value!!) {
+                view.button_icon.imageTintList = context.getColorStateList(R.color.whitesmoke)
+                view.button_circle.visibility = View.INVISIBLE
+                false
+            } else {
+                view.button_icon.imageTintList =
+                    context.getColorStateList(R.color.operationBackground)
+                view.button_circle.visibility = View.VISIBLE
+                true
+            }
     }
 
     fun toggleSmallFAB() {
-        isPlaying.postValue(!isPlaying.value!!)
+        tableView.timelineRecyclerView.isPlaying.postValue(!tableView.timelineRecyclerView.isPlaying.value!!)
     }
 
     // ------------------------------------------------- //
@@ -377,21 +374,14 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
         val beatNumber = 4 * barNumber
 
         override fun run() {
-            while (isPlaying.value!!) {
+            while (tableView.timelineRecyclerView.isPlaying.value!!) {
                 val timeMS = beatNumber * (60000 / bpm.value!!)
 
                 val time = tableView.timelineRecyclerView.mTime.value!!
                 val maxTime = tableView.timelineRecyclerView.mMaxTime.value!!
 
-                val beatLength =
-                    (tableView.timelineRecyclerView.mMaxTime.value!! / numberBars.value!!.toFloat()) / 4
-
-                if (metronomeOn && (time % beatLength) < 4f) {
-                    metronomePlayer.start()
-                }
-
                 if (time == maxTime) {
-                    isPlaying.postValue(false)
+                    tableView.timelineRecyclerView.isPlaying.postValue(false)
                     break
                 }
 

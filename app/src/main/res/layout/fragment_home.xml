@@ -202,7 +202,7 @@
             app:fabEnabled="@{vm.tableView.timelineRecyclerView.mFabEnabled}"
 
             android:onClick="@{() -> vm.toggleSmallFAB()}"
-            android:isPlaying="@{vm.isPlaying}"
+            android:isPlaying="@{vm.tableView.timelineRecyclerView.isPlaying}"
             android:vm="@{vm}"
 
             app:layout_constraintTop_toTopOf="@id/recordBtn"
