@@ -59,10 +59,19 @@ public class TimelineRecyclerView extends RecyclerView {
     public MediaPlayer metronomePlayer = MediaPlayer.create(getContext(), R.raw.metronome);
 
     private Handler handler = new Handler();
-    private Runnable runner = new Runnable() {
+
+    private Runnable scrollRunner = new Runnable() {
         @Override
         public void run() {
             mIsScrolling.postValue(false);
+        }
+    };
+    private Runnable metronomeRunner = new Runnable() {
+        @Override
+        public void run() {
+            if (metronomePlayer.isPlaying())
+                metronomePlayer.stop();
+            metronomePlayer.start();
         }
     };
 
@@ -152,9 +161,7 @@ public class TimelineRecyclerView extends RecyclerView {
             if (metronomeValue && playingValue) {
                 Integer beatLength = (getChildAt(0).getWidth() / 4);
                 if ((xTopRecyclerView % beatLength) == 0) {
-                    if (metronomePlayer.isPlaying())
-                        metronomePlayer.stop();
-                    metronomePlayer.start();
+                    handler.post(metronomeRunner);
                 }
             }
         }
@@ -164,8 +171,8 @@ public class TimelineRecyclerView extends RecyclerView {
 
     public void showTimestamp(Integer delay) {
         mIsScrolling.postValue(true);
-        handler.removeCallbacks(runner);
-        handler.postDelayed(runner, delay);
+        handler.removeCallbacks(scrollRunner);
+        handler.postDelayed(scrollRunner, delay);
     }
 
     public int getScrolledX() {
