@@ -171,9 +171,11 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <com.emrekose.recordbutton.RecordButton
-            android:id="@+id/recordBtn"
+            android:id="@+id/record_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
+            android:vm="@{vm}"
 
             app:buttonColor="@color/recordButtonColor"
             app:buttonGap="8dp"
@@ -205,9 +207,9 @@
             android:isPlaying="@{vm.tableView.timelineRecyclerView.isPlaying}"
             android:vm="@{vm}"
 
-            app:layout_constraintTop_toTopOf="@id/recordBtn"
-            app:layout_constraintBottom_toBottomOf="@id/recordBtn"
-            app:layout_constraintStart_toEndOf="@id/recordBtn" />
+            app:layout_constraintTop_toTopOf="@id/record_button"
+            app:layout_constraintBottom_toBottomOf="@id/record_button"
+            app:layout_constraintStart_toEndOf="@id/record_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

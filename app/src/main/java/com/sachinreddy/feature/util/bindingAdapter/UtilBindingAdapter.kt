@@ -4,6 +4,8 @@ import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
+import com.emrekose.recordbutton.OnRecordListener
+import com.emrekose.recordbutton.RecordButton
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.table.ui.view.SmallFAB
 import com.sachinreddy.feature.viewModel.AppViewModel
@@ -69,4 +71,29 @@ fun setIsPlaying(constraintLayout: ConstraintLayout, isPlaying: Boolean, vm: App
 @BindingAdapter("android:isFabEnabled")
 fun setIsFabEnabled(smallFAB: SmallFAB, isFabEnabled: Boolean) {
     smallFAB.setFabEnabled(isFabEnabled)
+}
+
+@BindingAdapter("android:vm")
+fun setRecordButtonVm(recordButton: RecordButton, vm: AppViewModel) {
+    vm.apply {
+        recordButton.setRecordListener(object : OnRecordListener {
+            override fun onRecord() {
+                if (!isRecording) {
+                    startRecording()
+                }
+            }
+
+            override fun onRecordCancel() {
+                if (isRecording) {
+                    stopRecording()
+                }
+            }
+
+            override fun onRecordFinish() {
+                if (isRecording) {
+                    stopRecording()
+                }
+            }
+        })
+    }
 }

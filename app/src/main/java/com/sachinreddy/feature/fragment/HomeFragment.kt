@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.emrekose.recordbutton.OnRecordListener
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.databinding.FragmentHomeBinding
 import com.sachinreddy.feature.injection.appComponent
@@ -80,26 +79,6 @@ class HomeFragment : Fragment() {
             activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         recorderThread.start()
 
-        recordBtn.setRecordListener(object : OnRecordListener {
-            override fun onRecord() {
-                if (!appViewModel.isRecording) {
-                    startRecording()
-                }
-            }
-
-            override fun onRecordCancel() {
-                if (appViewModel.isRecording) {
-                    stopRecording()
-                }
-            }
-
-            override fun onRecordFinish() {
-                if (appViewModel.isRecording) {
-                    stopRecording()
-                }
-            }
-        })
-
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -142,25 +121,6 @@ class HomeFragment : Fragment() {
                     cells.postValue(newCells)
                 }
             }
-        }
-    }
-
-    private fun startRecording() {
-        appViewModel.apply {
-            for (cell in selectedCells) {
-                stopTrack(cell)
-                cell.data.clear()
-            }
-
-            recorder?.startRecording()
-            isRecording = true
-        }
-    }
-
-    private fun stopRecording() {
-        appViewModel.apply {
-            recorder?.stop()
-            isRecording = false
         }
     }
 

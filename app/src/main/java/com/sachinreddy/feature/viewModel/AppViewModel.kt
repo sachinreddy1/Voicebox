@@ -404,4 +404,21 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
             )
         }
     }
+
+    // ------------------------------------------------- //
+
+    fun startRecording() {
+        for (cell in selectedCells) {
+            stopTrack(cell)
+            cell.data.clear()
+        }
+
+        recorder?.startRecording()
+        isRecording = true
+    }
+
+    fun stopRecording() {
+        recorder?.stop()
+        isRecording = false
+    }
 }
