@@ -440,21 +440,6 @@ class AppViewModel @Inject constructor(
 
     // ------------------------------------------------- //
 
-    fun startRecording() {
-        for (cell in selectedCells) {
-            stopTrack(cell)
-            cell.data.clear()
-        }
-
-        recorder?.startRecording()
-        isRecording = true
-    }
-
-    fun stopRecording() {
-        recorder?.stop()
-        isRecording = false
-    }
-
     private fun initRecorder() {
         val min = AudioRecord.getMinBufferSize(
             8000,
@@ -495,5 +480,20 @@ class AppViewModel @Inject constructor(
                 cells.postValue(newCells)
             }
         }
+    }
+
+    fun startRecording() {
+        for (cell in selectedCells) {
+            stopTrack(cell)
+            cell.data.clear()
+        }
+
+        recorder?.startRecording()
+        isRecording = true
+    }
+
+    fun stopRecording() {
+        recorder?.stop()
+        isRecording = false
     }
 }
