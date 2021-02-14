@@ -1,12 +1,11 @@
-package com.sachinreddy.feature.activity
+package com.sachinreddy.feature
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.sachinreddy.feature.R
 import com.sachinreddy.feature.databinding.ActivityMainBinding
-import com.sachinreddy.feature.injection.appComponent
+import com.sachinreddy.feature.di.appComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel

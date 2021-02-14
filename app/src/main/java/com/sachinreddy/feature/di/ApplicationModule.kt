@@ -1,4 +1,4 @@
-package com.sachinreddy.feature.modules
+package com.sachinreddy.feature.di
 
 import android.app.Application
 import android.content.Context

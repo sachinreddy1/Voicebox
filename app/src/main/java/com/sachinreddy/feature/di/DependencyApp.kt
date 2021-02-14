@@ -1,9 +1,8 @@
-package com.sachinreddy.feature.injection
+package com.sachinreddy.feature.di
 
 import android.app.Activity
 import android.app.Application
 import androidx.fragment.app.Fragment
-import com.sachinreddy.feature.modules.ApplicationModule
 
 @Suppress("Unused")
 /**

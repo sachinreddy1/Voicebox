@@ -1,9 +1,7 @@
-package com.sachinreddy.feature.injection
+package com.sachinreddy.feature.di
 
-import com.sachinreddy.feature.activity.MainActivity
+import com.sachinreddy.feature.MainActivity
 import com.sachinreddy.feature.fragment.HomeFragment
-import com.sachinreddy.feature.modules.ApplicationModule
-import com.sachinreddy.feature.modules.ViewModelBindings
 import dagger.Component
 import javax.inject.Singleton
 

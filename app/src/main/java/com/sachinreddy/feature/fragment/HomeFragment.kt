@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.databinding.FragmentHomeBinding
-import com.sachinreddy.feature.injection.appComponent
+import com.sachinreddy.feature.di.appComponent
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
