@@ -1,29 +1,29 @@
 package com.sachinreddy.feature
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
 import com.sachinreddy.feature.databinding.ActivityMainBinding
-import com.sachinreddy.feature.di.appComponent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
+import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
+class MainActivity : DaggerAppCompatActivity() {
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var fragmentFactory: FragmentFactory
+
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.inject(this)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-    }
 
-    override fun onDestroy() {
-        cancel()
-        super.onDestroy()
+        supportFragmentManager.fragmentFactory = fragmentFactory
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
     }
 }

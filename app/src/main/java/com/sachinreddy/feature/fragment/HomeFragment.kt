@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.databinding.FragmentHomeBinding
-import com.sachinreddy.feature.di.appComponent
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
@@ -22,17 +21,16 @@ val PERMISSIONS = arrayOf(
     android.Manifest.permission.RECORD_AUDIO
 )
 
-class HomeFragment : Fragment() {
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+class HomeFragment @Inject constructor(
+    private val viewModelFactory: ViewModelProvider.Factory
+) : Fragment() {
+
     private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        appComponent!!.inject(this)
-
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.vm =
