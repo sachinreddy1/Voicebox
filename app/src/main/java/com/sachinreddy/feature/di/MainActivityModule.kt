@@ -1,5 +1,6 @@
 package com.sachinreddy.feature.di
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.sachinreddy.feature.MainActivity
@@ -20,7 +21,7 @@ import dagger.Provides
 abstract class MainActivityModule {
 
     @Binds
-    abstract fun bindActivity(mainActivity: MainActivity): MainActivity
+    abstract fun bindActivity(mainActivity: MainActivity): AppCompatActivity
 
     companion object {
         @Provides

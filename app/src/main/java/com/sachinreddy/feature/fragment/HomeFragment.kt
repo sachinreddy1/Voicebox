@@ -1,12 +1,9 @@
 package com.sachinreddy.feature.fragment
 
-import android.content.Context
-import android.media.AudioManager
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.sachinreddy.feature.R
@@ -14,12 +11,6 @@ import com.sachinreddy.feature.databinding.FragmentHomeBinding
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
-
-const val REQUEST_PERMISSION_CODE = 200
-val PERMISSIONS = arrayOf(
-    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-    android.Manifest.permission.RECORD_AUDIO
-)
 
 class HomeFragment @Inject constructor(
     private val viewModelFactory: ViewModelProvider.Factory
@@ -44,11 +35,6 @@ class HomeFragment @Inject constructor(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupActionBar()
-
-        ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)
-        (binding.vm)?.audioManager =
-            activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-
         super.onViewCreated(view, savedInstanceState)
     }
 

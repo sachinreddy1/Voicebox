@@ -12,9 +12,11 @@ import android.os.Handler
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.evrencoskun.tableview.TableView
+import com.sachinreddy.feature.MainActivity
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.ColumnHeader
@@ -29,7 +31,10 @@ import kotlinx.android.synthetic.main.operation_button.view.*
 import kotlinx.android.synthetic.main.table_view_cell_layout.view.*
 import javax.inject.Inject
 
-class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
+class AppViewModel @Inject constructor(
+    val context: Context,
+    activity: MainActivity
+) : ViewModel() {
 
     var numberBars: MutableLiveData<Int> = MutableLiveData(8)
 
@@ -37,7 +42,8 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     var adapter: EditCellAdapter = EditCellAdapter(context, this)
     var tableViewListener: EditCellListener = EditCellListener(context)
 
-    var audioManager: AudioManager? = null
+    var audioManager: AudioManager =
+        activity.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     var recorder: AudioRecord? = null
 
     private var scrollThread: Thread? = null
@@ -52,11 +58,19 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
 
     var bpm: MutableLiveData<Int> = MutableLiveData(120)
 
+    // ------------------------------------------------- //
+
     private val recorderThread = object : Thread() {
         override fun run() {
             recordThread()
         }
     }
+
+    private val REQUEST_PERMISSION_CODE = 200
+    private val PERMISSIONS = arrayOf(
+        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        android.Manifest.permission.RECORD_AUDIO
+    )
 
     // ------------------------------------------------- //
 
@@ -114,6 +128,8 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     // ------------------------------------------------- //
 
     init {
+        ActivityCompat.requestPermissions(activity, PERMISSIONS, REQUEST_PERMISSION_CODE)
+
         cells.value?.first()?.first()?.let {
             it.isSelected = true
             selectedCells.clear()
