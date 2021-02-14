@@ -2,8 +2,11 @@ package com.sachinreddy.feature.viewModel
 
 import android.content.ClipData
 import android.content.Context
+import android.media.AudioFormat
 import android.media.AudioManager
 import android.media.AudioRecord
+import android.media.MediaRecorder
+import android.media.audiofx.AcousticEchoCanceler
 import android.os.Build
 import android.os.Handler
 import android.os.VibrationEffect
@@ -43,6 +46,12 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     var isScrolling: Boolean = false
 
     var bpm: MutableLiveData<Int> = MutableLiveData(120)
+
+    private val recorderThread = object : Thread() {
+        override fun run() {
+            recordThread()
+        }
+    }
 
     // ------------------------------------------------- //
 
@@ -105,6 +114,9 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
             selectedCells.clear()
             selectedCells.add(it)
         }
+
+        initRecorder()
+        recorderThread.start()
     }
 
     // ------------------------------------------------- //
@@ -420,5 +432,47 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     fun stopRecording() {
         recorder?.stop()
         isRecording = false
+    }
+
+    private fun initRecorder() {
+        val min = AudioRecord.getMinBufferSize(
+            8000,
+            AudioFormat.CHANNEL_IN_STEREO,
+            AudioFormat.ENCODING_PCM_16BIT
+        )
+
+        recorder = AudioRecord(
+            MediaRecorder.AudioSource.VOICE_COMMUNICATION,
+            8000,
+            AudioFormat.CHANNEL_IN_STEREO,
+            AudioFormat.ENCODING_PCM_16BIT,
+            min
+        )
+
+        if (AcousticEchoCanceler.isAvailable()) {
+            val echoCanceler = AcousticEchoCanceler.create(recorder!!.audioSessionId)
+            echoCanceler.enabled = true
+        }
+    }
+
+    private fun recordThread() {
+        audioManager?.mode = AudioManager.MODE_IN_COMMUNICATION
+        while (true) {
+            if (isRecording) {
+                val newCells = cells.value?.map { track ->
+                    track.map { cell ->
+                        if (cell.isSelected) {
+                            val data = ShortArray(1024)
+                            recorder?.read(data, 0, 1024)
+                            cell.data.add(data)
+                        }
+                        cell
+                    }
+                    track
+                }
+
+                cells.postValue(newCells)
+            }
+        }
     }
 }

@@ -1,11 +1,7 @@
 package com.sachinreddy.feature.fragment
 
 import android.content.Context
-import android.media.AudioFormat
 import android.media.AudioManager
-import android.media.AudioRecord
-import android.media.MediaRecorder
-import android.media.audiofx.AcousticEchoCanceler
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -36,12 +32,6 @@ class HomeFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var appViewModel: AppViewModel
     private lateinit var binding: FragmentHomeBinding
-
-    private val recorderThread = object : Thread() {
-        override fun run() {
-            recordThread()
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,54 +64,10 @@ class HomeFragment : Fragment() {
 
         ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)
 
-        initRecorder()
         appViewModel.audioManager =
             activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        recorderThread.start()
 
         super.onViewCreated(view, savedInstanceState)
-    }
-
-    private fun initRecorder() {
-        val min = AudioRecord.getMinBufferSize(
-            8000,
-            AudioFormat.CHANNEL_IN_STEREO,
-            AudioFormat.ENCODING_PCM_16BIT
-        )
-        appViewModel.recorder = AudioRecord(
-            MediaRecorder.AudioSource.VOICE_COMMUNICATION,
-            8000,
-            AudioFormat.CHANNEL_IN_STEREO,
-            AudioFormat.ENCODING_PCM_16BIT,
-            min
-        )
-        if (AcousticEchoCanceler.isAvailable()) {
-            val echoCanceler = AcousticEchoCanceler.create(appViewModel.recorder!!.audioSessionId)
-            echoCanceler.enabled = true
-        }
-    }
-
-    private fun recordThread() {
-        appViewModel.audioManager?.mode = AudioManager.MODE_IN_COMMUNICATION
-        while (true) {
-            appViewModel.apply {
-                if (isRecording) {
-                    val newCells = cells.value?.map { track ->
-                        track.map { cell ->
-                            if (cell.isSelected) {
-                                val data = ShortArray(1024)
-                                recorder?.read(data, 0, 1024)
-                                cell.data.add(data)
-                            }
-                            cell
-                        }
-                        track
-                    }
-
-                    cells.postValue(newCells)
-                }
-            }
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
