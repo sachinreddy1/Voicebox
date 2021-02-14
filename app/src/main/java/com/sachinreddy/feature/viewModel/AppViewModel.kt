@@ -477,7 +477,7 @@ class AppViewModel @Inject constructor(
     }
 
     private fun recordThread() {
-        audioManager?.mode = AudioManager.MODE_IN_COMMUNICATION
+        audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
         while (true) {
             if (isRecording) {
                 val newCells = cells.value?.map { track ->
