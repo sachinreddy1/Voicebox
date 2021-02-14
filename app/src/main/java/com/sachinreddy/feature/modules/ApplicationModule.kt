@@ -16,16 +16,20 @@ class ApplicationModule(private val application: Application) {
     @Provides
     @Singleton
     fun application() = application
+
     @Provides
     @Singleton
     fun context() = application.applicationContext
+
     @Provides
     @Singleton
     fun resources() = application.resources
+
     @Provides
     @Singleton
     fun connectivityManager() =
         application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
     @Provides
     @Singleton
     fun vibrator() = application.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator

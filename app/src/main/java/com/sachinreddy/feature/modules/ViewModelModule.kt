@@ -1,4 +1,4 @@
-package com.sachinreddy.feature.injection
+package com.sachinreddy.feature.modules
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

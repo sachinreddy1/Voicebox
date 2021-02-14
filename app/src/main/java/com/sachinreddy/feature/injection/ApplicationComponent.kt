@@ -1,8 +1,9 @@
 package com.sachinreddy.feature.injection
 
-import com.sachinreddy.feature.activity.AppActivity
+import com.sachinreddy.feature.activity.MainActivity
 import com.sachinreddy.feature.fragment.HomeFragment
 import com.sachinreddy.feature.modules.ApplicationModule
+import com.sachinreddy.feature.modules.ViewModelBindings
 import dagger.Component
 import javax.inject.Singleton
 
@@ -15,6 +16,6 @@ import javax.inject.Singleton
 )
 interface ApplicationComponent {
     fun inject(target: DependencyApp)
-    fun inject(target: AppActivity)
+    fun inject(target: MainActivity)
     fun inject(target: HomeFragment)
 }
