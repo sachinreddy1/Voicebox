@@ -20,6 +20,8 @@ import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.data.table.ColumnHeader
 import com.sachinreddy.feature.data.table.RowHeader
 import com.sachinreddy.feature.data.table.Timeline
+import com.sachinreddy.feature.table.adapter.EditCellAdapter
+import com.sachinreddy.feature.table.listener.EditCellListener
 import com.sachinreddy.feature.table.ui.shadow.UtilDragShadowBuilder
 import com.sachinreddy.feature.util.toward
 import com.sachinreddy.numberpicker.NumberPicker
@@ -32,6 +34,9 @@ class AppViewModel @Inject constructor(val context: Context) : ViewModel() {
     var numberBars: MutableLiveData<Int> = MutableLiveData(8)
 
     lateinit var tableView: TableView
+    var adapter: EditCellAdapter = EditCellAdapter(context, this)
+    var tableViewListener: EditCellListener = EditCellListener(context)
+
     var audioManager: AudioManager? = null
     var recorder: AudioRecord? = null
 

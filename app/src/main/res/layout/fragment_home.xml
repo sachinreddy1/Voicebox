@@ -66,6 +66,9 @@
             android:columnHeaders="@{vm.columnHeaders}"
             android:rowHeaders="@{vm.rowHeaders}"
 
+            app:adapter="@{vm.adapter}"
+            app:tableViewListener="@{vm.tableViewListener}"
+
             app:column_header_height="@dimen/column_header_height"
             app:layout_constraintTop_toBottomOf="@id/app_action_bar"
             app:layout_constraintStart_toStartOf="parent"

@@ -9,17 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.databinding.FragmentHomeBinding
 import com.sachinreddy.feature.injection.appComponent
-import com.sachinreddy.feature.table.adapter.EditCellAdapter
-import com.sachinreddy.feature.table.listener.EditCellListener
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
-
 
 const val REQUEST_PERMISSION_CODE = 200
 val PERMISSIONS = arrayOf(
@@ -30,7 +25,6 @@ val PERMISSIONS = arrayOf(
 class HomeFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var appViewModel: AppViewModel
     private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(
@@ -41,19 +35,10 @@ class HomeFragment : Fragment() {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
-        ViewModelProvider(this@HomeFragment, viewModelFactory).get(AppViewModel::class.java).let {
-            binding.vm = it
-            appViewModel = it
-        }
+        binding.vm =
+            ViewModelProvider(this@HomeFragment, viewModelFactory).get(AppViewModel::class.java)
 
-        binding.contentContainer.apply {
-            this.adapter = EditCellAdapter(
-                requireContext(),
-                appViewModel
-            )
-            this.tableViewListener = EditCellListener(requireContext())
-            appViewModel.tableView = this
-        }
+        (binding.vm)?.tableView = binding.contentContainer
 
         binding.executePendingBindings()
         return binding.root
@@ -63,8 +48,7 @@ class HomeFragment : Fragment() {
         setupActionBar()
 
         ActivityCompat.requestPermissions(requireActivity(), PERMISSIONS, REQUEST_PERMISSION_CODE)
-
-        appViewModel.audioManager =
+        (binding.vm)?.audioManager =
             activity?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
         super.onViewCreated(view, savedInstanceState)
@@ -93,7 +77,4 @@ class HomeFragment : Fragment() {
             }
         }
     }
-
-    private val validNavController get() = findNavController().takeIf { it.valid }
-    private val NavController.valid get() = currentDestination?.id == R.id.HomeFragment
 }

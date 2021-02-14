@@ -6,7 +6,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.emrekose.recordbutton.OnRecordListener
 import com.emrekose.recordbutton.RecordButton
+import com.evrencoskun.tableview.TableView
 import com.sachinreddy.feature.R
+import com.sachinreddy.feature.table.adapter.EditCellAdapter
+import com.sachinreddy.feature.table.listener.EditCellListener
 import com.sachinreddy.feature.table.ui.view.SmallFAB
 import com.sachinreddy.feature.viewModel.AppViewModel
 import kotlinx.android.synthetic.main.small_fab.view.*
@@ -96,4 +99,14 @@ fun setRecordButtonVm(recordButton: RecordButton, vm: AppViewModel) {
             }
         })
     }
+}
+
+@BindingAdapter("app:adapter")
+fun setEditCellAdapter(tableView: TableView, adapter: EditCellAdapter) {
+    tableView.adapter = adapter
+}
+
+@BindingAdapter("app:tableViewListener")
+fun setEditCellListener(tableView: TableView, tableViewListener: EditCellListener) {
+    tableView.tableViewListener = tableViewListener
 }
