@@ -16,18 +16,18 @@ class HomeFragment @Inject constructor(
     private val viewModelFactory: ViewModelProvider.Factory
 ) : Fragment() {
 
-    private lateinit var binding: FragmentHomeBinding
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = this
-        binding.vm =
-            ViewModelProvider(this@HomeFragment, viewModelFactory).get(AppViewModel::class.java)
+        val binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        (binding.vm)?.tableView = binding.contentContainer
+        binding.apply {
+            lifecycleOwner = this@HomeFragment
+            vm =
+                ViewModelProvider(this@HomeFragment, viewModelFactory).get(AppViewModel::class.java)
+            vm?.tableView = binding.contentContainer
+        }
 
         binding.executePendingBindings()
         return binding.root
