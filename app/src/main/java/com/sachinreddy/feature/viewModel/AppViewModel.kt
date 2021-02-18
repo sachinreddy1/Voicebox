@@ -31,6 +31,12 @@ import kotlinx.android.synthetic.main.operation_button.view.*
 import kotlinx.android.synthetic.main.table_view_cell_layout.view.*
 import javax.inject.Inject
 
+private const val REQUEST_PERMISSION_CODE = 200
+private val PERMISSIONS = arrayOf(
+    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    android.Manifest.permission.RECORD_AUDIO
+)
+
 class AppViewModel @Inject constructor(
     val context: Context,
     activity: MainActivity
@@ -46,33 +52,20 @@ class AppViewModel @Inject constructor(
         activity.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     var recorder: AudioRecord? = null
 
-    private var scrollThread: Thread? = null
-    private var scrollHandler: Handler = Handler()
-
-    var selectedCells: MutableList<Cell> = mutableListOf()
+    private var selectedCells: MutableList<Cell> = mutableListOf()
     var draggedCell: MutableLiveData<Cell?> = MutableLiveData(null)
 
+    var isScrolling: Boolean = false
     var isRecording: Boolean = false
     var isSelecting: Boolean = false
-    var isScrolling: Boolean = false
 
     var bpm: MutableLiveData<Int> = MutableLiveData(120)
 
-    // ------------------------------------------------- //
+    private var scrollThread: Thread? = null
+    private var scrollHandler: Handler = Handler()
+    private var recorderThread: Thread? = null
 
-    private val recorderThread = object : Thread() {
-        override fun run() {
-            recordThread()
-        }
-    }
-
-    private val REQUEST_PERMISSION_CODE = 200
-    private val PERMISSIONS = arrayOf(
-        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        android.Manifest.permission.RECORD_AUDIO
-    )
-
-    // ------------------------------------------------- //
+    // ------------------- INIT --------------------- //
 
     var cells: MutableLiveData<List<List<Cell>>> = MutableLiveData(
         listOf(
@@ -125,8 +118,6 @@ class AppViewModel @Inject constructor(
         )
     )
 
-    // ------------------------------------------------- //
-
     init {
         ActivityCompat.requestPermissions(activity, PERMISSIONS, REQUEST_PERMISSION_CODE)
 
@@ -137,7 +128,9 @@ class AppViewModel @Inject constructor(
         }
 
         initRecorder()
-        recorderThread.start()
+
+        recorderThread = Thread(RecordRunner())
+        recorderThread?.start()
     }
 
     // ------------------- SELECTION -------------------- //
@@ -441,23 +434,26 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    private fun recordThread() {
-        audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
-        while (true) {
-            if (isRecording) {
-                val newCells = cells.value?.map { track ->
-                    track.map { cell ->
-                        if (cell.isSelected) {
-                            val data = ShortArray(1024)
-                            recorder?.read(data, 0, 1024)
-                            cell.data.add(data)
-                        }
-                        cell
-                    }
-                    track
-                }
+    private inner class RecordRunner() : Runnable {
+        override fun run() {
+            audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
 
-                cells.postValue(newCells)
+            while (true) {
+                if (isRecording) {
+                    val newCells = cells.value?.map { track ->
+                        track.map { cell ->
+                            if (cell.isSelected) {
+                                val data = ShortArray(1024)
+                                recorder?.read(data, 0, 1024)
+                                cell.data.add(data)
+                            }
+                            cell
+                        }
+                        track
+                    }
+
+                    cells.postValue(newCells)
+                }
             }
         }
     }
