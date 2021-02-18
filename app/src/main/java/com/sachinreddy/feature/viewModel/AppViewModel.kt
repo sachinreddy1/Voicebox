@@ -140,32 +140,7 @@ class AppViewModel @Inject constructor(
         recorderThread.start()
     }
 
-    // ------------------------------------------------- //
-
-    fun addTrack() {
-        val trackCells: MutableList<Cell> = mutableListOf()
-        numberBars.value?.let {
-            for (i in 0 until it) {
-                trackCells.add(
-                    Cell(
-                        columnPosition = i,
-                        rowPosition = rowHeaders.value!!.size
-                    )
-                )
-            }
-        }
-
-        val newCells = cells.value!!.toMutableList()
-        newCells.add(trackCells)
-
-        val newRowHeader = rowHeaders.value!!.toMutableList()
-        newRowHeader.add(
-            RowHeader(rowHeaders.value!!.size)
-        )
-
-        cells.postValue(newCells)
-        rowHeaders.postValue(newRowHeader)
-    }
+    // ------------------- SELECTION -------------------- //
 
     fun selectRow(rowPosition: Int) {
         if (isSelecting) {
@@ -202,7 +177,7 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    fun clearCellSelection(): List<List<Cell>> {
+    private fun clearCellSelection(): List<List<Cell>> {
         selectedCells.clear()
         return cells.value.orEmpty().mapIndexed { rowPosition, track ->
             track.mapIndexed { columnPosition, cell ->
@@ -235,7 +210,7 @@ class AppViewModel @Inject constructor(
         return newCells
     }
 
-    // ------------------------------------------------- //
+    // ---------------- PLAYER (TEMPORARY) ---------------- //
 
     fun playTrack(cell: Cell) {
         val newCells = cells.value.orEmpty()
@@ -276,6 +251,8 @@ class AppViewModel @Inject constructor(
         else
             playTrack(cell)
     }
+
+    // ------------- TRANSLATION / SELECTION ----------------- //
 
     fun onEditCellLongClicked(view: View, cell: Cell): Boolean {
         if (!isSelecting) {
@@ -318,7 +295,32 @@ class AppViewModel @Inject constructor(
         draggedCell.postValue(null)
     }
 
-    // ------------------------------------------------- //
+    // ------------------- OPERATIONS ------------------- //
+
+    fun addTrack() {
+        val trackCells: MutableList<Cell> = mutableListOf()
+        numberBars.value?.let {
+            for (i in 0 until it) {
+                trackCells.add(
+                    Cell(
+                        columnPosition = i,
+                        rowPosition = rowHeaders.value!!.size
+                    )
+                )
+            }
+        }
+
+        val newCells = cells.value!!.toMutableList()
+        newCells.add(trackCells)
+
+        val newRowHeader = rowHeaders.value!!.toMutableList()
+        newRowHeader.add(
+            RowHeader(rowHeaders.value!!.size)
+        )
+
+        cells.postValue(newCells)
+        rowHeaders.postValue(newRowHeader)
+    }
 
     fun toggleSelection(view: View) {
         isSelecting = if (isSelecting) {
@@ -354,7 +356,7 @@ class AppViewModel @Inject constructor(
         tableView.timelineRecyclerView.isPlaying.postValue(!tableView.timelineRecyclerView.isPlaying.value!!)
     }
 
-    // ------------------------------------------------- //
+    // ------------------- THREADS ---------------------- //
 
     fun startScrolling(right: Boolean) {
         isScrolling = true
@@ -368,8 +370,6 @@ class AppViewModel @Inject constructor(
         scrollThread = null
     }
 
-    // ------------------------------------------------- //
-
     fun startPlaying() {
         scrollThread = Thread(PlayRunner())
         scrollThread?.start()
@@ -378,6 +378,21 @@ class AppViewModel @Inject constructor(
     fun stopPlaying() {
         scrollThread?.join()
         scrollThread = null
+    }
+
+    fun startRecording() {
+        for (cell in selectedCells) {
+            stopTrack(cell)
+            cell.data.clear()
+        }
+
+        recorder?.startRecording()
+        isRecording = true
+    }
+
+    fun stopRecording() {
+        recorder?.stop()
+        isRecording = false
     }
 
     // ------------------------------------------------- //
@@ -426,15 +441,24 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    fun vibrate(duration: Long, effect: Int) {
-        val v = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(
-                VibrationEffect.createOneShot(
-                    duration,
-                    effect
-                )
-            )
+    private fun recordThread() {
+        audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
+        while (true) {
+            if (isRecording) {
+                val newCells = cells.value?.map { track ->
+                    track.map { cell ->
+                        if (cell.isSelected) {
+                            val data = ShortArray(1024)
+                            recorder?.read(data, 0, 1024)
+                            cell.data.add(data)
+                        }
+                        cell
+                    }
+                    track
+                }
+
+                cells.postValue(newCells)
+            }
         }
     }
 
@@ -461,39 +485,15 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    private fun recordThread() {
-        audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
-        while (true) {
-            if (isRecording) {
-                val newCells = cells.value?.map { track ->
-                    track.map { cell ->
-                        if (cell.isSelected) {
-                            val data = ShortArray(1024)
-                            recorder?.read(data, 0, 1024)
-                            cell.data.add(data)
-                        }
-                        cell
-                    }
-                    track
-                }
-
-                cells.postValue(newCells)
-            }
+    fun vibrate(duration: Long, effect: Int) {
+        val v = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(
+                VibrationEffect.createOneShot(
+                    duration,
+                    effect
+                )
+            )
         }
-    }
-
-    fun startRecording() {
-        for (cell in selectedCells) {
-            stopTrack(cell)
-            cell.data.clear()
-        }
-
-        recorder?.startRecording()
-        isRecording = true
-    }
-
-    fun stopRecording() {
-        recorder?.stop()
-        isRecording = false
     }
 }
