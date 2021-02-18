@@ -226,7 +226,7 @@ class AppViewModel @Inject constructor(
         cells.postValue(newCells)
     }
 
-    fun stopTrack(cell: Cell) {
+    private fun stopTrack(cell: Cell) {
         val newCells = cells.value.orEmpty()
 
         newCells[cell.rowPosition][cell.columnPosition].apply {
