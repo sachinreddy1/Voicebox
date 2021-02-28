@@ -30,6 +30,7 @@ import com.sachinreddy.numberpicker.NumberPicker
 import kotlinx.android.synthetic.main.operation_button.view.*
 import kotlinx.android.synthetic.main.table_view_cell_layout.view.*
 import javax.inject.Inject
+import kotlin.math.abs
 
 private const val REQUEST_PERMISSION_CODE = 200
 private val PERMISSIONS = arrayOf(
@@ -374,6 +375,10 @@ class AppViewModel @Inject constructor(
     }
 
     fun startRecording() {
+        selectedCells.first().apply {
+            Thread(ScrollTo(columnPosition)).start()
+        }
+
         for (cell in selectedCells) {
             stopTrack(cell)
             cell.data.clear()
@@ -396,6 +401,23 @@ class AppViewModel @Inject constructor(
     }
 
     // ------------------------------------------------- //
+
+    private inner class ScrollTo(position: Int) : Runnable {
+        val barLength =
+            (tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) / numberBars.value!!
+        var startX = tableView.timelineRecyclerView.computeHorizontalScrollOffset()
+        var endX = barLength * position
+
+        override fun run() {
+            if (startX == endX) return
+
+            for (i in 0..(abs(endX - startX))) {
+                scrollHandler.post {
+                    tableView.timelineRecyclerView.scrollBy(if (endX > startX) 1 else -1, 0)
+                }
+            }
+        }
+    }
 
     private inner class ScrollRunner(right: Boolean) : Runnable {
         val translationValue = if (right) 20 else -20
