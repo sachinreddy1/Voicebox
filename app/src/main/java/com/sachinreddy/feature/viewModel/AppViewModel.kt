@@ -375,7 +375,7 @@ class AppViewModel @Inject constructor(
     }
 
     fun startRecording() {
-        selectedCells.sortedWith(compareBy { it.columnPosition }).first().apply {
+        selectedCells.first().apply {
             Thread(ScrollTo(columnPosition)).start()
         }
 
