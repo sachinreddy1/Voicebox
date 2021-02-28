@@ -18,7 +18,6 @@
 package com.evrencoskun.tableview.layoutmanager;
 
 import android.content.Context;
-import android.graphics.PointF;
 import android.util.SparseIntArray;
 import android.view.View;
 
@@ -29,8 +28,6 @@ import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.util.TableViewUtils;
 import com.sachinreddy.recyclerview.LinearLayoutManager;
-import com.sachinreddy.recyclerview.LinearSmoothScroller;
-import com.sachinreddy.recyclerview.RecyclerView;
 
 /**
  * Created by evrencoskun on 30/07/2017.
@@ -153,38 +150,5 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
     @Override
     public boolean canScrollHorizontally() {
         return !mTableView.getIsFrozen();
-    }
-
-    @Override
-    public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
-        SmoothScroller smoothScroller = new SmoothScroller(recyclerView.getContext(), 1000, 100);
-        smoothScroller.setTargetPosition(position);
-        startSmoothScroll(smoothScroller);
-    }
-
-    private class SmoothScroller extends LinearSmoothScroller {
-        private static final int TARGET_SEEK_SCROLL_DISTANCE_PX = 10000;
-        private final float distanceInPixels;
-        private final float duration;
-
-        public SmoothScroller(Context context, int distanceInPixels, int duration) {
-            super(context);
-            this.distanceInPixels = distanceInPixels;
-            float millisecondsPerPx = calculateSpeedPerPixel(context.getResources().getDisplayMetrics());
-            this.duration = distanceInPixels < TARGET_SEEK_SCROLL_DISTANCE_PX ?
-                    (int) (Math.abs(distanceInPixels) * millisecondsPerPx) : duration;
-        }
-
-        @Override
-        public PointF computeScrollVectorForPosition(int targetPosition) {
-            return ColumnHeaderLayoutManager.this
-                    .computeScrollVectorForPosition(targetPosition);
-        }
-
-        @Override
-        protected int calculateTimeForScrolling(int dx) {
-            float proportion = (float) dx / distanceInPixels;
-            return (int) (duration * proportion);
-        }
     }
 }
