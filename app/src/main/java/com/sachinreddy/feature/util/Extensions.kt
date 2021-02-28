@@ -10,6 +10,9 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false):
 }
 
 infix fun Int.toward(to: Int): IntProgression {
-    val step = if (this > to) -1 else 1
-    return IntProgression.fromClosedRange(this, to, step)
+    return if (this > to) {
+        IntProgression.fromClosedRange(to, this, 1)
+    } else {
+        IntProgression.fromClosedRange(this, to, 1)
+    }
 }
