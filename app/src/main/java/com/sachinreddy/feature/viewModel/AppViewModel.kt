@@ -138,10 +138,13 @@ class AppViewModel @Inject constructor(
 
     fun selectRow(rowPosition: Int) {
         if (isSelecting) {
+            selectedCells.clear()
+
             val newCells = cells.value?.mapIndexed { index, track ->
                 if (index == rowPosition) {
                     track.map { cell ->
                         cell.isSelected = true
+                        selectedCells.add(cell)
                         cell
                     }
                 } else {
@@ -159,9 +162,16 @@ class AppViewModel @Inject constructor(
 
     fun selectColumn(columnPosition: Int) {
         if (isSelecting) {
+            selectedCells.clear()
+
             val newCells = cells.value?.map { track ->
                 track.mapIndexed { index, cell ->
-                    cell.isSelected = (index == columnPosition)
+                    if (index == columnPosition) {
+                        selectedCells.add(cell)
+                        cell.isSelected = true
+                    } else {
+                        cell.isSelected = false
+                    }
                     cell
                 }
                 track
