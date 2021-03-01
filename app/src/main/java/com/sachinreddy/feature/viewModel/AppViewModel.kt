@@ -463,12 +463,11 @@ class AppViewModel @Inject constructor(
             for (i in 0..(abs(endX - startX))) {
                 if (!isRecording) break
 
-                val timeMS = beatNumber * (60000 / bpm.value!!)
-
                 scrollHandler.post {
                     tableView.timelineRecyclerView.scrollBy(1, 0)
                 }
 
+                val timeMS = beatNumber * (60000 / bpm.value!!)
                 Thread.sleep(timeMS.toLong())
             }
         }
