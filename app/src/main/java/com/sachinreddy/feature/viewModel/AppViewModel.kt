@@ -53,7 +53,7 @@ class AppViewModel @Inject constructor(
         activity.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     var recorder: AudioRecord? = null
 
-    private var selectedCells: MutableList<Cell> = mutableListOf()
+    var selectedCells: MutableList<Cell> = mutableListOf()
     var draggedCell: MutableLiveData<Cell?> = MutableLiveData(null)
 
     var isScrolling: Boolean = false
@@ -61,7 +61,8 @@ class AppViewModel @Inject constructor(
     var isSelecting: Boolean = false
 
     var bpm: MutableLiveData<Int> = MutableLiveData(120)
-    var maxRecordTime: MutableLiveData<Int> = MutableLiveData(100)
+    var maxRecordTime: MutableLiveData<Int> = MutableLiveData(2000)
+    var currentRecordTime: MutableLiveData<Float> = MutableLiveData(0f)
 
     private var scrollThread: Thread? = null
     private var scrollHandler: Handler = Handler()
@@ -153,6 +154,12 @@ class AppViewModel @Inject constructor(
                 track
             }
 
+            setMaxRecordTime(
+                selectedCells.first().columnPosition,
+                selectedCells.last().columnPosition,
+                bpm.value!!
+            )
+
             cells.postValue(newCells)
         }
     }
@@ -173,6 +180,12 @@ class AppViewModel @Inject constructor(
                 }
                 track
             }
+
+            setMaxRecordTime(
+                selectedCells.first().columnPosition,
+                selectedCells.last().columnPosition,
+                bpm.value!!
+            )
 
             cells.postValue(newCells)
         }
@@ -207,6 +220,12 @@ class AppViewModel @Inject constructor(
                 }
             }
         }
+
+        setMaxRecordTime(
+            selectedCells.first().columnPosition,
+            selectedCells.last().columnPosition,
+            bpm.value!!
+        )
 
         return newCells
     }
@@ -408,6 +427,17 @@ class AppViewModel @Inject constructor(
     fun onProgressChanged(numberPicker: NumberPicker, progress: Int, fromUser: Boolean) {
         bpm.postValue(progress)
         tableView.timelineRecyclerView.showTimestamp(800)
+        setMaxRecordTime(
+            selectedCells.first().columnPosition,
+            selectedCells.last().columnPosition,
+            bpm.value!!
+        )
+    }
+
+    private fun setMaxRecordTime(startPosition: Int, endPosition: Int, bpm: Int) {
+        val numBeats = ((endPosition - startPosition) + 1) * 4
+        val millis = numBeats * (60000 / bpm)
+        maxRecordTime.postValue(millis)
     }
 
     // ------------------------------------------------- //
@@ -445,8 +475,7 @@ class AppViewModel @Inject constructor(
         val barNumber =
             numberBars.value!!.toFloat() / tableView.timelineRecyclerView.mMaxTime.value!!
         val beatNumber = 4 * barNumber
-
-        val numBeats = ((endPosition - startPosition) + 1) * 4
+        val timeMS = (beatNumber * (60000 / bpm.value!!))
 
         override fun run() {
             // Go to start position
@@ -456,18 +485,15 @@ class AppViewModel @Inject constructor(
                 }
             }
 
-            val millis = numBeats * (60000 / bpm.value!!)
-            maxRecordTime.postValue(millis)
-
             // Scroll through selected
             for (i in 0..(abs(endX - startX))) {
                 if (!isRecording) break
 
                 scrollHandler.post {
                     tableView.timelineRecyclerView.scrollBy(1, 0)
+                    currentRecordTime.postValue(timeMS * i)
                 }
 
-                val timeMS = beatNumber * (60000 / bpm.value!!)
                 Thread.sleep(timeMS.toLong())
             }
         }

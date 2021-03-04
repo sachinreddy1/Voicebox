@@ -4,14 +4,14 @@ import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
-import com.emrekose.recordbutton.OnRecordListener
-import com.emrekose.recordbutton.RecordButton
 import com.evrencoskun.tableview.TableView
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.table.listener.EditCellListener
 import com.sachinreddy.feature.table.ui.view.SmallFAB
 import com.sachinreddy.feature.viewModel.AppViewModel
+import com.sachinreddy.recordbutton.OnRecordListener
+import com.sachinreddy.recordbutton.RecordButton
 import kotlinx.android.synthetic.main.small_fab.view.*
 import java.util.concurrent.TimeUnit
 
@@ -99,6 +99,16 @@ fun setRecordButtonVm(recordButton: RecordButton, vm: AppViewModel) {
             }
         })
     }
+}
+
+@BindingAdapter("app:currentMillis")
+fun setCurrentMillis(recordButton: RecordButton, currentMillis: Float) {
+    recordButton.currentMiliSecond = currentMillis
+}
+
+@BindingAdapter("app:maxMillis")
+fun setMaxMillis(recordButton: RecordButton, maxMillis: Int) {
+    recordButton.maxMilisecond = maxMillis
 }
 
 @BindingAdapter("app:adapter")

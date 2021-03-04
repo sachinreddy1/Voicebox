@@ -75,7 +75,7 @@ dependencies {
     implementation project(path: ':tableview')
 
     // Record Button
-    implementation 'com.github.emrekose26:RecordButton:1.2.4'
+    implementation project(path: ':recordbutton')
 
     // Firebase
     implementation 'com.google.firebase:firebase-auth-ktx:20.0.1'

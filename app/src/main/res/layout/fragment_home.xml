@@ -173,7 +173,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <com.emrekose.recordbutton.RecordButton
+        <com.sachinreddy.recordbutton.RecordButton
             android:id="@+id/record_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -191,7 +191,8 @@
 
             app:layout_constraintVertical_bias="0.925"
 
-            app:maxMilisecond="@{vm.maxRecordTime}"
+            app:currentMillis="@{vm.currentRecordTime}"
+            app:maxMillis="@{vm.maxRecordTime}"
 
             app:progressColor="@color/colorPrimary"
             app:progressEmptyColor="@color/instrumentBackground"
