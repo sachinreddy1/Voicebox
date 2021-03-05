@@ -25,6 +25,7 @@ import com.sachinreddy.feature.data.table.Timeline
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.table.listener.EditCellListener
 import com.sachinreddy.feature.table.ui.shadow.UtilDragShadowBuilder
+import com.sachinreddy.feature.util.Util
 import com.sachinreddy.feature.util.toward
 import com.sachinreddy.numberpicker.NumberPicker
 import kotlinx.android.synthetic.main.operation_button.view.*
@@ -475,7 +476,9 @@ class AppViewModel @Inject constructor(
         val barNumber =
             numberBars.value!!.toFloat() / tableView.timelineRecyclerView.mMaxTime.value!!
         val beatNumber = 4 * barNumber
+
         val timeMS = (beatNumber * (60000 / bpm.value!!))
+        val timeNS = (timeMS * 1000000).toLong()
 
         override fun run() {
             // Go to start position
@@ -489,12 +492,14 @@ class AppViewModel @Inject constructor(
             for (i in 0..(abs(endX - startX))) {
                 if (!isRecording) break
 
+                val startTime = System.nanoTime()
+
                 scrollHandler.post {
                     tableView.timelineRecyclerView.scrollBy(1, 0)
                     currentRecordTime.postValue(timeMS * i)
                 }
 
-                Thread.sleep(timeMS.toLong())
+                Util.sleepNano(startTime, timeNS)
             }
         }
     }

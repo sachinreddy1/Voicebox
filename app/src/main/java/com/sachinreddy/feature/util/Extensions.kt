@@ -16,3 +16,14 @@ infix fun Int.toward(to: Int): IntProgression {
         IntProgression.fromClosedRange(this, to, 1)
     }
 }
+
+class Util {
+    companion object {
+        fun sleepNano(startTime: Long, interval: Long) {
+            var endTime = 0L
+            while (startTime + interval >= endTime) {
+                endTime = System.nanoTime()
+            }
+        }
+    }
+}
