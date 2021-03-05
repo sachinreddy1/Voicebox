@@ -405,12 +405,12 @@ class AppViewModel @Inject constructor(
         recorder?.startRecording()
         isRecording = true
         Thread(
-            ScrollTo(
+            RecordTimelineRunner(
                 selectedCells.first().columnPosition,
                 selectedCells.last().columnPosition
             )
         ).start()
-        Thread(RecordRunner()).start()
+        Thread(RecordDataRunner()).start()
 
         for (cell in selectedCells) {
             stopTrack(cell)
@@ -443,7 +443,7 @@ class AppViewModel @Inject constructor(
 
     // ------------------------------------------------- //
 
-    private inner class RecordRunner() : Runnable {
+    private inner class RecordDataRunner() : Runnable {
         override fun run() {
             audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
 
@@ -465,7 +465,7 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    private inner class ScrollTo(startPosition: Int, endPosition: Int) : Runnable {
+    private inner class RecordTimelineRunner(startPosition: Int, endPosition: Int) : Runnable {
         val barLength =
             (tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) / numberBars.value!!
 
