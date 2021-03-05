@@ -402,7 +402,6 @@ class AppViewModel @Inject constructor(
     }
 
     fun startRecording() {
-        recorder?.startRecording()
         isRecording = true
         Thread(
             RecordTimelineRunner(
@@ -446,6 +445,7 @@ class AppViewModel @Inject constructor(
     private inner class RecordDataRunner() : Runnable {
         override fun run() {
             audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
+            recorder?.startRecording()
 
             while (isRecording) {
                 val newCells = cells.value?.map { track ->
