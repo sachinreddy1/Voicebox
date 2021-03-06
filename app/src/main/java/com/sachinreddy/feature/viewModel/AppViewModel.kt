@@ -448,11 +448,13 @@ class AppViewModel @Inject constructor(
             recorder?.startRecording()
 
             while (isRecording) {
+                val data = ShortArray(1024)
+                recorder?.read(data, 0, 1024)
+
                 val newCells = cells.value?.map { track ->
                     track.map { cell ->
                         if (cell.isSelected) {
-                            val data = ShortArray(1024)
-                            recorder?.read(data, 0, 1024)
+//                            println(data.toList())
                             cell.data.add(data)
                         }
                         cell
