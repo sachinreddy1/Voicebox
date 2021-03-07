@@ -149,7 +149,7 @@ class AppViewModel @Inject constructor(
         )
 
         if (AcousticEchoCanceler.isAvailable()) {
-            val echoCanceler = AcousticEchoCanceler.create(recorder!!.audioSessionId)
+            val echoCanceler = AcousticEchoCanceler.create(recorder.audioSessionId)
             echoCanceler.enabled = true
         }
     }
