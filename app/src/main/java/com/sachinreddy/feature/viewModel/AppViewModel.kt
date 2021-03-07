@@ -439,7 +439,7 @@ class AppViewModel @Inject constructor(
     }
 
     fun stopRecording() {
-        recorder?.stop()
+        recorder.stop()
         isRecording = false
     }
 
@@ -466,11 +466,11 @@ class AppViewModel @Inject constructor(
     private inner class RecordDataRunner() : Runnable {
         override fun run() {
             audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
-            recorder?.startRecording()
+            recorder.startRecording()
 
             while (isRecording) {
                 val data = ShortArray(1024)
-                recorder?.read(data, 0, 1024)
+                recorder.read(data, 0, 1024)
 
                 val newCells = cells.value?.map { track ->
                     track.map { cell ->
