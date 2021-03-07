@@ -52,7 +52,7 @@ class AppViewModel @Inject constructor(
 
     var audioManager: AudioManager =
         activity.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-    var recorder: AudioRecord? = null
+    lateinit var recorder: AudioRecord
 
     var selectedCells: MutableList<Cell> = mutableListOf()
     var draggedCell: MutableLiveData<Cell?> = MutableLiveData(null)
@@ -131,6 +131,27 @@ class AppViewModel @Inject constructor(
         }
 
         initRecorder()
+    }
+
+    private fun initRecorder() {
+        val min = AudioRecord.getMinBufferSize(
+            8000,
+            AudioFormat.CHANNEL_IN_STEREO,
+            AudioFormat.ENCODING_PCM_16BIT
+        )
+
+        recorder = AudioRecord(
+            MediaRecorder.AudioSource.DEFAULT,
+            8000,
+            AudioFormat.CHANNEL_IN_STEREO,
+            AudioFormat.ENCODING_PCM_16BIT,
+            min
+        )
+
+        if (AcousticEchoCanceler.isAvailable()) {
+            val echoCanceler = AcousticEchoCanceler.create(recorder!!.audioSessionId)
+            echoCanceler.enabled = true
+        }
     }
 
     // ------------------- SELECTION -------------------- //
@@ -544,27 +565,6 @@ class AppViewModel @Inject constructor(
     }
 
     // ------------------------------------------------- //
-
-    private fun initRecorder() {
-        val min = AudioRecord.getMinBufferSize(
-            8000,
-            AudioFormat.CHANNEL_IN_STEREO,
-            AudioFormat.ENCODING_PCM_16BIT
-        )
-
-        recorder = AudioRecord(
-            MediaRecorder.AudioSource.VOICE_COMMUNICATION,
-            8000,
-            AudioFormat.CHANNEL_IN_STEREO,
-            AudioFormat.ENCODING_PCM_16BIT,
-            min
-        )
-
-        if (AcousticEchoCanceler.isAvailable()) {
-            val echoCanceler = AcousticEchoCanceler.create(recorder!!.audioSessionId)
-            echoCanceler.enabled = true
-        }
-    }
 
     fun vibrate(duration: Long, effect: Int) {
         val v = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
