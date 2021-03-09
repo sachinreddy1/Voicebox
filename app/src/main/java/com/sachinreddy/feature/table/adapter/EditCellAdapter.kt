@@ -81,40 +81,40 @@ class EditCellAdapter @Inject constructor(
         override fun getOldListSize(): Int = old.size
         override fun getNewListSize(): Int = updated.size
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition] == updated[newItemPosition]
+            old[oldItemPosition].containsAll(updated[newItemPosition])
     }
 
     class RowHeaderDiffCallback(val old: List<RowHeader>, val updated: List<RowHeader>) :
         DiffUtil.Callback() {
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition] == updated[newItemPosition]
+            old[oldItemPosition].isEqual(updated[newItemPosition])
 
         override fun getOldListSize(): Int = old.size
         override fun getNewListSize(): Int = updated.size
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition] == updated[newItemPosition]
+            old[oldItemPosition].isEqual(updated[newItemPosition])
     }
 
     class TimelineDiffCallback(val old: List<Timeline>, val updated: List<Timeline>) :
         DiffUtil.Callback() {
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition] == updated[newItemPosition]
+            old[oldItemPosition].isEqual(updated[newItemPosition])
 
         override fun getOldListSize(): Int = old.size
         override fun getNewListSize(): Int = updated.size
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition] == updated[newItemPosition]
+            old[oldItemPosition].isEqual(updated[newItemPosition])
     }
 
     class ColumnHeaderDiffCallback(val old: List<ColumnHeader>, val updated: List<ColumnHeader>) :
         DiffUtil.Callback() {
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition] == updated[newItemPosition]
+            old[oldItemPosition].isEqual(updated[newItemPosition])
 
         override fun getOldListSize(): Int = old.size
         override fun getNewListSize(): Int = updated.size
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition] == updated[newItemPosition]
+            old[oldItemPosition].isEqual(updated[newItemPosition])
     }
 
     // ------------------------------------------------- //
