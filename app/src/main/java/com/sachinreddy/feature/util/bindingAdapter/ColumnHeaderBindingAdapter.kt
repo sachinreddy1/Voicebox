@@ -12,7 +12,6 @@ fun setColumnHeaders(tableView: TableView, columnHeaders: List<ColumnHeader>) {
     if (tableView.adapter is EditCellAdapter) {
         (tableView.adapter as EditCellAdapter).let {
             it.setColumnHeaderItems(columnHeaders)
-            it.columnHeaders = columnHeaders
         }
     }
 }

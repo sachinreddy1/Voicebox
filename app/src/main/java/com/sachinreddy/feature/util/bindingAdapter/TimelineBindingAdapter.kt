@@ -10,7 +10,6 @@ fun setTimelineHeaders(tableView: TableView, timelineHeaders: List<Timeline>) {
     if (tableView.adapter is EditCellAdapter) {
         (tableView.adapter as EditCellAdapter).let {
             it.setTimelineItems(timelineHeaders)
-            it.timelineHeaders = timelineHeaders
         }
     }
 }

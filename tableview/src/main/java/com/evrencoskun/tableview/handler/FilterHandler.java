@@ -109,8 +109,8 @@ public class FilterHandler<T extends IFilterableModel> {
         }
 
         // Sets the filtered data to the TableView.
-        mRowHeaderRecyclerViewAdapter.setItems(filteredRowList, true);
-        mCellRecyclerViewAdapter.setItems(filteredCellList, true);
+        mRowHeaderRecyclerViewAdapter.setItems(filteredRowList);
+        mCellRecyclerViewAdapter.setItems(filteredCellList);
 
         // Tells the listeners that the TableView is filtered.
         dispatchFilterChangedToListeners(filteredCellList, filteredRowList);

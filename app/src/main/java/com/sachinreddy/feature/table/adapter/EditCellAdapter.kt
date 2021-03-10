@@ -16,108 +16,12 @@ import com.sachinreddy.feature.table.ui.ColumnHeaderViewHolder
 import com.sachinreddy.feature.table.ui.RowHeaderViewHolder
 import com.sachinreddy.feature.table.ui.TimelineViewHolder
 import com.sachinreddy.feature.viewModel.AppViewModel
-import com.sachinreddy.recyclerview.DiffUtil
 import javax.inject.Inject
 
 class EditCellAdapter @Inject constructor(
     val context: Context,
     private val appViewModel: AppViewModel
 ) : AbstractTableAdapter<Timeline?, ColumnHeader?, RowHeader?, Cell?>() {
-    var cells: List<List<Cell>> = listOf()
-        set(value) {
-            val diff = DiffUtil.calculateDiff(
-                CellDiffCallback(
-                    cells,
-                    value
-                ), true
-            )
-            field = value
-            diff.dispatchUpdatesTo(cellRecyclerViewAdapter)
-        }
-
-    var rowHeaders: List<RowHeader> = listOf()
-        set(value) {
-            val diff = DiffUtil.calculateDiff(
-                RowHeaderDiffCallback(
-                    rowHeaders,
-                    value
-                ), true
-            )
-            field = value
-            diff.dispatchUpdatesTo(rowHeaderRecyclerViewAdapter)
-        }
-
-    var timelineHeaders: List<Timeline> = listOf()
-        set(value) {
-            val diff = DiffUtil.calculateDiff(
-                TimelineDiffCallback(
-                    timelineHeaders,
-                    value
-                ), true
-            )
-            field = value
-            diff.dispatchUpdatesTo(timelineRecyclerViewAdapter)
-        }
-
-    var columnHeaders: List<ColumnHeader> = listOf()
-        set(value) {
-            val diff = DiffUtil.calculateDiff(
-                ColumnHeaderDiffCallback(
-                    columnHeaders,
-                    value
-                ), true
-            )
-            field = value
-            diff.dispatchUpdatesTo(columnHeaderRecyclerViewAdapter)
-        }
-
-    // ------------------------------------------------- //
-
-    class CellDiffCallback(val old: List<List<Cell>>, val updated: List<List<Cell>>) :
-        DiffUtil.Callback() {
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition].containsAll(updated[newItemPosition])
-
-        override fun getOldListSize(): Int = old.size
-        override fun getNewListSize(): Int = updated.size
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition].containsAll(updated[newItemPosition])
-    }
-
-    class RowHeaderDiffCallback(val old: List<RowHeader>, val updated: List<RowHeader>) :
-        DiffUtil.Callback() {
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition].isEqual(updated[newItemPosition])
-
-        override fun getOldListSize(): Int = old.size
-        override fun getNewListSize(): Int = updated.size
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition].isEqual(updated[newItemPosition])
-    }
-
-    class TimelineDiffCallback(val old: List<Timeline>, val updated: List<Timeline>) :
-        DiffUtil.Callback() {
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition].isEqual(updated[newItemPosition])
-
-        override fun getOldListSize(): Int = old.size
-        override fun getNewListSize(): Int = updated.size
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition].isEqual(updated[newItemPosition])
-    }
-
-    class ColumnHeaderDiffCallback(val old: List<ColumnHeader>, val updated: List<ColumnHeader>) :
-        DiffUtil.Callback() {
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition].isEqual(updated[newItemPosition])
-
-        override fun getOldListSize(): Int = old.size
-        override fun getNewListSize(): Int = updated.size
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition].isEqual(updated[newItemPosition])
-    }
-
-    // ------------------------------------------------- //
 
     override fun onCreateCellViewHolder(parent: ViewGroup, viewType: Int): AbstractViewHolder =
         CellViewHolder(
@@ -133,7 +37,7 @@ class EditCellAdapter @Inject constructor(
         columnPosition: Int,
         rowPosition: Int
     ) {
-        (holder as CellViewHolder).cell = cells[rowPosition][columnPosition]
+        (holder as CellViewHolder).cell = cellItemModel
     }
 
     override fun onCreateTimelineViewHolder(
@@ -149,7 +53,7 @@ class EditCellAdapter @Inject constructor(
         timelineItemModel: Timeline?,
         columnPosition: Int
     ) {
-        (holder as TimelineViewHolder).timeline = timelineHeaders[columnPosition]
+        (holder as TimelineViewHolder).timeline = timelineItemModel
     }
 
     override fun onCreateColumnHeaderViewHolder(
@@ -166,7 +70,7 @@ class EditCellAdapter @Inject constructor(
         columnHeaderItemModel: ColumnHeader?,
         columnPosition: Int
     ) {
-        (holder as ColumnHeaderViewHolder).columnHeader = columnHeaders[columnPosition]
+        (holder as ColumnHeaderViewHolder).columnHeader = columnHeaderItemModel
     }
 
     override fun onCreateRowHeaderViewHolder(
@@ -183,7 +87,7 @@ class EditCellAdapter @Inject constructor(
         rowHeaderItemModel: RowHeader?,
         rowPosition: Int
     ) {
-        (holder as RowHeaderViewHolder).rowHeader = rowHeaders[rowPosition]
+        (holder as RowHeaderViewHolder).rowHeader = rowHeaderItemModel
     }
 
     override fun onCreateCornerView(parent: ViewGroup): View = LayoutInflater.from(parent.context)

@@ -136,8 +136,8 @@ public class ColumnSortHandler {
     ) {
 
         // Set new items without calling notifyCellDataSetChanged method of CellRecyclerViewAdapter
-        mRowHeaderRecyclerViewAdapter.setItems(newRowHeader, !mEnableAnimation);
-        mCellRecyclerViewAdapter.setItems(newColumnItems, !mEnableAnimation);
+        mRowHeaderRecyclerViewAdapter.setItems(newRowHeader);
+        mCellRecyclerViewAdapter.setItems(newColumnItems);
 
         if (mEnableAnimation) {
             // Find the differences between old cell items and new items.
@@ -157,8 +157,8 @@ public class ColumnSortHandler {
             newItems, int column, @NonNull List<ISortableModel> newRowHeader, @NonNull SortState sortState) {
 
         // Set new items without calling notifyCellDataSetChanged method of CellRecyclerViewAdapter
-        mCellRecyclerViewAdapter.setItems(newItems, !mEnableAnimation);
-        mRowHeaderRecyclerViewAdapter.setItems(newRowHeader, !mEnableAnimation);
+        mCellRecyclerViewAdapter.setItems(newItems);
+        mRowHeaderRecyclerViewAdapter.setItems(newRowHeader);
 
         if (mEnableAnimation) {
             // Find the differences between old cell items and new items.
@@ -179,7 +179,7 @@ public class ColumnSortHandler {
         List<List<ISortableModel>> oldItems = mCellRecyclerViewAdapter.getItems();
 
         // Set new items without calling notifyCellDataSetChanged method of CellRecyclerViewAdapter
-        mCellRecyclerViewAdapter.setItems(newItems, !mEnableAnimation);
+        mCellRecyclerViewAdapter.setItems(newItems);
 
         if (mEnableAnimation) {
             // Find the differences between old cell items and new items.

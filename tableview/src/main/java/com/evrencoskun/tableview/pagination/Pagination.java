@@ -134,8 +134,8 @@ public class Pagination implements IPagination {
         }
 
         // Sets the paginated data to the TableView.
-        mRowHeaderRecyclerViewAdapter.setItems(currentPageRowData, true);
-        mCellRecyclerViewAdapter.setItems(currentPageCellData, true);
+        mRowHeaderRecyclerViewAdapter.setItems(currentPageRowData);
+        mCellRecyclerViewAdapter.setItems(currentPageCellData);
 
         // Dispatches TableView changes to Listener interface
         if (onTableViewPageTurnedListener != null) {

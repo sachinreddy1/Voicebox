@@ -10,7 +10,6 @@ fun setRowHeaders(tableView: TableView, rowHeaders: List<RowHeader>) {
     if (tableView.adapter is EditCellAdapter) {
         (tableView.adapter as EditCellAdapter).let {
             it.setRowHeaderItems(rowHeaders)
-            it.rowHeaders = rowHeaders
         }
     }
 }

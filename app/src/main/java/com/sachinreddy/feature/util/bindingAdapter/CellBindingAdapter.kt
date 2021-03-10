@@ -20,7 +20,6 @@ fun setCells(tableView: TableView, cells: List<List<Cell>>) {
     if (tableView.adapter is EditCellAdapter) {
         (tableView.adapter as EditCellAdapter).let {
             it.setCellItems(cells)
-            it.cells = cells
         }
     }
 }
