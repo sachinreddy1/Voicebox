@@ -65,6 +65,7 @@ class CellRecyclerViewAdapter<C>(
         // This is for testing purpose to find out which recyclerView is displayed.
         recyclerView.id = mRecyclerViewId
         mRecyclerViewId++
+
         return CellRowViewHolder(recyclerView)
     }
 
@@ -73,13 +74,13 @@ class CellRecyclerViewAdapter<C>(
         val viewAdapter = viewHolder.recyclerView.adapter as CellRowRecyclerViewAdapter<C>
 
         // Get the list
-        val rowList = getItems()!![yPosition] as List<C>
+        val rowList = itemList[yPosition] as List<C>
 
         // Set Row position
         viewAdapter.yPosition = yPosition
 
         // Set the list to the adapter
-        viewAdapter.setItems(rowList)
+        viewAdapter.itemList = rowList.toMutableList()
     }
 
     override fun onViewAttachedToWindow(holder: AbstractViewHolder) {
@@ -138,10 +139,8 @@ class CellRecyclerViewAdapter<C>(
     }
 
     fun notifyCellDataSetChanged() {
-        val visibleRecyclerViews =
-            mTableView.cellLayoutManager
-                .visibleCellRowRecyclerViews
-        if (visibleRecyclerViews!!.size > 0) {
+        val visibleRecyclerViews = mTableView.cellLayoutManager.visibleCellRowRecyclerViews
+        if (visibleRecyclerViews!!.isNotEmpty()) {
             for (cellRowRecyclerView in visibleRecyclerViews) {
                 cellRowRecyclerView.adapter!!.notifyDataSetChanged()
             }
@@ -158,8 +157,8 @@ class CellRecyclerViewAdapter<C>(
     fun getColumnItems(columnPosition: Int): List<C> {
         val cellItems: MutableList<C> = ArrayList()
         for (i in itemList.indices) {
-            val rowList =
-                getItems()!![i] as List<C>
+            val rowList = itemList[i] as List<C>
+
             if (rowList.size > columnPosition) {
                 cellItems.add(rowList[columnPosition])
             }
@@ -169,31 +168,30 @@ class CellRecyclerViewAdapter<C>(
 
 
     fun removeColumnItems(column: Int) {
-
         // Firstly, remove columns from visible recyclerViews.
         // To be able provide removing animation, we need to notify just for given column position.
-        val visibleRecyclerViews =
-            mTableView.cellLayoutManager
-                .visibleCellRowRecyclerViews
-        for (cellRowRecyclerView in visibleRecyclerViews!!) {
-            (cellRowRecyclerView.adapter as AbstractRecyclerViewAdapter<*>?)!!.deleteItem(column)
-        }
+        val visibleRecyclerViews = mTableView.cellLayoutManager.visibleCellRowRecyclerViews
 
+        for (cellRowRecyclerView in visibleRecyclerViews!!) {
+            (cellRowRecyclerView.adapter as AbstractRecyclerViewAdapter<*>).deleteItem(column)
+        }
 
         // Lets change the model list silently
         // Create a new list which the column is already removed.
-        val cellItems: MutableList<List<C>> =
-            ArrayList()
+        val cellItems: MutableList<List<C>> = ArrayList()
+
         for (i in getItems()!!.indices) {
-            val rowList: MutableList<C> = ArrayList(getItems()!![i] as MutableList<C>)
+            val rowList: MutableList<C> = itemList[i] as MutableList<C>
+
             if (rowList.size > column) {
                 rowList.removeAt(column)
             }
+
             cellItems.add(rowList)
         }
 
         // Change data without notifying. Because we already did for visible recyclerViews.
-        setItems(cellItems as List<C>)
+        itemList = cellItems as MutableList<C>
     }
 
     fun addColumnItems(
@@ -223,8 +221,8 @@ class CellRecyclerViewAdapter<C>(
         // Lets change the model list silently
         val cellItems: MutableList<List<C>> = ArrayList()
 
-        for (i in getItems()!!.indices) {
-            val rowList: MutableList<C> = ArrayList(getItems()!![i] as MutableList<C>)
+        for (i in itemList.indices) {
+            val rowList: MutableList<C> = itemList[i] as MutableList<C>
 
             if (rowList.size > column) {
                 rowList.add(column, cellColumnItems[i])
@@ -234,6 +232,6 @@ class CellRecyclerViewAdapter<C>(
         }
 
         // Change data without notifying. Because we already did for visible recyclerViews.
-        setItems(cellItems as List<C>)
+        itemList = cellItems as MutableList<C>
     }
 }
