@@ -3,7 +3,7 @@ package com.sachinreddy.feature.table.listener
 import android.view.DragEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.sachinreddy.feature.data.table.Cell
+import com.evrencoskun.tableview.data.Cell
 import com.sachinreddy.feature.viewModel.AppViewModel
 
 class SelectionListener(

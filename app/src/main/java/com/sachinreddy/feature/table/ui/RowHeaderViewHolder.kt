@@ -3,7 +3,7 @@ package com.sachinreddy.feature.table.ui
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
-import com.sachinreddy.feature.data.table.RowHeader
+import com.evrencoskun.tableview.data.RowHeader
 import com.sachinreddy.feature.databinding.TableViewRowHeaderLayoutBinding
 import com.sachinreddy.feature.viewModel.AppViewModel
 

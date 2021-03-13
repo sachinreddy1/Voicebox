@@ -1,4 +1,4 @@
-package com.sachinreddy.feature.data.table
+package com.evrencoskun.tableview.data
 
 class ColumnHeader(
     val columnPosition: Int = 0

@@ -3,7 +3,7 @@ package com.sachinreddy.feature.util.bindingAdapter
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
-import com.sachinreddy.feature.data.table.Cell
+import com.evrencoskun.tableview.data.Cell
 import com.sachinreddy.feature.table.listener.ScrollingListener
 import com.sachinreddy.feature.table.ui.view.OperationView
 import com.sachinreddy.feature.viewModel.AppViewModel

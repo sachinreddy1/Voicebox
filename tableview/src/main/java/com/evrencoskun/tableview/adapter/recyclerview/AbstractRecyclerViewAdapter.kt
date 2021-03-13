@@ -4,36 +4,13 @@ import android.content.Context
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
-import com.sachinreddy.recyclerview.DiffUtil
 import com.sachinreddy.recyclerview.RecyclerView
 
 abstract class AbstractRecyclerViewAdapter<T>(
     val context: Context,
     items: List<T>?
 ) : RecyclerView.Adapter<AbstractViewHolder>() {
-    var itemList: MutableList<T> = mutableListOf()
-        set(value) {
-            val diff = DiffUtil.calculateDiff(
-                DiffCallback(
-                    itemList,
-                    value
-                ), true
-            )
-            field = value
-            diff.dispatchUpdatesTo(this)
-        }
-
-    class DiffCallback<T>(private val old: MutableList<T>, private val updated: MutableList<T>) :
-        DiffUtil.Callback() {
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition] == updated[newItemPosition]
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition] == updated[newItemPosition]
-
-        override fun getOldListSize(): Int = old.size
-        override fun getNewListSize(): Int = updated.size
-    }
+    abstract var itemList: MutableList<T>
 
     init {
         setItems(items)

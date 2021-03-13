@@ -2,7 +2,7 @@ package com.sachinreddy.feature.util.bindingAdapter
 
 import androidx.databinding.BindingAdapter
 import com.evrencoskun.tableview.TableView
-import com.sachinreddy.feature.data.table.ColumnHeader
+import com.evrencoskun.tableview.data.ColumnHeader
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.table.ui.view.ColumnView
 import kotlinx.android.synthetic.main.column_view.view.*

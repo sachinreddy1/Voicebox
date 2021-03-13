@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
+import com.evrencoskun.tableview.data.Cell
+import com.evrencoskun.tableview.data.ColumnHeader
+import com.evrencoskun.tableview.data.RowHeader
+import com.evrencoskun.tableview.data.Timeline
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.data.table.Cell
-import com.sachinreddy.feature.data.table.ColumnHeader
-import com.sachinreddy.feature.data.table.RowHeader
-import com.sachinreddy.feature.data.table.Timeline
 import com.sachinreddy.feature.table.ui.CellViewHolder
 import com.sachinreddy.feature.table.ui.ColumnHeaderViewHolder
 import com.sachinreddy.feature.table.ui.RowHeaderViewHolder

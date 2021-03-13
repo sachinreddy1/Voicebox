@@ -6,7 +6,7 @@
 
         <variable
             name="cell"
-            type="com.sachinreddy.feature.data.table.Cell" />
+            type="com.evrencoskun.tableview.data.Cell" />
 
         <variable
             name="vm"

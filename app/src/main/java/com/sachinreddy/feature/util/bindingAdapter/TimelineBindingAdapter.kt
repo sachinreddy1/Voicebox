@@ -2,7 +2,7 @@ package com.sachinreddy.feature.util.bindingAdapter
 
 import androidx.databinding.BindingAdapter
 import com.evrencoskun.tableview.TableView
-import com.sachinreddy.feature.data.table.Timeline
+import com.evrencoskun.tableview.data.Timeline
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
 
 @BindingAdapter("android:timelineHeaders")

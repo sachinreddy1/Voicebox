@@ -6,8 +6,8 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.evrencoskun.tableview.TableView
+import com.evrencoskun.tableview.data.Cell
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.table.listener.SelectionListener
 import com.sachinreddy.feature.table.listener.TranslationListener

@@ -6,8 +6,8 @@ import android.os.VibrationEffect
 import android.view.DragEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.evrencoskun.tableview.data.Cell
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.data.table.Cell
 import com.sachinreddy.feature.viewModel.AppViewModel
 
 class TranslationListener(

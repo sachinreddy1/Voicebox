@@ -16,12 +16,12 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.evrencoskun.tableview.TableView
+import com.evrencoskun.tableview.data.Cell
+import com.evrencoskun.tableview.data.ColumnHeader
+import com.evrencoskun.tableview.data.RowHeader
+import com.evrencoskun.tableview.data.Timeline
 import com.sachinreddy.feature.MainActivity
 import com.sachinreddy.feature.R
-import com.sachinreddy.feature.data.table.Cell
-import com.sachinreddy.feature.data.table.ColumnHeader
-import com.sachinreddy.feature.data.table.RowHeader
-import com.sachinreddy.feature.data.table.Timeline
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.table.listener.EditCellListener
 import com.sachinreddy.feature.table.ui.shadow.UtilDragShadowBuilder

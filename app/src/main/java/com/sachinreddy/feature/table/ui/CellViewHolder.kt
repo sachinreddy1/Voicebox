@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
-import com.sachinreddy.feature.data.table.Cell
+import com.evrencoskun.tableview.data.Cell
 import com.sachinreddy.feature.databinding.TableViewCellLayoutBinding
 import com.sachinreddy.feature.table.listener.SelectionListener
 import com.sachinreddy.feature.table.listener.TranslationListener

@@ -1,4 +1,4 @@
-package com.sachinreddy.feature.data.table
+package com.evrencoskun.tableview.data
 
 class Timeline(
     val columnPosition: Int = 0

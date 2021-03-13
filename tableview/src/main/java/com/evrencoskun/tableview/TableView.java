@@ -283,6 +283,8 @@ public class TableView extends FrameLayout implements ITableView {
             recyclerView.addItemDecoration(getHorizontalItemDecoration());
         }
 
+        recyclerView.getItemAnimator().setChangeDuration(0);
+
         return recyclerView;
     }
 
@@ -304,6 +306,8 @@ public class TableView extends FrameLayout implements ITableView {
             recyclerView.addItemDecoration(getHorizontalItemDecoration());
         }
 
+        recyclerView.getItemAnimator().setChangeDuration(0);
+
         return recyclerView;
     }
 
@@ -324,6 +328,8 @@ public class TableView extends FrameLayout implements ITableView {
             // Add vertical item decoration to display row line
             recyclerView.addItemDecoration(getVerticalItemDecoration());
         }
+
+        recyclerView.getItemAnimator().setChangeDuration(0);
 
         return recyclerView;
     }
@@ -349,6 +355,8 @@ public class TableView extends FrameLayout implements ITableView {
             // Add vertical item decoration to display row line on center recycler view
             recyclerView.addItemDecoration(getVerticalItemDecoration());
         }
+
+        recyclerView.getItemAnimator().setChangeDuration(0);
 
         return recyclerView;
     }

@@ -10,6 +10,7 @@ import com.evrencoskun.tableview.adapter.recyclerview.views.CellRecyclerView
 import com.evrencoskun.tableview.adapter.recyclerview.views.OverScrollCellRecyclerView
 import com.evrencoskun.tableview.layoutmanager.ColumnLayoutManager
 import com.evrencoskun.tableview.listener.itemclick.CellRecyclerViewItemClickListener
+import com.sachinreddy.recyclerview.DiffUtil
 import com.sachinreddy.recyclerview.RecyclerView
 import java.util.*
 
@@ -18,6 +19,28 @@ class CellRecyclerViewAdapter<C>(
     itemList: List<C>?,
     tableView: ITableView
 ) : AbstractRecyclerViewAdapter<C>(context, itemList) {
+    override var itemList: MutableList<C> = mutableListOf()
+        set(value) {
+            val diff = DiffUtil.calculateDiff(
+                DiffCallback(
+                    itemList,
+                    value
+                ), true
+            )
+            field = value
+            diff.dispatchUpdatesTo(this)
+        }
+
+    class DiffCallback<C>(private val old: MutableList<C>, private val updated: MutableList<C>) :
+        DiffUtil.Callback() {
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            old[oldItemPosition] == updated[newItemPosition]
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = false
+        override fun getOldListSize(): Int = old.size
+        override fun getNewListSize(): Int = updated.size
+    }
+
     var mTableView: ITableView = tableView
     private var mRecycledViewPool: RecyclerView.RecycledViewPool? = null
     private var mRecyclerViewId = 0
@@ -77,7 +100,7 @@ class CellRecyclerViewAdapter<C>(
         val rowList = itemList[yPosition] as List<C>
 
         // Set Row position
-        viewAdapter.yPosition = yPosition
+        viewAdapter.setYPosition(yPosition)
 
         // Set the list to the adapter
         viewAdapter.itemList = rowList.toMutableList()

@@ -1,4 +1,4 @@
-package com.sachinreddy.feature.data.table
+package com.evrencoskun.tableview.data
 
 import android.media.AudioFormat
 import android.media.AudioManager
@@ -34,5 +34,9 @@ class Cell(
             maxJitter,
             AudioTrack.MODE_STREAM
         )
+    }
+
+    fun isEqual(cell: Cell): Boolean {
+        return (this.isSelected == cell.isSelected) && (this.isPlaying == cell.isPlaying) && (this.columnPosition == cell.columnPosition) && (this.rowPosition == cell.rowPosition) && (this.data == cell.data)
     }
 }
