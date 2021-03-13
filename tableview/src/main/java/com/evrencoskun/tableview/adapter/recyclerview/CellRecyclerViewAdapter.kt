@@ -16,10 +16,10 @@ import java.util.*
 
 class CellRecyclerViewAdapter<C>(
     context: Context,
-    itemList: List<C>?,
+    items: List<C>?,
     tableView: ITableView
-) : AbstractRecyclerViewAdapter<C>(context, itemList) {
-    override var itemList: MutableList<C> = mutableListOf()
+) : AbstractRecyclerViewAdapter<C>(context, items) {
+    override var itemList: MutableList<C> = items?.toMutableList() ?: mutableListOf()
         set(value) {
             val diff = DiffUtil.calculateDiff(
                 DiffCallback(
@@ -36,7 +36,19 @@ class CellRecyclerViewAdapter<C>(
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             old[oldItemPosition] == updated[newItemPosition]
 
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = false
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+//            val oldList = old[oldItemPosition] as MutableList<Cell>
+//            val newList = updated[newItemPosition] as MutableList<Cell>
+//
+//            val test = oldList.zip(newList).all {
+//                (x, y) ->
+//                    x.isEqual(y)
+//            }
+//            println(test)
+
+            return false
+        }
+
         override fun getOldListSize(): Int = old.size
         override fun getNewListSize(): Int = updated.size
     }
@@ -85,6 +97,8 @@ class CellRecyclerViewAdapter<C>(
         // Create CellRow adapter
         recyclerView.adapter = CellRowRecyclerViewAdapter<Any?>(context, mTableView)
 
+        recyclerView.itemAnimator?.changeDuration = 0
+
         // This is for testing purpose to find out which recyclerView is displayed.
         recyclerView.id = mRecyclerViewId
         mRecyclerViewId++
@@ -97,13 +111,13 @@ class CellRecyclerViewAdapter<C>(
         val viewAdapter = viewHolder.recyclerView.adapter as CellRowRecyclerViewAdapter<C>
 
         // Get the list
-        val rowList = itemList[yPosition] as List<C>
+        val rowList = itemList[yPosition] as MutableList<C>
 
         // Set Row position
         viewAdapter.setYPosition(yPosition)
 
         // Set the list to the adapter
-        viewAdapter.itemList = rowList.toMutableList()
+        viewAdapter.itemList = rowList
     }
 
     override fun onViewAttachedToWindow(holder: AbstractViewHolder) {
