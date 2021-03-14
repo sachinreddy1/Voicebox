@@ -10,10 +10,10 @@ import com.sachinreddy.recyclerview.DiffUtil
 
 class RowHeaderRecyclerViewAdapter<RH>(
     context: Context,
-    items: List<RH>?,
+    items: MutableList<RH>?,
     tableAdapter: ITableAdapter<*, *, RH, *>
 ) : AbstractRecyclerViewAdapter<RH>(context, items) {
-    override var itemList: MutableList<RH> = items?.toMutableList() ?: mutableListOf()
+    override var itemList: MutableList<RH> = items ?: mutableListOf()
         set(value) {
             val diff = DiffUtil.calculateDiff(
                 DiffCallback(

@@ -9,10 +9,10 @@ import com.sachinreddy.recyclerview.DiffUtil
 
 class TimelineRecyclerViewAdapter<T>(
     context: Context,
-    items: List<T>?,
+    items: MutableList<T>?,
     tableAdapter: ITableAdapter<T, *, *, *>
 ) : AbstractRecyclerViewAdapter<T>(context, items) {
-    override var itemList: MutableList<T> = items?.toMutableList() ?: mutableListOf()
+    override var itemList: MutableList<T> = items ?: mutableListOf()
         set(value) {
             val diff = DiffUtil.calculateDiff(
                 DiffCallback(

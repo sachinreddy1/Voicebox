@@ -12,7 +12,6 @@ class CellRowRecyclerViewAdapter<C>(
     context: Context,
     tableView: ITableView
 ) : AbstractRecyclerViewAdapter<C>(context, null) {
-
     override var itemList: MutableList<C> = mutableListOf()
         set(value) {
             val diff = DiffUtil.calculateDiff(

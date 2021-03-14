@@ -8,6 +8,7 @@ import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState
 import com.evrencoskun.tableview.adapter.recyclerview.views.CellRecyclerView
 import com.evrencoskun.tableview.adapter.recyclerview.views.OverScrollCellRecyclerView
+import com.evrencoskun.tableview.data.Cell
 import com.evrencoskun.tableview.layoutmanager.ColumnLayoutManager
 import com.evrencoskun.tableview.listener.itemclick.CellRecyclerViewItemClickListener
 import com.sachinreddy.recyclerview.DiffUtil
@@ -37,14 +38,17 @@ class CellRecyclerViewAdapter<C>(
             old[oldItemPosition] == updated[newItemPosition]
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-//            val oldList = old[oldItemPosition] as MutableList<Cell>
-//            val newList = updated[newItemPosition] as MutableList<Cell>
+            val oldList = old[oldItemPosition] as MutableList<Cell>
+            val newList = updated[newItemPosition] as MutableList<Cell>
 //
 //            val test = oldList.zip(newList).all {
 //                (x, y) ->
 //                    x.isEqual(y)
 //            }
-//            println(test)
+
+//            println("-------------")
+//            println(oldList.map { it.data.size })
+//            println(newList.map { it.data.size })
 
             return false
         }
