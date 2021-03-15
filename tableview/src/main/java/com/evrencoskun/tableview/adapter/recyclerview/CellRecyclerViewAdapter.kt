@@ -20,8 +20,18 @@ class CellRecyclerViewAdapter<C>(
     items: List<C>?,
     tableView: ITableView
 ) : AbstractRecyclerViewAdapter<C>(context, items) {
-    override var itemList: MutableList<C> = items?.toMutableList() ?: mutableListOf()
+    override var itemList: List<C> = items ?: listOf()
         set(value) {
+
+//            if (!itemList.isNullOrEmpty()) {
+//                println("-------")
+//                val testA = (value.first() as MutableList<Cell>).first().data.size
+//                println("A: $testA")
+//
+//                val testB = (oldItemList.first() as MutableList<Cell>).first().data.size
+//                println("B: $testB")
+//            }
+
             val diff = DiffUtil.calculateDiff(
                 DiffCallback(
                     itemList,
@@ -32,7 +42,7 @@ class CellRecyclerViewAdapter<C>(
             diff.dispatchUpdatesTo(this)
         }
 
-    class DiffCallback<C>(private val old: MutableList<C>, private val updated: MutableList<C>) :
+    class DiffCallback<C>(private val old: List<C>, private val updated: List<C>) :
         DiffUtil.Callback() {
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             old[oldItemPosition] == updated[newItemPosition]

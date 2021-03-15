@@ -10,10 +10,10 @@ import com.sachinreddy.recyclerview.DiffUtil
 
 class RowHeaderRecyclerViewAdapter<RH>(
     context: Context,
-    items: MutableList<RH>?,
+    items: List<RH>?,
     tableAdapter: ITableAdapter<*, *, RH, *>
 ) : AbstractRecyclerViewAdapter<RH>(context, items) {
-    override var itemList: MutableList<RH> = items ?: mutableListOf()
+    override var itemList: List<RH> = items ?: listOf()
         set(value) {
             val diff = DiffUtil.calculateDiff(
                 DiffCallback(
@@ -25,7 +25,7 @@ class RowHeaderRecyclerViewAdapter<RH>(
             diff.dispatchUpdatesTo(this)
         }
 
-    class DiffCallback<RH>(private val old: MutableList<RH>, private val updated: MutableList<RH>) :
+    class DiffCallback<RH>(private val old: List<RH>, private val updated: List<RH>) :
         DiffUtil.Callback() {
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             old[oldItemPosition] == updated[newItemPosition]

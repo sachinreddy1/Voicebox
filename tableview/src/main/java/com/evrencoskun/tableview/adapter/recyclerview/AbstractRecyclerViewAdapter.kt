@@ -10,7 +10,7 @@ abstract class AbstractRecyclerViewAdapter<T>(
     val context: Context,
     items: List<T>?
 ) : RecyclerView.Adapter<AbstractViewHolder>() {
-    abstract var itemList: MutableList<T>
+    abstract var itemList: List<T>
 
     init {
         setItems(items)
@@ -27,7 +27,7 @@ abstract class AbstractRecyclerViewAdapter<T>(
 
     open fun setItems(@NonNull items: List<T>?) {
         items?.let {
-            itemList = it.toMutableList()
+            itemList = it
         }
     }
 
@@ -40,7 +40,7 @@ abstract class AbstractRecyclerViewAdapter<T>(
 
     open fun deleteItem(position: Int) {
         if (position != RecyclerView.NO_POSITION) {
-            itemList.removeAt(position)
+//            itemList.filter { s -> s }
             notifyItemRemoved(position)
         }
     }
@@ -48,7 +48,7 @@ abstract class AbstractRecyclerViewAdapter<T>(
     open fun deleteItemRange(positionStart: Int, itemCount: Int) {
         for (i in positionStart + itemCount - 1 downTo positionStart) {
             if (i != RecyclerView.NO_POSITION) {
-                itemList.removeAt(i)
+//                itemList.removeAt(i)
             }
         }
         notifyItemRangeRemoved(positionStart, itemCount)
@@ -56,7 +56,7 @@ abstract class AbstractRecyclerViewAdapter<T>(
 
     open fun addItem(position: Int, item: T) {
         if (position != RecyclerView.NO_POSITION && item != null) {
-            itemList.add(position, item)
+//            itemList.add(position, item)
             notifyItemInserted(position)
         }
     }
@@ -64,7 +64,7 @@ abstract class AbstractRecyclerViewAdapter<T>(
     open fun addItemRange(positionStart: Int, items: List<T>?) {
         if (items != null) {
             for (i in items.indices) {
-                itemList.add(i + positionStart, items[i])
+//                itemList.add(i + positionStart, items[i])
             }
             notifyItemRangeInserted(positionStart, items.size)
         }
@@ -72,7 +72,7 @@ abstract class AbstractRecyclerViewAdapter<T>(
 
     open fun changeItem(position: Int, item: T?) {
         if (position != RecyclerView.NO_POSITION && item != null) {
-            itemList.set(position, item)
+//            itemList.set(position, item)
             notifyItemChanged(position)
         }
     }
@@ -80,7 +80,7 @@ abstract class AbstractRecyclerViewAdapter<T>(
     open fun changeItemRange(positionStart: Int, items: List<T>?) {
         if (items != null && itemList.size > positionStart + items.size) {
             for (i in items.indices) {
-                itemList.set(i + positionStart, items[i])
+//                itemList[i + positionStart] = items[i]
             }
             notifyItemRangeChanged(positionStart, items.size)
         }
