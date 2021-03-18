@@ -468,6 +468,8 @@ class AppViewModel @Inject constructor(
             audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
             recorder.startRecording()
 
+            var counter = 0
+
             while (isRecording) {
                 val data = ShortArray(1024)
                 recorder.read(data, 0, 1024)
@@ -484,6 +486,20 @@ class AppViewModel @Inject constructor(
                 }
 
                 cells.postValue(newCells)
+                columnHeaders.postValue(
+                    listOf(
+                        ColumnHeader(counter),
+                        ColumnHeader(counter),
+                        ColumnHeader(counter),
+                        ColumnHeader(counter),
+                        ColumnHeader(counter),
+                        ColumnHeader(counter),
+                        ColumnHeader(counter),
+                        ColumnHeader(counter)
+                    )
+                )
+
+                counter++
             }
         }
     }

@@ -14,15 +14,14 @@ class CellRowRecyclerViewAdapter<C>(
 ) : AbstractRecyclerViewAdapter<C>(context, null) {
     override var itemList: List<C> = listOf()
         set(value) {
-            if (!itemList.isNullOrEmpty()) {
-                println("-------")
-                val testA = (itemList.first() as Cell).data.size
-                println("A: $testA")
-
-                val testB = (value.first() as Cell).data.size
-                println("A: $testB")
-                println("${(itemList.first() as Cell).equals((value.first() as Cell))}")
-            }
+//            if (!itemList.isNullOrEmpty()) {
+//                println("-------")
+//                val testA = (itemList.first() as Cell).data.size
+//                println("A: $testA")
+//
+//                val testB = (value.first() as Cell).data.size
+//                println("A: $testB")
+//            }
 
             val diff = DiffUtil.calculateDiff(
                 DiffCallback(

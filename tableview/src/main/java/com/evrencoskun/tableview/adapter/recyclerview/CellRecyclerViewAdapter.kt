@@ -22,15 +22,14 @@ class CellRecyclerViewAdapter<C>(
 ) : AbstractRecyclerViewAdapter<C>(context, items) {
     override var itemList: List<C> = items ?: listOf()
         set(value) {
+            if (!itemList.isNullOrEmpty()) {
+                println("-------")
+                val testA = (itemList.first() as MutableList<Cell>).first().data.size
+                println("A: $testA")
 
-//            if (!itemList.isNullOrEmpty()) {
-//                println("-------")
-//                val testA = (value.first() as MutableList<Cell>).first().data.size
-//                println("A: $testA")
-//
-//                val testB = (oldItemList.first() as MutableList<Cell>).first().data.size
-//                println("B: $testB")
-//            }
+                val testB = (value.first() as MutableList<Cell>).first().data.size
+                println("B: $testB")
+            }
 
             val diff = DiffUtil.calculateDiff(
                 DiffCallback(
@@ -131,7 +130,7 @@ class CellRecyclerViewAdapter<C>(
         viewAdapter.setYPosition(yPosition)
 
         // Set the list to the adapter
-        viewAdapter.itemList = rowList
+        viewAdapter.itemList = rowList.toList()
     }
 
     override fun onViewAttachedToWindow(holder: AbstractViewHolder) {
