@@ -284,6 +284,10 @@ public class TableView extends FrameLayout implements ITableView {
         }
 
         recyclerView.getItemAnimator().setChangeDuration(0);
+        recyclerView.getItemAnimator().setRemoveDuration(0);
+        recyclerView.getItemAnimator().setMoveDuration(0);
+        recyclerView.getItemAnimator().setAddDuration(0);
+        recyclerView.setItemAnimator(null);
 
         return recyclerView;
     }
@@ -307,6 +311,10 @@ public class TableView extends FrameLayout implements ITableView {
         }
 
         recyclerView.getItemAnimator().setChangeDuration(0);
+        recyclerView.getItemAnimator().setRemoveDuration(0);
+        recyclerView.getItemAnimator().setMoveDuration(0);
+        recyclerView.getItemAnimator().setAddDuration(0);
+        recyclerView.setItemAnimator(null);
 
         return recyclerView;
     }
@@ -330,6 +338,10 @@ public class TableView extends FrameLayout implements ITableView {
         }
 
         recyclerView.getItemAnimator().setChangeDuration(0);
+        recyclerView.getItemAnimator().setRemoveDuration(0);
+        recyclerView.getItemAnimator().setMoveDuration(0);
+        recyclerView.getItemAnimator().setAddDuration(0);
+        recyclerView.setItemAnimator(null);
 
         return recyclerView;
     }
@@ -357,6 +369,10 @@ public class TableView extends FrameLayout implements ITableView {
         }
 
         recyclerView.getItemAnimator().setChangeDuration(0);
+        recyclerView.getItemAnimator().setRemoveDuration(0);
+        recyclerView.getItemAnimator().setMoveDuration(0);
+        recyclerView.getItemAnimator().setAddDuration(0);
+        recyclerView.setItemAnimator(null);
 
         return recyclerView;
     }

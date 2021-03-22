@@ -37,6 +37,22 @@ class Cell(
     }
 
     fun isEqual(cell: Cell): Boolean {
-        return (this.isSelected == cell.isSelected) && (this.isPlaying == cell.isPlaying) && (this.columnPosition == cell.columnPosition) && (this.rowPosition == cell.rowPosition) && (this.data == cell.data)
+        return (this.isSelected == cell.isSelected) &&
+                (this.isPlaying == cell.isPlaying) &&
+                (this.columnPosition == cell.columnPosition) &&
+                (this.rowPosition == cell.rowPosition) &&
+                (this.data.size == cell.data.size)
+    }
+
+    fun copy(): Cell {
+        return Cell(
+            isSelected = this.isSelected,
+            isPlaying = this.isPlaying,
+            columnPosition = this.columnPosition,
+            rowPosition = this.rowPosition,
+            data = this.data.toMutableList(),
+            track = this.track,
+            playerThread = this.playerThread
+        )
     }
 }

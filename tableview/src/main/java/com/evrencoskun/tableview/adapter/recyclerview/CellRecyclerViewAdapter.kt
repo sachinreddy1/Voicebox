@@ -22,15 +22,6 @@ class CellRecyclerViewAdapter<C>(
 ) : AbstractRecyclerViewAdapter<C>(context, items) {
     override var itemList: List<C> = items ?: listOf()
         set(value) {
-            if (!itemList.isNullOrEmpty()) {
-                println("-------")
-                val testA = (itemList.first() as MutableList<Cell>).first().data.size
-                println("A: $testA")
-
-                val testB = (value.first() as MutableList<Cell>).first().data.size
-                println("B: $testB")
-            }
-
             val diff = DiffUtil.calculateDiff(
                 DiffCallback(
                     itemList,
@@ -43,24 +34,17 @@ class CellRecyclerViewAdapter<C>(
 
     class DiffCallback<C>(private val old: List<C>, private val updated: List<C>) :
         DiffUtil.Callback() {
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            old[oldItemPosition] == updated[newItemPosition]
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             val oldList = old[oldItemPosition] as MutableList<Cell>
             val newList = updated[newItemPosition] as MutableList<Cell>
-//
-//            val test = oldList.zip(newList).all {
-//                (x, y) ->
-//                    x.isEqual(y)
-//            }
 
-//            println("-------------")
-//            println(oldList.map { it.data.size })
-//            println(newList.map { it.data.size })
-
-            return false
+            return oldList.zip(newList).all { (x, y) ->
+                x.isEqual(y)
+            }
         }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            old[oldItemPosition] == updated[newItemPosition]
 
         override fun getOldListSize(): Int = old.size
         override fun getNewListSize(): Int = updated.size
@@ -111,6 +95,10 @@ class CellRecyclerViewAdapter<C>(
         recyclerView.adapter = CellRowRecyclerViewAdapter<Any?>(context, mTableView)
 
         recyclerView.itemAnimator?.changeDuration = 0
+        recyclerView.itemAnimator?.removeDuration = 0
+        recyclerView.itemAnimator?.addDuration = 0
+        recyclerView.itemAnimator?.moveDuration = 0
+        recyclerView.itemAnimator = null
 
         // This is for testing purpose to find out which recyclerView is displayed.
         recyclerView.id = mRecyclerViewId

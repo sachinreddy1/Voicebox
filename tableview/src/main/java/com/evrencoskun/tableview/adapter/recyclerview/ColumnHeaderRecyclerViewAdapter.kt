@@ -16,15 +16,6 @@ class ColumnHeaderRecyclerViewAdapter<CH>(
 ) : AbstractRecyclerViewAdapter<CH>(context, items) {
     override var itemList: List<CH> = items ?: listOf()
         set(value) {
-//            if (!itemList.isNullOrEmpty()) {
-//                println("-------")
-//                val testA = (itemList.first() as ColumnHeader).columnPosition
-//                println("A: $testA")
-//
-//                val testB = (value.first() as ColumnHeader).columnPosition
-//                println("A: $testB")
-//            }
-
             val diff = DiffUtil.calculateDiff(
                 DiffCallback(
                     itemList,

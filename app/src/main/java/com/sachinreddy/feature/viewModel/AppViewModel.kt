@@ -160,20 +160,17 @@ class AppViewModel @Inject constructor(
         if (isSelecting) {
             selectedCells.clear()
 
-            val newCells = cells.value?.mapIndexed { index, track ->
+            val newCells = clearCellSelection().mapIndexed { index, track ->
                 if (index == rowPosition) {
                     track.map { cell ->
-                        cell.isSelected = true
-                        selectedCells.add(cell)
-                        cell
+                        val newCell = cell.copy()
+                        newCell.isSelected = true
+                        selectedCells.add(newCell)
+                        newCell
                     }
                 } else {
-                    track.map { cell ->
-                        cell.isSelected = false
-                        cell
-                    }
+                    track
                 }
-                track
             }
 
             setMaxRecordTime(
@@ -190,17 +187,17 @@ class AppViewModel @Inject constructor(
         if (isSelecting) {
             selectedCells.clear()
 
-            val newCells = cells.value?.map { track ->
+            val newCells = clearCellSelection().map { track ->
                 track.mapIndexed { index, cell ->
                     if (index == columnPosition) {
-                        selectedCells.add(cell)
-                        cell.isSelected = true
+                        val newCell = cell.copy()
+                        newCell.isSelected = true
+                        selectedCells.add(newCell)
+                        newCell
                     } else {
-                        cell.isSelected = false
+                        cell
                     }
-                    cell
                 }
-                track
             }
 
             setMaxRecordTime(
@@ -273,6 +270,7 @@ class AppViewModel @Inject constructor(
         }
 
         cells.postValue(newCells)
+        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(cell.rowPosition)?.adapter?.notifyDataSetChanged()
     }
 
     private fun stopTrack(cell: Cell) {
@@ -285,6 +283,7 @@ class AppViewModel @Inject constructor(
         }
 
         cells.postValue(newCells)
+        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(cell.rowPosition)?.adapter?.notifyDataSetChanged()
     }
 
     fun onClickCellButton(cell: Cell) {
@@ -335,6 +334,7 @@ class AppViewModel @Inject constructor(
 
         cells.postValue(newCells)
         draggedCell.postValue(null)
+        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(cell.rowPosition)?.adapter?.notifyDataSetChanged()
     }
 
     // ------------------- OPERATIONS ------------------- //
@@ -468,8 +468,6 @@ class AppViewModel @Inject constructor(
             audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
             recorder.startRecording()
 
-            var counter = 0
-
             while (isRecording) {
                 val data = ShortArray(1024)
                 recorder.read(data, 0, 1024)
@@ -477,29 +475,16 @@ class AppViewModel @Inject constructor(
                 val newCells = cells.value?.map { track ->
                     track.map { cell ->
                         if (cell.isSelected) {
-//                            println(data.toList())
-                            cell.data.add(data)
+                            val newCell = cell.copy()
+                            newCell.data.add(data)
+                            newCell
+                        } else {
+                            cell
                         }
-                        cell
                     }
-                    track
                 }
 
                 cells.postValue(newCells)
-                columnHeaders.postValue(
-                    listOf(
-                        ColumnHeader(counter),
-                        ColumnHeader(counter),
-                        ColumnHeader(counter),
-                        ColumnHeader(counter),
-                        ColumnHeader(counter),
-                        ColumnHeader(counter),
-                        ColumnHeader(counter),
-                        ColumnHeader(counter)
-                    )
-                )
-
-                counter++
             }
         }
     }
