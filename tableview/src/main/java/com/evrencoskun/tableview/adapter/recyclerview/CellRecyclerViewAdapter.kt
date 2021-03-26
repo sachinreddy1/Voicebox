@@ -118,7 +118,7 @@ class CellRecyclerViewAdapter<C>(
         viewAdapter.setYPosition(yPosition)
 
         // Set the list to the adapter
-        viewAdapter.itemList = rowList.toList()
+        viewAdapter.itemList = rowList
     }
 
     override fun onViewAttachedToWindow(holder: AbstractViewHolder) {
