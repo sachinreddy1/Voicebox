@@ -9,7 +9,7 @@ class Cell(
     var isPlaying: Boolean = false,
     var columnPosition: Int,
     var rowPosition: Int,
-    var data: MutableList<ShortArray> = mutableListOf(),
+    var data: MutableList<Pair<ShortArray, Int>> = mutableListOf(),
     var track: AudioTrack? = null,
     var playerThread: Thread? = null
 ) {

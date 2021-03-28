@@ -25,7 +25,7 @@ fun setCells(tableView: TableView, cells: List<List<Cell>>) {
 }
 
 @BindingAdapter("android:data")
-fun setData(cellView: CellView, data: List<ShortArray>) {
+fun setData(cellView: CellView, data: List<Pair<ShortArray, Int>>) {
     cellView.visibility = if (data.isEmpty()) View.GONE else View.VISIBLE
 }
 

@@ -14,7 +14,9 @@ import android.os.Vibrator
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.evrencoskun.tableview.TableView
 import com.evrencoskun.tableview.data.Cell
 import com.evrencoskun.tableview.data.ColumnHeader
@@ -30,6 +32,8 @@ import com.sachinreddy.feature.util.toward
 import com.sachinreddy.numberpicker.NumberPicker
 import kotlinx.android.synthetic.main.operation_button.view.*
 import kotlinx.android.synthetic.main.table_view_cell_layout.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.abs
 
@@ -41,7 +45,7 @@ private val PERMISSIONS = arrayOf(
 
 class AppViewModel @Inject constructor(
     val context: Context,
-    activity: MainActivity
+    private val activity: MainActivity
 ) : ViewModel() {
 
     var numberBars: MutableLiveData<Int> = MutableLiveData(8)
@@ -64,9 +68,11 @@ class AppViewModel @Inject constructor(
     var bpm: MutableLiveData<Int> = MutableLiveData(120)
     var maxRecordTime: MutableLiveData<Int> = MutableLiveData(2000)
     var currentRecordTime: MutableLiveData<Float> = MutableLiveData(0f)
+    var currentTimestamp: MutableLiveData<Int> = MutableLiveData(0)
 
     private var scrollThread: Thread? = null
     private var scrollHandler: Handler = Handler()
+    private var miscHandler: Handler = Handler()
 
     // ------------------- INIT --------------------- //
 
@@ -131,6 +137,7 @@ class AppViewModel @Inject constructor(
         }
 
         initRecorder()
+        recordData()
     }
 
     private fun initRecorder() {
@@ -259,7 +266,8 @@ class AppViewModel @Inject constructor(
                 override fun run() {
                     while (isPlaying) {
                         data.forEach {
-                            track?.write(it, 0, 1024)
+                            track?.write(it.first, 0, 1024)
+                            println(it.second)
                         }
                     }
                 }
@@ -430,7 +438,6 @@ class AppViewModel @Inject constructor(
                 selectedCells.last().columnPosition
             )
         ).start()
-        Thread(RecordDataRunner()).start()
 
         for (cell in selectedCells) {
             stopTrack(cell)
@@ -463,30 +470,29 @@ class AppViewModel @Inject constructor(
 
     // ------------------------------------------------- //
 
-    private inner class RecordDataRunner() : Runnable {
-        override fun run() {
-            audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
-            recorder.startRecording()
+    private fun recordData() {
+        currentTimestamp.observe(activity, Observer {
+            viewModelScope.launch(Dispatchers.Unconfined) {
+                miscHandler.postAtFrontOfQueue {
+                    val data = ShortArray(1024)
+                    recorder.read(data, 0, 1024)
 
-            while (isRecording) {
-                val data = ShortArray(1024)
-                recorder.read(data, 0, 1024)
-
-                val newCells = cells.value?.map { track ->
-                    track.map { cell ->
-                        if (cell.isSelected) {
-                            val newCell = cell.copy()
-                            newCell.data.add(data)
-                            newCell
-                        } else {
-                            cell
+                    val newCells = cells.value?.map { track ->
+                        track.map { cell ->
+                            if (cell.isSelected) {
+                                val newCell = cell.copy()
+                                newCell.data.add(Pair(data, it))
+                                newCell
+                            } else {
+                                cell
+                            }
                         }
                     }
-                }
 
-                cells.postValue(newCells)
+                    cells.postValue(newCells)
+                }
             }
-        }
+        })
     }
 
     private inner class RecordTimelineRunner(startPosition: Int, endPosition: Int) : Runnable {
@@ -505,6 +511,9 @@ class AppViewModel @Inject constructor(
         val timeNS = (timeMS * 1000000).toLong()
 
         override fun run() {
+            audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
+            recorder.startRecording()
+
             // Go to start position
             for (i in 0..(abs(startX - initialX))) {
                 scrollHandler.post {
@@ -521,6 +530,7 @@ class AppViewModel @Inject constructor(
                 scrollHandler.post {
                     tableView.timelineRecyclerView.scrollBy(1, 0)
                     currentRecordTime.postValue(timeMS * i)
+                    currentTimestamp.postValue(tableView.timelineRecyclerView.computeHorizontalScrollOffset())
                 }
 
                 Util.sleepNano(startTime, timeNS)
