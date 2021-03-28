@@ -432,17 +432,32 @@ class AppViewModel @Inject constructor(
 
     fun startRecording() {
         isRecording = true
+
+        val newCells = cells.value?.map { track ->
+            track.map { cell ->
+                if (cell.isSelected) {
+                    val newCell = cell.copy()
+
+                    newCell.isPlaying = false
+                    newCell.track?.pause()
+                    newCell.playerThread?.join()
+                    newCell.data.clear()
+
+                    newCell
+                } else {
+                    cell
+                }
+            }
+        }
+
+        cells.postValue(newCells)
+
         Thread(
             RecordTimelineRunner(
                 selectedCells.first().columnPosition,
                 selectedCells.last().columnPosition
             )
         ).start()
-
-        for (cell in selectedCells) {
-            stopTrack(cell)
-            cell.data.clear()
-        }
     }
 
     fun stopRecording() {
