@@ -486,25 +486,34 @@ class AppViewModel @Inject constructor(
     // ------------------------------------------------- //
 
     private fun recordData() {
-        currentTimestamp.observe(activity, Observer {
-            viewModelScope.launch(Dispatchers.Unconfined) {
-                miscHandler.postAtFrontOfQueue {
+        currentTimestamp.observe(activity, Observer { currentTime ->
+            if ((tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) == 0)
+                return@Observer
+
+            numberBars.value?.let { numberBars ->
+                val barLength =
+                    (tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) / numberBars
+                val barNumber = currentTime / barLength
+
+                viewModelScope.launch(Dispatchers.Unconfined) {
                     val data = ShortArray(1024)
                     recorder.read(data, 0, 1024)
 
-                    val newCells = cells.value?.map { track ->
-                        track.map { cell ->
-                            if (cell.isSelected) {
-                                val newCell = cell.copy()
-                                newCell.data.add(Pair(data, it))
-                                newCell
-                            } else {
-                                cell
+                    miscHandler.postAtFrontOfQueue {
+                        val newCells = cells.value?.map { track ->
+                            track.mapIndexed { index, cell ->
+                                if (cell.isSelected && barNumber == index) {
+                                    val newCell = cell.copy()
+                                    newCell.data.add(Pair(data, currentTime))
+                                    newCell
+                                } else {
+                                    cell
+                                }
                             }
                         }
-                    }
 
-                    cells.postValue(newCells)
+                        cells.postValue(newCells)
+                    }
                 }
             }
         })
