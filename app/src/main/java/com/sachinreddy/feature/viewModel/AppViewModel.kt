@@ -74,6 +74,8 @@ class AppViewModel @Inject constructor(
     private var scrollHandler: Handler = Handler()
     private var miscHandler: Handler = Handler()
 
+    private val bufferSize = 1024
+
     // ------------------- INIT --------------------- //
 
     var cells: MutableLiveData<List<List<Cell>>> = MutableLiveData(
@@ -267,7 +269,6 @@ class AppViewModel @Inject constructor(
                     while (isPlaying) {
                         data.forEach {
                             track?.write(it.first, 0, 1024)
-                            println(it.second)
                         }
                     }
                 }
@@ -496,23 +497,27 @@ class AppViewModel @Inject constructor(
                 val barNumber = currentTime / barLength
 
                 viewModelScope.launch(Dispatchers.Unconfined) {
-                    val data = ShortArray(1024)
-                    recorder.read(data, 0, 1024)
+                    val data = ShortArray(bufferSize)
+                    val result = recorder.read(data, 0, bufferSize)
 
-                    miscHandler.postAtFrontOfQueue {
-                        val newCells = cells.value?.map { track ->
-                            track.mapIndexed { index, cell ->
-                                if (cell.isSelected && barNumber == index) {
-                                    val newCell = cell.copy()
-                                    newCell.data.add(Pair(data, currentTime))
-                                    newCell
-                                } else {
-                                    cell
+//                    println(data.map { abs(it.toInt()) }.sum())
+
+                    if (result > 0) {
+                        miscHandler.postAtFrontOfQueue {
+                            val newCells = cells.value?.map { track ->
+                                track.mapIndexed { index, cell ->
+                                    if (cell.isSelected && barNumber == index) {
+                                        val newCell = cell.copy()
+                                        newCell.data.add(Pair(data, currentTime))
+                                        newCell
+                                    } else {
+                                        cell
+                                    }
                                 }
                             }
-                        }
 
-                        cells.postValue(newCells)
+                            cells.postValue(newCells)
+                        }
                     }
                 }
             }
