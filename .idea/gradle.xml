@@ -11,6 +11,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/audiorecordview" />
             <option value="$PROJECT_DIR$/numberpicker" />
             <option value="$PROJECT_DIR$/recordbutton" />
             <option value="$PROJECT_DIR$/recyclerview" />

@@ -51,13 +51,11 @@
                 android:layout_height="wrap_content"
 
                 app:cellColor="@color/colorPrimary"
-                app:buttonColor="@color/cardBackground"
 
                 bind:cell="@{cell}"
                 bind:vm="@{vm}"
 
                 android:data="@{cell.data}"
-                android:isPlaying="@{cell.playing}"
                 android:onLongClick="@{(view) -> vm.onEditCellLongClicked(view, cell)}"
 
                 app:layout_constraintBottom_toBottomOf="parent"

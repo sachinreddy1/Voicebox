@@ -89,4 +89,7 @@ dependencies {
 
     // Number Picker
     implementation project(path: ':numberpicker')
+
+    // Audio Record View
+    implementation project(path: ':audiorecordview')
 }

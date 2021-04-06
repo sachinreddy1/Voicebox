@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">audio_record_view</string>
+    <declare-styleable name="AudioRecordView">
+
+        <attr format="dimension" name="chunkWidth" />
+        <attr format="dimension" name="chunkMaxHeight" />
+        <attr format="dimension" name="chunkMinHeight" />
+        <attr format="dimension" name="chunkSpace" />
+        <attr format="color" name="chunkColor" />
+        <attr format="boolean" name="chunkRoundedCorners" />
+        <attr format="enum" name="chunkAlignTo">
+            <enum name="center" value="1" />
+            <enum name="bottom" value="2" />
+        </attr>
+        <attr format="enum" name="direction">
+            <enum name="rightToLeft" value="1" />
+            <enum name="leftToRight" value="2" />
+        </attr>
+        <attr format="boolean" name="chunkSoftTransition" />
+    </declare-styleable>
+</resources>

@@ -7,13 +7,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.evrencoskun.tableview.TableView
 import com.evrencoskun.tableview.data.Cell
-import com.sachinreddy.feature.R
+import com.sachinreddy.audiorecordview.AudioRecordView
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.table.listener.SelectionListener
 import com.sachinreddy.feature.table.listener.TranslationListener
 import com.sachinreddy.feature.table.ui.view.CellView
 import com.sachinreddy.feature.viewModel.AppViewModel
-import kotlinx.android.synthetic.main.cell_view.view.*
 
 @BindingAdapter("android:cells")
 fun setCells(tableView: TableView, cells: List<List<Cell>>) {
@@ -33,13 +32,6 @@ fun setData(cellView: CellView, data: List<Pair<ShortArray, Int>>) {
 fun setSelected(constraintLayout: ConstraintLayout, isSelected: Boolean) {
     val backgroundColor = if (isSelected) "#616161" else "#2C2C2C"
     constraintLayout.setBackgroundColor(Color.parseColor(backgroundColor))
-}
-
-@BindingAdapter("android:isPlaying")
-fun setIsPlaying(cellView: CellView, isPlaying: Boolean) {
-    cellView.action_button.setImageResource(
-        if (isPlaying) R.drawable.ic_stop else R.drawable.ic_play
-    )
 }
 
 @BindingAdapter("android:number")
@@ -83,4 +75,15 @@ fun bindOnTranslationListener(
     selectionListener: SelectionListener
 ) {
     constraintLayout.setOnDragListener(if (isSelecting) selectionListener else translationListener)
+}
+
+@BindingAdapter("android:cellData")
+fun setCellData(audioRecordView: AudioRecordView, cellData: List<Pair<ShortArray, Int>>) {
+    if (cellData.isNotEmpty()) {
+        val test = cellData.last().second - cellData.first().second
+        println(audioRecordView.width / 32)
+    }
+
+    val energy = cellData.map { it.first.sum() }
+    audioRecordView.update(energy)
 }

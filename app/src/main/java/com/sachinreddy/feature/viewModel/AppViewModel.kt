@@ -260,47 +260,47 @@ class AppViewModel @Inject constructor(
 
     // ---------------- PLAYER (TEMPORARY) ---------------- //
 
-    fun playTrack(cell: Cell) {
-        val newCells = cells.value.orEmpty()
-
-        newCells[cell.rowPosition][cell.columnPosition].apply {
-            playerThread = object : Thread() {
-                override fun run() {
-                    while (isPlaying) {
-                        data.forEach {
-                            track?.write(it.first, 0, 1024)
-                        }
-                    }
-                }
-            }
-            isPlaying = true
-            playerThread?.start()
-            track?.play()
-        }
-
-        cells.postValue(newCells)
-        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(cell.rowPosition)?.adapter?.notifyDataSetChanged()
-    }
-
-    private fun stopTrack(cell: Cell) {
-        val newCells = cells.value.orEmpty()
-
-        newCells[cell.rowPosition][cell.columnPosition].apply {
-            isPlaying = false
-            track?.pause()
-            playerThread?.join()
-        }
-
-        cells.postValue(newCells)
-        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(cell.rowPosition)?.adapter?.notifyDataSetChanged()
-    }
-
-    fun onClickCellButton(cell: Cell) {
-        if (cell.isPlaying)
-            stopTrack(cell)
-        else
-            playTrack(cell)
-    }
+//    fun playTrack(cell: Cell) {
+//        val newCells = cells.value.orEmpty()
+//
+//        newCells[cell.rowPosition][cell.columnPosition].apply {
+//            playerThread = object : Thread() {
+//                override fun run() {
+//                    while (isPlaying) {
+//                        data.forEach {
+//                            track?.write(it.first, 0, 1024)
+//                        }
+//                    }
+//                }
+//            }
+//            isPlaying = true
+//            playerThread?.start()
+//            track?.play()
+//        }
+//
+//        cells.postValue(newCells)
+//        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(cell.rowPosition)?.adapter?.notifyDataSetChanged()
+//    }
+//
+//    private fun stopTrack(cell: Cell) {
+//        val newCells = cells.value.orEmpty()
+//
+//        newCells[cell.rowPosition][cell.columnPosition].apply {
+//            isPlaying = false
+//            track?.pause()
+//            playerThread?.join()
+//        }
+//
+//        cells.postValue(newCells)
+//        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(cell.rowPosition)?.adapter?.notifyDataSetChanged()
+//    }
+//
+//    fun onClickCellButton(cell: Cell) {
+//        if (cell.isPlaying)
+//            stopTrack(cell)
+//        else
+//            playTrack(cell)
+//    }
 
     // ------------- TRANSLATION / SELECTION ----------------- //
 

@@ -2,7 +2,6 @@
 <resources>
     <declare-styleable name="CellView">
         <attr name="cellColor" format="color" />
-        <attr name="buttonColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="ColumnView">
