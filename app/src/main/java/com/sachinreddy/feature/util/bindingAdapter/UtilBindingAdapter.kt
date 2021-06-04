@@ -101,11 +101,6 @@ fun setRecordButtonVm(recordButton: RecordButton, vm: AppViewModel) {
     }
 }
 
-@BindingAdapter("app:currentMillis")
-fun setCurrentMillis(recordButton: RecordButton, currentMillis: Float) {
-    recordButton.currentMiliSecond = currentMillis
-}
-
 @BindingAdapter("app:maxMillis")
 fun setMaxMillis(recordButton: RecordButton, maxMillis: Int) {
     recordButton.maxMilisecond = maxMillis

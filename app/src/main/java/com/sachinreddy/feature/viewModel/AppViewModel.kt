@@ -18,10 +18,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.evrencoskun.tableview.TableView
-import com.evrencoskun.tableview.data.Cell
-import com.evrencoskun.tableview.data.ColumnHeader
-import com.evrencoskun.tableview.data.RowHeader
-import com.evrencoskun.tableview.data.Timeline
+import com.evrencoskun.tableview.data.*
 import com.sachinreddy.feature.MainActivity
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
@@ -67,8 +64,8 @@ class AppViewModel @Inject constructor(
 
     var bpm: MutableLiveData<Int> = MutableLiveData(120)
     var maxRecordTime: MutableLiveData<Int> = MutableLiveData(2000)
-    var currentRecordTime: MutableLiveData<Float> = MutableLiveData(0f)
-    var currentTimestamp: MutableLiveData<Int> = MutableLiveData(0)
+    var currentRecordIndex: MutableLiveData<Int> = MutableLiveData(0)
+    var currentPlayIndex: MutableLiveData<Int> = MutableLiveData(0)
 
     private var scrollThread: Thread? = null
     private var scrollHandler: Handler = Handler()
@@ -78,17 +75,20 @@ class AppViewModel @Inject constructor(
 
     // ------------------- INIT --------------------- //
 
-    var cells: MutableLiveData<List<List<Cell>>> = MutableLiveData(
+    var cells: MutableLiveData<List<Track>> = MutableLiveData(
         listOf(
-            listOf(
-                Cell(columnPosition = 0, rowPosition = 0),
-                Cell(columnPosition = 1, rowPosition = 0),
-                Cell(columnPosition = 2, rowPosition = 0),
-                Cell(columnPosition = 3, rowPosition = 0),
-                Cell(columnPosition = 4, rowPosition = 0),
-                Cell(columnPosition = 5, rowPosition = 0),
-                Cell(columnPosition = 6, rowPosition = 0),
-                Cell(columnPosition = 7, rowPosition = 0)
+            Track(
+                cells =
+                listOf(
+                    Cell(columnPosition = 0, rowPosition = 0),
+                    Cell(columnPosition = 1, rowPosition = 0),
+                    Cell(columnPosition = 2, rowPosition = 0),
+                    Cell(columnPosition = 3, rowPosition = 0),
+                    Cell(columnPosition = 4, rowPosition = 0),
+                    Cell(columnPosition = 5, rowPosition = 0),
+                    Cell(columnPosition = 6, rowPosition = 0),
+                    Cell(columnPosition = 7, rowPosition = 0)
+                )
             )
         )
     )
@@ -132,14 +132,16 @@ class AppViewModel @Inject constructor(
     init {
         ActivityCompat.requestPermissions(activity, PERMISSIONS, REQUEST_PERMISSION_CODE)
 
-        cells.value?.first()?.first()?.let {
-            it.isSelected = true
-            selectedCells.clear()
-            selectedCells.add(it)
+        cells.value?.first()?.let { track ->
+            track.cells.first().let { cell ->
+                cell.isSelected = true
+                selectedCells.clear()
+                selectedCells.add(cell)
+            }
         }
 
         initRecorder()
-        recordData()
+        setupObservers()
     }
 
     private fun initRecorder() {
@@ -171,12 +173,13 @@ class AppViewModel @Inject constructor(
 
             val newCells = clearCellSelection().mapIndexed { index, track ->
                 if (index == rowPosition) {
-                    track.map { cell ->
+                    track.cells = track.cells.map { cell ->
                         val newCell = cell.copy()
                         newCell.isSelected = true
                         selectedCells.add(newCell)
                         newCell
                     }
+                    track
                 } else {
                     track
                 }
@@ -197,7 +200,7 @@ class AppViewModel @Inject constructor(
             selectedCells.clear()
 
             val newCells = clearCellSelection().map { track ->
-                track.mapIndexed { index, cell ->
+                track.cells = track.cells.mapIndexed { index, cell ->
                     if (index == columnPosition) {
                         val newCell = cell.copy()
                         newCell.isSelected = true
@@ -207,6 +210,7 @@ class AppViewModel @Inject constructor(
                         cell
                     }
                 }
+                track
             }
 
             setMaxRecordTime(
@@ -219,10 +223,10 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    private fun clearCellSelection(): List<List<Cell>> {
+    private fun clearCellSelection(): List<Track> {
         selectedCells.clear()
         return cells.value.orEmpty().mapIndexed { rowPosition, track ->
-            track.mapIndexed { columnPosition, cell ->
+            track.cells = track.cells.mapIndexed { columnPosition, cell ->
                 val view = tableView.cellLayoutManager.getCellViewHolder(
                     columnPosition,
                     rowPosition
@@ -235,13 +239,15 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    fun selectCells(cell: Cell): List<List<Cell>> {
+    fun selectCells(cell: Cell): List<Track> {
         val newCells = clearCellSelection()
         draggedCell.value?.apply {
             for (i in rowPosition toward cell.rowPosition) {
                 for (j in columnPosition toward cell.columnPosition) {
-                    newCells[i][j].isSelected = true
-                    selectedCells.add(newCells[i][j])
+                    newCells[i].cells[j].let {
+                        it.isSelected = true
+                        selectedCells.add(it)
+                    }
                     val view =
                         tableView.cellLayoutManager.getCellViewHolder(j, i)?.itemView?.layout_cell
                     view?.setBackgroundColor(context.getColor(R.color.selection_color))
@@ -257,50 +263,6 @@ class AppViewModel @Inject constructor(
 
         return newCells
     }
-
-    // ---------------- PLAYER (TEMPORARY) ---------------- //
-
-//    fun playTrack(cell: Cell) {
-//        val newCells = cells.value.orEmpty()
-//
-//        newCells[cell.rowPosition][cell.columnPosition].apply {
-//            playerThread = object : Thread() {
-//                override fun run() {
-//                    while (isPlaying) {
-//                        data.forEach {
-//                            track?.write(it.first, 0, 1024)
-//                        }
-//                    }
-//                }
-//            }
-//            isPlaying = true
-//            playerThread?.start()
-//            track?.play()
-//        }
-//
-//        cells.postValue(newCells)
-//        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(cell.rowPosition)?.adapter?.notifyDataSetChanged()
-//    }
-//
-//    private fun stopTrack(cell: Cell) {
-//        val newCells = cells.value.orEmpty()
-//
-//        newCells[cell.rowPosition][cell.columnPosition].apply {
-//            isPlaying = false
-//            track?.pause()
-//            playerThread?.join()
-//        }
-//
-//        cells.postValue(newCells)
-//        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(cell.rowPosition)?.adapter?.notifyDataSetChanged()
-//    }
-//
-//    fun onClickCellButton(cell: Cell) {
-//        if (cell.isPlaying)
-//            stopTrack(cell)
-//        else
-//            playTrack(cell)
-//    }
 
     // ------------- TRANSLATION / SELECTION ----------------- //
 
@@ -336,8 +298,8 @@ class AppViewModel @Inject constructor(
 
         draggedCell.value?.apply {
             if (this != cell) {
-                newCells[cell.rowPosition][cell.columnPosition].data = data
-                newCells[rowPosition][columnPosition].data = mutableListOf()
+                newCells[cell.rowPosition].cells[cell.columnPosition].data = data
+                newCells[rowPosition].cells[columnPosition].data = mutableMapOf()
             }
         }
 
@@ -361,8 +323,12 @@ class AppViewModel @Inject constructor(
             }
         }
 
+        val track = Track(
+            cells = trackCells
+        )
+
         val newCells = cells.value!!.toMutableList()
-        newCells.add(trackCells)
+        newCells.add(track)
 
         val newRowHeader = rowHeaders.value!!.toMutableList()
         newRowHeader.add(
@@ -435,18 +401,20 @@ class AppViewModel @Inject constructor(
         isRecording = true
 
         val newCells = cells.value?.map { track ->
-            track.map { cell ->
-                if (cell.isSelected) {
-                    val newCell = cell.copy()
+            track.apply {
+                this.audioTrack?.pause()
+                this.playerThread?.join()
 
-                    newCell.isPlaying = false
-                    newCell.track?.pause()
-                    newCell.playerThread?.join()
-                    newCell.data.clear()
+                cells.map { cell ->
+                    if (cell.isSelected) {
+                        val newCell = cell.copy()
+                        newCell.isPlaying = false
+                        newCell.data.clear()
 
-                    newCell
-                } else {
-                    cell
+                        newCell
+                    } else {
+                        cell
+                    }
                 }
             }
         }
@@ -486,8 +454,8 @@ class AppViewModel @Inject constructor(
 
     // ------------------------------------------------- //
 
-    private fun recordData() {
-        currentTimestamp.observe(activity, Observer { currentTime ->
+    private fun setupObservers() {
+        currentRecordIndex.observe(activity, Observer { currentTime ->
             if ((tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) == 0)
                 return@Observer
 
@@ -505,15 +473,17 @@ class AppViewModel @Inject constructor(
                     if (result > 0) {
                         miscHandler.postAtFrontOfQueue {
                             val newCells = cells.value?.map { track ->
-                                track.mapIndexed { index, cell ->
+                                track.cells = track.cells.mapIndexed { index, cell ->
                                     if (cell.isSelected && barNumber == index) {
                                         val newCell = cell.copy()
-                                        newCell.data.add(Pair(data, currentTime))
+                                        newCell.data[currentTime] = data
                                         newCell
                                     } else {
                                         cell
                                     }
                                 }
+
+                                track
                             }
 
                             cells.postValue(newCells)
@@ -522,7 +492,74 @@ class AppViewModel @Inject constructor(
                 }
             }
         })
+
+        currentPlayIndex.observe(activity, Observer { currentTime ->
+            if ((tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) == 0)
+                return@Observer
+
+            numberBars.value?.let { numberBars ->
+                val barLength =
+                    (tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) / numberBars
+                val barNumber = currentTime / barLength
+
+                // UNDER CONSTRUCTION
+                viewModelScope.launch(Dispatchers.Unconfined) {
+                    miscHandler.postAtFrontOfQueue {
+                        cells.value?.forEach { track ->
+                            track.audioTrack?.play()
+
+                            // PLAYBACK
+
+//                            track.cells.forEachIndexed { index, cell ->
+//                                if (cell.isSelected && barNumber == index) {
+//
+//                                    val data: ShortArray = cell.data.getOrDefault(currentTime, ShortArray(bufferSize))
+//                                    track.audioTrack?.write(data, 0, bufferSize)
+//                                }
+//                            }
+
+
+                        }
+                    }
+                }
+            }
+        })
     }
+
+//    fun playTrack(cell: Cell) {
+//        val newCells = cells.value.orEmpty()
+//
+//        newCells[cell.rowPosition][cell.columnPosition].apply {
+//            playerThread = object : Thread() {
+//                override fun run() {
+//                    while (isPlaying) {
+//                        data.forEach {
+//                            track?.write(it.first, 0, 1024)
+//                        }
+//                    }
+//                }
+//            }
+//            isPlaying = true
+//            playerThread?.start()
+//            track?.play()
+//        }
+//
+//        cells.postValue(newCells)
+//        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(cell.rowPosition)?.adapter?.notifyDataSetChanged()
+//    }
+
+//    private fun stopTrack(cell: Cell) {
+//        val newCells = cells.value.orEmpty()
+//
+//        newCells[cell.rowPosition][cell.columnPosition].apply {
+//            isPlaying = false
+//            track?.pause()
+//            playerThread?.join()
+//        }
+//
+//        cells.postValue(newCells)
+//        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(cell.rowPosition)?.adapter?.notifyDataSetChanged()
+//    }
 
     private inner class RecordTimelineRunner(startPosition: Int, endPosition: Int) : Runnable {
         val barLength =
@@ -558,23 +595,10 @@ class AppViewModel @Inject constructor(
 
                 scrollHandler.post {
                     tableView.timelineRecyclerView.scrollBy(1, 0)
-                    currentRecordTime.postValue(timeMS * i)
-                    currentTimestamp.postValue(tableView.timelineRecyclerView.computeHorizontalScrollOffset())
+                    currentRecordIndex.postValue(tableView.timelineRecyclerView.computeHorizontalScrollOffset())
                 }
 
                 Util.sleepNano(startTime, timeNS)
-            }
-        }
-    }
-
-    private inner class ScrollRunner(right: Boolean) : Runnable {
-        val translationValue = if (right) 20 else -20
-        override fun run() {
-            while (isScrolling) {
-                scrollHandler.post {
-                    tableView.timelineRecyclerView.scrollBy(translationValue, 0)
-                }
-                Thread.sleep(14)
             }
         }
     }
@@ -598,8 +622,22 @@ class AppViewModel @Inject constructor(
 
                 scrollHandler.post {
                     tableView.timelineRecyclerView.scrollBy(1, 0)
+                    currentPlayIndex.postValue(tableView.timelineRecyclerView.computeHorizontalScrollOffset())
                 }
+
                 Thread.sleep(timeMS.toLong())
+            }
+        }
+    }
+
+    private inner class ScrollRunner(right: Boolean) : Runnable {
+        val translationValue = if (right) 20 else -20
+        override fun run() {
+            while (isScrolling) {
+                scrollHandler.post {
+                    tableView.timelineRecyclerView.scrollBy(translationValue, 0)
+                }
+                Thread.sleep(14)
             }
         }
     }

@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.evrencoskun.tableview.TableView
 import com.evrencoskun.tableview.data.Cell
+import com.evrencoskun.tableview.data.Track
 import com.sachinreddy.audiorecordview.AudioRecordView
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.table.listener.SelectionListener
@@ -15,16 +16,20 @@ import com.sachinreddy.feature.table.ui.view.CellView
 import com.sachinreddy.feature.viewModel.AppViewModel
 
 @BindingAdapter("android:cells")
-fun setCells(tableView: TableView, cells: List<List<Cell>>) {
+fun setCells(tableView: TableView, cells: List<Track>) {
     if (tableView.adapter is EditCellAdapter) {
-        (tableView.adapter as EditCellAdapter).let {
-            it.setCellItems(cells)
+        (tableView.adapter as EditCellAdapter).let { adapter ->
+            adapter.setCellItems(cells.map { track ->
+                track.cells.map { cell ->
+                    cell
+                }
+            })
         }
     }
 }
 
 @BindingAdapter("android:data")
-fun setData(cellView: CellView, data: List<Pair<ShortArray, Int>>) {
+fun setData(cellView: CellView, data: MutableMap<Int, ShortArray>) {
     cellView.visibility = if (data.isEmpty()) View.GONE else View.VISIBLE
 }
 
@@ -78,12 +83,7 @@ fun bindOnTranslationListener(
 }
 
 @BindingAdapter("android:cellData")
-fun setCellData(audioRecordView: AudioRecordView, cellData: List<Pair<ShortArray, Int>>) {
-    if (cellData.isNotEmpty()) {
-        val test = cellData.last().second - cellData.first().second
-        println(audioRecordView.width / 32)
-    }
-
-    val energy = cellData.map { it.first.sum() }
+fun setCellData(audioRecordView: AudioRecordView, cellData: MutableMap<Int, ShortArray>) {
+    val energy = cellData.map { it.value.sum() }
     audioRecordView.update(energy)
 }

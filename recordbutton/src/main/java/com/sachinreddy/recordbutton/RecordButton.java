@@ -177,7 +177,7 @@ public class RecordButton extends View implements Animatable {
             public void onAnimationUpdate(ValueAnimator animation) {
                 int value = ((Float) ((Float) animation.getAnimatedValue())).intValue();
                 if (RecordButton.this.isRecording) {
-//                    RecordButton.this.setCurrentMiliSecond(value);
+                    RecordButton.this.setCurrentMiliSecond(value);
                     if (RecordButton.this.recordListener != null) {
                         RecordButton.this.recordListener.onRecord();
                     }

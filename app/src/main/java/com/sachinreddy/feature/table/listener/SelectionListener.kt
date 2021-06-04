@@ -4,13 +4,14 @@ import android.view.DragEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.evrencoskun.tableview.data.Cell
+import com.evrencoskun.tableview.data.Track
 import com.sachinreddy.feature.viewModel.AppViewModel
 
 class SelectionListener(
     private var cell: Cell,
     private val appViewModel: AppViewModel
 ) : View.OnDragListener {
-    var cells: List<List<Cell>> = appViewModel.cells.value!!
+    var cells: List<Track> = appViewModel.cells.value!!
 
     override fun onDrag(v: View, event: DragEvent): Boolean {
         val containerView: ConstraintLayout = v as ConstraintLayout
