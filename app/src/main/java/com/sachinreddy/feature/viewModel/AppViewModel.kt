@@ -388,11 +388,30 @@ class AppViewModel @Inject constructor(
     }
 
     fun startPlaying() {
+        viewModelScope.launch(Dispatchers.Unconfined) {
+            cells.value?.forEach { track ->
+                miscHandler.postAtFrontOfQueue {
+                    track.audioTrack?.play()
+                }
+
+                track.data.clear()
+                track.cells.forEach { cell ->
+                    cell.data.forEach {
+                        track.data[it.key] = it.value
+                    }
+                }
+            }
+        }
+
         scrollThread = Thread(PlayRunner())
         scrollThread?.start()
     }
 
     fun stopPlaying() {
+        cells.value?.forEach { track ->
+            track.audioTrack?.pause()
+        }
+
         scrollThread?.join()
         scrollThread = null
     }
@@ -505,48 +524,17 @@ class AppViewModel @Inject constructor(
                 // UNDER CONSTRUCTION
                 viewModelScope.launch(Dispatchers.Unconfined) {
                     miscHandler.postAtFrontOfQueue {
+                        // PLAYBACK
                         cells.value?.forEach { track ->
-                            track.audioTrack?.play()
-
-                            // PLAYBACK
-
-//                            track.cells.forEachIndexed { index, cell ->
-//                                if (cell.isSelected && barNumber == index) {
-//
-//                                    val data: ShortArray = cell.data.getOrDefault(currentTime, ShortArray(bufferSize))
-//                                    track.audioTrack?.write(data, 0, bufferSize)
-//                                }
-//                            }
-
-
+                            val data: ShortArray =
+                                track.data.getOrDefault(currentTime, ShortArray(bufferSize))
+                            track.audioTrack?.write(data, 0, bufferSize)
                         }
                     }
                 }
             }
         })
     }
-
-//    fun playTrack(cell: Cell) {
-//        val newCells = cells.value.orEmpty()
-//
-//        newCells[cell.rowPosition][cell.columnPosition].apply {
-//            playerThread = object : Thread() {
-//                override fun run() {
-//                    while (isPlaying) {
-//                        data.forEach {
-//                            track?.write(it.first, 0, 1024)
-//                        }
-//                    }
-//                }
-//            }
-//            isPlaying = true
-//            playerThread?.start()
-//            track?.play()
-//        }
-//
-//        cells.postValue(newCells)
-//        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(cell.rowPosition)?.adapter?.notifyDataSetChanged()
-//    }
 
 //    private fun stopTrack(cell: Cell) {
 //        val newCells = cells.value.orEmpty()
