@@ -14,7 +14,6 @@ import android.os.Vibrator
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.evrencoskun.tableview.TableView
@@ -29,7 +28,6 @@ import com.sachinreddy.feature.util.toward
 import com.sachinreddy.numberpicker.NumberPicker
 import kotlinx.android.synthetic.main.operation_button.view.*
 import kotlinx.android.synthetic.main.table_view_cell_layout.view.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.abs
@@ -65,7 +63,6 @@ class AppViewModel @Inject constructor(
     var bpm: MutableLiveData<Int> = MutableLiveData(120)
     var maxRecordTime: MutableLiveData<Int> = MutableLiveData(2000)
     var currentRecordIndex: MutableLiveData<Int> = MutableLiveData(0)
-    var currentPlayIndex: MutableLiveData<Int> = MutableLiveData(0)
 
     private var scrollThread: Thread? = null
     private var scrollHandler: Handler = Handler()
@@ -141,7 +138,6 @@ class AppViewModel @Inject constructor(
         }
 
         initRecorder()
-        setupObservers()
     }
 
     private fun initRecorder() {
@@ -388,30 +384,11 @@ class AppViewModel @Inject constructor(
     }
 
     fun startPlaying() {
-        viewModelScope.launch(Dispatchers.Unconfined) {
-            cells.value?.forEach { track ->
-                miscHandler.postAtFrontOfQueue {
-                    track.audioTrack?.play()
-                }
-
-                track.data.clear()
-                track.cells.forEach { cell ->
-                    cell.data.forEach {
-                        track.data[it.key] = it.value
-                    }
-                }
-            }
-        }
-
         scrollThread = Thread(PlayRunner())
         scrollThread?.start()
     }
 
     fun stopPlaying() {
-        cells.value?.forEach { track ->
-            track.audioTrack?.pause()
-        }
-
         scrollThread?.join()
         scrollThread = null
     }
@@ -473,82 +450,51 @@ class AppViewModel @Inject constructor(
 
     // ------------------------------------------------- //
 
-    private fun setupObservers() {
-        currentRecordIndex.observe(activity, Observer { currentTime ->
-            if ((tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) == 0)
-                return@Observer
+    private fun recordData(currentTime: Int) {
+        if ((tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) == 0)
+            return
 
-            numberBars.value?.let { numberBars ->
-                val barLength =
-                    (tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) / numberBars
-                val barNumber = currentTime / barLength
+        numberBars.value!!.let { numberBars ->
+            val barLength =
+                (tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) / numberBars
+            val barNumber = currentTime / barLength
 
-                viewModelScope.launch(Dispatchers.Unconfined) {
-                    val data = ShortArray(bufferSize)
-                    val result = recorder.read(data, 0, bufferSize)
+            println(barNumber)
 
-//                    println(data.map { abs(it.toInt()) }.sum())
+            val data = ShortArray(bufferSize)
+            val result = recorder.read(data, 0, bufferSize)
 
-                    if (result > 0) {
-                        miscHandler.postAtFrontOfQueue {
-                            val newCells = cells.value?.map { track ->
-                                track.cells = track.cells.mapIndexed { index, cell ->
-                                    if (cell.isSelected && barNumber == index) {
-                                        val newCell = cell.copy()
-                                        newCell.data[currentTime] = data
-                                        newCell
-                                    } else {
-                                        cell
-                                    }
-                                }
+//                println(data.map { abs(it.toInt()) }.sum())
 
-                                track
-                            }
-
-                            cells.postValue(newCells)
-                        }
-                    }
-                }
+            if (result > 0) {
+//                    val newCells = cells.value?.map { track ->
+//                        track.cells = track.cells.mapIndexed { index, cell ->
+//                            if (cell.isSelected && barNumber == index) {
+//                                val newCell = cell.copy()
+//
+//                                println("OBSERVER: ${newCell.data.size}")
+//
+//                                newCell.data[currentTime] = data
+//                                newCell
+//                            } else {
+//                                cell
+//                            }
+//                        }
+//
+//                        track
+//                    }
+//
+//                    cells.postValue(newCells)
             }
-        })
-
-        currentPlayIndex.observe(activity, Observer { currentTime ->
-            if ((tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) == 0)
-                return@Observer
-
-            numberBars.value?.let { numberBars ->
-                val barLength =
-                    (tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) / numberBars
-                val barNumber = currentTime / barLength
-
-                // UNDER CONSTRUCTION
-                viewModelScope.launch(Dispatchers.Unconfined) {
-                    miscHandler.postAtFrontOfQueue {
-                        // PLAYBACK
-                        cells.value?.forEach { track ->
-                            val data: ShortArray =
-                                track.data.getOrDefault(currentTime, ShortArray(bufferSize))
-                            track.audioTrack?.write(data, 0, bufferSize)
-                        }
-                    }
-                }
-            }
-        })
+        }
     }
 
-//    private fun stopTrack(cell: Cell) {
-//        val newCells = cells.value.orEmpty()
-//
-//        newCells[cell.rowPosition][cell.columnPosition].apply {
-//            isPlaying = false
-//            track?.pause()
-//            playerThread?.join()
-//        }
-//
-//        cells.postValue(newCells)
-//        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(cell.rowPosition)?.adapter?.notifyDataSetChanged()
-//    }
-
+    /*
+     * [RecordTimelineRunner]
+     * Used when record button is pressed.
+     * Responsible for scrolling the timelineRecyclerView based on selected cells.
+     *
+     */
     private inner class RecordTimelineRunner(startPosition: Int, endPosition: Int) : Runnable {
         val barLength =
             (tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) / numberBars.value!!
@@ -581,9 +527,9 @@ class AppViewModel @Inject constructor(
 
                 val startTime = System.nanoTime()
 
-                scrollHandler.post {
+                viewModelScope.launch {
                     tableView.timelineRecyclerView.scrollBy(1, 0)
-                    currentRecordIndex.postValue(tableView.timelineRecyclerView.computeHorizontalScrollOffset())
+                    recordData(tableView.timelineRecyclerView.computeHorizontalScrollOffset())
                 }
 
                 Util.sleepNano(startTime, timeNS)
@@ -591,6 +537,11 @@ class AppViewModel @Inject constructor(
         }
     }
 
+    /*
+     * [PlayRunner]
+     * Used when play button is pressed.
+     * Responsible for scrolling the timelineRecyclerView.
+     */
     private inner class PlayRunner() : Runnable {
         val barNumber =
             numberBars.value!!.toFloat() / tableView.timelineRecyclerView.mMaxTime.value!!
@@ -610,7 +561,6 @@ class AppViewModel @Inject constructor(
 
                 scrollHandler.post {
                     tableView.timelineRecyclerView.scrollBy(1, 0)
-                    currentPlayIndex.postValue(tableView.timelineRecyclerView.computeHorizontalScrollOffset())
                 }
 
                 Thread.sleep(timeMS.toLong())
@@ -618,6 +568,11 @@ class AppViewModel @Inject constructor(
         }
     }
 
+    /*
+     * [ScrollRunner]
+     * Used when translating/selecting.
+     * Scrolls recyclerView left or right.
+     */
     private inner class ScrollRunner(right: Boolean) : Runnable {
         val translationValue = if (right) 20 else -20
         override fun run() {
