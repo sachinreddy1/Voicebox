@@ -62,11 +62,9 @@ class AppViewModel @Inject constructor(
 
     var bpm: MutableLiveData<Int> = MutableLiveData(120)
     var maxRecordTime: MutableLiveData<Int> = MutableLiveData(2000)
-    var currentRecordIndex: MutableLiveData<Int> = MutableLiveData(0)
 
     private var scrollThread: Thread? = null
     private var scrollHandler: Handler = Handler()
-    private var miscHandler: Handler = Handler()
 
     private val bufferSize = 1024
 
@@ -450,41 +448,32 @@ class AppViewModel @Inject constructor(
 
     // ------------------------------------------------- //
 
-    private fun recordData(currentTime: Int) {
-        if ((tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) == 0)
-            return
+    private inner class RecordDataThread() : Thread() {
+        override fun run() {
+            while (isRecording) {
+                val data = ShortArray(bufferSize)
+                val result = recorder.read(data, 0, bufferSize)
 
-        numberBars.value!!.let { numberBars ->
-            val barLength =
-                (tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) / numberBars
-            val barNumber = currentTime / barLength
+                if (result > 0) {
+                    // Add data to buffer
+                }
+            }
+        }
+    }
 
-            println(barNumber)
+    private inner class RecordScrollThread(val startX: Int, val endX: Int, val timeNS: Long) :
+        Thread() {
+        override fun run() {
+            for (i in 0..(abs(endX - startX))) {
+                if (!isRecording) break
 
-            val data = ShortArray(bufferSize)
-            val result = recorder.read(data, 0, bufferSize)
+                val startTime = System.nanoTime()
 
-//                println(data.map { abs(it.toInt()) }.sum())
+                viewModelScope.launch {
+                    tableView.timelineRecyclerView.scrollBy(1, 0)
+                }
 
-            if (result > 0) {
-//                    val newCells = cells.value?.map { track ->
-//                        track.cells = track.cells.mapIndexed { index, cell ->
-//                            if (cell.isSelected && barNumber == index) {
-//                                val newCell = cell.copy()
-//
-//                                println("OBSERVER: ${newCell.data.size}")
-//
-//                                newCell.data[currentTime] = data
-//                                newCell
-//                            } else {
-//                                cell
-//                            }
-//                        }
-//
-//                        track
-//                    }
-//
-//                    cells.postValue(newCells)
+                Util.sleepNano(startTime, timeNS)
             }
         }
     }
@@ -495,7 +484,8 @@ class AppViewModel @Inject constructor(
      * Responsible for scrolling the timelineRecyclerView based on selected cells.
      *
      */
-    private inner class RecordTimelineRunner(startPosition: Int, endPosition: Int) : Runnable {
+    private inner class RecordTimelineRunner(val startPosition: Int, val endPosition: Int) :
+        Runnable {
         val barLength =
             (tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) / numberBars.value!!
 
@@ -521,19 +511,8 @@ class AppViewModel @Inject constructor(
                 }
             }
 
-            // Scroll through selected
-            for (i in 0..(abs(endX - startX))) {
-                if (!isRecording) break
-
-                val startTime = System.nanoTime()
-
-                viewModelScope.launch {
-                    tableView.timelineRecyclerView.scrollBy(1, 0)
-                    recordData(tableView.timelineRecyclerView.computeHorizontalScrollOffset())
-                }
-
-                Util.sleepNano(startTime, timeNS)
-            }
+            RecordDataThread().start()
+            RecordScrollThread(startX, endX, timeNS).start()
         }
     }
 
