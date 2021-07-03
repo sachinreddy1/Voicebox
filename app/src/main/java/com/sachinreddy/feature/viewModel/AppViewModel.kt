@@ -21,9 +21,11 @@ import com.evrencoskun.tableview.data.*
 import com.sachinreddy.feature.MainActivity
 import com.sachinreddy.feature.R
 import com.sachinreddy.feature.table.adapter.EditCellAdapter
+import com.sachinreddy.feature.table.data.RecordBuffer
 import com.sachinreddy.feature.table.listener.EditCellListener
 import com.sachinreddy.feature.table.ui.shadow.UtilDragShadowBuilder
 import com.sachinreddy.feature.util.Util
+import com.sachinreddy.feature.util.roundClosest
 import com.sachinreddy.feature.util.toward
 import com.sachinreddy.numberpicker.NumberPicker
 import kotlinx.android.synthetic.main.operation_button.view.*
@@ -293,7 +295,7 @@ class AppViewModel @Inject constructor(
         draggedCell.value?.apply {
             if (this != cell) {
                 newCells[cell.rowPosition].cells[cell.columnPosition].data = data
-                newCells[rowPosition].cells[columnPosition].data = mutableMapOf()
+                newCells[rowPosition].cells[columnPosition].data = mutableListOf()
             }
         }
 
@@ -424,6 +426,7 @@ class AppViewModel @Inject constructor(
     }
 
     fun stopRecording() {
+        recordUpdateCells(barNumber.toInt())
         recorder.stop()
         isRecording = false
     }
@@ -448,6 +451,55 @@ class AppViewModel @Inject constructor(
 
     // ------------------------------------------------- //
 
+    /*
+     * [recordUpdateCells]
+     * Used to update cell data while recording.
+     *
+     */
+    private fun recordUpdateCells(position: Int) {
+        val newCells = cells.value?.map { track ->
+            track.cells = track.cells.mapIndexed { index, cell ->
+                // Update every row in the column
+                if (index == position && cell.isSelected) {
+                    val newCell = cell.copy()
+
+                    newCell.data = recordBuffer.data.toMutableList()
+                    newCell.bpm = recordBuffer.bpm
+
+                    newCell
+                } else {
+                    cell
+                }
+            }
+
+            track
+        }
+
+        cells.postValue(newCells)
+    }
+
+    /*
+     * [updateCellData]
+     * Used to update cell ui data while recording.
+     *
+     */
+    private fun updateCellData(position: Int, data: MutableList<ShortArray>) {
+        selectedCells.forEach { cell ->
+            if (cell.columnPosition == position) {
+                val view = tableView.cellLayoutManager.getCellViewHolder(
+                    position,
+                    cell.rowPosition
+                )?.itemView?.edit_cell
+
+                val energy = data.map { it.sum() }
+                view?.binding?.audioRecordView?.update(energy)
+            }
+        }
+    }
+
+    var barNumber = 0f
+    var recordBuffer = RecordBuffer()
+
     private inner class RecordDataThread() : Thread() {
         override fun run() {
             while (isRecording) {
@@ -455,13 +507,27 @@ class AppViewModel @Inject constructor(
                 val result = recorder.read(data, 0, bufferSize)
 
                 if (result > 0) {
-                    // Add data to buffer
+                    // Update cell data near new bars
+                    if (roundClosest(barNumber) < 0.1f) {
+                        recordUpdateCells(barNumber.toInt())
+                    }
+
+                    // Add to buffer
+                    recordBuffer.data.add(data)
+
+                    // Update cellView
+                    updateCellData(barNumber.toInt(), recordBuffer.data)
                 }
             }
         }
     }
 
-    private inner class RecordScrollThread(val startX: Int, val endX: Int, val timeNS: Long) :
+    private inner class RecordScrollThread(
+        val startX: Int,
+        val endX: Int,
+        val timeNS: Long,
+        val barLength: Int
+    ) :
         Thread() {
         override fun run() {
             for (i in 0..(abs(endX - startX))) {
@@ -472,6 +538,14 @@ class AppViewModel @Inject constructor(
                 viewModelScope.launch {
                     tableView.timelineRecyclerView.scrollBy(1, 0)
                 }
+
+                // Clear the buffer if new bar
+                if (i % barLength == 0) {
+                    recordBuffer.data = mutableListOf()
+                }
+
+                // Get bar number, used for updating and update threshold
+                barNumber = (i + startX) / barLength.toFloat()
 
                 Util.sleepNano(startTime, timeNS)
             }
@@ -512,7 +586,7 @@ class AppViewModel @Inject constructor(
             }
 
             RecordDataThread().start()
-            RecordScrollThread(startX, endX, timeNS).start()
+            RecordScrollThread(startX, endX, timeNS, barLength).start()
         }
     }
 

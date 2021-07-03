@@ -5,7 +5,8 @@ class Cell(
     var isPlaying: Boolean = false,
     var columnPosition: Int,
     var rowPosition: Int,
-    var data: MutableMap<Int, ShortArray> = mutableMapOf()
+    var data: MutableList<ShortArray> = mutableListOf(),
+    var bpm: Int = 120
 ) {
     fun isEqual(cell: Cell): Boolean {
         return (this.isSelected == cell.isSelected) &&
@@ -21,7 +22,8 @@ class Cell(
             isPlaying = this.isPlaying,
             columnPosition = this.columnPosition,
             rowPosition = this.rowPosition,
-            data = this.data.toMutableMap()
+            data = this.data.toMutableList(),
+            bpm = this.bpm
         )
     }
 }

@@ -17,6 +17,17 @@ infix fun Int.toward(to: Int): IntProgression {
     }
 }
 
+fun roundClosest(value: Float): Float {
+    val intValue = value.toInt()
+    val decValue = value - intValue
+
+    return if (decValue > 0.5f) {
+        1 - decValue
+    } else {
+        decValue
+    }
+}
+
 class Util {
     companion object {
         fun sleepNano(startTime: Long, interval: Long) {

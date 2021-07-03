@@ -29,7 +29,7 @@ fun setCells(tableView: TableView, cells: List<Track>) {
 }
 
 @BindingAdapter("android:data")
-fun setData(cellView: CellView, data: MutableMap<Int, ShortArray>) {
+fun setData(cellView: CellView, data: MutableList<ShortArray>) {
     cellView.visibility = if (data.isEmpty()) View.GONE else View.VISIBLE
 }
 
@@ -83,7 +83,7 @@ fun bindOnTranslationListener(
 }
 
 @BindingAdapter("android:cellData")
-fun setCellData(audioRecordView: AudioRecordView, cellData: MutableMap<Int, ShortArray>) {
-    val energy = cellData.map { it.value.sum() }
+fun setCellData(audioRecordView: AudioRecordView, cellData: MutableList<ShortArray>) {
+    val energy = cellData.map { it.sum() }
     audioRecordView.update(energy)
 }
