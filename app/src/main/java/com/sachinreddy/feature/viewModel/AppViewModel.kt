@@ -641,7 +641,7 @@ class AppViewModel @Inject constructor(
 
                 // When a new bar is entered
                 val barNumber = time / barLength
-                if (currentBarNumber != barNumber) {
+                if (currentBarNumber != barNumber && numberBars.value!! > barNumber) {
                     // Play each cell for that barNumber
                     cells.value!!.forEach { track ->
                         PlayerDataThread(track, barNumber).start()
