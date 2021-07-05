@@ -526,8 +526,7 @@ class AppViewModel @Inject constructor(
         val endX: Int,
         val timeNS: Long,
         val barLength: Int
-    ) :
-        Thread() {
+    ) : Thread() {
         override fun run() {
             for (i in 0..(abs(endX - startX))) {
                 if (!isRecording) break
@@ -591,6 +590,21 @@ class AppViewModel @Inject constructor(
 
     // ------------------------------------------------- //
 
+    private inner class PlayerDataThread(
+        val track: Track,
+        val barNumber: Int
+    ) : Thread() {
+        override fun run() {
+            track.apply {
+                audioTrack?.play()
+                cells[barNumber].data.forEach {
+                    audioTrack?.write(it, 0, 1024)
+                }
+                audioTrack?.pause()
+            }
+        }
+    }
+
     /*
      * [PlayRunner]
      * Used when play button is pressed.
@@ -606,6 +620,8 @@ class AppViewModel @Inject constructor(
 
         val timeMS = (beatNumber * (60000 / bpm.value!!))
         val timeNS = (timeMS * 1000000).toLong()
+
+        var currentBarNumber: Int? = null
 
         override fun run() {
             while (tableView.timelineRecyclerView.isPlaying.value!!) {
@@ -623,7 +639,16 @@ class AppViewModel @Inject constructor(
                     tableView.timelineRecyclerView.scrollBy(1, 0)
                 }
 
-                println(time % barLength)
+                // When a new bar is entered
+                val barNumber = time / barLength
+                if (currentBarNumber != barNumber) {
+                    // Play each cell for that barNumber
+                    cells.value!!.forEach { track ->
+                        PlayerDataThread(track, barNumber).start()
+                    }
+
+                    currentBarNumber = barNumber
+                }
 
                 Util.sleepNano(startTime, timeNS)
             }
