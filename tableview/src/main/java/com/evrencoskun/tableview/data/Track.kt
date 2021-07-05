@@ -31,12 +31,4 @@ class Track(
             AudioTrack.MODE_STREAM
         )
     }
-
-    private inner class PlayerThread(
-        val barNumber: Int
-    ) : Thread() {
-        override fun run() {
-
-        }
-    }
 }
