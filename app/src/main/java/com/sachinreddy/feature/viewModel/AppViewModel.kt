@@ -384,7 +384,7 @@ class AppViewModel @Inject constructor(
     }
 
     fun startPlaying() {
-        scrollThread = Thread(PlayRunner())
+        scrollThread = Thread(PlayMainRunner())
         scrollThread?.start()
     }
 
@@ -404,7 +404,6 @@ class AppViewModel @Inject constructor(
                 cells.map { cell ->
                     if (cell.isSelected) {
                         val newCell = cell.copy()
-                        newCell.isPlaying = false
                         newCell.data.clear()
 
                         newCell
@@ -418,7 +417,7 @@ class AppViewModel @Inject constructor(
         cells.postValue(newCells)
 
         Thread(
-            RecordTimelineRunner(
+            RecordMainRunner(
                 selectedCells.first().columnPosition,
                 selectedCells.last().columnPosition
             )
@@ -558,7 +557,7 @@ class AppViewModel @Inject constructor(
      * Responsible for scrolling the timelineRecyclerView based on selected cells.
      *
      */
-    private inner class RecordTimelineRunner(val startPosition: Int, val endPosition: Int) :
+    private inner class RecordMainRunner(startPosition: Int, endPosition: Int) :
         Runnable {
         val barLength =
             (tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) / numberBars.value!!
@@ -590,19 +589,27 @@ class AppViewModel @Inject constructor(
         }
     }
 
+    // ------------------------------------------------- //
+
     /*
      * [PlayRunner]
      * Used when play button is pressed.
      * Responsible for scrolling the timelineRecyclerView.
      */
-    private inner class PlayRunner() : Runnable {
+    private inner class PlayMainRunner() : Runnable {
+        val barLength =
+            (tableView.timelineRecyclerView.computeHorizontalScrollRange() - tableView.timelineRecyclerView.computeHorizontalScrollExtent()) / numberBars.value!!
+
         val barNumber =
             numberBars.value!!.toFloat() / tableView.timelineRecyclerView.mMaxTime.value!!
         val beatNumber = 4 * barNumber
 
+        val timeMS = (beatNumber * (60000 / bpm.value!!))
+        val timeNS = (timeMS * 1000000).toLong()
+
         override fun run() {
             while (tableView.timelineRecyclerView.isPlaying.value!!) {
-                val timeMS = beatNumber * (60000 / bpm.value!!)
+                val startTime = System.nanoTime()
 
                 val time = tableView.timelineRecyclerView.mTime.value!!
                 val maxTime = tableView.timelineRecyclerView.mMaxTime.value!!
@@ -616,10 +623,49 @@ class AppViewModel @Inject constructor(
                     tableView.timelineRecyclerView.scrollBy(1, 0)
                 }
 
-                Thread.sleep(timeMS.toLong())
+                println(time % barLength)
+
+                Util.sleepNano(startTime, timeNS)
             }
         }
     }
+
+//    fun playTrack(cell: Cell) {
+//        val newCells = cells.value.orEmpty()
+//
+//        newCells[cell.rowPosition][cell.columnPosition].apply {
+//            playerThread = object : Thread() {
+//                override fun run() {
+//                    while (isPlaying) {
+//                        data.forEach {
+//                            track?.write(it.first, 0, 1024)
+//                        }
+//                    }
+//                }
+//            }
+//            isPlaying = true
+//            playerThread?.start()
+//            track?.play()
+//        }
+//
+//        cells.postValue(newCells)
+//        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(cell.rowPosition)?.adapter?.notifyDataSetChanged()
+//    }
+
+//    private fun stopTrack(cell: Cell) {
+//        val newCells = cells.value.orEmpty()
+//
+//        newCells[cell.rowPosition][cell.columnPosition].apply {
+//            isPlaying = false
+//            track?.pause()
+//            playerThread?.join()
+//        }
+//
+//        cells.postValue(newCells)
+//        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(cell.rowPosition)?.adapter?.notifyDataSetChanged()
+//    }
+
+    // ------------------------------------------------- //
 
     /*
      * [ScrollRunner]

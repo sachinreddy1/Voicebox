@@ -7,9 +7,7 @@ import android.media.AudioTrack
 class Track(
     var cells: List<Cell>,
     var audioTrack: AudioTrack? = null,
-    var playerThread: Thread? = null,
-    var data: MutableMap<Int, ShortArray> = mutableMapOf(),
-    var isPlaying: Boolean = false
+    var playerThread: Thread? = null
 ) {
     init {
         audioTrack = initPlayer()
