@@ -215,6 +215,14 @@ class AppViewModel @Inject constructor(
                 ColumnHeader(7)
             )
         )
+
+        cells.value?.first()?.let { track ->
+            track.cells.first().let { cell ->
+                cell.isSelected = true
+                selectedCells.clear()
+                selectedCells.add(cell)
+            }
+        }
     }
 
     // ------------------- SELECTION -------------------- //
