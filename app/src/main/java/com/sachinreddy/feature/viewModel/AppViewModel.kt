@@ -77,7 +77,7 @@ class AppViewModel @Inject constructor(
             Track(
                 cells =
                 listOf(
-                    Cell(columnPosition = 0, rowPosition = 0),
+                    Cell(columnPosition = 0, rowPosition = 0, isSelected = true),
                     Cell(columnPosition = 1, rowPosition = 0),
                     Cell(columnPosition = 2, rowPosition = 0),
                     Cell(columnPosition = 3, rowPosition = 0),
@@ -131,7 +131,6 @@ class AppViewModel @Inject constructor(
 
         cells.value?.first()?.let { track ->
             track.cells.first().let { cell ->
-                cell.isSelected = true
                 selectedCells.clear()
                 selectedCells.add(cell)
             }
@@ -167,7 +166,7 @@ class AppViewModel @Inject constructor(
                 Track(
                     cells =
                     listOf(
-                        Cell(columnPosition = 0, rowPosition = 0),
+                        Cell(columnPosition = 0, rowPosition = 0, isSelected = true),
                         Cell(columnPosition = 1, rowPosition = 0),
                         Cell(columnPosition = 2, rowPosition = 0),
                         Cell(columnPosition = 3, rowPosition = 0),
@@ -218,7 +217,6 @@ class AppViewModel @Inject constructor(
 
         cells.value?.first()?.let { track ->
             track.cells.first().let { cell ->
-                cell.isSelected = true
                 selectedCells.clear()
                 selectedCells.add(cell)
             }
