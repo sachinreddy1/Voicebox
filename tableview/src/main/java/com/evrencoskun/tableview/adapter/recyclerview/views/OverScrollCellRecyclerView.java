@@ -62,6 +62,7 @@ public class OverScrollCellRecyclerView extends CellRecyclerView {
     @Override
     public boolean scrollByInternal(int x, int y, MotionEvent ev, boolean actionMove) {
         if (actionMove) {
+            mTimelineRecyclerView.isPlaying.postValue(false);
             mTimelineRecyclerView.scrollBy(x, y);
             return true;
         } else {
