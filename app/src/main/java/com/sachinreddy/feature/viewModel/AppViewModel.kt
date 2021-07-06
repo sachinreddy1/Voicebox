@@ -161,6 +161,62 @@ class AppViewModel @Inject constructor(
         }
     }
 
+    fun initEditor() {
+        cells.postValue(
+            listOf(
+                Track(
+                    cells =
+                    listOf(
+                        Cell(columnPosition = 0, rowPosition = 0),
+                        Cell(columnPosition = 1, rowPosition = 0),
+                        Cell(columnPosition = 2, rowPosition = 0),
+                        Cell(columnPosition = 3, rowPosition = 0),
+                        Cell(columnPosition = 4, rowPosition = 0),
+                        Cell(columnPosition = 5, rowPosition = 0),
+                        Cell(columnPosition = 6, rowPosition = 0),
+                        Cell(columnPosition = 7, rowPosition = 0)
+                    )
+                )
+            )
+        )
+
+        rowHeaders.postValue(
+            listOf(
+                RowHeader(0)
+            )
+        )
+
+        timelineHeaders.postValue(
+            listOf(
+                Timeline(0),
+                Timeline(1),
+                Timeline(2),
+                Timeline(3),
+                Timeline(4),
+                Timeline(5),
+                Timeline(6),
+                Timeline(7),
+                Timeline(8),
+                Timeline(9),
+                Timeline(10),
+                Timeline(11)
+            )
+        )
+
+        columnHeaders.postValue(
+            listOf(
+                ColumnHeader(0),
+                ColumnHeader(1),
+                ColumnHeader(2),
+                ColumnHeader(3),
+                ColumnHeader(4),
+                ColumnHeader(5),
+                ColumnHeader(6),
+                ColumnHeader(7)
+            )
+        )
+    }
+
     // ------------------- SELECTION -------------------- //
 
     fun selectRow(rowPosition: Int) {

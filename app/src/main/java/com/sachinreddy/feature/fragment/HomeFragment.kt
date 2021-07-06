@@ -15,6 +15,7 @@ import javax.inject.Inject
 class HomeFragment @Inject constructor(
     private val viewModelFactory: ViewModelProvider.Factory
 ) : Fragment() {
+    lateinit var appViewModel: AppViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,8 +25,13 @@ class HomeFragment @Inject constructor(
 
         binding.apply {
             lifecycleOwner = this@HomeFragment
-            vm =
-                ViewModelProvider(this@HomeFragment, viewModelFactory).get(AppViewModel::class.java)
+
+            ViewModelProvider(this@HomeFragment, viewModelFactory).get(AppViewModel::class.java)
+                .apply {
+                    vm = this
+                    appViewModel = this
+                }
+
             vm?.tableView = binding.contentContainer
         }
 
@@ -44,8 +50,10 @@ class HomeFragment @Inject constructor(
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_reset ->
+            R.id.action_reset -> {
+                appViewModel.initEditor()
                 Toast.makeText(requireContext(), "RESETTING", Toast.LENGTH_SHORT).show()
+            }
             R.id.action_download ->
                 Toast.makeText(requireContext(), "DOWNLOADING", Toast.LENGTH_SHORT).show()
         }
