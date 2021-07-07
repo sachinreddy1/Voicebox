@@ -559,7 +559,7 @@ class AppViewModel @Inject constructor(
     }
 
     var barNumber = 0f
-    var recordBuffer = RecordBuffer()
+    var recordBuffer = RecordBuffer(bpm = bpm.value!!)
 
     private inner class RecordDataThread() : Thread() {
         override fun run() {
@@ -575,6 +575,7 @@ class AppViewModel @Inject constructor(
 
                     // Add to buffer
                     recordBuffer.data.add(data)
+                    recordBuffer.bpm = bpm.value!!
 
                     // Update cellView
                     updateCellData(barNumber.toInt(), recordBuffer.data)
@@ -658,6 +659,9 @@ class AppViewModel @Inject constructor(
     ) : Thread() {
         override fun run() {
             track.apply {
+                audioTrack?.playbackRate =
+                    ((bpm.value!! / cells[barNumber].bpm.toFloat()) * 8000).toInt()
+
                 audioTrack?.play()
                 cells[barNumber].data.forEach {
                     audioTrack?.write(it, 0, 1024)
