@@ -659,6 +659,8 @@ class AppViewModel @Inject constructor(
     ) : Thread() {
         override fun run() {
             track.apply {
+//                audioTrack?.setOffloadDelayPadding(2,2)
+
                 audioTrack?.playbackRate =
                     ((bpm.value!! / cells[barNumber].bpm.toFloat()) * 8000).toInt()
 
