@@ -1,6 +1,7 @@
 package com.evrencoskun.tableview.data
 
 import android.media.AudioFormat
+import android.media.AudioManager
 import android.media.AudioTrack
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -26,33 +27,13 @@ class Track(
             AudioFormat.ENCODING_PCM_16BIT
         )
 
-//        val test = AudioTrack(
-//            AudioManager.MODE_IN_COMMUNICATION, //
-//            8000, //
-//            AudioFormat.CHANNEL_OUT_STEREO,
-//            AudioFormat.ENCODING_PCM_16BIT, //
-//            minBuffSize, //
-//            AudioTrack.MODE_STREAM
-//        )
-
-        return AudioTrack.Builder()
-//            .setAudioAttributes(
-//                AudioAttributes.Builder()
-////                    .setLegacyStreamType(AudioManager.MODE_IN_COMMUNICATION)
-////                    .setUsage(AudioAttributes.USAGE_MEDIA)
-////                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-//                    .build()
-//            )
-            .setAudioFormat(
-                AudioFormat.Builder()
-                    .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
-                    .setSampleRate(8000)
-                    .setChannelMask(AudioFormat.CHANNEL_OUT_STEREO)
-                    .build()
-            )
-            .setTransferMode(AudioTrack.MODE_STREAM)
-            .setBufferSizeInBytes(minBuffSize)
-            .setOffloadedPlayback(true)
-            .build()
+        return AudioTrack(
+            AudioManager.MODE_IN_COMMUNICATION,
+            8000,
+            AudioFormat.CHANNEL_OUT_STEREO,
+            AudioFormat.ENCODING_PCM_16BIT,
+            minBuffSize,
+            AudioTrack.MODE_STREAM
+        )
     }
 }
