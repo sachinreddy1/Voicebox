@@ -526,6 +526,7 @@ class AppViewModel @Inject constructor(
 
                     newCell.data = recordBuffer.data.toMutableList()
                     newCell.bpm = recordBuffer.bpm
+                    newCell.lastRecordedPosition = recordBuffer.lastRecordedPosition
 
                     newCell
                 } else {
@@ -561,7 +562,9 @@ class AppViewModel @Inject constructor(
     var barNumber = 0f
     var recordBuffer = RecordBuffer(bpm = bpm.value!!)
 
-    private inner class RecordDataThread() : Thread() {
+    private inner class RecordDataThread(
+        val barLength: Int
+    ) : Thread() {
         override fun run() {
             while (isRecording) {
                 val data = ShortArray(bufferSize)
@@ -576,6 +579,11 @@ class AppViewModel @Inject constructor(
                     // Add to buffer
                     recordBuffer.data.add(data)
                     recordBuffer.bpm = bpm.value!!
+
+                    // Last recording position
+                    val intValue = barNumber.toInt()
+                    val decValue = barNumber - intValue
+                    recordBuffer.lastRecordedPosition = (decValue * barLength).toInt()
 
                     // Update cellView
                     updateCellData(barNumber.toInt(), recordBuffer.data)
@@ -646,7 +654,7 @@ class AppViewModel @Inject constructor(
                 }
             }
 
-            RecordDataThread().start()
+            RecordDataThread(barLength).start()
             RecordScrollThread(startX, endX, timeNS, barLength).start()
         }
     }
