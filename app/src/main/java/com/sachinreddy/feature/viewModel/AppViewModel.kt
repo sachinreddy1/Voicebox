@@ -663,16 +663,31 @@ class AppViewModel @Inject constructor(
 
     private inner class PlayerDataThread(
         val track: Track,
-        val barNumber: Int
+        val barNumber: Int,
+        var startX: Int,
+        var barLength: Int
     ) : Thread() {
         override fun run() {
             track.apply {
+                val cell = cells[barNumber]
+
+                // Set playback rate - if cell is recorded at different bpm
                 audioTrack?.playbackRate =
-                    ((bpm.value!! / cells[barNumber].bpm.toFloat()) * 8000).toInt()
+                    ((bpm.value!! / cell.bpm.toFloat()) * 8000).toInt()
+
+                // Calculate starting position for playback within buffer
+                val recordedChucks = cell.data.size
+                val estimatedTotalChunks =
+                    if (cell.lastRecordedPosition != 0)
+                        (barLength * recordedChucks) / cell.lastRecordedPosition
+                    else
+                        0
+
+                val estimatedPosition = (startX * estimatedTotalChunks) / barLength
 
                 audioTrack?.play()
-                cells[barNumber].data.forEach {
-                    audioTrack?.write(it, 0, 1024)
+                (estimatedPosition.until(recordedChucks)).forEach {
+                    audioTrack?.write(cell.data[it], 0, 1024)
                 }
                 audioTrack?.pause()
             }
@@ -717,8 +732,9 @@ class AppViewModel @Inject constructor(
                 val barNumber = time / barLength
                 if (currentBarNumber != barNumber && numberBars.value!! > barNumber) {
                     // Play each cell for that barNumber
+                    val startX = time - (barNumber * barLength)
                     cells.value!!.forEach { track ->
-                        PlayerDataThread(track, barNumber).start()
+                        PlayerDataThread(track, barNumber, startX, barLength).start()
                     }
 
                     currentBarNumber = barNumber

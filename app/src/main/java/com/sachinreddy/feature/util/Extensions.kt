@@ -17,6 +17,14 @@ infix fun Int.toward(to: Int): IntProgression {
     }
 }
 
+infix fun Int.until(to: Int): IntProgression? {
+    return if (this < to) {
+        IntProgression.fromClosedRange(this, to, 1)
+    } else {
+        null
+    }
+}
+
 fun roundClosest(value: Float): Float {
     val intValue = value.toInt()
     val decValue = value - intValue
