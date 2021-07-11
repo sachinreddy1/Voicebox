@@ -688,6 +688,11 @@ class AppViewModel @Inject constructor(
                 // Play data from starting position to end of buffer
                 audioTrack?.play()
                 (estimatedPosition.until(recordedChucks)).forEach {
+                    // Kill the thread if interrupted
+                    if (interrupted()) {
+                        return
+                    }
+
                     audioTrack?.write(cell.data[it], 0, 1024)
                 }
                 audioTrack?.pause()
@@ -713,6 +718,8 @@ class AppViewModel @Inject constructor(
 
         var currentBarNumber: Int? = null
 
+        var playerThreads: MutableList<Thread> = mutableListOf()
+
         override fun run() {
             while (tableView.timelineRecyclerView.isPlaying.value!!) {
                 val startTime = System.nanoTime()
@@ -732,10 +739,17 @@ class AppViewModel @Inject constructor(
                 // When a new bar is entered
                 val barNumber = time / barLength
                 if (currentBarNumber != barNumber && numberBars.value!! > barNumber) {
+                    // Kill all player threads
+                    playerThreads.forEach {
+                        it.interrupt()
+                    }
+
                     // Play each cell for that barNumber
                     val startX = time - (barNumber * barLength)
                     cells.value!!.forEach { track ->
-                        PlayerDataThread(track, barNumber, startX, barLength).start()
+                        val thread = PlayerDataThread(track, barNumber, startX, barLength)
+                        thread.start()
+                        playerThreads.add(thread)
                     }
 
                     currentBarNumber = barNumber
@@ -743,43 +757,13 @@ class AppViewModel @Inject constructor(
 
                 Util.sleepNano(startTime, timeNS)
             }
+
+            // Kill all player threads
+            playerThreads.forEach {
+                it.interrupt()
+            }
         }
     }
-
-//    fun playTrack(cell: Cell) {
-//        val newCells = cells.value.orEmpty()
-//
-//        newCells[cell.rowPosition][cell.columnPosition].apply {
-//            playerThread = object : Thread() {
-//                override fun run() {
-//                    while (isPlaying) {
-//                        data.forEach {
-//                            track?.write(it.first, 0, 1024)
-//                        }
-//                    }
-//                }
-//            }
-//            isPlaying = true
-//            playerThread?.start()
-//            track?.play()
-//        }
-//
-//        cells.postValue(newCells)
-//        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(cell.rowPosition)?.adapter?.notifyDataSetChanged()
-//    }
-
-//    private fun stopTrack(cell: Cell) {
-//        val newCells = cells.value.orEmpty()
-//
-//        newCells[cell.rowPosition][cell.columnPosition].apply {
-//            isPlaying = false
-//            track?.pause()
-//            playerThread?.join()
-//        }
-//
-//        cells.postValue(newCells)
-//        tableView.cellLayoutManager.visibleCellRowRecyclerViews?.get(cell.rowPosition)?.adapter?.notifyDataSetChanged()
-//    }
 
     // ------------------------------------------------- //
 
