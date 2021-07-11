@@ -50,12 +50,10 @@ class HomeFragment @Inject constructor(
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_reset -> {
+            R.id.action_reset ->
                 appViewModel.initEditor()
-                Toast.makeText(requireContext(), "RESETTING", Toast.LENGTH_SHORT).show()
-            }
-            R.id.action_download ->
-                Toast.makeText(requireContext(), "DOWNLOADING", Toast.LENGTH_SHORT).show()
+            R.id.action_info ->
+                Toast.makeText(requireContext(), "Beta v0.1", Toast.LENGTH_SHORT).show()
         }
         return true
     }
@@ -65,7 +63,8 @@ class HomeFragment @Inject constructor(
         (requireActivity() as AppCompatActivity).apply {
             setSupportActionBar(app_action_bar)
             supportActionBar?.apply {
-                title = getString(R.string.app_name)
+                setDisplayShowTitleEnabled(false)
+                setLogo(R.drawable.ic_music_note)
             }
         }
     }

@@ -8,8 +8,8 @@
         android:title="@string/reset"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_download"
+        android:id="@+id/action_info"
         android:orderInCategory="100"
-        android:title="@string/download"
+        android:title="@string/action_info"
         app:showAsAction="never" />
 </menu>
