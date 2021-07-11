@@ -12,7 +12,9 @@ class Cell(
         return (this.isSelected == cell.isSelected) &&
                 (this.columnPosition == cell.columnPosition) &&
                 (this.rowPosition == cell.rowPosition) &&
-                (this.data.size == cell.data.size)
+                (this.data.size == cell.data.size) &&
+                (this.bpm == cell.bpm) &&
+                (this.lastRecordedPosition == cell.lastRecordedPosition)
     }
 
     fun copy(): Cell {
@@ -21,7 +23,8 @@ class Cell(
             columnPosition = this.columnPosition,
             rowPosition = this.rowPosition,
             data = this.data.toMutableList(),
-            bpm = this.bpm
+            bpm = this.bpm,
+            lastRecordedPosition = this.lastRecordedPosition
         )
     }
 }

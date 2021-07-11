@@ -356,8 +356,16 @@ class AppViewModel @Inject constructor(
 
         draggedCell.value?.apply {
             if (this != cell) {
+                // Copy relevant data over
                 newCells[cell.rowPosition].cells[cell.columnPosition].data = data
+                newCells[cell.rowPosition].cells[cell.columnPosition].bpm = bpm
+                newCells[cell.rowPosition].cells[cell.columnPosition].lastRecordedPosition =
+                    lastRecordedPosition
+
+                // Reset initial cell data
                 newCells[rowPosition].cells[columnPosition].data = mutableListOf()
+                newCells[rowPosition].cells[columnPosition].bpm = 120
+                newCells[rowPosition].cells[columnPosition].lastRecordedPosition = 0
             }
         }
 
