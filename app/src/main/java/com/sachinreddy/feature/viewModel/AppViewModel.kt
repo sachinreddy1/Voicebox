@@ -685,6 +685,7 @@ class AppViewModel @Inject constructor(
 
                 val estimatedPosition = (startX * estimatedTotalChunks) / barLength
 
+                // Play data from starting position to end of buffer
                 audioTrack?.play()
                 (estimatedPosition.until(recordedChucks)).forEach {
                     audioTrack?.write(cell.data[it], 0, 1024)
