@@ -49,6 +49,7 @@
 
                 android:layout_margin="10dp"
 
+                app:setEnabled="@{vm.tableView.timelineRecyclerView.isPlaying}"
                 android:onProgressChanged="@{(picker, progress, fromUser) -> vm.onProgressChanged(picker, progress, fromUser)}"
 
                 app:picker_tracker="exponential"

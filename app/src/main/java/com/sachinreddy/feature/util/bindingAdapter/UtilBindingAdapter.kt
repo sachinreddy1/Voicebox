@@ -10,6 +10,7 @@ import com.sachinreddy.feature.table.adapter.EditCellAdapter
 import com.sachinreddy.feature.table.listener.EditCellListener
 import com.sachinreddy.feature.table.ui.view.SmallFAB
 import com.sachinreddy.feature.viewModel.AppViewModel
+import com.sachinreddy.numberpicker.NumberPicker
 import com.sachinreddy.recordbutton.OnRecordListener
 import com.sachinreddy.recordbutton.RecordButton
 import kotlinx.android.synthetic.main.small_fab.view.*
@@ -114,4 +115,9 @@ fun setEditCellAdapter(tableView: TableView, adapter: EditCellAdapter) {
 @BindingAdapter("app:tableViewListener")
 fun setEditCellListener(tableView: TableView, tableViewListener: EditCellListener) {
     tableView.tableViewListener = tableViewListener
+}
+
+@BindingAdapter("app:setEnabled")
+fun setEnabled(numberPicker: NumberPicker, isPlaying: Boolean) {
+    numberPicker.isEnabled = !isPlaying
 }
