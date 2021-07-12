@@ -652,6 +652,8 @@ class AppViewModel @Inject constructor(
         val timeNS = (timeMS * 1000000).toLong()
 
         override fun run() {
+            tableView.timelineRecyclerView.isPlaying.postValue(false)
+
             audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
             recorder.startRecording()
 
