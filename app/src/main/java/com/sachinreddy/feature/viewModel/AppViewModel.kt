@@ -561,6 +561,8 @@ class AppViewModel @Inject constructor(
                     cell.rowPosition
                 )?.itemView?.edit_cell
 
+                view?.binding?.root?.visibility = View.VISIBLE
+
                 val energy = data.map { it.sum() }
                 view?.binding?.audioRecordView?.update(energy)
             }
