@@ -31,6 +31,9 @@ fun setCells(tableView: TableView, cells: List<Track>) {
 @BindingAdapter("android:data")
 fun setData(cellView: CellView, data: MutableList<ShortArray>) {
     cellView.visibility = if (data.isEmpty()) View.GONE else View.VISIBLE
+
+//    val energy = data.map { it.sum() }
+//    cellView.binding.audioRecordView.update(energy)
 }
 
 @BindingAdapter("android:isSelected")

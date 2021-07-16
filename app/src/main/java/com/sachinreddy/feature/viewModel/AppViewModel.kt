@@ -561,7 +561,7 @@ class AppViewModel @Inject constructor(
                     cell.rowPosition
                 )?.itemView?.edit_cell
 
-                view?.binding?.root?.visibility = View.VISIBLE
+                view?.binding?.cellItem?.visibility = View.VISIBLE
 
                 val energy = data.map { it.sum() }
                 view?.binding?.audioRecordView?.update(energy)
@@ -582,7 +582,7 @@ class AppViewModel @Inject constructor(
 
                 if (result > 0) {
                     // Update cell data near new bars
-                    if (roundClosest(barNumber) < 0.1f) {
+                    if (roundClosest(barNumber) < 0.16f) {
                         recordUpdateCells(barNumber.toInt())
                     }
 
