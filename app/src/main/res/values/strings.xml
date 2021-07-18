@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Collab</string>
+    <string name="app_name">Voicebox</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="home_fragment_label">Home Fragment</string>
