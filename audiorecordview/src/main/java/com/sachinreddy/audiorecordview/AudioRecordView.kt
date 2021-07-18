@@ -23,6 +23,8 @@ class AudioRecordView @JvmOverloads constructor(
         LeftToRight(2)
     }
 
+    var data: MutableList<Int> = mutableListOf()
+
     private val maxReportableAmp = 22760f //effective size,  max fft = 32760
     private val uninitialized = 0f
     var chunkAlignTo = AlignTo.CENTER
@@ -76,6 +78,8 @@ class AudioRecordView @JvmOverloads constructor(
      * @param fft Used to draw the height of each chunk.
      */
     fun update(fft: List<Int>) {
+        data = fft.toMutableList()
+
         if (height == 0) {
             Log.w(LOG_TAG, "You must call the update fun when the view is displayed")
             return
@@ -134,6 +138,11 @@ class AudioRecordView @JvmOverloads constructor(
                 recycle()
             }
         }
+    }
+
+    override fun dispatchDraw(canvas: Canvas?) {
+        update(data.toList())
+        super.dispatchDraw(canvas)
     }
 
     private fun handleNewFFT(fft: List<Int>) {
