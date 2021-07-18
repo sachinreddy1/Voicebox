@@ -140,9 +140,9 @@ class AudioRecordView @JvmOverloads constructor(
         }
     }
 
-    override fun dispatchDraw(canvas: Canvas?) {
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         update(data.toList())
-        super.dispatchDraw(canvas)
+        super.onLayout(changed, left, top, right, bottom)
     }
 
     private fun handleNewFFT(fft: List<Int>) {
