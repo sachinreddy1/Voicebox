@@ -16,6 +16,12 @@ android {
         versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        externalNativeBuild {
+            cmake {
+                cppFlags ""
+            }
+        }
     }
 
     buildFeatures {
@@ -27,6 +33,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+            version "3.10.2"
         }
     }
 
@@ -42,6 +55,7 @@ android {
         jvmTarget = "1.8"
     }
 
+    ndkVersion "21.1.6352462"
 }
 
 dependencies {
@@ -61,7 +75,7 @@ dependencies {
 
     // Dagger
     implementation "com.google.dagger:dagger:2.29.1"
-    implementation "com.google.dagger:dagger-android:2.29.1"
+    implementation "com.google.dagger:dagger-android:2.35.1"
     implementation "com.google.dagger:dagger-android-support:2.29.1"
     implementation "androidx.arch.core:core-testing:2.1.0"
     kapt "com.google.dagger:dagger-android-support:2.29.1"

@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
 import com.sachinreddy.feature.databinding.ActivityMainBinding
 import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -25,5 +26,15 @@ class MainActivity : DaggerAppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
+
+        test.text = Method()
+    }
+
+    external fun Method(): String
+
+    companion object {
+        init {
+            System.loadLibrary("cpp_code")
+        }
     }
 }
